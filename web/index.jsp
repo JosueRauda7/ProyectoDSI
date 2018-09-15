@@ -535,7 +535,7 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
               </div>
               <div>
                 <div class="product-item">
-                  <div style="height: 280px;" class="pi-img-wrapper">
+                  <div class="pi-img-wrapper">
                     <img src="assets/pages/img/mueble.jpg" class="img-responsive" alt="Berry Lace Dress">
                     <div>
                       <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">Entrar</a>
@@ -546,7 +546,7 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
               </div>
               <div>
                 <div class="product-item">
-                  <div style="height: 280px;" class="pi-img-wrapper">
+                  <div class="pi-img-wrapper">
                     <img src="assets/pages/img/Electrodomestico.jpg" class="img-responsive" alt="Berry Lace Dress">
                     <div>
                       <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">Entrar</a>
@@ -557,7 +557,7 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
               </div>
               <div>
                 <div class="product-item">
-                  <div style="height: 280px;" class="pi-img-wrapper">
+                  <div class="pi-img-wrapper">
                     <img src="assets/pages/img/dispositivoElectronico.jpg" class="img-responsive" alt="Berry Lace Dress">
                     <div>
                       <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">Entrar</a>
