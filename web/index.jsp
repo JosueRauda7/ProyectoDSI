@@ -80,9 +80,41 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
                             <li><a href="page-login.html">Contáctanos</a></li>
                         </ul>
                     </div>
+
                     END TOP BAR MENU -->
                 </div>
             </div>        
+
+                  </div>
+                </li>
+              </ul>
+            </li>
+            <li class="dropdown active"><a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">Electrodomésticos</a></li>
+            
+            <li class="dropdown active">
+              <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+                Dispositivos Electrónicos 
+                
+              </a>
+            </li>
+            <!-- BEGIN TOP SEARCH -->
+            <li class="menu-search">
+              <span class="sep"></span>
+              <i class="fa fa-search search-btn"></i>
+              <div class="search-box">
+                <form action="#">
+                  <div class="input-group">
+                    <input type="text" placeholder="Buscar" class="form-control">
+                    <span class="input-group-btn">
+                      <button class="btn btn-primary" type="submit">Buscar</button>
+                    </span>
+                  </div>
+                </form>
+              </div> 
+            </li>
+            <!-- END TOP SEARCH -->
+          </ul>
+
         </div>
         <!-- END TOP BAR -->
 
@@ -237,6 +269,43 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
                             </div>
                         </div>
                     </div>
+
+            <!-- Controls -->
+            <a class="left carousel-control carousel-control-shop" href="#carousel-example-generic" role="button" data-slide="prev">
+                <i class="fa fa-angle-left" aria-hidden="true"></i>
+            </a>
+            <a class="right carousel-control carousel-control-shop" href="#carousel-example-generic" role="button" data-slide="next">
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </a>
+        </div>
+    </div>
+    <!-- END SLIDER -->
+    <div class="main">
+      <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="index.html">Inicio</a></li>
+        </ul>
+        <!-- BEGIN SIDEBAR & CONTENT -->
+        
+        <div class="row margin-bottom-40"></div>
+        <div class="col-lg-12">
+        <div class="col-lg-6">
+          
+        <div class="row product-list">
+          <center><h1>Ultimos Productos</h1></center>
+              <!-- PRODUCT ITEM START -->
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="product-item">
+                  <div class="pi-img-wrapper">
+                    <img src="assets/pages/img/products/model4.jpg" class="img-responsive" alt="Berry Lace Dress">
+                    <div>
+                        <a href="assets/pages/img/products/model4.jpg" class="btn btn-default fancybox-button">Zoom</a>
+                        <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
+                    </div>
+                  </div>
+                  <h3><a href="shop-item.html">Berry Lace Dress Berry Lace Dress</a></h3>
+                  <div class="pi-price">$29.00</div>
+                  <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
 
                 </div>
 
