@@ -44,7 +44,18 @@
                 </li>
 
                 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">Clientes</a></li>
+                <li class="dropdown dropdown-megamenu">
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+                        Categorías
 
+                    </a>
+                    <ul class="dropdown-menu">
+
+                        <li><a href="shop-product-list.html">Registrar categoría</a></li>
+                        <li><a href="shop-product-list.html">Ver categorías</a></li>
+
+                    </ul>
+                </li>
                 <li class="dropdown dropdown-megamenu">
                     <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
                         Productos
