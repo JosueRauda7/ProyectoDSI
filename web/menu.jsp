@@ -61,7 +61,7 @@
                 </li>
             </ul>
         </li>
-        <li><a href="shop-item.html">Ingresar</a></li>
+        <li><a type="button" data-toggle="modal" data-target="#exampleModal">Entrar</a></li>
 
 
 
