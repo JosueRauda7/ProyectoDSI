@@ -61,7 +61,7 @@
                 </li>
             </ul>
         </li>
-        <li><a type="button" data-toggle="modal" data-target="#exampleModal">Entrar</a></li>
+        <li><a type="button" data-toggle="modal" data-target="#exampleModal">Logueate</a></li>
 
 
 

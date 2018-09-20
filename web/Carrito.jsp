@@ -63,6 +63,7 @@
         </div>
         <!-- Header END -->       
         <!-- END SLIDER -->
+        <jsp:include page="/modal.jsp"/>
         <div class="main" style="margin-bottom: 5%;">
             <div class="container">
                 <!-- BEGIN SIDEBAR & CONTENT -->
