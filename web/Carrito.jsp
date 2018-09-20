@@ -88,12 +88,13 @@
                                                 <a href="javascript:;"><img src="assets/pages/img/products/model3.jpg" alt="Berry Lace Dress"></a>
                                             </td>
                                             <td class="goods-page-description">
-                                                <h3><a href="javascript:;">Cool green dress with red bell</a></h3>
-                                                <p><strong>Item 1</strong> - Color: Green; Size: S</p>
-                                                <em>More info is here</em>
+                                                <h3><a href="javascript:;">Chaleco elegante con botones</a></h3>
+                                                <p><strong>Item 1</strong> - Color: Negro; Talla: S</p>
+                                                <em>Mas informacion aqui</em>
                                             </td>
                                             <td class="goods-page-ref-no">
-                                                ROPCAM001
+                                               
+                                                 ROPCHA001
                                             </td>
                                             <td class="goods-page-quantity">
                                                 <div class="product-quantity">
@@ -115,12 +116,12 @@
                                                 <a href="javascript:;"><img src="assets/pages/img/products/model4.jpg" alt="Berry Lace Dress"></a>
                                             </td>
                                             <td class="goods-page-description">
-                                                <h3><a href="javascript:;">Cool green dress with red bell</a></h3>
-                                                <p><strong>Item 1</strong> - Color: Green; Size: S</p>
-                                                <em>More info is here</em>
+                                                 <h3><a href="javascript:;">Camisa tipo centro Sport</a></h3>
+                                                <p><strong>Item 2</strong> - Color: Celeste; Talla: M</p>
+                                                <em>Mas informacion aqui</em>
                                             </td>
                                             <td class="goods-page-ref-no">
-                                                ROPCHA001
+                                                ROPCAM001
                                             </td>
                                             <td class="goods-page-quantity">
                                                 <div class="product-quantity">

@@ -24,32 +24,13 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
 
     <!-- Head BEGIN -->
     <head>
-        <title>Categoria</title>
+        <title>Producto</title>
         <jsp:include page="/head.jsp"/>        
     </head>
     <!-- Head END -->
 
     <!-- Body BEGIN -->
     <body class="ecommerce">
-        <!-- BEGIN STYLE CUSTOMIZER -->
-        <div class="color-panel hidden-sm">
-            <div class="color-mode-icons icon-color"></div>
-            <div class="color-mode-icons icon-color-close"></div>
-            <div class="color-mode">
-                <p>THEME COLOR</p>
-                <ul class="inline">
-                    <li class="color-red current color-default" data-style="red"></li>
-                    <li class="color-blue" data-style="blue"></li>
-                    <li class="color-green" data-style="green"></li>
-                    <li class="color-orange" data-style="orange"></li>
-                    <li class="color-gray" data-style="gray"></li>
-                    <li class="color-turquoise" data-style="turquoise"></li>
-                </ul>
-            </div>
-        </div>
-        <!-- END BEGIN STYLE CUSTOMIZER --> 
-
-
         <!-- BEGIN HEADER -->
         <div class="header">
             <div class="container">
@@ -92,105 +73,95 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
             </div>
         </div>
         <!-- Header END -->       
-            <!-- END SLIDER -->
-            <div class="main">
-                <div class="container">
+        <!-- END SLIDER -->
 
-                    <!-- BEGIN SIDEBAR & CONTENT -->
-                    <!-- BEGIN SIMILAR PRODUCTS -->
-                    <div class="row margin-bottom-40">
-                        <div class="col-md-12 col-sm-12">
-                            <center><h2>Nombre de la categoria</h2></center>
-                            <div class="owl-carousel owl-carousel4">
-                                <div>
-                                    <div class="product-item">
-                                        <div class="pi-img-wrapper">
-                                            <img src="assets/pages/img/products/k1.jpg" class="img-responsive" alt="Berry Lace Dress">
-                                            <div>
-                                                <a href="#" class="btn btn-default">Entrar</a>
-                                            </div>
-                                        </div>
-                                        <h3><a href="shop-item.html">categoria 1</a></h3>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="product-item">
-                                        <div class="pi-img-wrapper">
-                                            <img src="assets/pages/img/mueble.jpg" class="img-responsive" alt="Berry Lace Dress">
-                                            <div>
-                                                <a href="#" class="btn btn-default">Entrar</a>
-                                            </div>
-                                        </div>
-                                        <h3><a href="shop-item.html">categoria 2</a></h3>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="product-item">
-                                        <div class="pi-img-wrapper">
-                                            <img src="assets/pages/img/Electrodomestico.jpg" class="img-responsive" alt="Berry Lace Dress">
-                                            <div>
-                                                <a href="#" class="btn btn-default">Entrar</a>
-                                            </div>
-                                        </div>
-                                        <h3><a href="shop-item.html">categoria 3</a></h3>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="product-item">
-                                        <div class="pi-img-wrapper">
-                                            <img src="assets/pages/img/dispositivoElectronico.jpg" class="img-responsive" alt="Berry Lace Dress">
-                                            <div>
-                                                <a href="#" class="btn btn-default">Entrar</a>
-                                            </div>
-                                        </div>
-                                        <h3><a href="shop-item.html">categoria 4</a></h3>
+        <div class="container">
 
-                                    </div>
+            <div class="product-page">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6">
+                        <div class="product-main">
+                            <img src="assets/pages/img/products/model7.jpg" alt="Cool green dress with red bell" class="img-responsive" data-BigImgsrc="assets/pages/img/products/model7.jpg">
+                        </div>
+                        <div class="price-availability-block clearfix text-center">
+                            <div class="price text-center">
+                                <div class="row col-md-12 col-sm-12">
+                                    <strong>Precio regular: $47.00</strong>
                                 </div>
-
+                                <div class="row col-md-12 col-sm-12">
+                                    <em>Precio de oferta: $62.00</em>
+                                </div>
+                                
                             </div>
                         </div>
-                        <!-- END SIMILAR PRODUCTS -->
+                        <div class="product-other-images">
+                            <div class="product-page-cart">
+                                <div class="product-quantity">
+                                    <input id="product-quantity" type="text" value="1" readonly class="form-control input-sm">
+                                </div>
+                                <button class="btn btn-primary" type="submit">Añadir a carrito</button>
+                            </div>
+                        </div>
                     </div>
+                    <div class="col-md-6 col-sm-6">
+                        <h1>Producto</h1>
+                        
+                        <div class="description">
+                            <p>Lorem ipsum dolor ut sit ame dolore  adipiscing elit, sed nonumy nibh sed euismod laoreet dolore magna aliquarm erat volutpat 
+                                Nostrud duis molestie at dolore.</p>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </p>
+                            <p>
+                                Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.
+                            </p>
+                            <p>
+                                Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst. Vivamus facilisis diam at odio. Mauris dictum, nisi eget consequat elementum, lacus ligula molestie metus, non feugiat orci magna ac sem. Donec turpis. Donec vitae metus. Morbi tristique neque eu mauris. Quisque gravida ipsum non sapien. Proin turpis lacus, scelerisque vitae, elementum at, lobortis ac, quam. Aliquam dictum eleifend risus. In hac habitasse platea dictumst. Etiam sit amet diam. Suspendisse odio. Suspendisse nunc. In semper bibendum libero.
+                            </p>
 
+                        </div>
+                    </div>                    
                 </div>
             </div>
-        </div>
-        <!-- END CONTENT -->
-    <!-- END SIDEBAR & CONTENT -->
 
-    <!-- BEGIN FOOTER -->
-    <div class="footer" style="position: absolute; bottom: 0; width: 100%;">
-        
+        </div>
+
+        <!-- BEGIN FOOTER -->
+        <div class="footer" style=" width: 100%;">
+
             <div >
                 <!-- BEGIN COPYRIGHT -->
                 <div class="col-md-12 text-center ">
                     2018 © Universidad Don Bosco. Derechos reservados. 
                 </div>
                 <!-- END COPYRIGHT -->
-                
-            </div>
-        
-    </div>
-    <!-- END FOOTER -->
 
-    <!-- Load javascripts at bottom, this will reduce page load time -->
-    <!-- BEGIN CORE PLUGINS(REQUIRED FOR ALL PAGES) -->
-    <!--[if lt IE 9]>
-    <script src="assets/plugins/respond.min.js"></script>  
-    <![endif]-->  
-    <jsp:include page="/scripts.jsp"/>
-    <script type="text/javascript">
-        jQuery(document).ready(function () {
-            Layout.init();
-            Layout.initOWL();
-            Layout.initTwitter();
-            Layout.initImageZoom();
-            Layout.initTouchspin();
-            Layout.initUniform();
-        });
-    </script>
-    <!-- END PAGE LEVEL JAVASCRIPTS -->
-</body>
-<!-- END BODY -->
+            </div>
+
+        </div>
+        <!-- END FOOTER -->
+        <!-- END CONTENT -->
+        <!-- END SIDEBAR & CONTENT -->
+
+
+
+        <!-- Load javascripts at bottom, this will reduce page load time -->
+        <!-- BEGIN CORE PLUGINS(REQUIRED FOR ALL PAGES) -->
+        <!--[if lt IE 9]>
+        <script src="assets/plugins/respond.min.js"></script>  
+        <![endif]-->  
+        <jsp:include page="/scripts.jsp"/>
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                Layout.init();
+                Layout.initOWL();
+                Layout.initTwitter();
+                Layout.initImageZoom();
+                Layout.initTouchspin();
+                Layout.initUniform();
+            });
+        </script>
+        <!-- END PAGE LEVEL JAVASCRIPTS -->
+    </body>
+    <!-- END BODY -->
 </html>
