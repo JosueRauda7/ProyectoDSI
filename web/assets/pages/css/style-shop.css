@@ -233,7 +233,7 @@ Header and header elements
 .top-cart-content span,
 .top-cart-content .del-goods,
 .top-cart-content .add-goods {
-	float: left;
+	
 }
 .top-cart-content img {
 	border: solid 2px #fff;
@@ -270,10 +270,12 @@ Header and header elements
 	height: 17px;
 	color: #fff !important;
 	border-radius: 22px !important;
-	float: right;
-	margin: 10px 0 0 5px;
+	float: left;
+        margin-left: 30%;
+	
 	line-height: 1;
 	font-size: 12px;
+        border: solid 1px;
 }
 .del-goods:hover,
 .add-goods:hover {

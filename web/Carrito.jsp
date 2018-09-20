@@ -75,12 +75,13 @@
                                 <div class="table-wrapper-responsive">
                                     <table summary="Shopping cart">
                                         <tr>
-                                            <th class="goods-page-image">Image</th>
-                                            <th class="goods-page-description">Description</th>
-                                            <th class="goods-page-ref-no">Ref No</th>
-                                            <th class="goods-page-quantity">Quantity</th>
-                                            <th class="goods-page-price">Unit price</th>
-                                            <th class="goods-page-total" colspan="2">Total</th>
+                                            <th class="goods-page-image">Imagen</th>
+                                            <th class="goods-page-description">Descripción</th>
+                                            <th class="goods-page-ref-no">Codigo producto</th>
+                                            <th class="goods-page-quantity">Cantidad</th>
+                                            <th class="goods-page-price">Precio unitario</th>
+                                            <th class="goods-page-total">Total</th>
+                                            <th>Eliminar</th>
                                         </tr>
                                         <tr>
                                             <td class="goods-page-image">
@@ -92,7 +93,7 @@
                                                 <em>More info is here</em>
                                             </td>
                                             <td class="goods-page-ref-no">
-                                                javc2133
+                                                ROPCAM001
                                             </td>
                                             <td class="goods-page-quantity">
                                                 <div class="product-quantity">
@@ -105,8 +106,8 @@
                                             <td class="goods-page-total">
                                                 <strong><span>$</span>47.00</strong>
                                             </td>
-                                            <td class="del-goods-col">
-                                                <a class="del-goods" href="javascript:;">&nbsp;</a>
+                                            <td >
+                                                <a  class="del-goods" >&nbsp;</a>
                                             </td>
                                         </tr>
                                         <tr>
@@ -119,7 +120,7 @@
                                                 <em>More info is here</em>
                                             </td>
                                             <td class="goods-page-ref-no">
-                                                javc2133
+                                                ROPCHA001
                                             </td>
                                             <td class="goods-page-quantity">
                                                 <div class="product-quantity">
@@ -146,7 +147,7 @@
                                             <strong class="price"><span>$</span>47.00</strong>
                                         </li>
                                         <li>
-                                            <em>Shipping cost</em>
+                                            <em>Costo de envio</em>
                                             <strong class="price"><span>$</span>3.00</strong>
                                         </li>
                                         <li class="shopping-total-price">
@@ -156,8 +157,8 @@
                                     </ul>
                                 </div>
                             </div>
-                            <button class="btn btn-default" type="submit">Continue shopping <i class="fa fa-shopping-cart"></i></button>
-                            <button class="btn btn-primary" type="submit">Checkout <i class="fa fa-check"></i></button>
+                            <button class="btn btn-default" type="submit">Continuar comprando <i class="fa fa-shopping-cart"></i></button>
+                            <button class="btn btn-primary" type="submit">Proceder a pagar <i class="fa fa-check"></i></button>
                         </div>
                     </div>
                     <!-- END CONTENT -->
@@ -174,11 +175,13 @@
         <!-- END SIDEBAR & CONTENT -->
 
         <!-- BEGIN FOOTER -->
-        <div class="footer" style="margin-bottom: -1%;width: 100%;">
+        <div class="footer" style="width: 100%;-webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;">
 
             <div >
                 <!-- BEGIN COPYRIGHT -->
-                <div class="col-md-12 text-center ">
+                <div class="text-center ">
                     2018 © Universidad Don Bosco. Derechos reservados. 
                 </div>
                 <!-- END COPYRIGHT -->
