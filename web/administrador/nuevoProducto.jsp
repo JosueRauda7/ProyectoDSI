@@ -10,7 +10,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Nombre empresa | Administrador</title>
+        <title>Nombre empresa | Administrador</title>>
 
         <jsp:include page="head.jsp"/>
         <!-- Theme styles END -->
@@ -21,81 +21,72 @@
 
 
         <jsp:include page="/administrador/menuAdmin.jsp"/>
+
         
-
         <div class="container">
+            <div class="col-lg-2"></div>
+            <div class="content-page col-lg-8 margin-top-10">
+                <div class="panel">
 
+                    <h1>Nuevo Producto</h1><br/>
 
-            <div class="row margin-bottom-40">
-                <!-- BEGIN CONTENT -->
-                <div class="col-md-12 col-sm-12">
-                    <br><h1>Productos comprados</h1><br>
-                    <h2>Cliente: Nombre del cliente</h2>
-                    <div class="goods-page">
-                        <div class="goods-data clearfix">
-                            <div class="table-wrapper-responsive">
-                                <table summary="Shopping cart">
-                                    <tr>
-                                        <th class="goods-page-image">Imagen</th>
-                                        <th class="goods-page-description">Producto</th>
-                                        <th class="goods-page-ref-no">Cantidad</th>
-                                        <th class="goods-page-quantity">Fecha de compra</th>
-                                        <th class="goods-page-total" colspan="2">Total cancelado</th>
-                                    </tr>
-                                    <tr>
-                                        <td class="goods-page-image">
-                                            <a href="javascript:;"><img src="assets/pages/img/products/model3.jpg" alt="Berry Lace Dress"></a>
-                                        </td>
-                                        <td class="goods-page-description">
-                                            <h3><a href="javascript:;">Sofá</a></h3>
-                                            <p>Café oscuro de madera tapizado</p>
-                                            
-                                        </td>
-                                        <td class="goods-page-ref-no">
-                                            2
-                                        </td>
-                                        <td class="goods-page-quantity">
-                                            15-04-2018
-                                        </td>
-                                       
-                                        <td class="goods-page-total">
-                                            <strong><span>$</span>200.00</strong>
-                                        </td>
-                                        
-                                    </tr>
-                                    
-                                    <tr>
-                                        <td class="goods-page-image">
-                                            <a href="javascript:;"><img src="assets/pages/img/products/model3.jpg" alt="Berry Lace Dress"></a>
-                                        </td>
-                                        <td class="goods-page-description">
-                                            <h3><a href="javascript:;">Sofá</a></h3>
-                                            <p>Café oscuro de madera tapizado</p>
-                                            
-                                        </td>
-                                        <td class="goods-page-ref-no">
-                                            2
-                                        </td>
-                                        <td class="goods-page-quantity">
-                                            15-04-2018
-                                        </td>
-                                       
-                                        <td class="goods-page-total">
-                                            <strong><span>$</span>200.00</strong>
-                                        </td>
-                                        
-                                    </tr>
-                                    
-                                </table>
+                    <form role="form" action="#">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="nombre">Nombre del producto</label>
+                                    <input type="text" id="nombre" name="nombre" class="form-control">
+                                </div>
                             </div>
-
-                           
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="vencimiento">Cantidad</label>
+                                    <input type="number" id="cantidad" name="cantidad" class="form-control">
+                                </div>
+                            </div>
                         </div>
-                        
-                    </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="vencimiento">Fecha de vencimiento</label>
+                                    <input type="date" id="vencimiento" name="vencimiento" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="regular">Precio regular</label>
+                                    <input type="number" step="0.01" id="regular" name="regular" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="venta">Precio venta</label>
+                                    <input type="number" step="0.01" id="venta" name="venta" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="subcategoria">Sub categoria</label>
+                                    <select id="subcategoria" class="form-control">
+                                        <option>Sofá</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="imagen">Imagen</label>
+                            <input type="file" id="imagen" name="imagen" class="form-control" style="padding: 0px; padding-bottom: 34px; ">
+                        </div>
+
+                        <div class="padding-top-20">                  
+                            <button class="btn btn-primary" type="submit">Registrar</button>
+                        </div>
+                        <br/>
+                    </form>
                 </div>
-
-
             </div>
         </div>
 
@@ -103,35 +94,14 @@
 
 
 
-        <!-- BEGIN FOOTER -->
-        <div class="footer">
-            <div class="container">
-                <div class="row">
-                    <!-- BEGIN COPYRIGHT -->
-                    <div class="col-md-4 col-sm-4 padding-top-10">
-                        2015 © Keenthemes. ALL Rights Reserved. 
-                    </div>
-                    <!-- END COPYRIGHT -->
-                    <!-- BEGIN PAYMENTS -->
-                    <div class="col-md-4 col-sm-4">
-                        <ul class="list-unstyled list-inline pull-right">
-                            <li><img src="../assets/corporate/img/payments/western-union.jpg" alt="We accept Western Union" title="We accept Western Union"></li>
-                            <li><img src="../assets/corporate/img/payments/american-express.jpg" alt="We accept American Express" title="We accept American Express"></li>
-                            <li><img src="../assets/corporate/img/payments/MasterCard.jpg" alt="We accept MasterCard" title="We accept MasterCard"></li>
-                            <li><img src="../assets/corporate/img/payments/PayPal.jpg" alt="We accept PayPal" title="We accept PayPal"></li>
-                            <li><img src="../assets/corporate/img/payments/visa.jpg" alt="We accept Visa" title="We accept Visa"></li>
-                        </ul>
-                    </div>
-                    <!-- END PAYMENTS -->
-                    <!-- BEGIN POWERED -->
-                    <div class="col-md-4 col-sm-4 text-right">
-                        <p class="powered">Powered by: <a href="http://www.keenthemes.com/">KeenThemes.com</a></p>
-                    </div>
-                    <!-- END POWERED -->
-                </div>
-            </div>
-        </div>
-        <!-- END FOOTER -->
+
+
+
+        <br/><br/><br/>
+
+        <jsp:include page="footer.jsp"/>
+
+
 
         <!-- BEGIN fast view of a product -->
         <div id="product-pop-up" style="display: none; width: 700px;">
