@@ -28,6 +28,7 @@
 
 <!-- Page level plugin styles START -->
 <link href="assets/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet">
+<link href="assets/pages/css/estilomodallog.css" rel="stylesheet">
 <link href="assets/plugins/owl.carousel/assets/owl.carousel.css" rel="stylesheet">
 <link href="assets/pages/css/slider.css" rel="stylesheet">
 <link href="assets/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css">
