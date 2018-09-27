@@ -109,5 +109,25 @@
             </div>
         </div>
         <jsp:include page="footer.jsp" />
+        <!-- BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE) -->
+        <script src="../assets/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script><!-- pop up -->
+        <script src="../assets/plugins/owl.carousel/owl.carousel.min.js" type="text/javascript"></script><!-- slider for products -->
+        <script src='../assets/plugins/zoom/jquery.zoom.min.js' type="text/javascript"></script><!-- product zoom -->
+        <script src="../assets/plugins/bootstrap-touchspin/bootstrap.touchspin.js" type="text/javascript"></script><!-- Quantity -->
+        <script src="../assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+        <script src="../assets/plugins/rateit/src/jquery.rateit.js" type="text/javascript"></script>
+
+        <script src="../assets/corporate/scripts/layout.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                Layout.init();
+                Layout.initOWL();
+                Layout.initTwitter();
+                Layout.initImageZoom();
+                Layout.initTouchspin();
+                Layout.initUniform();
+            });
+        </script>
+        <!-- END PAGE LEVEL JAVASCRIPTS -->
     </body>
 </html>
