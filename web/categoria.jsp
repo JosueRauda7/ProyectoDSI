@@ -37,7 +37,7 @@
         <!-- BEGIN HEADER -->
         <div class="header">
             <div class="container">
-                <a class="site-logo" href="shop-index.html">LOGO EMPRESA</a>
+                <a class="site-logo" href="shop-index.html">BigShop</a>
 
                 <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
 
