@@ -18,7 +18,9 @@ public class Usuario {
     private String direccion;
     private String dui;
     private String id_confirmacion;
+    private String fecha_nac;
     private String confirmado;
+    private int tipoUser;
     private TipoUsuario tipoUsaurio;
 
     public Usuario() {
@@ -31,7 +33,9 @@ public class Usuario {
         this.dui = "";
         this.id_confirmacion = "";
         this.confirmado = "";
+        this.fecha_nac = "";
         this.tipoUsaurio = null;
+        this.tipoUser =0;
     }
 
     public int getIdUsuario() {
@@ -98,12 +102,28 @@ public class Usuario {
         this.id_confirmacion = id_confirmacion;
     }
 
+    public String getFecha_nac() {
+        return fecha_nac;
+    }
+
+    public void setFecha_nac(String fecha_nac) {
+        this.fecha_nac = fecha_nac;
+    }
+
     public String getConfirmado() {
         return confirmado;
     }
 
     public void setConfirmado(String confirmado) {
         this.confirmado = confirmado;
+    }
+
+    public int getTipoUser() {
+        return tipoUser;
+    }
+
+    public void setTipoUser(int tipoUser) {
+        this.tipoUser = tipoUser;
     }
 
     public TipoUsuario getTipoUsaurio() {

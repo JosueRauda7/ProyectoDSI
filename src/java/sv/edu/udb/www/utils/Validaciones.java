@@ -73,6 +73,12 @@ public class Validaciones {
         return mat.matches();
     }
     
+     public static boolean esDui(String cadena){
+        Pattern pat=Pattern.compile("^[0-9]{8}-[0-9]{1}$");
+        Matcher mat=pat.matcher(cadena);
+        return mat.matches();
+    }
+     
     public static boolean esContraseña(String cadena){
         Pattern pat=Pattern.compile("(?=^.{8,}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$");
         Matcher mat=pat.matcher(cadena);

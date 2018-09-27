@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="/ProyectoDSI"/>
+<Context antiJARLocking="true" path="/ProyectoDSI">
+    <Resource name="jdbc/mysql" auth="Container" type="javax.sql.DataSource"
+              username="root" password="" driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://localhost/proyectodsi"/>
+</Context>
