@@ -13,10 +13,12 @@ public class SubCategoria {
     private int idSubCategoria;
     private String subCategoria;
     private Categoria categoria;
+    private EstadoCategoria estadoCategoria;
     public SubCategoria(){
         this.idSubCategoria=0;
         this.subCategoria="";
         this.categoria=null;
+        this.estadoCategoria=null;
     }
 
     public int getIdSubCategoria() {
@@ -41,6 +43,14 @@ public class SubCategoria {
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
+    }
+
+    public EstadoCategoria getEstadoCategoria() {
+        return estadoCategoria;
+    }
+
+    public void setEstadoCategoria(EstadoCategoria estadoCategoria) {
+        this.estadoCategoria = estadoCategoria;
     }
     
 }

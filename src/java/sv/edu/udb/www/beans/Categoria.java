@@ -12,9 +12,11 @@ package sv.edu.udb.www.beans;
 public class Categoria {
     private int idCategoria;
     private String categoria;
+    private EstadoCategoria estadoCategoria;
     public Categoria(){
         this.idCategoria=0;
         this.categoria="";
+        this.estadoCategoria=null;
     }
 
     public int getIdCategoria() {
@@ -31,6 +33,14 @@ public class Categoria {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    public EstadoCategoria getEstadoCategoria() {
+        return estadoCategoria;
+    }
+
+    public void setEstadoCategoria(EstadoCategoria estadoCategoria) {
+        this.estadoCategoria = estadoCategoria;
     }
     
 }

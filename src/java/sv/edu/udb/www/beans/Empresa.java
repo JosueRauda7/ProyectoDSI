@@ -12,17 +12,15 @@ package sv.edu.udb.www.beans;
 public class Empresa {
     private int idEmpresa;
     private String empresa;
-    private String telefono;
-    private String correo;
-    private String direccion;
     private double comision;
+    private Usuario usuario;
+    private EstadoEmpresa estadoEmpresa;
     public Empresa(){
         this.idEmpresa=0;
         this.empresa="";
-        this.telefono="";
-        this.direccion="";
-        this.correo="";
         this.comision=0;
+        this.usuario=null;
+        this.estadoEmpresa=null;
     }
 
     public int getIdEmpresa() {
@@ -41,30 +39,6 @@ public class Empresa {
         this.empresa = empresa;
     }
 
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
     public double getComision() {
         return comision;
     }
@@ -72,5 +46,22 @@ public class Empresa {
     public void setComision(double comision) {
         this.comision = comision;
     }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public EstadoEmpresa getEstadoEmpresa() {
+        return estadoEmpresa;
+    }
+
+    public void setEstadoEmpresa(EstadoEmpresa estadoEmpresa) {
+        this.estadoEmpresa = estadoEmpresa;
+    }
+    
     
 }

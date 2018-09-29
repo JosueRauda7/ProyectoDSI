@@ -14,14 +14,14 @@ import java.util.Date;
 public class Pedido {
     private int idPedido;
     private Date fechaCompra;
-    private double montoCompra;
+    private double montoTotal;
     private Usuario usuario;
     private EstadoCompra estadoCompra;
     public Pedido(){
         this.idPedido=0;
         this.fechaCompra=new Date();
         this.estadoCompra=null;
-        this.montoCompra=0;
+        this.montoTotal=0;
         this.usuario=null;
     }
 
@@ -41,12 +41,12 @@ public class Pedido {
         this.fechaCompra = fechaCompra;
     }
 
-    public double getMontoCompra() {
-        return montoCompra;
+    public double getMontoTotal() {
+        return montoTotal;
     }
 
-    public void setMontoCompra(double montoCompra) {
-        this.montoCompra = montoCompra;
+    public void setMontoTotal(double montoTotal) {
+        this.montoTotal = montoTotal;
     }
 
     public Usuario getUsuario() {

@@ -14,11 +14,13 @@ public class DetallePedido {
     private Pedido pedido;
     private Producto producto;
     private int cantidad;
+    private Oferta oferta;
     public DetallePedido(){
         this.idDetallePedido=0;
         this.pedido=null;
         this.producto=null;
         this.cantidad=0;
+        this.oferta=null;
     }
 
     public int getIdDetallePedido() {
@@ -51,6 +53,14 @@ public class DetallePedido {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public Oferta getOferta() {
+        return oferta;
+    }
+
+    public void setOferta(Oferta oferta) {
+        this.oferta = oferta;
     }
     
 }
