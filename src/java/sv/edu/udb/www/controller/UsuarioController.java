@@ -84,7 +84,7 @@ public class UsuarioController extends HttpServlet {
 
     private void registroClien(HttpServletRequest request, HttpServletResponse response) {
         try  (PrintWriter out = response.getWriter()){
-            
+           listaErrores.clear();
             Usuario usuario = new Usuario();
             usuario.setCorreo(request.getParameter("correo"));
             usuario.setNombre(request.getParameter("nombre"));
@@ -94,6 +94,7 @@ public class UsuarioController extends HttpServlet {
             usuario.setFecha_nac(request.getParameter("fechanac"));
             usuario.setPassword(request.getParameter("contrasena"));
             usuario.setIdUsuario(1);
+            String urlmodel = request.getParameter("url");
 
             if (usuario.getCorreo().isEmpty()) {
                 listaErrores.add("El correo es requerido");
@@ -132,10 +133,10 @@ public class UsuarioController extends HttpServlet {
             if (!listaErrores.isEmpty()) {
                 request.setAttribute("listaErrores", listaErrores);
                 request.setAttribute("usuario", usuario);
-                out.println("<script>history.back(1)</script>");
-                
+                request.setAttribute("url", urlmodel);
+                request.getRequestDispatcher(urlmodel).forward(request, response);
             }
-        } catch (IOException ex) {
+        } catch (IOException | ServletException ex) {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

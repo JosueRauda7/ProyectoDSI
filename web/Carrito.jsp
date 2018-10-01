@@ -10,6 +10,7 @@
     <head>
         <title>Carrito de compra</title>
         <jsp:include page="/head.jsp"/>        
+           <jsp:include page="/scripts.jsp"/>
     </head>
     <!-- Head END -->
 
@@ -198,7 +199,7 @@
         <!--[if lt IE 9]>
         <script src="assets/plugins/respond.min.js"></script>  
         <![endif]-->  
-        <jsp:include page="/scripts.jsp"/>
+     
         <script type="text/javascript">
             jQuery(document).ready(function () {
                 Layout.init();
@@ -209,6 +210,7 @@
                 Layout.initUniform();
             });
         </script>
+        <script src="assets/pages/scripts/ModalLog.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL JAVASCRIPTS -->
     </body>
     <!-- END BODY -->

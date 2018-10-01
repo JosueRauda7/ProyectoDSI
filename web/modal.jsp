@@ -1,7 +1,7 @@
 <!-- Modal -->
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -56,7 +56,7 @@
                     </c:if>
                     <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/usuarios.do" style="width: 80%;margin-left: 10%;">
                         <input type="hidden" name="operacion" value="registroCliente"/>
-                        <input type="text" id="url">
+                        <input type="hidden" id="url" name="url">
                         <div class="form-group">
                             <label for="nombre" class="text-center">Correo:</label>
                             <div class="input-group">
@@ -121,8 +121,16 @@
             </div>
         </div>
     </div>
-                        <script>
-        var URLactual = window.location;
-        document.getElementById("url").value = URLactual;
-                        </script>
 </div>
+<script type="text/javascript">
+    var URLactual = window.location;
+    document.getElementById("url").value = URLactual.toString().substring(34);
+  <c:if test="${not empty requestScope.listaErrores}">
+    $(document).ready(function () {
+        $('#exampleModal').modal('show');
+        document.getElementById("Registro").style.display="block";
+        document.getElementById("Logueo").style.display="none";
+        document.getElementById("url").value = "${requestScope.url}";
+    });
+  </c:if>
+</script>
