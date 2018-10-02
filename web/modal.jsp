@@ -60,42 +60,42 @@
                         <div class="form-group">
                             <label for="nombre" class="text-center">Correo:</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="correo" id="correo"  placeholder="Ingresa tu correo" >
+                                <input type="text" class="form-control" pattern="^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$" required="" name="correo" id="correo"  placeholder="Ingresa tu correo" >
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="nombre" class="text-center">Nombres:</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="nombre" id="nombre"  placeholder="Ingresa tus nombres" >
+                                <input type="text" class="form-control" required="" name="nombre" id="nombre"  placeholder="Ingresa tus nombres" >
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="nombre" class="text-center">Apellidos</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="apellido" id="apelldo"  placeholder="Ingresa tus apellidos" >
+                                <input type="text" class="form-control" required="" name="apellido" id="apelldo"  placeholder="Ingresa tus apellidos" >
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="nombre" class="text-center">Dirección:</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="direccion" id="direccion"  placeholder="Ingresa tu dirección" >
+                                <input type="text" class="form-control" required="" name="direccion" id="direccion"  placeholder="Ingresa tu dirección" >
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="nombre" class="text-center">Dui:</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="dui" id="dui" pattern="[0-9]{8}-[0-9]{1}"  placeholder="Ingresa tu dui" >
+                                <input type="text" class="form-control" name="dui" id="dui" pattern="[0-9]{8}-[0-9]{1}" required=""  class="perm"  placeholder="Ingresa tu dui" >
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-info-sign"></span></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="nombre" class="text-center">Fecha nacimiento:</label>
                             <div class="input-group">
-                                <input type="date" class="form-control" name="fechanac" id="fechanac"  placeholder="Ingresa tu fecha de nacimiento" >
+                                <input type="date" class="form-control" name="fechanac" id="fechanac"  required="" placeholder="Ingresa tu fecha de nacimiento" >
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
                         </div>
