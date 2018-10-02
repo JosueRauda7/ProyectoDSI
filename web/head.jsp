@@ -36,6 +36,10 @@
 <link href="assets/plugins/rateit/src/rateit.css" rel="stylesheet" type="text/css">
 <!-- Page level plugin styles END -->
 
+<!-- Validador de campos css -->
+
+<link rel="stylesheet" type="text/css" href="assets/pages/css/validator.css">
+
 <!-- Theme styles START -->
 <link href="assets/pages/css/components.css" rel="stylesheet">
 <link href="assets/corporate/css/style.css" rel="stylesheet">

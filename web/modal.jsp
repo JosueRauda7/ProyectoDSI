@@ -88,7 +88,7 @@
                         <div class="form-group">
                             <label for="nombre" class="text-center">Dui:</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="dui" id="dui"  placeholder="Ingresa tu dui" >
+                                <input type="text" class="form-control" name="dui" id="dui" pattern="[0-9]{8}-[0-9]{1}"  placeholder="Ingresa tu dui" >
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-info-sign"></span></span>
                             </div>
                         </div>
