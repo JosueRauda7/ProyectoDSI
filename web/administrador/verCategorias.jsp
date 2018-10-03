@@ -4,7 +4,7 @@
     Author     : admi
 --%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -65,17 +65,36 @@
             </div>
         </div>
         <script>
-            $(document).ready(function () {
-                $('#tabla').DataTable();
+            <c:if test="${not empty exito}">
+            swal({
+                title: "Bien!",
+                text: "${exito}",
+                icon: "success",
             });
-            function eliminar(id) {
-                alertify.confirm('¿Desea eliminar este libro?', function (e) {
-                    if (e) {
-                        location.href = 'categorias.do?operacion=deshabilitar&id=' + id;
-                    }
-                });
-            }
-            ;
+                <c:set var="exito" value="" scope="session"/>
+            </c:if>
+
+            <c:if test="${not empty fracaso}">
+            swal({
+                title: "Ups!",
+                text: "${fracaso}",
+                icon: "error",
+            });
+                <c:set var="fracaso" value="" scope="session"/>
+            </c:if>
+            function deshabilitar(id) {
+                swal({
+                title: '¿Seguro que lo deseas deshabilitar?',
+                text: "Si aceptas, lo puedes volver habilitar!",
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                        if (willDelete) {
+                            location.href = 'categorias.do?operacion=deshabilitar&id=' + id;
+                        }
+                    });
+            };
             function modificar(id) {
                 location.href = 'categorias.do?operacion=modificar&id=' + id;
             };

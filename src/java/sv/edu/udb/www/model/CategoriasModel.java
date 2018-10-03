@@ -127,7 +127,7 @@ public class CategoriasModel extends Conexion{
     public int eliminarCategoria(int id) throws SQLException {
         try {
             int filasAfectadas = 0;
-            sql = "UPDATE FROM categoria SET id_estado_categoria = 2 WHERE id_categoria = ?";
+            sql = "UPDATE categoria SET id_estado_categoria = 2 WHERE id_categoria = ?";
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setInt(1, id);
