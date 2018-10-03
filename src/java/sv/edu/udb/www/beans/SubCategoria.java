@@ -14,11 +14,16 @@ public class SubCategoria {
     private String subCategoria;
     private Categoria categoria;
     private EstadoCategoria estadoCategoria;
+    
     public SubCategoria(){
         this.idSubCategoria=0;
         this.subCategoria="";
         this.categoria=null;
         this.estadoCategoria=null;
+    }
+    
+    public SubCategoria(String subCategoria){
+        this.subCategoria=subCategoria;
     }
 
     public int getIdSubCategoria() {

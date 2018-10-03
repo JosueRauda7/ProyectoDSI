@@ -12,9 +12,14 @@ package sv.edu.udb.www.beans;
 public class EstadoProducto {
     private int idEstadoProducto;
     private String estado;
+    
     public EstadoProducto(){
         this.idEstadoProducto=0;
         this.estado="";
+    }
+    
+    public EstadoProducto(String estado){
+        this.estado=estado;
     }
 
     public int getIdEstadoProducto() {
