@@ -23,7 +23,8 @@
                         <h1>Nueva Sub Categoria</h1><br/>
                         <!-- BEGIN FORM-->
                         <form action="${pageContext.request.contextPath}/SubCategoria.do" class="default-form" role="form">
-                            <input type="hidden" name="operacion" value="insertar"/>
+                            <input type="hidden" name="operacion" value="modificar"/>
+                            <input type="hidden" name="id" value="${subCategoria.idSubCategoria}"/>
                             <div class="form-group">
                                 <label for="nombre">Sub Categoría:</label>
                                 <input type="text" class="form-control" name="subcategoria" value="${subCategoria.subCategoria}" id="nombre">
@@ -53,7 +54,7 @@
 
                             <div class="padding-top-20">                  
                                 <button type="submit" class="btn btn-primary">Registrar</button>
-                                <button type="submit" style="background-color: #F3565D;" class="btn btn-primary">Cancelar</button>
+                                <a style="background-color: #F3565D;color:white;" href="${pageContext.request.contextPath}/SubCategoria.do?operacion=listar" class="btn btn-primary">Cancelar</a>
                             </div>
                         </form>
                         <!-- END FORM--> 
