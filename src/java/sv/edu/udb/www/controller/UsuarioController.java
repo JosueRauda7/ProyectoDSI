@@ -135,6 +135,10 @@ public class UsuarioController extends HttpServlet {
                 request.setAttribute("usuario", usuario);
                 request.setAttribute("url", urlmodel);
                 request.getRequestDispatcher(urlmodel).forward(request, response);
+            }else{
+               
+                request.setAttribute("Exito", "Usuario ingresado correctamente");
+                request.getRequestDispatcher(urlmodel).forward(request, response);
             }
         } catch (IOException | ServletException ex) {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
