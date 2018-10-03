@@ -36,7 +36,9 @@
                         </c:if>
                         <!-- BEGIN FORM-->
                         <form action="${pageContext.request.contextPath}/categorias.do" method="POST" class="default-form" role="form">
-                            <input type="hidden" name="operacion" value="agregar"/>
+                            <input type="hidden" name="operacion" value="guardar"/>
+                            <input type="hidden" value="${requestScope.category.idCategoria}" name="codigo" id="codigo">
+                            
                             <div class="form-group">
                                 <label for="nombre">Nombre Categoría:</label>
                                 <input type="text" class="form-control" value="${requestScope.category.categoria}" name="nombre" id="nombre">

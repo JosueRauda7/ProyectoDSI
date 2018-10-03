@@ -38,8 +38,8 @@
                         Categorías
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="shop-product-list.html">Registrar categoría</a></li>
-                        <li><a href="shop-product-list.html">Ver categorías</a></li>
+                        <li><a href="nuevaCategoria.jsp">Registrar categoría</a></li>
+                        <li><a href="verCategorias.jsp">Ver categorías</a></li>
                     </ul>
                 </li>
                 <li class="dropdown dropdown-megamenu">

@@ -22,7 +22,7 @@ public class CategoriasModel extends Conexion{
     public List<Categoria> listarCategorias() throws SQLException {
         try {
             List<Categoria> lista = new ArrayList<>();
-            sql = "SELECT t1.*, t2.* FROM categoria t1 INNER JOIN estado_categoria t2";
+            sql = "SELECT t1.*, t2.* FROM categoria t1 INNER JOIN estado_categoria t2 ON t2.id_estado_categoria=t1.id_estado_categoria";
             this.conectar();
             st = conexion.prepareStatement(sql);
             rs = st.executeQuery();
@@ -72,7 +72,7 @@ public class CategoriasModel extends Conexion{
 
     public Categoria obtenerCategoria(String id) throws SQLException {
         try {
-            sql = "SELECT t1.*, t2.* FROM categoria t1 INNER JOIN estado_categoria t2 WHERE t1.id_categoria=?";
+            sql = "SELECT t1.*, t2.* FROM categoria t1 INNER JOIN estado_categoria t2 ON t2.id_estado_categoria=t1.id_estado_categoria WHERE t1.id_categoria=?";
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setString(1, id);
@@ -104,7 +104,7 @@ public class CategoriasModel extends Conexion{
     public int modificarCategoria(Categoria categoria) throws SQLException {
         try {
             int filasAfectadas = 0;
-            sql = "UPDATE categoria SET categoria=? AND id_estado_categoria = ? WHERE id_categoria = ?";
+            sql = "UPDATE categoria SET categoria=?, id_estado_categoria = ? WHERE id_categoria = ?";
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setString(1, categoria.getCategoria());
@@ -127,7 +127,7 @@ public class CategoriasModel extends Conexion{
     public int eliminarCategoria(int id) throws SQLException {
         try {
             int filasAfectadas = 0;
-            sql = "DELETE FROM categoria WHERE id_categoria = ?";
+            sql = "UPDATE FROM categoria SET id_estado_categoria = 2 WHERE id_categoria = ?";
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setInt(1, id);

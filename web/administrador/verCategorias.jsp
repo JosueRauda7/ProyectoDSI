@@ -4,11 +4,12 @@
     Author     : admi
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Nombre empresa | Administrador</title>
+        <title>BigShop | Administrador</title>
         <jsp:include page="head.jsp"/>        
     </head>
     <body class="ecommerce">
@@ -17,75 +18,68 @@
             <div class="container">
                 <div class="col-md-12 col-sm-12">
                     <h1>Lista de Categorias</h1>
-                    <a class="btn btn-primary">Nueva Categoria</a>
+                    <a href="${pageContext.request.contextPath}/categorias.do?operacion=nuevo" class="btn btn-primary">Nueva Categoria</a>
                     <br><br>
                     <div class="goods-page">
                         <div class="goods-data clearfix">
                             <div class="table-wrapper-responsive">
-                                <table summary="Shopping cart">
-                                    <tr>
-                                        <th class="goods-page-image">Categoria</th>
-                                        <th class="goods-page-description">Descripción</th>
-                                        <th class="goods-page-total" colspan="2">Operaciones</th>
-                                    </tr>
-                                    <tr>
-                                        <td class="goods-page-image">
-                                            Ropa
-                                        </td>
-                                        <td class="goods-page-description">
-                                            Vestimenta para hombres, mujeres y niños.
-                                        </td>
-                                        <td class="goods-page-total">
-                                            <a class="btn btn-default">Editar</a>
-                                            <a style="margin-left: 2%; color:white" class="btn btn-danger">Eliminar</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="goods-page-image">
-                                            Muebles
-                                        </td>
-                                        <td class="goods-page-description">
-                                            Todo tipo de muebles para guardar y almacenar objetos, de igual forma, decorar la casa
-                                        </td>
-                                        <td class="goods-page-total">
-                                            <a class="btn btn-default">Editar</a>
-                                            <a style="margin-left: 2%; color:white" class="btn btn-danger">Eliminar</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="goods-page-image">
-                                            Electrodomésticos
-                                        </td>
-                                        <td class="goods-page-description">
-                                            Herramientas de la cocina
-                                        </td>
-                                        <td class="goods-page-total">
-                                            <a class="btn btn-default">Editar</a>
-                                            <a style="margin-left: 2%; color:white" class="btn btn-danger">Eliminar</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="goods-page-image">
-                                            Dispositivos Electrónicos
-                                        </td>
-                                        <td class="goods-page-description">
-                                            Herramientas tecnológicas del día a día como celular, tablets, computadoras, entre otros
-                                        </td>
-                                        <td class="goods-page-total">
-                                            <a class="btn btn-default">Editar</a>
-                                            <a style="margin-left: 2%; color:white" class="btn btn-danger">Eliminar</a>
-                                        </td>
-                                    </tr>
+                                <table id="tabla" class="table table-responsive" summary="Shopping cart">
+                                    <thead>
+                                        <tr>
+                                            <th class="goods-page-image">Categoria</th>
+                                            <th class="goods-page-description">Estado Categoría</th>
+                                            <th class="goods-page-total">Operaciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="${requestScope.listaCategorias}" var="categoria">
+                                            <tr>
+                                                <td class="goods-page-image" style="width: 30%;">
+                                                    ${categoria.categoria}
+                                                </td>
+                                                <td class="goods-page-description" style="width: 40%;">
+                                                    <c:choose>
+                                                        <c:when test="${categoria.estadoCategoria.idEstadoCategoria eq '1'}">
+                                                            Habilitado
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            Inhabilitado
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td class="goods-page-total">
+                                                    <a onclick="javascript:modificar('${categoria.idCategoria}')" class="btn btn-default">Editar</a>
+                                                    <a onclick="javascript:deshabilitar('${categoria.idCategoria}')" style="margin-left: 2%; color:white" class="btn btn-danger">Deshabilitar</a>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
                                 </table>
                             </div>
 
                         </div>
-                        
+
                     </div>
                 </div>
                 <!-- END CONTENT -->
             </div>
         </div>
+        <script>
+            $(document).ready(function () {
+                $('#tabla').DataTable();
+            });
+            function eliminar(id) {
+                alertify.confirm('¿Desea eliminar este libro?', function (e) {
+                    if (e) {
+                        location.href = 'categorias.do?operacion=deshabilitar&id=' + id;
+                    }
+                });
+            }
+            ;
+            function modificar(id) {
+                location.href = 'categorias.do?operacion=modificar&id=' + id;
+            };
+        </script>
         <div class="margin-bottom-40"></div>
         <jsp:include page="footer.jsp"/>
     </body>
