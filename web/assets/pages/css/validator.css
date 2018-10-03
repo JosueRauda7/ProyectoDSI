@@ -11,4 +11,11 @@ input[type="date"]:invalid:focus{
 input[type="date"]:valid:focus{
   border: 1px solid green;
 }
+input[type="password"]:invalid:focus{
+  border: 1px solid red;
+}
+input[type="password"]:valid:focus{
+  border: 1px solid green;
+}
+
 

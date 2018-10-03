@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import sv.edu.udb.www.beans.Usuario;
 import sv.edu.udb.www.model.UsuariosModel;
+import sv.edu.udb.www.utils.Correo;
 import sv.edu.udb.www.utils.Validaciones;
 
 /**
@@ -136,11 +138,42 @@ public class UsuarioController extends HttpServlet {
                 request.setAttribute("url", urlmodel);
                 request.getRequestDispatcher(urlmodel).forward(request, response);
             }else{
-               
-                request.setAttribute("Exito", "Usuario ingresado correctamente");
-                request.getRequestDispatcher(urlmodel).forward(request, response);
+                  String cadenaAleatoria = UUID.randomUUID().toString();
+                
+                if(modelo.insertarUsuario(usuario, cadenaAleatoria)>0){
+                    request.getSession().setAttribute("exito", "Usuario registrado"+"Exitosamente. Se te ha enviado un correo para que"+"conformes tu cuenta");
+                    String texto = "Te has registado exitosamente<br>";
+                    texto += "Para confirmar tu cuenta debes dar clik aqui";
+                    
+                    String enlace = request.getRequestURL().toString() + "?operacion=val&id="+ cadenaAleatoria;
+                    texto += "<a target='a_blank' " + "href='"+ enlace+"'>aqui</a>";
+                    Correo correo = new Correo();
+                    correo.setAsunto("Confirmacion de registro");
+                    correo.setMensaje(texto);
+                    correo.setDestinatario(usuario.getCorreo());
+                    
+                    String directorio = getServletContext().getRealPath("assets/pdf");
+                    correo.setRutaAdjunto(directorio+"\\proyecto.pdf");
+                    correo.setNombreAdjunto("Especificaciones del proyecto catedra.pdf");
+                    correo.enviarCorreo();
+                    response.sendRedirect(request.getContextPath() + urlmodel);
+                }else{
+                    listaErrores.add("Este nombre de usuario ya esta registrado");
+                    request.setAttribute("listaErrores", listaErrores);
+                    request.setAttribute("usuario", usuario);
+                    request.getRequestDispatcher(urlmodel).forward(request, response);
+                }
             }
         } catch (IOException | ServletException ex) {
+            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+       private void confirmar(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            modelo.confirmarCuenta(request.getParameter("id"));
+            request.getSession().setAttribute("exito", "Cuenta verificada exitosamente, "+"ya puedes iniciar session");
+            response.sendRedirect(request.getContextPath() + "/usuarios.do?operacion=login");
+        } catch (SQLException | IOException ex) {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
