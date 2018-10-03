@@ -48,8 +48,16 @@
                                                     </c:choose>
                                                 </td>
                                                 <td class="goods-page-total">
-                                                    <a onclick="javascript:modificar('${categoria.idCategoria}')" class="btn btn-default">Editar</a>
-                                                    <a onclick="javascript:deshabilitar('${categoria.idCategoria}')" style="margin-left: 2%; color:white" class="btn btn-danger">Deshabilitar</a>
+                                                    <c:choose>
+                                                        <c:when test="${categoria.estadoCategoria.idEstadoCategoria eq '1'}">
+                                                            <a onclick="javascript:modificar('${categoria.idCategoria}')" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span></a>
+                                                            <a onclick="javascript:deshabilitar('${categoria.idCategoria}')" style="margin-left: 2%; color:white" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <a onclick="javascript:modificar('${categoria.idCategoria}')" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span></a>
+                                                            <a onclick="javascript:habilitar('${categoria.idCategoria}')" style="margin-left: 2%; color:white" class="btn btn-success"><span class="glyphicon glyphicon-check"></span></a>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -84,20 +92,36 @@
             </c:if>
             function deshabilitar(id) {
                 swal({
-                title: '¿Seguro que lo deseas deshabilitar?',
-                text: "Si aceptas, lo puedes volver habilitar!",
-                icon: 'warning',
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                        if (willDelete) {
-                            location.href = 'categorias.do?operacion=deshabilitar&id=' + id;
-                        }
-                    });
-            };
+                    title: '¿Seguro que lo deseas deshabilitar?',
+                    text: "Si aceptas, lo puedes volver habilitar!",
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        location.href = 'categorias.do?operacion=deshabilitar&id=' + id;
+                    }
+                });
+            }
+            ;
+            function habilitar(id) {
+                swal({
+                    title: '¿Seguro que lo deseas habilitar?',
+                    text: "Si aceptas, lo puedes volver deshabilitar!",
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        location.href = 'categorias.do?operacion=habilitar&id=' + id;
+                    }
+                });
+            }
+            ;
             function modificar(id) {
                 location.href = 'categorias.do?operacion=modificar&id=' + id;
-            };
+            }
+            ;
         </script>
         <div class="margin-bottom-40"></div>
         <jsp:include page="footer.jsp"/>

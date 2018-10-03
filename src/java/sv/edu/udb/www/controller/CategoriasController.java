@@ -55,6 +55,9 @@ public class CategoriasController extends HttpServlet {
                 case "deshabilitar":
                     deshabilitar(request,response);
                     break;
+                case "habilitar":
+                    habilitar(request,response);
+                    break;
             }
         }
     }
@@ -197,11 +200,26 @@ public class CategoriasController extends HttpServlet {
     private void deshabilitar(HttpServletRequest request, HttpServletResponse response) {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
-            if (model.eliminarCategoria(id) > 0) {
+            if (model.deshabilitarCategoria(id) > 0) {
                     request.getSession().setAttribute("exito", "Categoría ha sido deshabilitado exitosamente");
                     response.sendRedirect(request.getContextPath() + "/categorias.do?operacion=listar");
                 } else {
                     request.getSession().setAttribute("fracaso", "Categoría no ha sido deshabilitado exitosamente");
+                    response.sendRedirect(request.getContextPath() + "/categorias.do?operacion=listar");
+                }
+        } catch (SQLException | IOException ex) {
+            Logger.getLogger(CategoriasController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void habilitar(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            if (model.habilitarCategoria(id) > 0) {
+                    request.getSession().setAttribute("exito", "Categoría ha sido habilitado exitosamente");
+                    response.sendRedirect(request.getContextPath() + "/categorias.do?operacion=listar");
+                } else {
+                    request.getSession().setAttribute("fracaso", "Categoría no ha sido habilitado exitosamente");
                     response.sendRedirect(request.getContextPath() + "/categorias.do?operacion=listar");
                 }
         } catch (SQLException | IOException ex) {

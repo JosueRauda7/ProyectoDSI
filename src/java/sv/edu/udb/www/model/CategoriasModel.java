@@ -124,10 +124,32 @@ public class CategoriasModel extends Conexion{
 
     }
     
-    public int eliminarCategoria(int id) throws SQLException {
+    public int deshabilitarCategoria(int id) throws SQLException {
         try {
             int filasAfectadas = 0;
             sql = "UPDATE categoria SET id_estado_categoria = 2 WHERE id_categoria = ?";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, id);
+
+            filasAfectadas = st.executeUpdate();
+
+            this.desconectar();
+
+            return filasAfectadas;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoriasModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        }
+
+    }
+    
+    public int habilitarCategoria(int id) throws SQLException {
+        try {
+            int filasAfectadas = 0;
+            sql = "UPDATE categoria SET id_estado_categoria = 1 WHERE id_categoria = ?";
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setInt(1, id);
