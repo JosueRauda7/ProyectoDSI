@@ -41,6 +41,9 @@ public class UsuarioController extends HttpServlet {
                 case "registroCliente":
                     registroClien(request, response);
                     break;
+                case "verificar":
+                    confirmar(request, response);
+                    break;
             }
         }
     }
@@ -85,8 +88,8 @@ public class UsuarioController extends HttpServlet {
     }// </editor-fold>
 
     private void registroClien(HttpServletRequest request, HttpServletResponse response) {
-        try  (PrintWriter out = response.getWriter()){
-           listaErrores.clear();
+        try (PrintWriter out = response.getWriter()) {
+            listaErrores.clear();
             Usuario usuario = new Usuario();
             usuario.setCorreo(request.getParameter("correo"));
             usuario.setNombre(request.getParameter("nombre"));
@@ -95,7 +98,8 @@ public class UsuarioController extends HttpServlet {
             usuario.setDui(request.getParameter("dui"));
             usuario.setFecha_nac(request.getParameter("fechanac"));
             usuario.setPassword(request.getParameter("contrasena"));
-            usuario.setIdUsuario(1);
+            usuario.setTipoUser(2);
+            usuario.setTelefono(request.getParameter("telefono"));
             String urlmodel = request.getParameter("url");
 
             if (usuario.getCorreo().isEmpty()) {
@@ -125,6 +129,13 @@ public class UsuarioController extends HttpServlet {
                 listaErrores.add("La Fecha de nacimiento es requerida");
             }
 
+            if (usuario.getTelefono().isEmpty()) {
+                listaErrores.add("El numero de telefono es requerido");
+            } else if (!Validaciones.esTelefono(usuario.getTelefono())) {
+                listaErrores.add("El numero de telefono no tiene el formato correcto");
+
+            }
+
             if (usuario.getPassword().isEmpty()) {
                 listaErrores.add("La contraseña es requerida");
             } else if (!Validaciones.esContraseña(usuario.getPassword())) {
@@ -137,42 +148,46 @@ public class UsuarioController extends HttpServlet {
                 request.setAttribute("usuario", usuario);
                 request.setAttribute("url", urlmodel);
                 request.getRequestDispatcher(urlmodel).forward(request, response);
-            }else{
-                  String cadenaAleatoria = UUID.randomUUID().toString();
-                
-                if(modelo.insertarUsuario(usuario, cadenaAleatoria)>0){
-                    request.getSession().setAttribute("exito", "Usuario registrado"+"Exitosamente. Se te ha enviado un correo para que"+"conformes tu cuenta");
-                    String texto = "Te has registado exitosamente<br>";
-                    texto += "Para confirmar tu cuenta debes dar clik aqui";
-                    
-                    String enlace = request.getRequestURL().toString() + "?operacion=val&id="+ cadenaAleatoria;
-                    texto += "<a target='a_blank' " + "href='"+ enlace+"'>aqui</a>";
+            } else {
+                String cadenaAleatoria = UUID.randomUUID().toString();
+
+                if (modelo.insertarUsuario(usuario, cadenaAleatoria) > 0) {
+                   request.getSession().setAttribute("exito", "Usuario registrado "
+                            + "existosamente. Se te ha enviado un correo para que "
+                            + "confirmes tu cuenta");
+
+                    String texto = "Te has registrado exitosamente.<br>";
+                    texto += "Para confirmar tu cuenta debes dar click ";
+
+                    String enlace = request.getRequestURL().toString()
+                            + "?operacion=verificar&id=" + cadenaAleatoria;
+                    texto += "<a target='a_blank' "
+                            + "href='" + enlace + "'>aqui</a>";
+
                     Correo correo = new Correo();
                     correo.setAsunto("Confirmacion de registro");
                     correo.setMensaje(texto);
                     correo.setDestinatario(usuario.getCorreo());
-                    
-                    String directorio = getServletContext().getRealPath("assets/pdf");
-                    correo.setRutaAdjunto(directorio+"\\proyecto.pdf");
-                    correo.setNombreAdjunto("Especificaciones del proyecto catedra.pdf");
                     correo.enviarCorreo();
-                    response.sendRedirect(request.getContextPath() + urlmodel);
-                }else{
-                    listaErrores.add("Este nombre de usuario ya esta registrado");
+                    response.sendRedirect(request.getContextPath() +"/"+ urlmodel);
+                } else {
+                    listaErrores.add("Este usuario ya existe");
                     request.setAttribute("listaErrores", listaErrores);
                     request.setAttribute("usuario", usuario);
+                    request.setAttribute("url", urlmodel);
                     request.getRequestDispatcher(urlmodel).forward(request, response);
                 }
             }
-        } catch (IOException | ServletException ex) {
+        } catch (IOException | ServletException | SQLException ex) {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-       private void confirmar(HttpServletRequest request, HttpServletResponse response) {
+
+    private void confirmar(HttpServletRequest request, HttpServletResponse response) {
         try {
             modelo.confirmarCuenta(request.getParameter("id"));
-            request.getSession().setAttribute("exito", "Cuenta verificada exitosamente, "+"ya puedes iniciar session");
-            response.sendRedirect(request.getContextPath() + "/usuarios.do?operacion=login");
+            request.getSession().setAttribute("exito", "Cuenta verificada exitosamente, " + "ya puedes iniciar session");
+            response.sendRedirect(request.getContextPath() + "/index.jsp");
         } catch (SQLException | IOException ex) {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
         }

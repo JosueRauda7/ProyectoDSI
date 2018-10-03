@@ -86,10 +86,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="nombre" class="text-center">Fecha nacimiento:</label>
+                            <label for="nombre" class="text-center">Numero telefonico:</label>
                             <div class="input-group">
-                                <input type="date" class="form-control" ${usuario.fecha_nac} name="fechanac" id="fechanac"  required="" placeholder="Ingresa tu fecha de nacimiento" >
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                <input type="text" class="form-control" ${usuario.telefono} name="telefono" id="telefono"  required="" placeholder="Ingresa tu numero de telefono" >
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></span>
                             </div>
                         </div>
                         <div class="form-group">
