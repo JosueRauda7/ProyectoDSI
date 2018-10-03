@@ -24,7 +24,7 @@
                     <div class="col-lg-3"></div>
                     <div class="content-page col-lg-6">
                         <c:if test="${not empty requestScope.listaErrores}">
-                            <div class="row col-md-7">
+                            <div class="row col-lg-12">
                                 <div class="alert alert-danger">
                                     <ul>
                                         <c:forEach items="${requestScope.listaErrores}" var="error">
@@ -32,7 +32,7 @@
                                         </c:forEach> 
                                     </ul>
                                 </div>
-                            </div><br>
+                            </div>
                         </c:if>
                         <!-- BEGIN FORM-->
                         <form action="${pageContext.request.contextPath}/categorias.do" method="POST" class="default-form" role="form">
