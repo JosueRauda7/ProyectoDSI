@@ -19,6 +19,7 @@ public class Usuario {
     private String dui;
     private String id_confirmacion;
     private String fecha_nac;
+    private String telefono;
     private String confirmado;
     private int tipoUser;
     private TipoUsuario tipoUsaurio;
@@ -102,6 +103,15 @@ public class Usuario {
         this.id_confirmacion = id_confirmacion;
     }
 
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    
     public String getFecha_nac() {
         return fecha_nac;
     }

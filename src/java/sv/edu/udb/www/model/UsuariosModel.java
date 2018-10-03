@@ -16,6 +16,7 @@ public class UsuariosModel extends Conexion {
             st = conexion.prepareStatement(sql);
             st.setString(1, usuario.getNombre());
             st.setString(2, usuario.getApellido());
+            
            return 1;
         } catch (SQLException ex) {
             Logger.getLogger(UsuariosModel.class.getName()).log(Level.SEVERE, null, ex);

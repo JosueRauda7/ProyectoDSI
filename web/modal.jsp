@@ -86,6 +86,13 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="nombre" class="text-center">Fecha nacimiento:</label>
+                            <div class="input-group">
+                                <input type="date" class="form-control" ${usuario.fecha_nac} name="fechanac" id="fechanac"  required="" placeholder="Ingresa tu fecha de nacimiento" >
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="nombre" class="text-center">Dui:</label>
                             <div class="input-group">
                                 <input type="text" class="form-control" value="${usuario.dui}" name="dui" id="dui" pattern="[0-9]{8}-[0-9]{1}" required=""  class="perm"  placeholder="Ingresa tu dui" >
@@ -125,12 +132,12 @@
 <script type="text/javascript">
     var URLactual = window.location;
     document.getElementById("url").value = URLactual.toString().substring(34);
-  <c:if test="${not empty requestScope.listaErrores}">
+    <c:if test="${not empty requestScope.listaErrores}">
     $(document).ready(function () {
         $('#exampleModal').modal('show');
-        document.getElementById("Registro").style.display="block";
-        document.getElementById("Logueo").style.display="none";
+        document.getElementById("Registro").style.display = "block";
+        document.getElementById("Logueo").style.display = "none";
         document.getElementById("url").value = "${requestScope.url}";
     });
-  </c:if>
+    </c:if>
 </script>
