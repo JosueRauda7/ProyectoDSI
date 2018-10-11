@@ -16,8 +16,11 @@ public class Producto {
     private double precioRegular;
     private int cantidad;
     private String urlImagen;
+    private int idsubCategoria;
     private SubCategoria subCategoria;
+    private int idEmpresa;
     private Empresa empresa;
+    private int idestadoProducto;
     private EstadoProducto estadoProducto;
 
     public Producto() {
@@ -103,5 +106,30 @@ public class Producto {
     public void setEstadoProducto(EstadoProducto estadoProducto) {
         this.estadoProducto = estadoProducto;
     }
+
+    public int getIdsubCategoria() {
+        return idsubCategoria;
+    }
+
+    public void setIdsubCategoria(int idsubCategoria) {
+        this.idsubCategoria = idsubCategoria;
+    }
+
+    public int getIdEmpresa() {
+        return idEmpresa;
+    }
+
+    public void setIdEmpresa(int idEmpresa) {
+        this.idEmpresa = idEmpresa;
+    }
+
+    public int getIdestadoProducto() {
+        return idestadoProducto;
+    }
+
+    public void setIdestadoProducto(int idestadoProducto) {
+        this.idestadoProducto = idestadoProducto;
+    }
+    
     
 }
