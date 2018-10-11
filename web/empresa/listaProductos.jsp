@@ -4,10 +4,11 @@
     Author     : Ferh
 --%>
 
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="base" value="${pageContext.request.contextPath}"/> 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="utf-8">
         <title>Empresa</title>
@@ -24,78 +25,45 @@
 
 
         <div class="container">
-
             <div class="product-page-content">
+                <li style="margin-bottom: 2%;"><a class="btn btn-primary btn-md" href="${pageContext.request.contextPath}/empresas.do?operacion=nuevo">Nuevo producto</a></li>
                 <ul id="myTab" class="nav nav-tabs">
                     <li class="active"><a href="#activos" data-toggle="tab">Productos activos</a></li>
                     <li><a href="#vencidos" data-toggle="tab">Productos vencidos</a></li>
-
                 </ul>
-                <div id="myTabContent" class="tab-content">
+
                     <div class="tab-pane fade in active" id="activos">
 
-
-
                         <div class="goods-page">
                             <div class="goods-data clearfix">
                                 <div class="table-wrapper-responsive">
-                                    <table summary="Shopping cart">
-                                        <tr>
-                                            <th class="goods-page-image">Imagen</th>
-                                            <th class="goods-page-description">Producto</th>
-                                            <th class="goods-page-description">Disponibles</th>
-                                            <th class="goods-page-quantity">Precio</th>
-                                            <th class="goods-page-quantity">Fecha de vencimiento</th>
-
-                                        </tr>
-                                        <tr>
-                                            <td class="goods-page-image">
-                                                <a href="javascript:;"><img src="assets/pages/img/products/model3.jpg" alt="Berry Lace Dress"></a>
-                                            </td>
-                                            <td class="goods-page-description">
-                                                <h3><a href="javascript:;">Sofá</a></h3>
-                                                <p>Café oscuro de madera tapizado</p>
-
-                                            </td>
-                                            <td class="goods-page-description">
-                                                50
-                                            </td>
-                                            <td class="goods-page-total">
-                                                <strong><span>$</span>100.00</strong>
-                                            </td>
-                                            <td class="goods-page-quantity">
-                                                15-04-2018
-                                            </td>
-
-
-
-                                        </tr>
-
-                                        <tr>
-                                            <td class="goods-page-image">
-                                                <a href="javascript:;"><img src="assets/pages/img/products/model3.jpg" alt="Berry Lace Dress"></a>
-                                            </td>
-                                            <td class="goods-page-description">
-                                                <h3><a href="javascript:;">Sofá</a></h3>
-                                                <p>Café oscuro de madera tapizado</p>
-
-                                            </td>
-                                            <td class="goods-page-description">
-                                                50
-                                            </td>
-                                            <td class="goods-page-total">
-                                                <strong><span>$</span>100.00</strong>
-                                            </td>
-                                            <td class="goods-page-quantity">
-                                                15-04-2018
-                                            </td>
-
-                                            <td class="goods-page-total">
-
-                                            </td>
-
-                                        </tr>
-
+                                    <table  id="tabla">
+                                        <thead>
+                                            <tr>
+                                                <th class="goods-page-description">Producto</th>
+                                                <th class="goods-page-quantity">Precio</th>
+                                                <th class="goods-page-description">Disponibles</th>                                            
+                                                <th class="goods-page-image">Imagen</th>                                                                                        
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${requestScope.listarProducto}" var="productos">
+                                                <tr>
+                                                    <td class="goods-page-description">
+                                                        ${productos.producto}
+                                                    </td>
+                                                    <td class="goods-page-quantity">
+                                                        ${productos.precioRegular}
+                                                    </td>
+                                                    <td class="goods-page-description">
+                                                        ${productos.cantidad}
+                                                    </td>
+                                                    <td class="goods-page-image">
+                                                        <img height="100px" src="${base}/images/${productos.urlImagen}"/>
+                                                    </td>                                                    
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
                                     </table>
                                 </div>
 
@@ -107,85 +75,9 @@
 
 
                     </div>
-                    <div class="tab-pane fade" id="vencidos">
+                    
 
 
-                        <div class="goods-page">
-                            <div class="goods-data clearfix">
-                                <div class="table-wrapper-responsive">
-                                    <table summary="Shopping cart">
-                                        <tr>
-                                            <th class="goods-page-image">Imagen</th>
-                                            <th class="goods-page-description">Producto</th>
-                                            <th class="goods-page-description">Disponibles</th>
-                                            <th class="goods-page-quantity">Precio</th>
-                                            <th class="goods-page-quantity">Fecha de vencimiento</th>
-                                            <th class="goods-page-description">Operacion</th>
-                                        </tr>
-                                        <tr>
-                                            <td class="goods-page-image">
-                                                <a href="javascript:;"><img src="assets/pages/img/products/model3.jpg" alt="Berry Lace Dress"></a>
-                                            </td>
-                                            <td class="goods-page-description">
-                                                <h3><a href="javascript:;">Sofá</a></h3>
-                                                <p>Café oscuro de madera tapizado</p>
-
-                                            </td>
-                                            <td class="goods-page-description">
-                                                50
-                                            </td>
-                                            <td class="goods-page-total">
-                                                <strong><span>$</span>100.00</strong>
-                                            </td>
-                                            <td class="goods-page-quantity">
-                                                15-04-2018
-                                            </td>
-
-                                            <td class="goods-page-description">
-                                                <a class="btn btn-primary fancybox-fast-view" style="color:white; float: none;" href="#product-pop-up">Renovar</a>
-                                            </td>
-
-                                        </tr>
-
-                                        <tr>
-                                            <td class="goods-page-image">
-                                                <a href="javascript:;"><img src="assets/pages/img/products/model3.jpg" alt="Berry Lace Dress"></a>
-                                            </td>
-                                            <td class="goods-page-description">
-                                                <h3><a href="javascript:;">Sofá</a></h3>
-                                                <p>Café oscuro de madera tapizado</p>
-
-                                            </td>
-                                            <td class="goods-page-description">
-                                                50
-                                            </td>
-                                            <td class="goods-page-total">
-                                                <strong><span>$</span>100.00</strong>
-                                            </td>
-                                            <td class="goods-page-quantity">
-                                                15-04-2018
-                                            </td>
-
-                                            <td class="goods-page-description">
-
-                                                <a class="btn btn-primary fancybox-fast-view" style="color:white; float: none;" href="#product-pop-up">Renovar</a>
-
-                                            </td>
-
-                                        </tr>
-
-                                    </table>
-                                </div>
-
-
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-                </div>
             </div>
 
         </div>
@@ -208,19 +100,19 @@
                         <label for="vencimiento">Fecha de vencimiento</label>
                         <input type="date" id="vencimiento" class="form-control" name="vencimiento">
                     </div>
-                    
+
                     <div class="padding-top-20">                  
                         <button class="btn btn-primary" type="submit">Renovar</button>
                     </div>
                     <hr>
-                    
+
                 </form>
             </div>
         </div>
 
         <br/><br/><br/>
 
-        <jsp:include page="footer.jsp"/>
+        <jsp:include page="../footer.jsp"/>
 
         <!-- END fast view of a product -->
 
@@ -245,14 +137,9 @@
         <script src="../assets/plugins/rateit/src/jquery.rateit.js" type="text/javascript"></script>
 
         <script src="../assets/corporate/scripts/layout.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            jQuery(document).ready(function () {
-                Layout.init();
-                Layout.initOWL();
-                Layout.initTwitter();
-                Layout.initImageZoom();
-                Layout.initTouchspin();
-                Layout.initUniform();
+        <script>
+            $(document).ready(function () {
+                $('#tabla').DataTable();
             });
         </script>
         <!-- END PAGE LEVEL JAVASCRIPTS -->

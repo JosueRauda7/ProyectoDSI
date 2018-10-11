@@ -5,6 +5,8 @@
  */
 package sv.edu.udb.www.controller;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -15,6 +17,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import sv.edu.udb.www.model.ProductosModel;
+import sv.edu.udb.www.model.SubCategoriasModel;
 
 /**
  *
@@ -22,6 +26,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "EmpresaController", urlPatterns = {"/empresas.do"})
 public class EmpresaController extends HttpServlet {
+
+    ProductosModel modeloProducto = new ProductosModel();
+    SubCategoriasModel modeloSubcategoria = new SubCategoriasModel();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,23 +44,28 @@ public class EmpresaController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            if(request.getParameter("operacion")==null){
-               listar(request,response);
-               return;
-           }
-           String operacion = request.getParameter("operacion");
-           switch(operacion){
-               case "listar":
-                   listar(request, response);
-                   break;
-               case "nuevo":
-                   nuevo(request,response);
-                   break;
-               default:
-                   request.getRequestDispatcher("/error404.jsp").forward(request, response);
-                   break;
-           }
-        } finally {            
+            if (request.getParameter("operacion") == null) {
+                listar(request, response);
+                return;
+            }
+            String operacion = request.getParameter("operacion");
+            switch (operacion) {
+                case "listar":
+                    listar(request, response);
+                    break;
+                case "nuevo":
+                    nuevo(request, response);
+                    break;
+                case "insertar":
+                    String directorio = getServletContext().getRealPath("/images");
+                    MultipartRequest multi = new MultipartRequest(request, directorio, 1 * 1024 * 1024, new DefaultFileRenamePolicy());
+                    insertar(multi, request, response);
+                    break;
+                default:
+                    request.getRequestDispatcher("/error404.jsp").forward(request, response);
+                    break;
+            }
+        } finally {
             out.close();
         }
     }
@@ -98,21 +110,36 @@ public class EmpresaController extends HttpServlet {
     }// </editor-fold>
 
     private void listar(HttpServletRequest request, HttpServletResponse response) {
-        /*try {
-            request.setAttribute("listaLibros",modelo.listarLibros());
+        try {
+            request.setAttribute("listarProducto", modeloProducto.listarProducto(2));
             try {
-                request.getRequestDispatcher("/libros/listaLibros.jsp").forward(request, response);
-            } catch (    ServletException | IOException ex) {
-                Logger.getLogger(EditorialesController.class.getName()).log(Level.SEVERE, null, ex);
+                request.getRequestDispatcher("/empresa/listaProductos.jsp").forward(request, response);
+            } catch (ServletException | IOException ex) {
+                Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (SQLException ex) {
             Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        */
+
     }
 
     private void nuevo(HttpServletRequest request, HttpServletResponse response) {
-        
+        try {
+            request.setAttribute("listaSubcategoria", modeloSubcategoria.listarSubCategorias());
+            request.getRequestDispatcher("/empresa/nuevoProducto.jsp").forward(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void insertar(MultipartRequest multi, HttpServletRequest request, HttpServletResponse response) {
+        try{
+            
+        }catch(Exception ex){
+            Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
