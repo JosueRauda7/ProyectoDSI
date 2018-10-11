@@ -21,48 +21,7 @@
         <!-- END BEGIN STYLE CUSTOMIZER --> 
 
 
-        <!-- BEGIN HEADER -->
-        <div class="header">
-            <div class="container">
-                <a class="site-logo" href="shop-index.html">BigShop</a>
-
-                <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
-
-                <!-- BEGIN CART -->
-                <div class="top-cart-block">
-                    <div class="top-cart-info">
-                        <a href="javascript:void(0);" class="top-cart-info-count">1 artículos</a>
-                        <a href="javascript:void(0);" class="top-cart-info-value">$1230</a>
-                    </div>
-                    <i class="fa fa-shopping-cart"></i>
-
-                    <div class="top-cart-content-wrapper">
-                        <div class="top-cart-content">
-                            <ul class="scroller" style="height: 250px;">
-                                <li>
-                                    <!-- Objetos de carrito -->
-                                    <a href="shop-item.html"><img src="assets/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
-                                    <span class="cart-content-count">x 1</span>
-                                    <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
-                                    <em>$1230</em>
-                                    <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
-                                </li>                
-                            </ul>
-                            <div class="text-right">
-                                <a href="shop-shopping-cart.html" class="btn btn-default">Ver Carrito</a>
-                                <a href="shop-checkout.html" class="btn btn-primary">Revisar</a>
-                            </div>
-                        </div>
-                    </div>            
-                </div>
-                <!--END CART -->
-
-                <!-- BEGIN NAVIGATION -->
-                <jsp:include page="/menu.jsp"/>
-                <!-- END NAVIGATION -->
-            </div>
-        </div>
-        <!-- Header END -->       
+    <jsp:include page="/menu.jsp"/>       
         <!-- END SLIDER -->
         <jsp:include page="/modal.jsp"/>
         <div class="main" style="margin-bottom: 5%;">
@@ -178,28 +137,9 @@
         <!-- END SIDEBAR & CONTENT -->
 
         <!-- BEGIN FOOTER -->
-        <div class="footer" style="width: 100%;-webkit-box-sizing:border-box;
-    -moz-box-sizing:border-box;
-    box-sizing:border-box;">
-
-            <div >
-                <!-- BEGIN COPYRIGHT -->
-                <div class="text-center ">
-                    2018 © Universidad Don Bosco. Derechos reservados. 
-                </div>
-                <!-- END COPYRIGHT -->
-
-            </div>
-
-        </div>
-        <!-- END FOOTER -->
-
-        <!-- Load javascripts at bottom, this will reduce page load time -->
-        <!-- BEGIN CORE PLUGINS(REQUIRED FOR ALL PAGES) -->
-        <!--[if lt IE 9]>
-        <script src="assets/plugins/respond.min.js"></script>  
-        <![endif]-->  
-     
+   
+<jsp:include page="footer.jsp" />
+      
         <script type="text/javascript">
             jQuery(document).ready(function () {
                 Layout.init();

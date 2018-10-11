@@ -1,4 +1,6 @@
-<div class="footer">
+<div class="footer"  style="width: 100%;-webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;">
     <div class="container">
         <div class="row">
             <!-- BEGIN COPYRIGHT -->
