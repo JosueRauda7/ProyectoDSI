@@ -22,7 +22,10 @@ public class Empresa {
         this.usuario=null;
         this.estadoEmpresa=null;
     }
-
+    
+    public Empresa(String empresa){
+        this.empresa=empresa;
+    }
     public int getIdEmpresa() {
         return idEmpresa;
     }

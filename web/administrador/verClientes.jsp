@@ -4,6 +4,7 @@
     Author     : admi
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -21,119 +22,40 @@
                         <div class="goods-data clearfix">
                             <div class="table-wrapper-responsive">
                                 <table summary="Shopping cart">
-                                    <tr>
-                                        <th class="goods-page-image">Nombre</th>
-                                        <th class="goods-page-description">Apellidos</th>
-                                        <th class="goods-page-ref-no">Correo</th>
-                                        <th class="goods-page-quantity">Teléfono</th>
-                                        <th class="goods-page-price">DUI</th>
-                                        <th class="goods-page-total" colspan="2">Compras</th>
-                                    </tr>
-                                    <tr>
-                                        <td class="goods-page-image">
-                                            Josué Milton
-                                        </td>
-                                        <td class="goods-page-description">
-                                            Rauda Ramírez
-                                        </td>
-                                        <td class="goods-page-ref-no">
-                                            josue.rauda@gmail.com
-                                        </td>
-                                        <td class="goods-page-price">
-                                            1234-1234
-                                        </td>
-                                        <td class="goods-page-quantity">
-                                            12345678-9
-                                        </td>
-                                        <td class="goods-page-total">
-                                            <a class="btn btn-default add2cart">Ver Compras</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="goods-page-image">
-                                            Josué Milton
-                                        </td>
-                                        <td class="goods-page-description">
-                                            Rauda Ramírez
-                                        </td>
-                                        <td class="goods-page-ref-no">
-                                            josue.rauda@gmail.com
-                                        </td>
-                                        <td class="goods-page-price">
-                                            1234-1234
-                                        </td>
-                                        <td class="goods-page-quantity">
-                                            12345678-9
-                                        </td>
-                                        <td class="goods-page-total">
-                                            <a class="btn btn-default add2cart">Ver Compras</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="goods-page-image">
-                                            Josué Milton
-                                        </td>
-                                        <td class="goods-page-description">
-                                            Rauda Ramírez
-                                        </td>
-                                        <td class="goods-page-ref-no">
-                                            josue.rauda@gmail.com
-                                        </td>
-                                        <td class="goods-page-price">
-                                            1234-1234
-                                        </td>
-                                        <td class="goods-page-quantity">
-                                            12345678-9
-                                        </td>
-                                        <td class="goods-page-total">
-                                            <a class="btn btn-default add2cart">Ver Compras</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="goods-page-image">
-                                            Josué Milton
-                                        </td>
-                                        <td class="goods-page-description">
-                                            Rauda Ramírez
-                                        </td>
-                                        <td class="goods-page-ref-no">
-                                            josue.rauda@gmail.com
-                                        </td>
-                                        <td class="goods-page-price">
-                                            1234-1234
-                                        </td>
-                                        <td class="goods-page-quantity">
-                                            12345678-9
-                                        </td>
-                                        <td class="goods-page-total">
-                                            <a class="btn btn-default add2cart">Ver Compras</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="goods-page-image">
-                                            Josué Milton
-                                        </td>
-                                        <td class="goods-page-description">
-                                            Rauda Ramírez
-                                        </td>
-                                        <td class="goods-page-ref-no">
-                                            josue.rauda@gmail.com
-                                        </td>
-                                        <td class="goods-page-price">
-                                            1234-1234
-                                        </td>
-                                        <td class="goods-page-quantity">
-                                            12345678-9
-                                        </td>
-                                        <td class="goods-page-total">
-                                            <a class="btn btn-default add2cart">Ver Compras</a>
-                                        </td>
-                                    </tr>
+                                    <c:if test="${empty requestScope.listaClientes}">
+                                        <h1>No hay clientes registrados</h1>
+                                    </c:if>
+                                    <c:if test="${not empty requestScope.listaClientes}">
+                                        <tr>
+                                            <th class="goods-page-image">Nombre</th>
+                                            <th class="goods-page-description">Apellidos</th>
+                                            <th class="goods-page-ref-no">Correo</th>
+                                            <th class="goods-page-quantity">Teléfono</th>
+                                            <th class="goods-page-price">DUI</th>
+                                            <th class="goods-page-total" colspan="2">Compras</th>
+                                        </tr>
+                                        <c:forEach items="${requestScope.listaClientes}" var="cliente">
+
+                                            <tr>
+                                                <td>${cliente.nombre}</td>
+                                                <td>${cliente.apellido}</td>
+                                                <td>${cliente.correo}</td>
+                                                <td>${cliente.telefono}</td>
+                                                <td>${cliente.dui}</td>
+
+
+                                                <td>
+                                                    <a class="btn btn-default add2cart" href="${pageContext.request.contextPath}/usuarios.do?operacion=comprasCliente&id=${cliente.idUsuario}">Ver compras</a>
+                                                </td>
+                                            </tr>
+
+                                        </c:forEach>
+                                    </c:if>
                                 </table>
                             </div>
 
                         </div>
-                        
+
                     </div>
                 </div>
                 <!-- END CONTENT -->

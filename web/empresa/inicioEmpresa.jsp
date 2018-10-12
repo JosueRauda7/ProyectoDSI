@@ -4,6 +4,8 @@
     Author     : admi
 --%>
 
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="base" value="${pageContext.request.contextPath}"/> 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!--
@@ -40,65 +42,29 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
                     <div class="col-lg-4">
                         <div class="product-item">
                             <div class="pi-img-wrapper">
-                                <img src="../assets/pages/img/administrador/administradoricon.png" style="max-height: 200px;" class="col-lg-7" alt="Berry Lace Dress">
-                            </div>
-                            <h3><a href="shop-item.html">Administrador</a></h3>
-                            <a href="javascript:;" class="btn btn-default add2cart">Administrar</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="product-item">
-                            <div class="pi-img-wrapper">
-                                <img src="../assets/pages/img/administrador/catalogoicon.png" style="min-height: 152px;"  class="col-lg-7" alt="Berry Lace Dress">
-                            </div>
-                            <h3><a href="shop-item.html">Catalogo</a></h3>
-                            <a href="javascript:;" class="btn btn-default add2cart">Administrar</a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <div class="product-item">
-                            <div class="pi-img-wrapper">
-                                <img src="../assets/pages/img/administrador/clientesicon.png" class="col-lg-7" alt="Berry Lace Dress">
-                            </div>
-                            <h3><a href="shop-item.html">Clientes</a></h3>
-                            <a href="javascript:;" class="btn btn-default add2cart">Administrar</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="product-item">
-                            <div class="pi-img-wrapper">
-                                <img src="../assets/pages/img/administrador/productosicon.png" style="min-height: 160px;" class="col-lg-7" alt="Berry Lace Dress">
+                                <img src="${base}/assets/pages/img/administrador/productosicon.png" style="min-height: 160px;" class="col-lg-7" alt="Berry Lace Dress">
                             </div>
                             <h3><a href="shop-item.html">Productos</a></h3>
-                            <a href="javascript:;" class="btn btn-default add2cart">Administrar</a>
+                            <a href="${base}/empresas.do?operacion=listar&estado=1" class="btn btn-default add2cart">Administrar</a>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="product-item">
-                            <div class="pi-img-wrapper">
-                                <img src="../assets/pages/img/administrador/subcatalogoicon.png" class="col-lg-7" alt="Berry Lace Dress">
-                            </div>
-                            <h3><a href="shop-item.html">Sub-catalogo</a></h3>
-                            <a href="javascript:;" class="btn btn-default add2cart">Administrar</a>
-                        </div>
-                    </div></div>
+                </div>
             </div>
             <div class="margin-bottom-40"></div>
             <jsp:include page="footer.jsp"/>
         </div>
         <jsp:include page="/scripts.jsp"/>
-<script type="text/javascript">
-    jQuery(document).ready(function () {
-        Layout.init();
-        Layout.initOWL();
-        Layout.initTwitter();
-        Layout.initImageZoom();
-        Layout.initTouchspin();
-        Layout.initUniform();
-    });
-</script>
-<!-- END PAGE LEVEL JAVASCRIPTS -->
-</body>
-<!-- END BODY -->
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                Layout.init();
+                Layout.initOWL();
+                Layout.initTwitter();
+                Layout.initImageZoom();
+                Layout.initTouchspin();
+                Layout.initUniform();
+            });
+        </script>
+        <!-- END PAGE LEVEL JAVASCRIPTS -->
+    </body>
+    <!-- END BODY -->
 </html>
