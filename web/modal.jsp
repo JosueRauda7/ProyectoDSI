@@ -19,18 +19,20 @@
             </div>
             <div class="modal-body">
                 <div  id="Logueo" class="tabcontent">
-                    <form class="form-horizontal" method="post" style="width: 80%;margin-left: 10%;">
+                    <form class="form-horizontal" action="${pageContext.request.contextPath}/usuarios.do" method="post" style="width: 80%;margin-left: 10%;">
+                       <input type="hidden" name="operacion" value="login"/>
+                        <input type="hidden" id="url" name="url">
                         <div class="form-group">
                             <label for="nombre" class="text-center">Correo:</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="nombre" id="nombre"  placeholder="Ingresa tu correo" >
+                                <input type="text" class="form-control" name="correo" id="nombre"  placeholder="Ingresa tu correo"  pattern="^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$" required="">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="nombre" class="text-center">Contraseña:</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="nombre" id="nombre"  placeholder="Ingresa tu contraseña" >
+                                <input type="password" class="form-control" name="password" id="nombre"  placeholder="Ingresa tu contraseña"  pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required="" >
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
                             </div>
                         </div>

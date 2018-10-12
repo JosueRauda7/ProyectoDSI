@@ -47,4 +47,8 @@ public class UsuariosModel extends Conexion {
         }
         this.desconectar();
     }
+    
+    public Usuario verificarCuenta(){
+    String sql = "SELECT * FROM usuarios u WHERE u.correo ='emerson.torres0308@gmail.com' AND u.password = SHA2( ?, 256) AND confirmado =?";
+    }
 }

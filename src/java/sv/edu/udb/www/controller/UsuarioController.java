@@ -44,6 +44,9 @@ public class UsuarioController extends HttpServlet {
                 case "verificar":
                     confirmar(request, response);
                     break;
+                case "login":
+                    login(request, response);
+                    break;
             }
         }
     }
@@ -186,6 +189,13 @@ public class UsuarioController extends HttpServlet {
         } catch (SQLException | IOException ex) {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void login(HttpServletRequest request, HttpServletResponse response) {
+    Usuario usuario = new Usuario();
+    usuario.setCorreo(request.getParameter("correo"));
+    usuario.setPassword(request.getParameter("password"));
+    
     }
 
 }
