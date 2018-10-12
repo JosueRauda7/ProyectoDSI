@@ -205,4 +205,123 @@ public class UsuariosModel extends Conexion {
         }
 
     }
+
+    public List<Usuario> listarUsuarios() throws SQLException {
+        try {
+            List<Usuario> listaUsuario = new ArrayList<>();
+            this.conectar();
+            String sql = "select * from usuarios where id_tipo_usuario=1 or id_tipo_usuario=3 or id_tipo_usuario=4 or id_tipo_usuario=5";
+            st = conexion.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setIdUsuario(rs.getInt("id_usuario"));
+                usuario.setNombre(rs.getString("Nombre"));
+                usuario.setApellido(rs.getString("Apellido"));
+                usuario.setTelefono(rs.getString("Telefono"));
+                usuario.setDireccion(rs.getString("direccion"));
+                usuario.setDui(rs.getString("DUI"));
+                usuario.setCorreo(rs.getString("correo"));
+                usuario.setTipoUser(rs.getInt("id_tipo_usuario"));
+                usuario.setConfirmado(rs.getString("confirmado"));
+                listaUsuario.add(usuario);
+            }
+            this.desconectar();
+            return listaUsuario;
+        } catch (SQLException ex) {
+            this.desconectar();
+            return null;
+        }
+    }
+    
+    public Usuario obtenerUsuario(int id) throws SQLException{
+        try{
+            Usuario usuario = new Usuario();
+            this.conectar();
+            String sql = "select * from usuarios where id_usuario=?";
+            st=conexion.prepareStatement(sql);
+            st.setInt(1, id);
+            rs=st.executeQuery();
+            while(rs.next()){
+                usuario.setIdUsuario(id);
+                usuario.setNombre(rs.getString("Nombre"));
+                usuario.setApellido(rs.getString("Apellido"));
+                usuario.setTelefono(rs.getString("Telefono"));
+                usuario.setDireccion(rs.getString("direccion"));
+                usuario.setCorreo(rs.getString("correo"));
+                usuario.setTipoUser(rs.getInt("id_tipo_usuario"));
+            }
+            this.desconectar();
+            return usuario;
+        } catch (SQLException ex) {
+            this.desconectar();
+            return null;
+        }
+    }
+    
+    public int modificarUsuario(Usuario usuario) throws SQLException{
+        try{
+            int filasAfectadas = 0;
+            String sql = "update usuarios set Nombre=?,Apellido=?,Telefono=?,direccion=?,correo=?,id_tipo_usuario=? where id_usuario=?";
+            this.conectar();
+            st=conexion.prepareStatement(sql);
+            st.setString(1, usuario.getNombre());
+            st.setString(2, usuario.getApellido());
+            st.setString(3, usuario.getTelefono());
+            st.setString(4, usuario.getDireccion());
+            st.setString(5, usuario.getCorreo());
+            st.setInt(6, usuario.getTipoUser());
+            st.setInt(7, usuario.getIdUsuario());
+            filasAfectadas=st.executeUpdate();
+            this.desconectar();
+            return filasAfectadas;
+        } catch (SQLException ex) {
+            this.desconectar();
+            return 0;
+        }
+    }
+    
+    public int deshabilitarUsuario(int id) throws SQLException {
+        try {
+            int filasAfectadas = 0;
+            sql = "UPDATE usuarios SET confirmado = 2 WHERE id_usuario = ?";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, id);
+
+            filasAfectadas = st.executeUpdate();
+
+            this.desconectar();
+
+            return filasAfectadas;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoriasModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        }
+
+    }
+    
+    public int habilitarUsuario(int id) throws SQLException {
+        try {
+            int filasAfectadas = 0;
+            sql = "UPDATE usuarios SET confirmado = 1 WHERE id_usuario = ?";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, id);
+
+            filasAfectadas = st.executeUpdate();
+
+            this.desconectar();
+
+            return filasAfectadas;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoriasModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        }
+
+    }
 }
