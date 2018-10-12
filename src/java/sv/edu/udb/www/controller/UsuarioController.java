@@ -251,18 +251,49 @@ public class UsuarioController extends HttpServlet {
     }
 
     private void login(HttpServletRequest request, HttpServletResponse response) {
-
         try {
-             listaErrores.clear();
+            listaErrores.clear();
             Usuario usuario = new Usuario();
             usuario.setCorreo(request.getParameter("correo"));
             usuario.setPassword(request.getParameter("password"));
+            String urlmodel = request.getParameter("url");
 
-        Usuario usuario = new Usuario();
-        usuario.setCorreo(request.getParameter("correo"));
-        usuario.setPassword(request.getParameter("password"));
+            if (usuario.getCorreo().isEmpty()) {
+                listaErrores.add("El correo es requerido");
+            } else if (!Validaciones.esCorreo(usuario.getCorreo())) {
+                listaErrores.add("El correo no tiene el formato correcto");
+            }
+
+            if (usuario.getPassword().isEmpty()) {
+                listaErrores.add("La contraseña es requerida");
+            } else if (!Validaciones.esContraseña(usuario.getPassword())) {
+                listaErrores.add("La contraseña debe tener una longitud mínima de 8 caracteres"
+                        + " y debe contener al menos una mayuscula, "
+                        + "una minuscula y un numero o caracter especial");
+            }
+
+            if (!listaErrores.isEmpty()) {
+                request.setAttribute("listaErrores2", listaErrores);
+                request.setAttribute("url", urlmodel);
+                request.getRequestDispatcher(urlmodel).forward(request, response);
+            } else {
+                if (modelo.verificarCuenta(usuario) == null) {
+                    listaErrores.add("Usuario y/o correo incorrectos");
+                    request.setAttribute("listaErrores2", listaErrores);
+                    request.setAttribute("url", urlmodel);
+                    request.getRequestDispatcher(urlmodel).forward(request, response);
+                } else if (usuario.getIdConfirmacion() == 0) {
+                    listaErrores.add("La cuenta no ha sido validada");
+                    request.setAttribute("listaErrores2", listaErrores);
+                    request.setAttribute("url", urlmodel);
+                    request.getRequestDispatcher(urlmodel).forward(request, response);
+                }
+            }
+        } catch (SQLException | ServletException | IOException ex) {
+            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    }
+
     private void agregarAdministrador(HttpServletRequest request, HttpServletResponse response) {
         try (PrintWriter out = response.getWriter()) {
             listaErrores.clear();
@@ -311,7 +342,7 @@ public class UsuarioController extends HttpServlet {
                     listaErrores.add("El usuario no ha sido confirmado");
                     request.setAttribute("listaErrores2", listaErrores);
                     request.setAttribute("url", urlmodel);
-                     request.getRequestDispatcher(urlmodel).forward(request, response);
+                    request.getRequestDispatcher(urlmodel).forward(request, response);
                 }
             }
         } catch (SQLException | ServletException | IOException ex) {
