@@ -13,8 +13,8 @@ public class Producto {
     private int idProducto;
     private String producto;
     private String descripcion;
-    private double precioRegular;
-    private int cantidad;
+    private String precioRegular;
+    private String cantidad;
     private String urlImagen;
     private int idsubCategoria;
     private SubCategoria subCategoria;
@@ -27,8 +27,8 @@ public class Producto {
         this.idProducto = 0;
         this.producto = "";
         this.descripcion = "";
-        this.precioRegular = 0;
-        this.cantidad = 0;
+        this.precioRegular = "";
+        this.cantidad = "";
         this.urlImagen = "";
         this.subCategoria = null;
         this.empresa = null;
@@ -59,21 +59,23 @@ public class Producto {
         this.descripcion = descripcion;
     }
 
-    public double getPrecioRegular() {
+    public String getPrecioRegular() {
         return precioRegular;
     }
 
-    public void setPrecioRegular(double precioRegular) {
+    public void setPrecioRegular(String precioRegular) {
         this.precioRegular = precioRegular;
     }
 
-    public int getCantidad() {
+    public String getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(String cantidad) {
         this.cantidad = cantidad;
     }
+
+    
 
     public String getUrlImagen() {
         return urlImagen;

@@ -32,50 +32,50 @@
                     <li><a href="#vencidos" data-toggle="tab">Productos vencidos</a></li>
                 </ul>
 
-                    <div class="tab-pane fade in active" id="activos">
+                <div class="tab-pane fade in active" id="activos">
 
-                        <div class="goods-page">
-                            <div class="goods-data clearfix">
-                                <div class="table-wrapper-responsive">
-                                    <table  id="tabla">
-                                        <thead>
+                    <div class="goods-page">
+                        <div class="goods-data clearfix">
+                            <div class="table-wrapper-responsive">
+                                <table  id="tabla">
+                                    <thead>
+                                        <tr>
+                                            <th class="goods-page-description">Producto</th>
+                                            <th class="goods-page-quantity">Precio</th>
+                                            <th class="goods-page-description">Disponibles</th>                                            
+                                            <th class="goods-page-image">Imagen</th>                                                                                        
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="${requestScope.listarProducto}" var="productos">
                                             <tr>
-                                                <th class="goods-page-description">Producto</th>
-                                                <th class="goods-page-quantity">Precio</th>
-                                                <th class="goods-page-description">Disponibles</th>                                            
-                                                <th class="goods-page-image">Imagen</th>                                                                                        
+                                                <td class="goods-page-description">
+                                                    ${productos.producto}
+                                                </td>
+                                                <td class="goods-page-quantity">
+                                                    ${productos.precioRegular}
+                                                </td>
+                                                <td class="goods-page-description">
+                                                    ${productos.cantidad}
+                                                </td>
+                                                <td class="goods-page-image">
+                                                    <img height="100px" src="${base}/images/${productos.urlImagen}"/>
+                                                </td>                                                    
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="${requestScope.listarProducto}" var="productos">
-                                                <tr>
-                                                    <td class="goods-page-description">
-                                                        ${productos.producto}
-                                                    </td>
-                                                    <td class="goods-page-quantity">
-                                                        ${productos.precioRegular}
-                                                    </td>
-                                                    <td class="goods-page-description">
-                                                        ${productos.cantidad}
-                                                    </td>
-                                                    <td class="goods-page-image">
-                                                        <img height="100px" src="${base}/images/${productos.urlImagen}"/>
-                                                    </td>                                                    
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
                             </div>
+
 
                         </div>
 
-
-
                     </div>
-                    
+
+
+
+                </div>
+
 
 
             </div>
@@ -141,6 +141,24 @@
             $(document).ready(function () {
                 $('#tabla').DataTable();
             });
+
+            <c:if test="${not empty exito}">
+            swal({
+                title: "Bien!",
+                text: "${exito}",
+                icon: "success",
+            });
+                <c:set var="exito" value="" scope="session"/>
+            </c:if>
+
+            <c:if test="${not empty fracaso}">
+            swal({
+                title: "Ups!",
+                text: "${fracaso}",
+                icon: "error",
+            });
+                <c:set var="fracaso" value="" scope="session"/>
+            </c:if>
         </script>
         <!-- END PAGE LEVEL JAVASCRIPTS -->
     </body>

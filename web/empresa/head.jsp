@@ -42,6 +42,7 @@
 <link href="${pageContext.request.contextPath}/assets/corporate/css/style-responsive.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/assets/corporate/css/themes/red.css" rel="stylesheet" id="style-color">
 <link href="${pageContext.request.contextPath}/assets/corporate/css/custom.css" rel="stylesheet">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/jquery.dataTables.min.js" type="text/javascript"></script>
 <link href="${pageContext.request.contextPath}/assets/corporate/css/dataTables.bootstrap.min.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/assets/js/dataTables.bootstrap.min.js" type="text/javascript"></script>

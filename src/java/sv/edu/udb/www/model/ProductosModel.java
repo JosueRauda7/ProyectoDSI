@@ -35,8 +35,8 @@ public class ProductosModel extends Conexion {
                 producto.setIdProducto(rs.getInt("id_producto"));
                 producto.setProducto(rs.getString("producto"));
                 producto.setDescripcion(rs.getString("descripcion"));
-                producto.setPrecioRegular(rs.getDouble("precio_regular"));
-                producto.setCantidad(rs.getInt("cantidad"));
+                producto.setPrecioRegular(rs.getString("precio_regular"));
+                producto.setCantidad(rs.getString("cantidad"));
                 producto.setUrlImagen(rs.getString("url_imagen"));
                 
                 producto.setSubCategoria(new SubCategoria(rs.getString("subcategoria")));                
@@ -49,6 +49,29 @@ public class ProductosModel extends Conexion {
             Logger.getLogger(EmpresasModel.class.getName()).log(Level.SEVERE, null, ex);
             this.desconectar();
             return null;
+        }
+    }
+    
+    public int insertarProducto (Producto producto, int empresa) throws SQLException{
+        try {
+            int filasAfectadas=0;
+            String sql="Insert into producto VALUES(NULL,?,?,?,?,?,?,?,1)";
+            this.conectar();
+            st=conexion.prepareStatement(sql);
+            st.setString(1,producto.getProducto());
+            st.setString(2,producto.getDescripcion());
+            st.setDouble(3,Double.parseDouble(producto.getPrecioRegular()));
+            st.setInt(4, Integer.parseInt(producto.getCantidad()));
+            st.setString(5,producto.getUrlImagen());
+            st.setInt(6,empresa);
+            st.setInt(7,producto.getIdestadoProducto());            
+            filasAfectadas=st.executeUpdate();
+            this.desconectar();
+            return filasAfectadas;
+        } catch (SQLException ex) {
+            Logger.getLogger(EmpresasModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
         }
     }
 }

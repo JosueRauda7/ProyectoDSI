@@ -7,9 +7,11 @@ package sv.edu.udb.www.controller;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -17,8 +19,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import sv.edu.udb.www.beans.Producto;
 import sv.edu.udb.www.model.ProductosModel;
 import sv.edu.udb.www.model.SubCategoriasModel;
+import sv.edu.udb.www.utils.Validaciones;
 
 /**
  *
@@ -29,6 +33,7 @@ public class EmpresaController extends HttpServlet {
 
     ProductosModel modeloProducto = new ProductosModel();
     SubCategoriasModel modeloSubcategoria = new SubCategoriasModel();
+    ArrayList listaErrores = new ArrayList();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -57,6 +62,7 @@ public class EmpresaController extends HttpServlet {
                     nuevo(request, response);
                     break;
                 case "insertar":
+                    System.out.println("hola");
                     String directorio = getServletContext().getRealPath("/images");
                     MultipartRequest multi = new MultipartRequest(request, directorio, 1 * 1024 * 1024, new DefaultFileRenamePolicy());
                     insertar(multi, request, response);
@@ -136,7 +142,59 @@ public class EmpresaController extends HttpServlet {
 
     private void insertar(MultipartRequest multi, HttpServletRequest request, HttpServletResponse response) {
         try{
+            listaErrores.clear();
+            Producto producto = new Producto();
             
+            producto.setProducto(multi.getParameter("producto"));
+            producto.setDescripcion(multi.getParameter("descripcion"));
+            producto.setPrecioRegular(multi.getParameter("regular"));
+            producto.setCantidad(multi.getParameter("cantidad"));
+            producto.setIdsubCategoria(Integer.parseInt(multi.getParameter("subcategoria")));
+            
+            if(Validaciones.isEmpty(producto.getProducto())){
+                listaErrores.add("El nombre del producto es obligatorio");
+            }
+            
+            if(Validaciones.isEmpty(producto.getDescripcion())){
+                listaErrores.add("Agrege una descripción al producto");
+            }
+            
+            if(Validaciones.isEmpty(producto.getPrecioRegular())){
+                listaErrores.add("El precio del producto es obligatorio");
+            }else if(!Validaciones.esDecimal(producto.getPrecioRegular())){
+                listaErrores.add("El precio debe ser un decimal");
+            }else if(!Validaciones.esDecimalPositivo(producto.getPrecioRegular())){
+                listaErrores.add("El precio debe ser un número positivo");
+            }
+            
+            if(Validaciones.isEmpty(producto.getCantidad())){
+                listaErrores.add("La cantidad de producto es obligatoria");
+            }else if(Validaciones.esEntero(producto.getCantidad())){
+                listaErrores.add("La cantidad de productos debe ser un número");
+            }else if(Validaciones.esEnteroPositivo(producto.getCantidad())){
+                listaErrores.add("La cantidad debe ser un número positivo");
+            }
+            
+            if (multi.getFile("archivo") == null) {
+                listaErrores.add("La imagen es obligatoria");
+            } else {
+                File ficheroTemp = multi.getFile("archivo");
+                producto.setUrlImagen(ficheroTemp.getName());
+            }
+            System.out.println("hola");
+            if(listaErrores.isEmpty()){
+                if (modeloProducto.insertarProducto(producto, (Integer)request.getSession().getAttribute("empresa")) == 1) {
+                        request.getSession().setAttribute("exito", "Producto registrado existosamente.");
+                    } else {
+                        request.getSession().setAttribute("fracaso", "Ocurrio un error, no se pudo registrar el producto...");
+                    }
+
+                    response.sendRedirect(request.getContextPath() + "/empresas.do?operacion=listar");
+            } else {
+                request.setAttribute("listaErrores", listaErrores);
+                request.setAttribute("producto", producto);
+                request.getRequestDispatcher("/empresa/nuevoProducto.jsp").forward(request, response);
+            }
         }catch(Exception ex){
             Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
         }

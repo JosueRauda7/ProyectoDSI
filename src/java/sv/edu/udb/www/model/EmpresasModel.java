@@ -34,8 +34,8 @@ public class EmpresasModel extends Conexion {
                 producto.setIdProducto(rs.getInt("id_producto"));
                 producto.setProducto(rs.getString("producto"));
                 producto.setDescripcion(rs.getString("descripcion"));
-                producto.setPrecioRegular(rs.getDouble("precio_regular"));
-                producto.setCantidad(rs.getInt("cantidad"));
+                producto.setPrecioRegular(rs.getString("precio_regular"));
+                producto.setCantidad(rs.getString("cantidad"));
                 producto.setUrlImagen(rs.getString("url_imagen"));
                 
                 producto.setSubCategoria(new SubCategoria(rs.getString("subcategoria")));                
@@ -51,21 +51,20 @@ public class EmpresasModel extends Conexion {
         }
     }
     
-    public int insertarProducto (Producto producto) throws SQLException{
+    public int insertarProducto (Producto producto, int empresa) throws SQLException{
         try {
             int filasAfectadas=0;
-            String sql="Insert into producto VALUES(?,?,?,?,?,?,?,?)";
+            String sql="Insert into producto VALUES(NULL,?,?,?,?,?,?,?,1)";
             this.conectar();
             st=conexion.prepareStatement(sql);
-           /* st.setString(1,producto.getCodigoLibro());
-            st.setString(2,producto.getNombreLibro());
-            st.setInt(3,producto.getExistencias());
-            st.setDouble(4, producto.getPrecio());
-            st.setString(5,producto.getCodigoAutor());
-            st.setString(6,producto.getCodigoEditorial());
-            st.setInt(7,producto.getidGenero());
-            st.setString(8,producto.getDescripcion());
-            filasAfectadas=st.executeUpdate(); */
+            st.setString(1,producto.getProducto());
+            st.setString(2,producto.getDescripcion());
+            st.setDouble(3,Double.parseDouble(producto.getPrecioRegular()));
+            st.setInt(4, Integer.parseInt(producto.getCantidad()));
+            st.setString(5,producto.getUrlImagen());
+            st.setInt(6,empresa);
+            st.setInt(7,producto.getIdestadoProducto());            
+            filasAfectadas=st.executeUpdate();
             this.desconectar();
             return filasAfectadas;
         } catch (SQLException ex) {
