@@ -55,11 +55,37 @@ public class UsuariosModel extends Conexion {
         this.desconectar();
     }
 
-    
-    public Usuario verificarCuenta(){
-    String sql = "SELECT * FROM usuarios u WHERE u.correo ='emerson.torres0308@gmail.com' AND u.password = SHA2( ?, 256) AND confirmado =?";
-return null;
+    public Usuario verificarCuenta(Usuario usuario) throws SQLException {
+        try {
+            String sql = "SELECT * FROM usuarios u WHERE u.correo = ? AND u.password = SHA2( ?, 256)";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setString(1, usuario.getCorreo());
+            st.setString(2, usuario.getPassword());
+            rs = st.executeQuery();
+            if(rs.next()){
+                Usuario user = new Usuario();
+                user.setIdUsuario(rs.getInt("id_usuario"));
+                user.setNombre(rs.getString("Nombre"));
+                user.setApellido(rs.getString("Apellido"));
+                user.setTelefono(rs.getString("Telefono"));
+                user.setDireccion(rs.getString("direccion"));
+                user.setDui(rs.getString("DUI"));
+                user.setCorreo(rs.getString("correo"));
+                user.setIdConfirmacion(rs.getInt("confirmado"));
+                user.setTipoUser(rs.getInt("id_tipo_usuario"));
+                this.desconectar();
+                return user;
+            }
+            this.desconectar();
+            return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuariosModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
     }
+
     public List<Usuario> listarClientes() throws SQLException {
         try {
             List<Usuario> lista = new ArrayList<>();

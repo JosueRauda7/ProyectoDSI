@@ -23,6 +23,7 @@ public class Usuario {
     private String confirmado;
     private int tipoUser;
     private TipoUsuario tipoUsaurio;
+    private int idConfirmacion;
 
     public Usuario() {
         this.idUsuario = 0;
@@ -54,6 +55,16 @@ public class Usuario {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
+
+    public int getIdConfirmacion() {
+        return idConfirmacion;
+    }
+
+    public void setIdConfirmacion(int idConfirmacion) {
+        this.idConfirmacion = idConfirmacion;
+    }
+    
+    
 
     public String getPassword() {
         return password;

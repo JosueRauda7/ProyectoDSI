@@ -164,19 +164,19 @@ public class UsuarioController extends HttpServlet {
                 String cadenaAleatoria = UUID.randomUUID().toString();
 
                 if (modelo.insertarUsuario(usuario, cadenaAleatoria) > 0) {
-                   request.getSession().setAttribute("exito", "Usuario registrado "
+                    request.getSession().setAttribute("exito", "Usuario registrado "
                             + "existosamente. Se te ha enviado un correo para que "
                             + "confirmes tu cuenta");
 
                     String enlace = request.getRequestURL().toString()
                             + "?operacion=verificar&id=" + cadenaAleatoria;
-                      String texto = "<div class='container2' style='color: white;border: solid black 2px;border-radius: 25px;width: 30%;padding: 1%;background-color: #e84d1c;'><h1 style=\"text-align: center;\">Bienvenido a BigShop</h1><div><p>BigShop es tu nueva tienda oline, aquí te ofrecemos una gran variedad de productos a un buen precio, tambien tenemos los mejores productos de tus marcas favoritas, todo lo que decees esta aqui.</p><p>Para poder acceder a nuestro sitio debes validar tu usuario, da click al boton para empezar a comprar.</p><a target='_blank' href='"+enlace+"'><button type='button' style='background-color: white;color: black;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;border: solid 1px #67656E;  font-family:fantasy;margin-left:30%;'   onmouseover='this.style.backgroundColor=\"#A5A1B3\" ' onmouseout='this.style.backgroundColor=\"\"'>Entrar</button></a></div></div>";
+                    String texto = "<div class='container2' style='color: white;border: solid black 2px;border-radius: 25px;width: 30%;padding: 1%;background-color: #e84d1c;'><h1 style=\"text-align: center;\">Bienvenido a BigShop</h1><div><p>BigShop es tu nueva tienda oline, aquí te ofrecemos una gran variedad de productos a un buen precio, tambien tenemos los mejores productos de tus marcas favoritas, todo lo que decees esta aqui.</p><p>Para poder acceder a nuestro sitio debes validar tu usuario, da click al boton para empezar a comprar.</p><a target='_blank' href='" + enlace + "'><button type='button' style='background-color: white;color: black;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;border: solid 1px #67656E;  font-family:fantasy;margin-left:30%;'   onmouseover='this.style.backgroundColor=\"#A5A1B3\" ' onmouseout='this.style.backgroundColor=\"\"'>Entrar</button></a></div></div>";
                     Correo correo = new Correo();
                     correo.setAsunto("Confirmacion de registro");
                     correo.setMensaje(texto);
                     correo.setDestinatario(usuario.getCorreo());
                     correo.enviarCorreo();
-                    response.sendRedirect(request.getContextPath() +"/"+ urlmodel);
+                    response.sendRedirect(request.getContextPath() + "/" + urlmodel);
                 } else {
                     listaErrores.add("Este usuario ya existe");
                     request.setAttribute("listaErrores", listaErrores);
@@ -199,7 +199,7 @@ public class UsuarioController extends HttpServlet {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void listarClientes(HttpServletRequest request, HttpServletResponse response) {
         try {
             request.setAttribute("listaClientes", modelo.listarClientes());
@@ -214,13 +214,12 @@ public class UsuarioController extends HttpServlet {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
     private void obtenerProductosCliente(HttpServletRequest request, HttpServletResponse response) {
         try {
-            
+
             int id = Integer.parseInt(request.getParameter("id"));
-            
+
             request.setAttribute("cliente", modelo.obtenerCliente(id));
             request.setAttribute("listaPedidos", modelo.listarPedidos(id));
             request.setAttribute("listaDetallePedidos", modelo.listarProductosCliente(id));
@@ -231,10 +230,47 @@ public class UsuarioController extends HttpServlet {
     }
 
     private void login(HttpServletRequest request, HttpServletResponse response) {
-    Usuario usuario = new Usuario();
-    usuario.setCorreo(request.getParameter("correo"));
-    usuario.setPassword(request.getParameter("password"));
-    
+        try {
+             listaErrores.clear();
+            Usuario usuario = new Usuario();
+            usuario.setCorreo(request.getParameter("correo"));
+            usuario.setPassword(request.getParameter("password"));
+            String urlmodel = request.getParameter("url");
+
+            if (usuario.getCorreo().isEmpty()) {
+                listaErrores.add("El correo es requerido");
+            } else if (!Validaciones.esCorreo(usuario.getCorreo())) {
+                listaErrores.add("El correo no tiene el formato correcto");
+            }
+
+            if (usuario.getPassword().isEmpty()) {
+                listaErrores.add("La contraseña es requerida");
+            } else if (!Validaciones.esContraseña(usuario.getPassword())) {
+                listaErrores.add("La contraseña debe tener una longitud mínima de 8 caracteres"
+                        + " y debe contener al menos una mayuscula, "
+                        + "una minuscula y un numero o caracter especial");
+            }
+
+            if (!listaErrores.isEmpty()) {
+                request.setAttribute("listaErrores2", listaErrores);
+                request.setAttribute("url", urlmodel);
+                request.getRequestDispatcher(urlmodel).forward(request, response);
+            } else {
+                if (modelo.verificarCuenta(usuario) == null) {
+                    listaErrores.add("Usuario y/o clave incorrectos");
+                    request.setAttribute("listaErrores2", listaErrores);
+                    request.setAttribute("url", urlmodel);
+                    request.getRequestDispatcher(urlmodel).forward(request, response);
+                } else if (usuario.getIdConfirmacion() == 0) {
+                    listaErrores.add("El usuario no ha sido confirmado");
+                    request.setAttribute("listaErrores2", listaErrores);
+                    request.setAttribute("url", urlmodel);
+                     request.getRequestDispatcher(urlmodel).forward(request, response);
+                }
+            }
+        } catch (SQLException | ServletException | IOException ex) {
+            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
