@@ -236,7 +236,18 @@
 
                 </div>
             </div>
+<div>
+                <div class="product-item">
+                    <div class="pi-img-wrapper">
+                        <img src="assets/pages/img/dispositivoElectronico.jpg" class="img-responsive" alt="Berry Lace Dress">
+                        <div>
+                            <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">Entrar</a>
+                        </div>
+                    </div>
+                    <h3><a href="shop-item.html">Dispositivos Electrónicos</a></h3>
 
+                </div>
+            </div>
         </div>
     </div>
     <!-- END SIMILAR PRODUCTS -->

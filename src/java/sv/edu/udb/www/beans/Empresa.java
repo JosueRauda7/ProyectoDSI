@@ -15,12 +15,14 @@ public class Empresa {
     private double comision;
     private Usuario usuario;
     private EstadoEmpresa estadoEmpresa;
+    private String urlEmpresa;
     public Empresa(){
         this.idEmpresa=0;
         this.empresa="";
         this.comision=0;
         this.usuario=null;
         this.estadoEmpresa=null;
+        this.urlEmpresa ="";
     }
     
     public Empresa(String empresa){
@@ -65,6 +67,15 @@ public class Empresa {
     public void setEstadoEmpresa(EstadoEmpresa estadoEmpresa) {
         this.estadoEmpresa = estadoEmpresa;
     }
+
+    public String getUrlEmpresa() {
+        return urlEmpresa;
+    }
+
+    public void setUrlEmpresa(String urlEmpresa) {
+        this.urlEmpresa = urlEmpresa;
+    }
+    
     
     
 }

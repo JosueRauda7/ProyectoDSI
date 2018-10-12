@@ -43,9 +43,6 @@ public class CategoriasController extends HttpServlet {
                 case "listar":
                     listar(request, response);
                     break;
-                case "listarIndex":
-                    listarIndex(request, response);
-                    break;
                 case "nuevo":
                     nuevo(request, response);
                     break;
@@ -147,14 +144,7 @@ public class CategoriasController extends HttpServlet {
         }
     }
 
-    private void listarIndex(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            request.setAttribute("listaCategorias", model.listarCategorias());
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-        } catch (ServletException | IOException | SQLException ex) {
-            Logger.getLogger(CategoriasController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+  
 
     private void nuevo(HttpServletRequest request, HttpServletResponse response) {
         try {
