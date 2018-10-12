@@ -124,15 +124,15 @@ public class ProductosModel extends Conexion {
             String sql = "Update producto set producto=?,descripcion=?,precio_regular=?,cantidad=?,"
                     + "url_imagen=?, id_sub_categoria=?, id_estado_producto=1 where id_producto=?";
             this.conectar();
-            st=conexion.prepareStatement(sql);
+            st = conexion.prepareStatement(sql);
             st.setString(1, producto.getProducto());
             st.setString(2, producto.getDescripcion());
             st.setDouble(3, Double.parseDouble(producto.getPrecioRegular()));
             st.setInt(4, Integer.parseInt(producto.getCantidad()));
             st.setString(5, producto.getUrlImagen());
             st.setInt(6, producto.getIdsubCategoria());
-            st.setInt(7, codigo);            
-            filasAfectadas=st.executeUpdate();
+            st.setInt(7, codigo);
+            filasAfectadas = st.executeUpdate();
             this.desconectar();
             return filasAfectadas;
         } catch (SQLException ex) {
@@ -141,7 +141,7 @@ public class ProductosModel extends Conexion {
             return 0;
         }
     }
-    
+
     public List<Producto> listarProducto(int estadoProducto) throws SQLException {
         try {
 
@@ -152,7 +152,7 @@ public class ProductosModel extends Conexion {
                     + " where es.id_estado_producto=?";
             this.conectar();
             st = conexion.prepareStatement(sql);
-            st.setInt(1, estadoProducto);            
+            st.setInt(1, estadoProducto);
             rs = st.executeQuery();
             while (rs.next()) {
                 Producto producto = new Producto();
@@ -175,18 +175,47 @@ public class ProductosModel extends Conexion {
             return null;
         }
     }
-    public int rechazarAceptarProducto(int codigo,int estado) throws SQLException{
-        try{
+
+    public int rechazarAceptarProducto(int codigo, int estado) throws SQLException {
+        try {
             String sql = "Update producto set id_estado_producto=? where id_producto=?";
             this.conectar();
-            st=conexion.prepareStatement(sql);
+            st = conexion.prepareStatement(sql);
             st.setInt(1, estado);
-            st.setInt(2, codigo);            
+            st.setInt(2, codigo);
             return st.executeUpdate();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             Logger.getLogger(EmpresasModel.class.getName()).log(Level.SEVERE, null, ex);
             this.desconectar();
             return 0;
+        }
+    }
+
+    public List<Producto> listaUltimosProductos() throws SQLException {
+        try {
+            String sql = "SELECT * FROM producto p INNER JOIN empresa e on p.id_empresa = e.id_empresa INNER JOIN sub_categoria s on p.id_sub_categoria = s.id_sub_categoria WHERE id_estado_producto=2 ORDER by id_producto DESC LIMIT 6";
+            List<Producto> lista = new ArrayList<>();
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Producto producto = new Producto();
+                producto.setIdProducto(rs.getInt("id_producto"));
+                producto.setProducto(rs.getString("producto"));
+                producto.setDescripcion(rs.getString("descripcion"));
+                producto.setPrecioRegular(rs.getString("precio_regular"));
+                producto.setCantidad(rs.getString("cantidad"));
+                producto.setUrlImagen(rs.getString("url_imagen"));
+                producto.setEmpresa(new Empresa(rs.getString("empresa")));
+                producto.setSubCategoria(new SubCategoria(rs.getString("subcategoria")));
+                lista.add(producto);
+            }
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductosModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
         }
     }
 }

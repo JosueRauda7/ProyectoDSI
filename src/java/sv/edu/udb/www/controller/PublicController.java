@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import sv.edu.udb.www.model.CategoriasModel;
+import sv.edu.udb.www.model.ProductosModel;
 
 /**
  *
@@ -24,15 +25,15 @@ import sv.edu.udb.www.model.CategoriasModel;
 @WebServlet(name = "PublicController", urlPatterns = {"/public.do"})
 public class PublicController extends HttpServlet {
 
-     CategoriasModel CategoriaModel = new CategoriasModel();
-     
-    
+    CategoriasModel CategoriaModel = new CategoriasModel();
+    ProductosModel ProductoModel = new ProductosModel();
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String operacion = request.getParameter("operacion");
-            switch(operacion){
+            switch (operacion) {
                 case "publicIndex":
                     publicIndex(request, response);
                     break;
@@ -80,8 +81,9 @@ public class PublicController extends HttpServlet {
     }// </editor-fold>
 
     private void publicIndex(HttpServletRequest request, HttpServletResponse response) {
-    try {
+        try {
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.setAttribute("ultimosProductos", ProductoModel.listaUltimosProductos());
             request.getRequestDispatcher("index.jsp").forward(request, response);
         } catch (ServletException | IOException | SQLException ex) {
             Logger.getLogger(CategoriasController.class.getName()).log(Level.SEVERE, null, ex);

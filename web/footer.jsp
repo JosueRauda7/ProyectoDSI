@@ -1,6 +1,6 @@
-<div class="footer"  style="width: 100%;-webkit-box-sizing:border-box;
+<footer class="footer"  style="width: 100%;-webkit-box-sizing:border-box;
     -moz-box-sizing:border-box;
-    box-sizing:border-box;">
+    box-sizing:border-box; position:absolute;">
     <div class="container">
         <div class="row">
             <!-- BEGIN COPYRIGHT -->
@@ -9,4 +9,4 @@
             </div>
         </div>
     </div>
-</div>
+</footer>

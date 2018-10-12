@@ -138,7 +138,7 @@
 
         <!-- BEGIN FOOTER -->
    
-<jsp:include page="footer.jsp" />
+
       
         <script type="text/javascript">
             jQuery(document).ready(function () {
@@ -153,5 +153,6 @@
         <script src="assets/pages/scripts/ModalLog.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL JAVASCRIPTS -->
     </body>
+    <jsp:include page="footer.jsp" />
     <!-- END BODY -->
 </html>
