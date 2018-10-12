@@ -44,6 +44,12 @@ public class UsuarioController extends HttpServlet {
                 case "verificar":
                     confirmar(request, response);
                     break;
+                case "listarClientes":
+                    listarClientes(request, response);
+                    break;
+                case "comprasCliente":
+                    obtenerProductosCliente(request, response);
+                    break;
             }
         }
     }
@@ -184,6 +190,36 @@ public class UsuarioController extends HttpServlet {
             request.getSession().setAttribute("exito", "Cuenta verificada exitosamente, " + "ya puedes iniciar session");
             response.sendRedirect(request.getContextPath() + "/index.jsp");
         } catch (SQLException | IOException ex) {
+            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void listarClientes(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.setAttribute("listaClientes", modelo.listarClientes());
+
+            try {
+                request.getRequestDispatcher("/administrador/verClientes.jsp").forward(request, response);
+            } catch (ServletException | IOException ex) {
+                Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    private void obtenerProductosCliente(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            
+            int id = Integer.parseInt(request.getParameter("id"));
+            
+            request.setAttribute("cliente", modelo.obtenerCliente(id));
+            request.setAttribute("listaPedidos", modelo.listarPedidos(id));
+            request.setAttribute("listaDetallePedidos", modelo.listarProductosCliente(id));
+            request.getRequestDispatcher("/administrador/comprasCliente.jsp").forward(request, response);
+        } catch (SQLException | ServletException | IOException ex) {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

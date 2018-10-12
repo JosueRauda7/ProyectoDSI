@@ -4,7 +4,7 @@
     Author     : Ferh
 --%>
 
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +21,7 @@
 
 
         <jsp:include page="/administrador/menuAdmin.jsp"/>
-        
+
 
         <div class="container">
 
@@ -30,68 +30,84 @@
                 <!-- BEGIN CONTENT -->
                 <div class="col-md-12 col-sm-12">
                     <br><h1>Productos comprados</h1><br>
-                    <h2>Cliente: Nombre del cliente</h2>
+                    <h2>Cliente: ${requestScope.cliente.nombre} ${requestScope.cliente.apellido}</h2>
                     <div class="goods-page">
                         <div class="goods-data clearfix">
                             <div class="table-wrapper-responsive">
                                 <table summary="Shopping cart">
-                                    <tr>
-                                        <th class="goods-page-image">Imagen</th>
-                                        <th class="goods-page-description">Producto</th>
-                                        <th class="goods-page-ref-no">Cantidad</th>
-                                        <th class="goods-page-quantity">Fecha de compra</th>
-                                        <th class="goods-page-total" colspan="2">Total cancelado</th>
-                                    </tr>
-                                    <tr>
-                                        <td class="goods-page-image">
-                                            <a href="javascript:;"><img src="assets/pages/img/products/model3.jpg" alt="Berry Lace Dress"></a>
-                                        </td>
-                                        <td class="goods-page-description">
-                                            <h3><a href="javascript:;">Sofá</a></h3>
-                                            <p>Café oscuro de madera tapizado</p>
-                                            
-                                        </td>
-                                        <td class="goods-page-ref-no">
-                                            2
-                                        </td>
-                                        <td class="goods-page-quantity">
-                                            15-04-2018
-                                        </td>
-                                       
-                                        <td class="goods-page-total">
-                                            <strong><span>$</span>200.00</strong>
-                                        </td>
-                                        
-                                    </tr>
-                                    
-                                    <tr>
-                                        <td class="goods-page-image">
-                                            <a href="javascript:;"><img src="assets/pages/img/products/model3.jpg" alt="Berry Lace Dress"></a>
-                                        </td>
-                                        <td class="goods-page-description">
-                                            <h3><a href="javascript:;">Sofá</a></h3>
-                                            <p>Café oscuro de madera tapizado</p>
-                                            
-                                        </td>
-                                        <td class="goods-page-ref-no">
-                                            2
-                                        </td>
-                                        <td class="goods-page-quantity">
-                                            15-04-2018
-                                        </td>
-                                       
-                                        <td class="goods-page-total">
-                                            <strong><span>$</span>200.00</strong>
-                                        </td>
-                                        
-                                    </tr>
-                                    
+                                    <c:if test="${empty requestScope.listaPedidos}">
+                                        <h1>Este cliente no ha realizado compras</h1>
+                                    </c:if>
+
+                                    <c:if test="${not empty requestScope.listaPedidos}">
+                                        <tr>
+                                            <th class="goods-page-description">Producto</th>
+                                            <th class="goods-page-ref-no">Cantidad</th>
+                                            <th class="goods-page-ref-no">Categoria</th>
+                                        </tr>
+
+
+                                        <c:forEach items="${requestScope.listaPedidos}" var="pedido">
+
+
+                                            <c:forEach items="${requestScope.listaDetallePedidos}" var="detalle">
+
+                                                <c:if test="${pedido.idPedido eq detalle.pedido.idPedido}">
+
+                                                    <tr style="background-color: rgba(0,0,0,.05)">
+
+                                                        <td class="goods-page-description">
+                                                            <h3><a href="javascript:;">${detalle.producto.producto}</a></h3>
+                                                            <p>${detalle.producto.descripcion}</p>
+
+                                                        </td>
+                                                        <td class="goods-page-ref-no">
+                                                            ${detalle.cantidad}
+                                                        </td>
+                                                        <td class="goods-page-quantity">
+                                                            <h3><a href="javascript:;">${detalle.producto.subCategoria.subCategoria}</a></h3>
+                                                            <p>${detalle.producto.subCategoria.categoria.categoria}</p>
+                                                        </td>
+
+                                                    </tr>
+
+
+
+
+                                                </c:if>
+
+
+                                            </c:forEach>
+
+                                            <c:if test="${not empty pedido.fechaCompra}">
+
+                                                <tr>
+
+                                                    <td>
+                                                        <h3><a href="javascript:;">Detalle del pedido</a></h3>
+                                                    </td>
+                                                    <td class="goods-page-ref-no">
+                                                        <strong><span>Fecha de compra: </span>${pedido.fechaCompra}</strong>
+                                                    </td>
+
+                                                    <td class="goods-page-total">
+                                                        <strong><span>Monto total: $</span>${pedido.montoTotal}</strong>
+                                                    </td>
+
+                                                </tr>
+
+                                            </c:if>
+
+                                        </c:forEach>
+
+                                    </c:if>
+
                                 </table>
                             </div>
 
-                           
+
                         </div>
-                        
+
                     </div>
                 </div>
 
