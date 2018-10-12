@@ -10,6 +10,7 @@
     <head>
         <title>Index</title>
         <jsp:include page="/head.jsp"/>        
+        <jsp:include page="/scripts.jsp"/>
     </head>
     <!-- Head END -->
 
@@ -261,6 +262,7 @@
     });
 </script>
  <script src="assets/pages/scripts/ModalLog.js" type="text/javascript"></script>
+ 
         <!-- END PAGE LEVEL JAVASCRIPTS -->
 <!-- END PAGE LEVEL JAVASCRIPTS -->
 </body>

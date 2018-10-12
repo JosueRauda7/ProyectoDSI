@@ -260,24 +260,24 @@ public class UsuarioController extends HttpServlet {
 
             if (usuario.getCorreo().isEmpty()) {
                 listaErrores.add("El correo es requerido");
-            } else if (!Validaciones.esCorreo(usuario.getCorreo())) {
+            }else if (!Validaciones.esCorreo(usuario.getCorreo())) {
                 listaErrores.add("El correo no tiene el formato correcto");
             }
 
-            if (usuario.getPassword().isEmpty()) {
+            if(usuario.getPassword().isEmpty()) {
                 listaErrores.add("La contraseña es requerida");
-            } else if (!Validaciones.esContraseña(usuario.getPassword())) {
+            }else if (!Validaciones.esContraseña(usuario.getPassword())) {
                 listaErrores.add("La contraseña debe tener una longitud mínima de 8 caracteres"
                         + " y debe contener al menos una mayuscula, "
                         + "una minuscula y un numero o caracter especial");
             }
 
-            if (!listaErrores.isEmpty()) {
+            if(!listaErrores.isEmpty()) {
                 request.setAttribute("listaErrores2", listaErrores);
                 request.setAttribute("url", urlmodel);
                 request.getRequestDispatcher(urlmodel).forward(request, response);
-            } else {
-                if (modelo.verificarCuenta(usuario) == null) {
+            }else{
+                if(modelo.verificarCuenta(usuario) == null) {
                     listaErrores.add("Usuario y/o correo incorrectos");
                     request.setAttribute("listaErrores2", listaErrores);
                     request.setAttribute("url", urlmodel);
