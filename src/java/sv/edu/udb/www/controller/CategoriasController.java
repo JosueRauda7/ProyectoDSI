@@ -43,6 +43,9 @@ public class CategoriasController extends HttpServlet {
                 case "listar":
                     listar(request, response);
                     break;
+                case "listarIndex":
+                    listarIndex(request, response);
+                    break;
                 case "nuevo":
                     nuevo(request, response);
                     break;
@@ -53,10 +56,10 @@ public class CategoriasController extends HttpServlet {
                     guardar(request, response);
                     break;
                 case "deshabilitar":
-                    deshabilitar(request,response);
+                    deshabilitar(request, response);
                     break;
                 case "habilitar":
-                    habilitar(request,response);
+                    habilitar(request, response);
                     break;
             }
         }
@@ -144,6 +147,15 @@ public class CategoriasController extends HttpServlet {
         }
     }
 
+    private void listarIndex(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.setAttribute("listaCategorias", model.listarCategorias());
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        } catch (ServletException | IOException | SQLException ex) {
+            Logger.getLogger(CategoriasController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private void nuevo(HttpServletRequest request, HttpServletResponse response) {
         try {
             request.getRequestDispatcher("/administrador/nuevaCategoria.jsp").forward(request, response);
@@ -201,27 +213,27 @@ public class CategoriasController extends HttpServlet {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             if (model.deshabilitarCategoria(id) > 0) {
-                    request.getSession().setAttribute("exito", "Categoría ha sido deshabilitado exitosamente");
-                    response.sendRedirect(request.getContextPath() + "/categorias.do?operacion=listar");
-                } else {
-                    request.getSession().setAttribute("fracaso", "Categoría no ha sido deshabilitado exitosamente");
-                    response.sendRedirect(request.getContextPath() + "/categorias.do?operacion=listar");
-                }
+                request.getSession().setAttribute("exito", "Categoría ha sido deshabilitado exitosamente");
+                response.sendRedirect(request.getContextPath() + "/categorias.do?operacion=listar");
+            } else {
+                request.getSession().setAttribute("fracaso", "Categoría no ha sido deshabilitado exitosamente");
+                response.sendRedirect(request.getContextPath() + "/categorias.do?operacion=listar");
+            }
         } catch (SQLException | IOException ex) {
             Logger.getLogger(CategoriasController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void habilitar(HttpServletRequest request, HttpServletResponse response) {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             if (model.habilitarCategoria(id) > 0) {
-                    request.getSession().setAttribute("exito", "Categoría ha sido habilitado exitosamente");
-                    response.sendRedirect(request.getContextPath() + "/categorias.do?operacion=listar");
-                } else {
-                    request.getSession().setAttribute("fracaso", "Categoría no ha sido habilitado exitosamente");
-                    response.sendRedirect(request.getContextPath() + "/categorias.do?operacion=listar");
-                }
+                request.getSession().setAttribute("exito", "Categoría ha sido habilitado exitosamente");
+                response.sendRedirect(request.getContextPath() + "/categorias.do?operacion=listar");
+            } else {
+                request.getSession().setAttribute("fracaso", "Categoría no ha sido habilitado exitosamente");
+                response.sendRedirect(request.getContextPath() + "/categorias.do?operacion=listar");
+            }
         } catch (SQLException | IOException ex) {
             Logger.getLogger(CategoriasController.class.getName()).log(Level.SEVERE, null, ex);
         }
