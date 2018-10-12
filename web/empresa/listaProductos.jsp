@@ -28,8 +28,9 @@
             <div class="product-page-content">
                 <li style="margin-bottom: 2%;"><a class="btn btn-primary btn-md" href="${pageContext.request.contextPath}/empresas.do?operacion=nuevo">Nuevo producto</a></li>
                 <ul id="myTab" class="nav nav-tabs">
-                    <li class="active"><a href="#activos" data-toggle="tab">Productos activos</a></li>
-                    <li><a href="#vencidos" data-toggle="tab">Productos vencidos</a></li>
+                    <li><a href="${base}/empresas.do?operacion=listar&estado=1" data-toggle="tab">Listar en espera</a></li>
+                    <li><a href="${base}/empresas.do?operacion=listar&estado=2" data-toggle="tab">Listar activos</a></li>
+                    <li><a href="${base}/empresas.do?operacion=listar&estado=3" data-toggle="tab">Listar rechazados</a></li>                    
                 </ul>
 
                 <div class="tab-pane fade in active" id="activos">
@@ -40,10 +41,11 @@
                                 <table  id="tabla">
                                     <thead>
                                         <tr>
-                                            <th class="goods-page-description">Producto</th>
-                                            <th class="goods-page-quantity">Precio</th>
-                                            <th class="goods-page-description">Disponibles</th>                                            
-                                            <th class="goods-page-image">Imagen</th>                                                                                        
+                                            <th class="goods-page-description text-center">Producto</th>
+                                            <th class="goods-page-quantity text-center">Precio</th>
+                                            <th class="goods-page-description text-center">Disponibles</th>                                            
+                                            <th class="goods-page-image text-center">Imagen</th>                                                                                       
+                                            <th class="goods-page text-center">Operacion</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -60,32 +62,33 @@
                                                 </td>
                                                 <td class="goods-page-image">
                                                     <img height="100px" src="${base}/images/${productos.urlImagen}"/>
-                                                </td>                                                    
+                                                </td>
+                                                <td class="goods-page text-center">
+                                                    <c:choose>
+                                                        <c:when test="${productos.estadoProducto.estado eq 'Activo'}">
+                                                            <a class="btn btn-info" title="agregar" style="padding: 5%;" href="#">+</a>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <c:choose>
+                                                                <c:when test="${productos.estadoProducto.estado eq 'Rechazado'}">
+                                                                    <a class="btn btn-info" title="Reenviar" style="padding: 5%;"
+                                                                       href="${base}/empresas.do?operacion=obtener&id=${productos.idProducto}">Reenviar</a>
+                                                                </c:when>
+                                                            </c:choose>
+                                                        </c:otherwise>
+                                                    </c:choose>                                                    
+                                                </td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
-
-
                         </div>
-
                     </div>
-
-
-
                 </div>
-
-
-
             </div>
 
         </div>
-
-
-
-
-
 
         <div id="product-pop-up" style="display: none; width: 700px;">
             <div class="col-md-12">
@@ -112,55 +115,27 @@
 
         <br/><br/><br/>
 
-        <jsp:include page="../footer.jsp"/>
+        <jsp:include page="footer.jsp"/>
 
-        <!-- END fast view of a product -->
-
-        <!-- Load javascripts at bottom, this will reduce page load time -->
-        <!-- BEGIN CORE PLUGINS(REQUIRED FOR ALL PAGES) -->
-        <!--[if lt IE 9]>
-        <script src="assets/plugins/respond.min.js"></script>  
-        <![endif]-->  
-        <script src="../assets/plugins/jquery.min.js" type="text/javascript"></script>
-        <script src="../assets/plugins/jquery-migrate.min.js" type="text/javascript"></script>
-        <script src="../assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>      
-
-        <script src="../assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-        <!-- END CORE PLUGINS -->
-
-        <!-- BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE) -->
-        <script src="../assets/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script><!-- pop up -->
-        <script src="../assets/plugins/owl.carousel/owl.carousel.min.js" type="text/javascript"></script><!-- slider for products -->
-        <script src='../assets/plugins/zoom/jquery.zoom.min.js' type="text/javascript"></script><!-- product zoom -->
-        <script src="../assets/plugins/bootstrap-touchspin/bootstrap.touchspin.js" type="text/javascript"></script><!-- Quantity -->
-        <script src="../assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-        <script src="../assets/plugins/rateit/src/jquery.rateit.js" type="text/javascript"></script>
-
-        <script src="../assets/corporate/scripts/layout.js" type="text/javascript"></script>
-        <script>
-            $(document).ready(function () {
-                $('#tabla').DataTable();
-            });
-
-            <c:if test="${not empty exito}">
-            swal({
-                title: "Bien!",
-                text: "${exito}",
-                icon: "success",
-            });
-                <c:set var="exito" value="" scope="session"/>
-            </c:if>
-
-            <c:if test="${not empty fracaso}">
-            swal({
-                title: "Ups!",
-                text: "${fracaso}",
-                icon: "error",
-            });
-                <c:set var="fracaso" value="" scope="session"/>
-            </c:if>
-        </script>
         <!-- END PAGE LEVEL JAVASCRIPTS -->
     </body>
-    <!-- END BODY -->
+    <script>
+        <c:if test="${not empty exito}">
+        swal({
+            title: "Bien!",
+            text: "${exito}",
+            icon: "success",
+        });
+            <c:set var="exito" value="" scope="session"/>
+        </c:if>
+
+        <c:if test="${not empty fracaso}">
+        swal({
+            title: "Ups!",
+            text: "${fracaso}",
+            icon: "error",
+        });
+            <c:set var="fracaso" value="" scope="session"/>
+        </c:if>
+    </script>
 </html>

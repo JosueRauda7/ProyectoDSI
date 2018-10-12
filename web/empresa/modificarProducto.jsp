@@ -38,7 +38,8 @@
                     <h1>Nuevo Producto</h1><br/>
 
                     <form role="form" action="${base}/empresas.do" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="operacion" value="insertar"/>
+                        <input type="hidden" name="operacion" value="reenviar"/>
+                        <input type="hidden" name="id" value="${id}">/
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -89,7 +90,7 @@
                         </div>
 
                         <div class="text-center" style="padding-bottom: 2%; ">                  
-                            <button class="btn btn-primary" type="submit">Registrar</button>
+                            <button class="btn btn-primary" type="submit">Reenviar</button>
                         </div>
                     </form>
                 </div>

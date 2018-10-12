@@ -5,15 +5,19 @@
 --%>
 
 <!-- BEGIN HEADER -->
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="base" value="${pageContext.request.contextPath}"/> 
 <div class="header">
     <div class="container">
-        <a class="site-logo" href="shop-index.html">BigShop</a>       
+        <a class="site-logo" href="${base}/empresas.do?operacion=inicio">BigShop</a>       
         <!-- BEGIN CART -->
         <div class="top-cart-block">
             <div class="header-navigation">
                 <ul>
                     <li class="btn dropdown dropdown-megamenu" >
-                        <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">Mi cuenta</a>
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" data-target="#" aria-haspopup="true" aria-expanded="false">
+                            Mi cuenta
+                        </button>
                         <ul class="dropdown-menu">                                                        
                             <li><a style="padding: 10px" href="shop-product-list.html">Cambiar contraseña</a></li>
                             <li><a style="padding: 10px" href="shop-product-list.html">Salir</a></li>
@@ -26,7 +30,7 @@
         <div class="header-navigation">
             <ul>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="${base}/empresas.do?operacion=inicio">
                         Inicio 
                     </a>
                     <!-- BEGIN DROPDOWN MENU -->
@@ -36,8 +40,8 @@
                         Productos
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="shop-product-list.html">Registrar producto</a></li>
-                        <li><a href="shop-product-list.html">Ver productos</a></li>
+                        <li><a href="${base}/empresas.do?operacion=nuevo">Registrar producto</a></li>
+                        <li><a href="${base}/empresas.do?operacion=listar&estado=1">Ver productos</a></li>
                     </ul>
                 </li>                
 

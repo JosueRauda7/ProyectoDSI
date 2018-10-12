@@ -53,6 +53,7 @@ public class EmpresaController extends HttpServlet {
                 listar(request, response);
                 return;
             }
+
             String operacion = request.getParameter("operacion");
             switch (operacion) {
                 case "listar":
@@ -61,11 +62,11 @@ public class EmpresaController extends HttpServlet {
                 case "nuevo":
                     nuevo(request, response);
                     break;
-                case "insertar":
-                    System.out.println("hola");
-                    String directorio = getServletContext().getRealPath("/images");
-                    MultipartRequest multi = new MultipartRequest(request, directorio, 1 * 1024 * 1024, new DefaultFileRenamePolicy());
-                    insertar(multi, request, response);
+                case "inicio":
+                    request.getRequestDispatcher("/empresa/inicioEmpresa.jsp").forward(request, response);
+                    break;
+                case "obtener":
+                    obtener(request, response);
                     break;
                 default:
                     request.getRequestDispatcher("/error404.jsp").forward(request, response);
@@ -102,7 +103,18 @@ public class EmpresaController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        listaErrores.clear();
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        String directorio = getServletContext().getRealPath("/images");
+        MultipartRequest multi = new MultipartRequest(request, directorio, 1 * 1024 * 1024, new DefaultFileRenamePolicy());
+        String operacion = multi.getParameter("operacion");
+        if (operacion.equals("insertar")) {
+            insertar(multi, request, response);
+        } else if (operacion.equals("reenviar")) {
+            reenviarproducto(multi, request, response);
+        }
     }
 
     /**
@@ -117,7 +129,8 @@ public class EmpresaController extends HttpServlet {
 
     private void listar(HttpServletRequest request, HttpServletResponse response) {
         try {
-            request.setAttribute("listarProducto", modeloProducto.listarProducto(2));
+            int estado = Integer.parseInt(request.getParameter("estado"));
+            request.setAttribute("listarProducto", modeloProducto.listarProducto(2, estado));
             try {
                 request.getRequestDispatcher("/empresa/listaProductos.jsp").forward(request, response);
             } catch (ServletException | IOException ex) {
@@ -141,61 +154,141 @@ public class EmpresaController extends HttpServlet {
     }
 
     private void insertar(MultipartRequest multi, HttpServletRequest request, HttpServletResponse response) {
-        try{
+        try {
             listaErrores.clear();
             Producto producto = new Producto();
-            
+
             producto.setProducto(multi.getParameter("producto"));
             producto.setDescripcion(multi.getParameter("descripcion"));
             producto.setPrecioRegular(multi.getParameter("regular"));
             producto.setCantidad(multi.getParameter("cantidad"));
             producto.setIdsubCategoria(Integer.parseInt(multi.getParameter("subcategoria")));
-            
-            if(Validaciones.isEmpty(producto.getProducto())){
+
+            if (Validaciones.isEmpty(producto.getProducto())) {
                 listaErrores.add("El nombre del producto es obligatorio");
             }
-            
-            if(Validaciones.isEmpty(producto.getDescripcion())){
+
+            if (Validaciones.isEmpty(producto.getDescripcion())) {
                 listaErrores.add("Agrege una descripción al producto");
             }
-            
-            if(Validaciones.isEmpty(producto.getPrecioRegular())){
+
+            if (Validaciones.isEmpty(producto.getPrecioRegular())) {
                 listaErrores.add("El precio del producto es obligatorio");
-            }else if(!Validaciones.esDecimal(producto.getPrecioRegular())){
+            } else if (!Validaciones.esDecimal(producto.getPrecioRegular())) {
                 listaErrores.add("El precio debe ser un decimal");
-            }else if(!Validaciones.esDecimalPositivo(producto.getPrecioRegular())){
+            } else if (!Validaciones.esDecimalPositivo(producto.getPrecioRegular())) {
                 listaErrores.add("El precio debe ser un número positivo");
             }
-            
-            if(Validaciones.isEmpty(producto.getCantidad())){
+
+            if (Validaciones.isEmpty(producto.getCantidad())) {
                 listaErrores.add("La cantidad de producto es obligatoria");
-            }else if(Validaciones.esEntero(producto.getCantidad())){
+            } else if (!Validaciones.esEntero(producto.getCantidad())) {
                 listaErrores.add("La cantidad de productos debe ser un número");
-            }else if(Validaciones.esEnteroPositivo(producto.getCantidad())){
+            } else if (!Validaciones.esEnteroPositivo(producto.getCantidad())) {
                 listaErrores.add("La cantidad debe ser un número positivo");
             }
-            
+
             if (multi.getFile("archivo") == null) {
                 listaErrores.add("La imagen es obligatoria");
             } else {
                 File ficheroTemp = multi.getFile("archivo");
                 producto.setUrlImagen(ficheroTemp.getName());
             }
-            System.out.println("hola");
-            if(listaErrores.isEmpty()){
-                if (modeloProducto.insertarProducto(producto, (Integer)request.getSession().getAttribute("empresa")) == 1) {
-                        request.getSession().setAttribute("exito", "Producto registrado existosamente.");
-                    } else {
-                        request.getSession().setAttribute("fracaso", "Ocurrio un error, no se pudo registrar el producto...");
-                    }
 
-                    response.sendRedirect(request.getContextPath() + "/empresas.do?operacion=listar");
+            if (listaErrores.isEmpty()) {
+                if (modeloProducto.insertarProducto(producto, 1) == 1) {
+                    request.getSession().setAttribute("exito", "Producto registrado existosamente.");
+                } else {
+                    request.getSession().setAttribute("fracaso", "Ocurrio un error, no se pudo registrar el producto...");
+                }
+
+                response.sendRedirect(request.getContextPath() + "/empresas.do?operacion=listar&estado=1");
             } else {
                 request.setAttribute("listaErrores", listaErrores);
+                request.setAttribute("listaSubcategoria", modeloSubcategoria.listarSubCategorias());
                 request.setAttribute("producto", producto);
                 request.getRequestDispatcher("/empresa/nuevoProducto.jsp").forward(request, response);
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
+            Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void obtener(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int codigo = Integer.parseInt(request.getParameter("id"));
+            Producto producto = modeloProducto.obtenerProducto(2, codigo);
+            if (producto != null) {
+                request.setAttribute("producto", producto);
+                request.setAttribute("id", codigo);
+                request.setAttribute("listaSubcategoria", modeloSubcategoria.listarSubCategorias());
+                request.getRequestDispatcher("/empresa/modificarProducto.jsp").forward(request, response);
+            } else {
+                request.getSession().setAttribute("fracaso", "Ocurrio un error, no se pudo encontrar el producto...");
+                response.sendRedirect(request.getContextPath() + "/empresas.do?operacion=listar&estado=1");
+            }
+        } catch (IOException | ServletException | SQLException ex) {
+            Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void reenviarproducto(MultipartRequest multi, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        listaErrores.clear();
+        try {
+            Producto producto = new Producto();
+            int codigo = Integer.parseInt(multi.getParameter("id"));
+            producto.setProducto(multi.getParameter("producto"));
+            producto.setDescripcion(multi.getParameter("descripcion"));
+            producto.setPrecioRegular(multi.getParameter("regular"));
+            producto.setCantidad(multi.getParameter("cantidad"));
+            producto.setIdsubCategoria(Integer.parseInt(multi.getParameter("subcategoria")));
+
+            if (Validaciones.isEmpty(producto.getProducto())) {
+                listaErrores.add("El nombre del producto es obligatorio");
+            }
+
+            if (Validaciones.isEmpty(producto.getDescripcion())) {
+                listaErrores.add("Agrege una descripción al producto");
+            }
+
+            if (Validaciones.isEmpty(producto.getPrecioRegular())) {
+                listaErrores.add("El precio del producto es obligatorio");
+            } else if (!Validaciones.esDecimal(producto.getPrecioRegular())) {
+                listaErrores.add("El precio debe ser un decimal");
+            } else if (!Validaciones.esDecimalPositivo(producto.getPrecioRegular())) {
+                listaErrores.add("El precio debe ser un número positivo");
+            }
+
+            if (Validaciones.isEmpty(producto.getCantidad())) {
+                listaErrores.add("La cantidad de producto es obligatoria");
+            } else if (!Validaciones.esEntero(producto.getCantidad())) {
+                listaErrores.add("La cantidad de productos debe ser un número");
+            } else if (!Validaciones.esEnteroPositivo(producto.getCantidad())) {
+                listaErrores.add("La cantidad debe ser un número positivo");
+            }
+
+            if (multi.getFile("archivo") == null) {
+                listaErrores.add("La imagen es obligatoria");
+            } else {
+                File ficheroTemp = multi.getFile("archivo");
+                producto.setUrlImagen(ficheroTemp.getName());
+            }
+
+            if (listaErrores.isEmpty()) {
+                if (modeloProducto.modificarProducto(producto, codigo) == 1) {
+                    request.getSession().setAttribute("exito", "Producto reenviado existosamente.");
+                } else {
+                    request.getSession().setAttribute("fracaso", "Ocurrio un error, no se pudo reenviar el producto...");
+                }
+
+                response.sendRedirect(request.getContextPath() + "/empresas.do?operacion=listar&estado=1");
+            } else {
+                request.setAttribute("listaErrores", listaErrores);
+                request.setAttribute("listaSubcategoria", modeloSubcategoria.listarSubCategorias());
+                request.setAttribute("producto", producto);
+                request.getRequestDispatcher("/empresa/modificarProducto.jsp").forward(request, response);
+            }
+        } catch (Exception ex) {
             Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
