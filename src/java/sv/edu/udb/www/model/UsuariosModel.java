@@ -206,6 +206,9 @@ public class UsuariosModel extends Conexion {
 
     }
 
+    
+    
+    //PARTE RAUDA
     public List<Usuario> listarUsuarios() throws SQLException {
         try {
             List<Usuario> listaUsuario = new ArrayList<>();
@@ -324,4 +327,5 @@ public class UsuariosModel extends Conexion {
         }
 
     }
+    //FIN PARTE RAUDA
 }
