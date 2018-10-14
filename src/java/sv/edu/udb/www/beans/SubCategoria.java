@@ -14,12 +14,14 @@ public class SubCategoria {
     private String subCategoria;
     private Categoria categoria;
     private EstadoCategoria estadoCategoria;
+    private String urlSubcategoria;
     
     public SubCategoria(){
         this.idSubCategoria=0;
         this.subCategoria="";
         this.categoria=null;
         this.estadoCategoria=null;
+        this.urlSubcategoria ="";
     }
     
     public SubCategoria(String subCategoria){
@@ -57,5 +59,14 @@ public class SubCategoria {
     public void setEstadoCategoria(EstadoCategoria estadoCategoria) {
         this.estadoCategoria = estadoCategoria;
     }
+
+    public String getUrlSubcategoria() {
+        return urlSubcategoria;
+    }
+
+    public void setUrlSubcategoria(String urlSubcategoria) {
+        this.urlSubcategoria = urlSubcategoria;
+    }
+    
     
 }

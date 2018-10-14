@@ -26,7 +26,7 @@ import sv.edu.udb.www.model.ProductosModel;
 public class PublicController extends HttpServlet {
 
     CategoriasModel CategoriaModel = new CategoriasModel();
-    ProductosModel ProductoModel = new ProductosModel();
+    ProductosModel ProductoModel = new ProductosModel();   
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

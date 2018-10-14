@@ -31,8 +31,10 @@ public class CategoriasModel extends Conexion{
                 EstadoCategoria estado = new EstadoCategoria();
                 categoria.setIdCategoria(rs.getInt("id_categoria"));
                 categoria.setCategoria(rs.getString("categoria"));
+                categoria.setUrlCategoria(rs.getString("Urlcategoria"));
                 estado.setIdEstadoCategoria(rs.getInt("id_estado_categoria"));
                 estado.setEstadoCategoria(rs.getString("estado_categoria"));
+                
                 categoria.setEstadoCategoria(estado);                
                 lista.add(categoria);
             }

@@ -13,10 +13,13 @@ public class Categoria {
     private int idCategoria;
     private String categoria;
     private EstadoCategoria estadoCategoria;
+    private String urlCategoria;
+    
     public Categoria(){
         this.idCategoria=0;
         this.categoria="";
         this.estadoCategoria=null;
+        this.urlCategoria="";
     }
 
     public int getIdCategoria() {
@@ -42,5 +45,14 @@ public class Categoria {
     public void setEstadoCategoria(EstadoCategoria estadoCategoria) {
         this.estadoCategoria = estadoCategoria;
     }
+
+    public String getUrlCategoria() {
+        return urlCategoria;
+    }
+
+    public void setUrlCategoria(String urlCategoria) {
+        this.urlCategoria = urlCategoria;
+    }
+    
     
 }
