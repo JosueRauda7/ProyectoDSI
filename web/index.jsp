@@ -36,11 +36,11 @@
                     <div class="item carousel-item-four active">
                         <div class="container">
                             <div class="carousel-position-four text-center">
-                                <h2 class="margin-bottom-20 animate-delay carousel-title-v3 border-bottom-title text-uppercase" data-animation="animated fadeInDown">
-                                    Título <br/><span class="color-red-v2">Slider</span><br/> designed
+                                <h2 class="margin-bottom-20 animate-delay carousel-title-v3 border-bottom-title" data-animation="animated fadeInDown">
+                                    Biebvenido a<br/><span class="color-red-v2">BigShop</span><br/>Tu tienda online
                                 </h2>
-                                <p class="carousel-subtitle-v2" data-animation="animated fadeInUp">Lorem ipsum dolor sit amet constectetuer diam <br/>
-                                    adipiscing elit euismod ut laoreet dolore.</p>
+                                <p class="carousel-subtitle-v2" data-animation="animated fadeInUp">BigShop se convertira en tu tienda favorita <br/>
+                                    te</p>
                             </div>
                         </div>
 
@@ -194,7 +194,6 @@
 
 
 
-            <jsp:include page="/scripts.jsp"/>
             <script type="text/javascript">
                 jQuery(document).ready(function () {
                     Layout.init();
@@ -205,6 +204,9 @@
                     Layout.initUniform();
                 });
             </script>
+             
+            
+            <script src="http://code.jquery.com/jquery-latest.js"></script>
             <script src="assets/pages/scripts/ModalLog.js" type="text/javascript"></script>
 
             <!-- END PAGE LEVEL JAVASCRIPTS -->
