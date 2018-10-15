@@ -15,6 +15,7 @@ public class SubCategoria {
     private Categoria categoria;
     private EstadoCategoria estadoCategoria;
     private String urlSubcategoria;
+    private String urlImagen;
     
     public SubCategoria(){
         this.idSubCategoria=0;

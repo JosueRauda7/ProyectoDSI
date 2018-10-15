@@ -20,9 +20,18 @@
                     <div class="margin-bottom-65"></div>
                     <div class="col-lg-3"></div>
                     <div class="content-page col-lg-6">
-                        <h1>Nueva Sub Categoria</h1><br/>
+                        <h1>Modificar Sub Categoria</h1><br/>
+                        <c:if test="${not empty requestScope.listaErrores}">
+                            <div class="alert alert-danger">
+                                <ul>
+                                    <c:forEach var="error" items="${requestScope.listaErrores}">
+                                        <li>${error}</li>
+                                        </c:forEach>
+                                </ul>
+                            </div>
+                        </c:if>
                         <!-- BEGIN FORM-->
-                        <form action="${pageContext.request.contextPath}/SubCategoria.do" class="default-form" role="form">
+                        <form action="${pageContext.request.contextPath}/SubCategoria.do" class="default-form" role="form" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="operacion" value="modificar"/>
                             <input type="hidden" name="id" value="${subCategoria.idSubCategoria}"/>
                             <div class="form-group">
@@ -50,6 +59,11 @@
                                 </select>
                             </div>
 
+                            <div class="form-group">
+                                <label for="imagen">Imagen</label>
+                                <input data-language="es" type="file" name="archivo" id="imagen" class="form-control file file-loading" data-allowed-file-extensions='["jpg", "png"]'
+                                       value="${base}/images/${subCategoria.urlSubcategoria}/"/>
+                            </div>
 
 
                             <div class="padding-top-20">                  

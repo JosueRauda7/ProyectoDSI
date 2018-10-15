@@ -21,6 +21,9 @@
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|PT+Sans+Narrow|Source+Sans+Pro:200,300,400,600,700,900&amp;subset=all" rel="stylesheet" type="text/css"> 
 <!-- Fonts END -->
 
+<script src="${pageContext.request.contextPath}/assets/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>      
+
 <!-- Global styles START -->          
 <link href="${pageContext.request.contextPath}/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -45,4 +48,5 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/jquery.dataTables.min.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/assets/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/pages/css/validator.css">
 <!-- Theme styles END -->
