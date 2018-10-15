@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <div class="header">
     <div class="container">
-        <a class="site-logo" href="shop-index.html">BigShop</a>
+        <a class="site-logo" href="public.do?operacion=publicIndex">BigShop</a>
 
         <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
 

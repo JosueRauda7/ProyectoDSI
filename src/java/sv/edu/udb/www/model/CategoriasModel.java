@@ -170,4 +170,24 @@ public class CategoriasModel extends Conexion{
 
     }
     
+    public String nombreCaterogia(int valor) throws SQLException{
+        try {
+            String nombre="";
+            String sql = "SELECT c.categoria FROM categoria c WHERE id_categoria =?";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, valor);
+            rs = st.executeQuery();
+            if(rs.next()){
+                nombre = rs.getString("categoria");
+            }
+            this.desconectar();
+            return nombre;
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoriasModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return "";
+        }
+    }
+    
 }

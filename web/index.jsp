@@ -81,14 +81,14 @@
                                                 <div class="col-md-4 col-sm-6 col-xs-6" >
                                                     <div class="product-item" style="height: 450px;">
                                                         <div class="pi-img-wrapper">
-                                                            <img src="images/${ultpro.urlImagen}"  style="height: 300px;" class="img-responsive" alt="Berry Lace Dress">
+                                                            <img src="images/${ultpro.urlImagen}"  style="height: 350px;" class="img-responsive" alt="Berry Lace Dress">
                                                             <div>
                                                                 <a href="images/${ultpro.urlImagen}" class="btn btn-default fancybox-button">Ver producto</a>                               
                                                             </div>
                                                         </div>
-                                                        <h3><a href="shop-item.html">${ultpro.producto}</a></h3>
-                                                        <div class="pi-price">$${ultpro.precioRegular}</div>
-                                                        <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                                                                <h3 class="text-center"><a href="shop-item.html">${ultpro.producto}</a></h3>
+                                                        <div class="pi-price">Precio: $${ultpro.precioRegular}</div>
+                                                      
                                                     </div>
                                                 </div>
                                             </c:forEach>
@@ -176,7 +176,7 @@
                                           <a href="images/${categoriasfoot.urlCategoria}" class="btn btn-default fancybox-button">Ver categoria</a> 
                                         </div>
                                     </div>
-                                        <h3 class="text-center"><a href="shop-item.html">${categoriasfoot.categoria}</a></h3>
+                                        <h3 class="text-center"><a href="public.do?operacion=vercategoria&idcat=${categoriasfoot.idCategoria}">${categoriasfoot.categoria}</a></h3>
                                 </div>
                             </div>
                             </c:forEach>
@@ -205,8 +205,9 @@
                 });
             </script>
              
+                 
+    
             
-            <script src="http://code.jquery.com/jquery-latest.js"></script>
             <script src="assets/pages/scripts/ModalLog.js" type="text/javascript"></script>
 
             <!-- END PAGE LEVEL JAVASCRIPTS -->

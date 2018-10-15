@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import sv.edu.udb.www.model.CategoriasModel;
 import sv.edu.udb.www.model.ProductosModel;
+import sv.edu.udb.www.model.SubCategoriasModel;
 
 /**
  *
@@ -27,6 +28,7 @@ public class PublicController extends HttpServlet {
 
     CategoriasModel CategoriaModel = new CategoriasModel();
     ProductosModel ProductoModel = new ProductosModel();
+    SubCategoriasModel subcategoriaModel = new SubCategoriasModel();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -95,7 +97,10 @@ public class PublicController extends HttpServlet {
 
     private void vercategoria(HttpServletRequest request, HttpServletResponse response) {
         try {
+            int idcat= Integer.parseInt(request.getParameter("idcat"));
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.setAttribute("listaSubcategoria",subcategoriaModel.listarporCategoria(idcat));
+            request.setAttribute("nombreCategoria",CategoriaModel.nombreCaterogia(idcat));
             request.getRequestDispatcher("subcategoria.jsp").forward(request, response);
         } catch (ServletException | IOException | SQLException ex) {
             Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);

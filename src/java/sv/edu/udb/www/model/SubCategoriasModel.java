@@ -53,6 +53,7 @@ public class SubCategoriasModel extends Conexion {
 
     }
 
+    
     public int insertarSubCategoria(SubCategoria subCategoria) throws SQLException {
 
         try {
@@ -218,7 +219,31 @@ public class SubCategoriasModel extends Conexion {
             this.desconectar();
             return null;
         }
-
     }
 
+     public List<SubCategoria> listarporCategoria(int valor) throws SQLException {
+        try {
+            List<SubCategoria> lista = new ArrayList<>();
+            sql = "SELECT * FROM sub_categoria WHERE id_categoria =?";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, valor);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                SubCategoria subCategoria = new SubCategoria();
+                subCategoria.setIdSubCategoria(rs.getInt("id_sub_categoria"));
+                subCategoria.setSubCategoria(rs.getString("subcategoria"));
+                subCategoria.setUrlSubcategoria(rs.getString("Urlsubcategoria"));
+                lista.add(subCategoria);
+            }
+
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(SubCategoriasModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+
+    }
 }
