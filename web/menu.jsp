@@ -60,13 +60,13 @@
                                    
                                     <c:forEach var="categorias" items="${requestScope.listaCategorias}">
                                      <div class="col-md-4 header-navigation-col">
-                                        <h4>${categorias.categoria}</h4>
+                                         <h4 ><a style="color: #757575;" href="public.do?operacion=vercategoria&idcat=${categorias.idCategoria}">${categorias.categoria}</a></h4>
                                         <ul>
                                             <sql:query var="ql" dataSource="jdbc/mysql">
                                                 SELECT * FROM sub_categoria WHERE id_categoria=${categorias.idCategoria}
                                             </sql:query>
                                             <c:forEach var="subcat" items="${ql.rows}">
-                                            <li><a href="shop-product-list.html">${subcat.subcategoria}</a></li>
+                                            <li><a href="#" >${subcat.subcategoria}</a></li>
                                             </c:forEach>
                                         </ul>
                                     </div>

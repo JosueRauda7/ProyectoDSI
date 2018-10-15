@@ -26,7 +26,7 @@ import sv.edu.udb.www.model.ProductosModel;
 public class PublicController extends HttpServlet {
 
     CategoriasModel CategoriaModel = new CategoriasModel();
-    ProductosModel ProductoModel = new ProductosModel();   
+    ProductosModel ProductoModel = new ProductosModel();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -36,6 +36,9 @@ public class PublicController extends HttpServlet {
             switch (operacion) {
                 case "publicIndex":
                     publicIndex(request, response);
+                    break;
+                case "vercategoria":
+                    vercategoria(request, response);
                     break;
             }
         }
@@ -87,6 +90,15 @@ public class PublicController extends HttpServlet {
             request.getRequestDispatcher("index.jsp").forward(request, response);
         } catch (ServletException | IOException | SQLException ex) {
             Logger.getLogger(CategoriasController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void vercategoria(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.getRequestDispatcher("subcategoria.jsp").forward(request, response);
+        } catch (ServletException | IOException | SQLException ex) {
+            Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
