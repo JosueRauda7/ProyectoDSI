@@ -44,6 +44,16 @@
                 </li>
                 <li class="dropdown dropdown-megamenu">
                     <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+                        Sub Categorías
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="${pageContext.request.contextPath}/SubCategoria.do?operacion=nuevo">Registrar sub categoría</a></li>
+                        <li><a href="${pageContext.request.contextPath}/SubCategoria.do?operacion=listar">Ver sub categorías</a></li>
+                    </ul>
+                </li>
+                
+                <li class="dropdown dropdown-megamenu">
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
                         Productos
                     </a>
                     <ul class="dropdown-menu">

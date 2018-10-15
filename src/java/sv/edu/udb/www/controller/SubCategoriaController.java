@@ -5,6 +5,10 @@
  */
 package sv.edu.udb.www.controller;
 
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import com.oreilly.servlet.MultipartRequest;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -55,21 +59,9 @@ public class SubCategoriaController extends HttpServlet {
 
                     break;
 
-                case "insertar":
-
-                    insertar(request, response);
-
-                    break;
-
                 case "obtener":
 
                     obtener(request, response);
-
-                    break;
-
-                case "modificar":
-
-                    modificar(request, response);
 
                     break;
 
@@ -78,7 +70,7 @@ public class SubCategoriaController extends HttpServlet {
                     deshabilitar(request, response);
 
                     break;
-                    
+
                 case "habilitar":
 
                     habilitar(request, response);
@@ -116,7 +108,25 @@ public class SubCategoriaController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        listaErrores.clear();
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        try {
+
+            String directorio = getServletContext().getRealPath("/images");
+            MultipartRequest multi = new MultipartRequest(request, directorio, 1 * 1024 * 1024, new DefaultFileRenamePolicy());
+            String operacion = multi.getParameter("operacion");
+            if (operacion.equals("insertar")) {
+                insertar(multi, request, response);
+            } else if (operacion.equals("modificar")) {
+                modificar(multi, request, response);
+            }
+        } catch (FileNotFoundException e) {
+            out.println("La ruta de ubicacion no existe");
+        }
+
     }
 
     /**
@@ -144,13 +154,13 @@ public class SubCategoriaController extends HttpServlet {
         }
     }
 
-    private void insertar(HttpServletRequest request, HttpServletResponse response) {
+    private void insertar(MultipartRequest multi, HttpServletRequest request, HttpServletResponse response) {
         listaErrores.clear();
         SubCategoria subCategoria = new SubCategoria();
         Categoria categoria = new Categoria();
-        categoria.setIdCategoria(Integer.parseInt(request.getParameter("categoria")));
+        categoria.setIdCategoria(Integer.parseInt(multi.getParameter("categoria")));
 
-        subCategoria.setSubCategoria(request.getParameter("subcategoria"));
+        subCategoria.setSubCategoria(multi.getParameter("subcategoria"));
         subCategoria.setCategoria(categoria);
 
         if (Validaciones.isEmpty(subCategoria.getSubCategoria())) {
@@ -161,12 +171,20 @@ public class SubCategoriaController extends HttpServlet {
             listaErrores.add("Debe seleccionar una categoria");
         }
 
+        if (multi.getFile("archivo") == null) {
+            listaErrores.add("Debe seleccionar una imagen");
+        }else{
+            File ficheroTemp = multi.getFile("archivo");
+            subCategoria.setUrlSubcategoria(ficheroTemp.getName());
+        }
+
         if (listaErrores.size() > 0) {
             try {
+                request.setAttribute("listaCategorias", modelo.listarCategorias());
                 request.setAttribute("subCategoria", subCategoria);
                 request.setAttribute("listaErrores", listaErrores);
-                request.getRequestDispatcher("/SubCategoria.do?operacion=nuevo").forward(request, response);
-            } catch (ServletException | IOException ex) {
+                request.getRequestDispatcher("/administrador/nuevaSubCategoria.jsp").forward(request, response);
+            } catch (ServletException | IOException | SQLException ex) {
                 Logger.getLogger(SubCategoriaController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
@@ -196,16 +214,16 @@ public class SubCategoriaController extends HttpServlet {
         }
     }
 
-    private void modificar(HttpServletRequest request, HttpServletResponse response) {
+    private void modificar(MultipartRequest multi, HttpServletRequest request, HttpServletResponse response) {
         listaErrores.clear();
         SubCategoria subCategoria = new SubCategoria();
         Categoria categoria = new Categoria();
-        categoria.setIdCategoria(Integer.parseInt(request.getParameter("categoria")));
+        categoria.setIdCategoria(Integer.parseInt(multi.getParameter("categoria")));
 
-        subCategoria.setSubCategoria(request.getParameter("subcategoria"));
+        subCategoria.setSubCategoria(multi.getParameter("subcategoria"));
         subCategoria.setCategoria(categoria);
 
-        subCategoria.setIdSubCategoria(Integer.parseInt(request.getParameter("id")));
+        subCategoria.setIdSubCategoria(Integer.parseInt(multi.getParameter("id")));
 
         if (Validaciones.isEmpty(subCategoria.getSubCategoria())) {
             listaErrores.add("El nombre de la sub categoria es obligatorio");
@@ -215,12 +233,19 @@ public class SubCategoriaController extends HttpServlet {
             listaErrores.add("Debe seleccionar una categoria");
         }
 
+        if (multi.getFile("archivo") != null) {
+            File ficheroTemp = multi.getFile("archivo");
+            subCategoria.setUrlSubcategoria(ficheroTemp.getName());
+        }
+
         if (listaErrores.size() > 0) {
             try {
+                request.setAttribute("listaCategorias", modelo.listarCategorias());
                 request.setAttribute("subCategoria", subCategoria);
                 request.setAttribute("listaErrores", listaErrores);
-                request.getRequestDispatcher("/SubCategoria.do?operacion=nuevo").forward(request, response);
-            } catch (ServletException | IOException ex) {
+                request.getRequestDispatcher("/administrador/editarSubCategoria.jsp").forward(request, response);
+
+            } catch (ServletException | IOException | SQLException ex) {
                 Logger.getLogger(SubCategoriaController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
@@ -241,7 +266,7 @@ public class SubCategoriaController extends HttpServlet {
 
     private void deshabilitar(HttpServletRequest request, HttpServletResponse response) {
         try {
-            
+
             int id = Integer.parseInt(request.getParameter("id"));
 
             if (modelo.deshabilitarSubCategoria(id) > 0) {
@@ -255,10 +280,10 @@ public class SubCategoriaController extends HttpServlet {
             Logger.getLogger(SubCategoriaController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void habilitar(HttpServletRequest request, HttpServletResponse response) {
         try {
-            
+
             int id = Integer.parseInt(request.getParameter("id"));
 
             if (modelo.habilitarSubCategoria(id) > 0) {
@@ -275,7 +300,7 @@ public class SubCategoriaController extends HttpServlet {
 
     private void nuevo(HttpServletRequest request, HttpServletResponse response) {
         try {
-            request.setAttribute("listaCategorias", modeloCategorias.listarCategorias());
+            request.setAttribute("listaCategorias", modelo.listarCategorias());
             request.getRequestDispatcher("/administrador/nuevaSubCategoria.jsp").forward(request, response);
         } catch (SQLException | ServletException | IOException ex) {
             Logger.getLogger(SubCategoriaController.class.getName()).log(Level.SEVERE, null, ex);

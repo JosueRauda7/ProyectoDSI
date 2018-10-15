@@ -57,11 +57,12 @@ public class SubCategoriasModel extends Conexion {
 
         try {
             int filasAfectadas = 0;
-            sql = "INSERT INTO sub_categoria VALUES(null,?,?,1)";
+            sql = "INSERT INTO sub_categoria VALUES(null,?,?,1,?)";
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setString(1, subCategoria.getSubCategoria());
             st.setInt(2, subCategoria.getCategoria().getIdCategoria());
+            st.setString(3, subCategoria.getUrlSubcategoria());
             filasAfectadas = st.executeUpdate();
 
             this.desconectar();
@@ -78,7 +79,7 @@ public class SubCategoriasModel extends Conexion {
 
     public SubCategoria obtenerSubCategoria(String id) throws SQLException {
         try {
-            sql = "SELECT t1.*, t2.*, t3.* FROM sub_categoria t1 INNER JOIN estado_sub_categoria ON t1.id_estado_sub_categoria = t2.id_estado_sub_categoria  INNER JOIN categoria t3 ON t1.id_categoria=t3.id_categoria WHERE t1.id_sub_categoria=?";
+            sql = "SELECT t1.*, t2.*, t3.* FROM sub_categoria t1 INNER JOIN estado_sub_categoria t2 ON t1.id_estado_sub_categoria = t2.id_estado_sub_categoria  INNER JOIN categoria t3 ON t1.id_categoria=t3.id_categoria WHERE t1.id_sub_categoria=?";
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setString(1, id);
@@ -90,6 +91,7 @@ public class SubCategoriasModel extends Conexion {
                 Categoria categoria = new Categoria();
                 subCategoria.setIdSubCategoria(rs.getInt("id_sub_categoria"));
                 subCategoria.setSubCategoria(rs.getString("subcategoria"));
+                subCategoria.setUrlSubcategoria(rs.getString("Urlsubcategoria"));
                 estado.setIdEstadoCategoria(rs.getInt("id_estado_sub_categoria"));
                 estado.setEstadoCategoria(rs.getString("estado_sub_categoria"));
                 categoria.setIdCategoria(rs.getInt("id_categoria"));
@@ -114,12 +116,23 @@ public class SubCategoriasModel extends Conexion {
     public int modificarSubCategoria(SubCategoria subCategoria) throws SQLException {
         try {
             int filasAfectadas = 0;
-            sql = "UPDATE sub_categoria SET subcategoria=?, id_categoria=? WHERE id_sub_categoria = ?";
-            this.conectar();
-            st = conexion.prepareStatement(sql);
-            st.setString(1, subCategoria.getSubCategoria());
-            st.setInt(2, subCategoria.getCategoria().getIdCategoria());
-            st.setInt(3, subCategoria.getIdSubCategoria());
+            if (subCategoria.getUrlSubcategoria() == null) {
+                sql = "UPDATE sub_categoria SET subcategoria=?, id_categoria=? WHERE id_sub_categoria = ?";
+                this.conectar();
+                st = conexion.prepareStatement(sql);
+                st.setString(1, subCategoria.getSubCategoria());
+                st.setInt(2, subCategoria.getCategoria().getIdCategoria());
+                st.setInt(3, subCategoria.getIdSubCategoria());
+            } else {
+                sql = "UPDATE sub_categoria SET subcategoria=?, id_categoria=?, Urlsubcategoria = ? WHERE id_sub_categoria = ?";
+                this.conectar();
+                st = conexion.prepareStatement(sql);
+                st.setString(1, subCategoria.getSubCategoria());
+                st.setInt(2, subCategoria.getCategoria().getIdCategoria());
+                st.setString(3, subCategoria.getUrlSubcategoria());
+                st.setInt(4, subCategoria.getIdSubCategoria());
+            }
+
             filasAfectadas = st.executeUpdate();
 
             this.desconectar();
@@ -155,7 +168,7 @@ public class SubCategoriasModel extends Conexion {
         }
 
     }
-    
+
     public int habilitarSubCategoria(int id) throws SQLException {
         try {
             int filasAfectadas = 0;
@@ -177,5 +190,35 @@ public class SubCategoriasModel extends Conexion {
         }
 
     }
-    
+
+    public List<Categoria> listarCategorias() throws SQLException {
+        try {
+            List<Categoria> lista = new ArrayList<>();
+            sql = "SELECT t1.*, t2.* FROM categoria t1 INNER JOIN estado_categoria t2 ON t2.id_estado_categoria=t1.id_estado_categoria WHERE t1.id_estado_categoria = 1";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Categoria categoria = new Categoria();
+                EstadoCategoria estado = new EstadoCategoria();
+                categoria.setIdCategoria(rs.getInt("id_categoria"));
+                categoria.setCategoria(rs.getString("categoria"));
+                categoria.setUrlCategoria(rs.getString("Urlcategoria"));
+                estado.setIdEstadoCategoria(rs.getInt("id_estado_categoria"));
+                estado.setEstadoCategoria(rs.getString("estado_categoria"));
+
+                categoria.setEstadoCategoria(estado);
+                lista.add(categoria);
+            }
+
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoriasModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+
+    }
+
 }

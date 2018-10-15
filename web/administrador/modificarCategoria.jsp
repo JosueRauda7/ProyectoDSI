@@ -58,6 +58,13 @@
                                     </c:choose>
                                 </select>
                             </div>
+                            
+                            <div class="form-group">
+                                <label for="imagen">Imagen</label>
+                                <input data-language="es" type="file" name="archivo" id="imagen" class="form-control file file-loading" data-allowed-file-extensions='["jpg", "png"]'
+                                       value="${base}/images/${subCategoria.urlSubcategoria}/"/>
+                            </div>
+                            
                             <div class="padding-top-20">                  
                                 <button type="submit" class="btn btn-primary">Aceptar</button>
                                 <a href="${pageContext.request.contextPath}/categorias.do?operacion=listar" style="background-color: #F3565D;color:white;" class="btn btn-primary">Cancelar</a>

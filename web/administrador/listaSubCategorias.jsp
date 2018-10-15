@@ -52,10 +52,10 @@
 
                                             <td>
                                                 <a title="Editar" class="btn btn-success" style="color:white;" href="${pageContext.request.contextPath}/SubCategoria.do?operacion=obtener&id=${subCategoria.idSubCategoria}"><span class="glyphicon glyphicon-edit"></span></a>
-                                                <c:if test="${subCategoria.estadoCategoria.estadoCategoria == 'habilitado'}">
+                                                <c:if test="${subCategoria.estadoCategoria.estadoCategoria == 'activo'}">
                                                 <a title="Deshabilitar" class="btn btn-danger" style="color:white;" href="javascript:deshabilitar('${subCategoria.idSubCategoria}')"><span class="glyphicon glyphicon-trash"></span></a>
                                                 </c:if>
-                                                <c:if test="${subCategoria.estadoCategoria.estadoCategoria eq 'deshabilitado'}">
+                                                <c:if test="${subCategoria.estadoCategoria.estadoCategoria eq 'inactivo'}">
                                                 <a title="Habilitar" class="btn btn-info" style="color:white;" href="${pageContext.request.contextPath}/SubCategoria.do?operacion=habilitar&id=${subCategoria.idSubCategoria}"><span class="glyphicon glyphicon-check"></span></a>
                                                 </c:if>
                                             </td>
