@@ -287,6 +287,15 @@ public class UsuarioController extends HttpServlet {
                     request.setAttribute("listaErrores2", listaErrores);
                     request.setAttribute("url", urlmodel);
                     request.getRequestDispatcher(urlmodel).forward(request, response);
+                }else if(usuario.getIdConfirmacion() == 1){
+                   
+                    request.getSession().setAttribute("usuario", usuario.getIdUsuario());
+                    request.getSession().setAttribute("tipousuario", usuario.getTipoUser());
+                     switch(usuario.getTipoUser()){
+                         case 1:
+                             request.getRequestDispatcher("/administrador/inicioAdmin.jsp").forward(request, response);
+                             break;
+                    }
                 }
             }
         } catch (SQLException | ServletException | IOException ex) {

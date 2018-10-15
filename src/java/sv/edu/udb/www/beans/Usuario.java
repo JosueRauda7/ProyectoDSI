@@ -38,6 +38,7 @@ public class Usuario {
         this.fecha_nac = "";
         this.tipoUsaurio = null;
         this.tipoUser =0;
+        this.idConfirmacion =0;
     }
 
     public int getIdUsuario() {
