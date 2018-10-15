@@ -11,10 +11,10 @@
         <!-- BEGIN CART -->
         <div class="top-cart-block">
             <div class="top-cart-info">
-                <a href="javascript:void(0);" class="top-cart-info-count">1 artículos</a>
-                <a href="javascript:void(0);" class="top-cart-info-value">$1230</a>
+                <a href="javascript:void(0);" class="top-cart-info-count">0 artículos</a>
+                <a href="javascript:void(0);" class="top-cart-info-value">$0</a>
             </div>
-            <i class="fa fa-shopping-cart"></i>
+            <i style="background-color:#9E9E9E;" class="fa fa-shopping-cart"></i>
 
             <div class="top-cart-content-wrapper">
                 <div class="top-cart-content">

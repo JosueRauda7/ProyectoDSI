@@ -31,7 +31,7 @@
                             <center><h1>${requestScope.nombreCategoria}</h1></center>
                             <hr>
                             <c:forEach var="subcat" items="${requestScope.listaSubcategoria}">
-                                <div class="col-md-4 col-sm-6 col-xs-6" >
+                                <div class="col-md-4 col-sm-6 col-xs-12" >
                                     <div class="product-item" style="height: 450px;">
                                         <div class="pi-img-wrapper">
                                             <img src="images/${subcat.urlSubcategoria}"  style="height: 350px;" class="img-responsive" alt="Berry Lace Dress">
