@@ -21,17 +21,18 @@
                 <div class="top-cart-content">
                     <ul class="scroller" style="height: 250px;">
                         <li>
-                            <!-- Objetos de carrito -->
+                            
                             <a href="shop-item.html"><img src="assets/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
                             <span class="cart-content-count">x 1</span>
                             <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
-                            <em>$1230</em>
-                            <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
+                            <em>$1230</em><a  class="del-goods">&nbsp;</a>
                         </li>                
                     </ul>
                     <div class="text-right">
                         <a href="shop-shopping-cart.html" class="btn btn-default">Ver Carritos</a>
+                        <form action="${base}/clientes.do?operacion=crearCarrito">
                         <a href="shop-checkout.html" class="btn btn-primary">Crear carrito</a>
+                        </form>
                     </div>
                 </div>
             </div>            

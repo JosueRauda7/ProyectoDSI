@@ -42,6 +42,9 @@ public class ClienteController extends HttpServlet {
                 case "vercategoria":
                     vercategoriaClien(request, response);
                     break;
+                case "crearCarrito":
+                    crearCarrito(request, response);
+                    break;
             }
         }
     }
@@ -96,15 +99,19 @@ public class ClienteController extends HttpServlet {
     }
 
     private void vercategoriaClien(HttpServletRequest request, HttpServletResponse response) {
-      try {
-            int idcat= Integer.parseInt(request.getParameter("idcat"));
+        try {
+            int idcat = Integer.parseInt(request.getParameter("idcat"));
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-            request.setAttribute("listaSubcategoria",subcategoriaModel.listarporCategoria(idcat));
-            request.setAttribute("nombreCategoria",CategoriaModel.nombreCaterogia(idcat));
+            request.setAttribute("listaSubcategoria", subcategoriaModel.listarporCategoria(idcat));
+            request.setAttribute("nombreCategoria", CategoriaModel.nombreCaterogia(idcat));
             request.getRequestDispatcher("/cliente/subcategoria.jsp").forward(request, response);
         } catch (ServletException | IOException | SQLException ex) {
             Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void crearCarrito(HttpServletRequest request, HttpServletResponse response) {
+    
     }
 
 }

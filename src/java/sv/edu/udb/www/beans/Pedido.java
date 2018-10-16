@@ -13,15 +13,15 @@ import java.util.Date;
  */
 public class Pedido {
     private int idPedido;
-    private Date fechaCompra;
-    private double montoTotal;
+    private String fechaCompra;
+    private String montoTotal;
     private Usuario usuario;
     private EstadoCompra estadoCompra;
     public Pedido(){
         this.idPedido=0;
-        this.fechaCompra=new Date();
+        this.fechaCompra="";
         this.estadoCompra=null;
-        this.montoTotal=0;
+        this.montoTotal="";
         this.usuario=null;
     }
 
@@ -33,19 +33,19 @@ public class Pedido {
         this.idPedido = idPedido;
     }
 
-    public Date getFechaCompra() {
+    public String getFechaCompra() {
         return fechaCompra;
     }
 
-    public void setFechaCompra(Date fechaCompra) {
+    public void setFechaCompra(String fechaCompra) {
         this.fechaCompra = fechaCompra;
     }
 
-    public double getMontoTotal() {
+    public String getMontoTotal() {
         return montoTotal;
     }
 
-    public void setMontoTotal(double montoTotal) {
+    public void setMontoTotal(String montoTotal) {
         this.montoTotal = montoTotal;
     }
 
