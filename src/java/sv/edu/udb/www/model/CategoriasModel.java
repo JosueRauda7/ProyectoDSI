@@ -17,8 +17,8 @@ import sv.edu.udb.www.beans.EstadoCategoria;
  *
  * @author Ferh
  */
-public class CategoriasModel extends Conexion{
-    
+public class CategoriasModel extends Conexion {
+
     public List<Categoria> listarCategorias() throws SQLException {
         try {
             List<Categoria> lista = new ArrayList<>();
@@ -34,8 +34,8 @@ public class CategoriasModel extends Conexion{
                 categoria.setUrlCategoria(rs.getString("Urlcategoria"));
                 estado.setIdEstadoCategoria(rs.getInt("id_estado_categoria"));
                 estado.setEstadoCategoria(rs.getString("estado_categoria"));
-                
-                categoria.setEstadoCategoria(estado);                
+
+                categoria.setEstadoCategoria(estado);
                 lista.add(categoria);
             }
 
@@ -53,11 +53,12 @@ public class CategoriasModel extends Conexion{
 
         try {
             int filasAfectadas = 0;
-            sql = "INSERT INTO categoria VALUES(null,?,?)";
+            sql = "INSERT INTO categoria VALUES(null,?,?,?)";
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setString(1, categoria.getCategoria());
             st.setInt(2, categoria.getEstadoCategoria().getIdEstadoCategoria());
+            st.setString(3, categoria.getUrlCategoria());
             filasAfectadas = st.executeUpdate();
 
             this.desconectar();
@@ -85,10 +86,11 @@ public class CategoriasModel extends Conexion{
                 EstadoCategoria estado = new EstadoCategoria();
                 categoria.setIdCategoria(rs.getInt("id_categoria"));
                 categoria.setCategoria(rs.getString("categoria"));
+                categoria.setUrlCategoria(rs.getString("Urlcategoria"));
                 estado.setIdEstadoCategoria(rs.getInt("id_estado_categoria"));
                 estado.setEstadoCategoria(rs.getString("estado_categoria"));
-                categoria.setEstadoCategoria(estado);                
-                
+                categoria.setEstadoCategoria(estado);
+
                 this.desconectar();
                 return categoria;
             }
@@ -106,13 +108,24 @@ public class CategoriasModel extends Conexion{
     public int modificarCategoria(Categoria categoria) throws SQLException {
         try {
             int filasAfectadas = 0;
-            sql = "UPDATE categoria SET categoria=?, id_estado_categoria = ? WHERE id_categoria = ?";
-            this.conectar();
-            st = conexion.prepareStatement(sql);
-            st.setString(1, categoria.getCategoria());
-            st.setInt(2, categoria.getEstadoCategoria().getIdEstadoCategoria());
-            st.setInt(3, categoria.getIdCategoria());
-            filasAfectadas = st.executeUpdate();
+            if (categoria.getUrlCategoria() == null) {
+                sql = "UPDATE categoria SET categoria=?, id_estado_categoria = ? WHERE id_categoria = ?";
+                this.conectar();
+                st = conexion.prepareStatement(sql);
+                st.setString(1, categoria.getCategoria());
+                st.setInt(2, categoria.getEstadoCategoria().getIdEstadoCategoria());
+                st.setInt(3, categoria.getIdCategoria());
+                filasAfectadas = st.executeUpdate();
+            } else {
+                sql = "UPDATE categoria SET categoria=?, id_estado_categoria = ?, Urlcategoria=? WHERE id_categoria = ?";
+                this.conectar();
+                st = conexion.prepareStatement(sql);
+                st.setString(1, categoria.getCategoria());
+                st.setInt(2, categoria.getEstadoCategoria().getIdEstadoCategoria());
+                st.setString(3, categoria.getUrlCategoria());
+                st.setInt(4, categoria.getIdCategoria());
+                filasAfectadas = st.executeUpdate();
+            }
 
             this.desconectar();
 
@@ -125,7 +138,7 @@ public class CategoriasModel extends Conexion{
         }
 
     }
-    
+
     public int deshabilitarCategoria(int id) throws SQLException {
         try {
             int filasAfectadas = 0;
@@ -147,7 +160,7 @@ public class CategoriasModel extends Conexion{
         }
 
     }
-    
+
     public int habilitarCategoria(int id) throws SQLException {
         try {
             int filasAfectadas = 0;
@@ -169,16 +182,16 @@ public class CategoriasModel extends Conexion{
         }
 
     }
-    
-    public String nombreCaterogia(int valor) throws SQLException{
+
+    public String nombreCaterogia(int valor) throws SQLException {
         try {
-            String nombre="";
+            String nombre = "";
             String sql = "SELECT c.categoria FROM categoria c WHERE id_categoria =?";
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setInt(1, valor);
             rs = st.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 nombre = rs.getString("categoria");
             }
             this.desconectar();
@@ -189,5 +202,5 @@ public class CategoriasModel extends Conexion{
             return "";
         }
     }
-    
+
 }

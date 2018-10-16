@@ -26,6 +26,7 @@
                                 <table id="tabla" class="table table-responsive" summary="Shopping cart">
                                     <thead>
                                         <tr>
+                                            <th class="goods-page-total">ID</th>
                                             <th class="goods-page-image">Categoria</th>
                                             <th class="goods-page-description">Estado Categoría</th>
                                             <th class="goods-page-total">Operaciones</th>
@@ -34,6 +35,9 @@
                                     <tbody>
                                         <c:forEach items="${requestScope.listaCategorias}" var="categoria">
                                             <tr>
+                                                <td class="goods-page-total" style="width: 5%;">
+                                                    ${categoria.idCategoria}
+                                                </td>
                                                 <td class="goods-page-image" style="width: 30%;">
                                                     ${categoria.categoria}
                                                 </td>

@@ -35,7 +35,7 @@
                             </div><br>
                         </c:if>
                         <!-- BEGIN FORM-->
-                        <form action="${pageContext.request.contextPath}/categorias.do" method="POST" class="default-form" role="form">
+                        <form action="${pageContext.request.contextPath}/categorias.do" method="POST" class="default-form" role="form" enctype="multipart/form-data">
                             <input type="hidden" name="operacion" value="guardar"/>
                             <input type="hidden" value="${requestScope.category.idCategoria}" name="codigo" id="codigo">
                             
@@ -62,7 +62,7 @@
                             <div class="form-group">
                                 <label for="imagen">Imagen</label>
                                 <input data-language="es" type="file" name="archivo" id="imagen" class="form-control file file-loading" data-allowed-file-extensions='["jpg", "png"]'
-                                       value="${base}/images/${subCategoria.urlSubcategoria}/"/>
+                                       value="${base}/images/${requestScope.category.urlCategoria}/"/>
                             </div>
                             
                             <div class="padding-top-20">                  

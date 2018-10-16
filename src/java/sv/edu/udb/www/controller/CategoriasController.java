@@ -5,6 +5,10 @@
  */
 package sv.edu.udb.www.controller;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -37,9 +41,6 @@ public class CategoriasController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String operacion = request.getParameter("operacion");
             switch (operacion) {
-                case "agregar":
-                    agregar(request, response);
-                    break;
                 case "listar":
                     listar(request, response);
                     break;
@@ -47,10 +48,7 @@ public class CategoriasController extends HttpServlet {
                     nuevo(request, response);
                     break;
                 case "modificar":
-                    modificar(request, response);
-                    break;
-                case "guardar":
-                    guardar(request, response);
+                    modificar(request,response);
                     break;
                 case "deshabilitar":
                     deshabilitar(request, response);
@@ -88,7 +86,23 @@ public class CategoriasController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        listaErrores.clear();
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        try {
+
+            String directorio = getServletContext().getRealPath("/images");
+            MultipartRequest multi = new MultipartRequest(request, directorio, 1 * 1024 * 1024, new DefaultFileRenamePolicy());
+            String operacion = multi.getParameter("operacion");
+            if (operacion.equals("agregar")) {
+                agregar(multi, request, response);
+            } else if (operacion.equals("guardar")) {
+                guardar(multi, request, response);
+            }
+        } catch (FileNotFoundException e) {
+            out.println("La ruta de ubicacion no existe");
+        }
     }
 
     /**
@@ -101,20 +115,26 @@ public class CategoriasController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void agregar(HttpServletRequest request, HttpServletResponse response) {
+    private void agregar(MultipartRequest multi, HttpServletRequest request, HttpServletResponse response) {
         try {
             listaErrores.clear();
             Categoria categoria = new Categoria();
             EstadoCategoria estadoCategoria = new EstadoCategoria();
-            estadoCategoria.setIdEstadoCategoria(Integer.parseInt(request.getParameter("estado")));
-            categoria.setCategoria(request.getParameter("nombre"));
+            estadoCategoria.setIdEstadoCategoria(Integer.parseInt(multi.getParameter("estado")));
+            categoria.setCategoria(multi.getParameter("nombre"));
             categoria.setEstadoCategoria(estadoCategoria);
 
             if (Validaciones.isEmpty(categoria.getCategoria())) {
                 listaErrores.add("El nombre de la categoría es obligatorio.");
             }
-            if (!Validaciones.esEnteroPositivo(request.getParameter("estado"))) {
+            if (!Validaciones.esEnteroPositivo(multi.getParameter("estado"))) {
                 listaErrores.add("Estado de categoría incorrecto.");
+            }
+            if (multi.getFile("archivo") == null) {
+                listaErrores.add("Debe seleccionar una imagen");
+            } else {
+                File ficheroTemp = multi.getFile("archivo");
+                categoria.setUrlCategoria(ficheroTemp.getName());
             }
 
             if (listaErrores.size() > 0) {
@@ -130,8 +150,8 @@ public class CategoriasController extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/categorias.do?operacion=listar");
                 }
             }
-        } catch (Exception e) {
-
+        } catch (IOException | NumberFormatException | SQLException | ServletException e) {
+            
         }
     }
 
@@ -143,8 +163,6 @@ public class CategoriasController extends HttpServlet {
             Logger.getLogger(CategoriasController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-  
 
     private void nuevo(HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -164,21 +182,28 @@ public class CategoriasController extends HttpServlet {
         }
     }
 
-    private void guardar(HttpServletRequest request, HttpServletResponse response) {
+    private void guardar(MultipartRequest multi, HttpServletRequest request, HttpServletResponse response) {
         try {
             listaErrores.clear();
             Categoria categoria = new Categoria();
             EstadoCategoria estadoCategoria = new EstadoCategoria();
-            estadoCategoria.setIdEstadoCategoria(Integer.parseInt(request.getParameter("estado")));
-            categoria.setIdCategoria(Integer.parseInt(request.getParameter("codigo")));
-            categoria.setCategoria(request.getParameter("nombre"));
+            estadoCategoria.setIdEstadoCategoria(Integer.parseInt(multi.getParameter("estado")));
+            categoria.setIdCategoria(Integer.parseInt(multi.getParameter("codigo")));
+            categoria.setCategoria(multi.getParameter("nombre"));
             categoria.setEstadoCategoria(estadoCategoria);
 
             if (Validaciones.isEmpty(categoria.getCategoria())) {
                 listaErrores.add("El nombre de la categoría es obligatorio.");
             }
-            if (!Validaciones.esEnteroPositivo(request.getParameter("estado"))) {
+            if (!Validaciones.esEnteroPositivo(multi.getParameter("estado"))) {
                 listaErrores.add("Estado de categoría incorrecto.");
+            }
+
+            if (multi.getFile("archivo") != null) {
+                File ficheroTemp = multi.getFile("archivo");
+                categoria.setUrlCategoria(ficheroTemp.getName());
+            }else{
+                categoria.setUrlCategoria(null);
             }
 
             if (listaErrores.size() > 0) {
