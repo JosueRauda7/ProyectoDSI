@@ -8,6 +8,7 @@ package sv.edu.udb.www.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -111,7 +112,13 @@ public class ClienteController extends HttpServlet {
     }
 
     private void crearCarrito(HttpServletRequest request, HttpServletResponse response) {
-    
+        Calendar c = Calendar.getInstance();
+        String dia, mes, annio, fecha;
+        dia = Integer.toString(c.get(Calendar.DATE));
+        mes = Integer.toString(c.get(Calendar.MONTH) + 1);
+        annio = Integer.toString(c.get(Calendar.YEAR));
+        fecha = annio +"-"+mes+"-"+dia;
+        
     }
 
 }

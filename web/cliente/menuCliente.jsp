@@ -81,8 +81,8 @@
               <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;"><span class="glyphicon glyphicon-user"></span> ${sessionScope.nombreUser}</a>
                 
               <ul class="dropdown-menu">
-                  <li><a href="shop-index.html"><span class="glyphicon glyphicon-lock"></span> Cerrar sesión</a></li>
-                <li><a href="shop-index-header-fix.html"><span class="glyphicon glyphicon-log-out"></span> Cambiar contraseña</a></li>
+                  <li><a href="shop-index.html"><span class="glyphicon glyphicon-log-out"></span> Cerrar sesión</a></li>
+                <li><a href="shop-index-header-fix.html"> <span class="glyphicon glyphicon-lock"></span> Cambiar contraseña</a></li>
               </ul>
             </li>
 
