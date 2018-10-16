@@ -167,8 +167,8 @@ public class UsuariosModel extends Conexion {
             while (rs.next()) {
                 Pedido pedido = new Pedido();
                 pedido.setIdPedido(rs.getInt("id_pedido"));
-                pedido.setFechaCompra(rs.getDate("fecha_compra"));
-                pedido.setMontoTotal(rs.getDouble("monto_total"));
+                pedido.setFechaCompra(rs.getString("fecha_compra"));
+                pedido.setMontoTotal(rs.getString("monto_total"));
                 lista.add(pedido);
             }
 

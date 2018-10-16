@@ -28,11 +28,9 @@
                             <em>$1230</em><a  class="del-goods">&nbsp;</a>
                         </li>                
                     </ul>
-                    <div class="text-right">
+                    <div class="text-right" >
                         <a href="shop-shopping-cart.html" class="btn btn-default">Ver Carritos</a>
-                        <form action="${base}/clientes.do?operacion=crearCarrito">
-                        <a href="shop-checkout.html" class="btn btn-primary">Crear carrito</a>
-                        </form>
+                        <a href="${base}/clientes.do?operacion=crearCarrito" class="btn btn-primary">Crear carrito</a>
                     </div>
                 </div>
             </div>            
