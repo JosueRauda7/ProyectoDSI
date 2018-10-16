@@ -277,7 +277,8 @@ public class UsuarioController extends HttpServlet {
                 request.setAttribute("url", urlmodel);
                 request.getRequestDispatcher(urlmodel).forward(request, response);
             }else{
-                if(modelo.verificarCuenta(usuario) == null) {
+                usuario =modelo.verificarCuenta(usuario); 
+                if(usuario == null) {
                     listaErrores.add("Usuario y/o correo incorrectos");
                     request.setAttribute("listaErrores2", listaErrores);
                     request.setAttribute("url", urlmodel);
@@ -294,6 +295,9 @@ public class UsuarioController extends HttpServlet {
                      switch(usuario.getTipoUser()){
                          case 1:
                              request.getRequestDispatcher("/administrador/inicioAdmin.jsp").forward(request, response);
+                             break;
+                         case 2:
+                             
                              break;
                     }
                 }
