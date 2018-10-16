@@ -260,25 +260,25 @@ public class UsuarioController extends HttpServlet {
 
             if (usuario.getCorreo().isEmpty()) {
                 listaErrores.add("El correo es requerido");
-            }else if (!Validaciones.esCorreo(usuario.getCorreo())) {
+            } else if (!Validaciones.esCorreo(usuario.getCorreo())) {
                 listaErrores.add("El correo no tiene el formato correcto");
             }
 
-            if(usuario.getPassword().isEmpty()) {
+            if (usuario.getPassword().isEmpty()) {
                 listaErrores.add("La contraseña es requerida");
-            }else if (!Validaciones.esContraseña(usuario.getPassword())) {
+            } else if (!Validaciones.esContraseña(usuario.getPassword())) {
                 listaErrores.add("La contraseña debe tener una longitud mínima de 8 caracteres"
                         + " y debe contener al menos una mayuscula, "
                         + "una minuscula y un numero o caracter especial");
             }
 
-            if(!listaErrores.isEmpty()) {
+            if (!listaErrores.isEmpty()) {
                 request.setAttribute("listaErrores2", listaErrores);
                 request.setAttribute("url", urlmodel);
                 request.getRequestDispatcher(urlmodel).forward(request, response);
-            }else{
-                usuario=modelo.verificarCuenta(usuario); 
-                if(usuario == null) {
+            } else {
+                usuario = modelo.verificarCuenta(usuario);
+                if (usuario == null) {
                     listaErrores.add("Usuario y/o correo incorrectos");
                     request.setAttribute("listaErrores2", listaErrores);
                     request.setAttribute("url", urlmodel);
@@ -288,27 +288,33 @@ public class UsuarioController extends HttpServlet {
                     request.setAttribute("listaErrores2", listaErrores);
                     request.setAttribute("url", urlmodel);
                     request.getRequestDispatcher(urlmodel).forward(request, response);
-                }else if(usuario.getIdConfirmacion() == 1){
-                   
+                } else if (usuario.getIdConfirmacion() == 1) {
+
                     request.getSession().setAttribute("usuario", usuario.getIdUsuario());
                     request.getSession().setAttribute("tipousuario", usuario.getTipoUser());
-                     switch(usuario.getTipoUser()){
-                         case 1:
-                             request.getRequestDispatcher("/administrador/inicioAdmin.jsp").forward(request, response);
-                             break;
-                         case 2:
-                             request.getRequestDispatcher("/cliente/index.jsp").forward(request, response);
-                             break;
-                         case 3:
-                             //Aun no existe
-                             request.getRequestDispatcher("/marketing/inicioMarketing.jsp").forward(request, response);
-                             break;
-                         case 4:
-                             request.getRequestDispatcher("/empleadoProducto/inicioEmpresaProducto").forward(request, response);
-                             break;
-                         case 5:
-                             request.getRequestDispatcher("/empresa/inicioEmpresa.jsp").forward(request, response);
-                             break;
+                    switch (usuario.getTipoUser()) {
+                        case 1:
+                            request.getRequestDispatcher("/administrador/inicioAdmin.jsp").forward(request, response);
+                            break;
+                        case 2:
+                            request.getRequestDispatcher("/cliente/index.jsp").forward(request, response);
+                            break;
+                        case 3:
+                            //Aun no existe
+                            request.getRequestDispatcher("/marketing/inicioMarketing.jsp").forward(request, response);
+                            break;
+                        case 4:
+                            request.getRequestDispatcher("/empleadoProducto/inicioEmpresaProducto").forward(request, response);
+                            break;
+                        case 5:
+                            request.getRequestDispatcher("/empresa/inicioEmpresa.jsp").forward(request, response);
+                            break;
+                        default:
+                            listaErrores.add("Usuario no encontrado");
+                            request.setAttribute("listaErrores2", listaErrores);
+                            request.setAttribute("url", urlmodel);
+                            request.getRequestDispatcher(urlmodel).forward(request, response);  
+                            break;
                     }
                 }
             }
@@ -317,10 +323,7 @@ public class UsuarioController extends HttpServlet {
         }
     }
 
-    
-    
     //INICIO PARTE RAUDA
-    
     private void agregarAdministrador(HttpServletRequest request, HttpServletResponse response) {
         try (PrintWriter out = response.getWriter()) {
             listaErrores.clear();
@@ -375,7 +378,6 @@ public class UsuarioController extends HttpServlet {
 //        } catch (SQLException | ServletException | IOException ex) {
 //            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-
             if (usuario.getNombre().isEmpty()) {
                 listaErrores.add("El nombre es requerido");
             }
