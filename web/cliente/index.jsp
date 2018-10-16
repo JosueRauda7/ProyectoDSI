@@ -17,9 +17,9 @@
 
     <!-- Body BEGIN -->
     <body class="ecommerce" style="overflow-x: hidden;">
-        <jsp:include page="/menu.jsp"/>
+        <jsp:include page="menuCliente.jsp"/>
         <!-- Header END -->
-        <jsp:include page="/modal.jsp"/>
+       
         <!-- BEGIN SLIDER -->
         <div class="page-slider margin-bottom-35">
             <div id="carousel-example-generic" class="carousel slide carousel-slider">
@@ -176,7 +176,7 @@
                                           <a href="images/${categoriasfoot.urlCategoria}" class="btn btn-default fancybox-button">Ver categoria</a> 
                                         </div>
                                     </div>
-                                        <h3 class="text-center"><a href="public.do?operacion=vercategoria&idcat=${categoriasfoot.idCategoria}">${categoriasfoot.categoria}</a></h3>
+                                        <h3 class="text-center"><a href="clientes.do?operacion=vercategoria&idcat=${categoriasfoot.idCategoria}">${categoriasfoot.categoria}</a></h3>
                                 </div>
                             </div>
                             </c:forEach>
@@ -205,12 +205,6 @@
                 });
             </script>
              
-                 
-    
-            
-            <script src="assets/pages/scripts/ModalLog.js" type="text/javascript"></script>
-
-            <!-- END PAGE LEVEL JAVASCRIPTS -->
             <!-- END PAGE LEVEL JAVASCRIPTS -->
     </body>
     <jsp:include page="footer.jsp" />

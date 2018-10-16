@@ -206,7 +206,25 @@ public class UsuariosModel extends Conexion {
 
     }
 
-    
+    public String obtenerNombreUsuario(int iduser) throws SQLException{
+        try {
+            String sql = "SELECT CONCAT(SUBSTRING_INDEX(Nombre, ' ', 1),' ',SUBSTRING_INDEX(Apellido, ' ', 1)) as Nombre FROM usuarios WHERE id_usuario = ?";
+            String nombreuser="";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, iduser);
+            rs = st.executeQuery();
+            if(rs.next()){
+                nombreuser= rs.getString("Nombre");
+                return nombreuser;
+            }
+            return "";
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuariosModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return "";
+        }
+    }
     
     //PARTE RAUDA
     public List<Usuario> listarUsuarios() throws SQLException {

@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import sv.edu.udb.www.beans.Usuario;
+import sv.edu.udb.www.model.CategoriasModel;
+import sv.edu.udb.www.model.ProductosModel;
 import sv.edu.udb.www.model.UsuariosModel;
 import sv.edu.udb.www.utils.Correo;
 import sv.edu.udb.www.utils.Validaciones;
@@ -31,6 +33,8 @@ public class UsuarioController extends HttpServlet {
 
     UsuariosModel modelo = new UsuariosModel();
     ArrayList listaErrores = new ArrayList();
+    CategoriasModel CategoriaModel = new CategoriasModel();
+    ProductosModel ProductoModel = new ProductosModel();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -292,11 +296,15 @@ public class UsuarioController extends HttpServlet {
 
                     request.getSession().setAttribute("usuario", usuario.getIdUsuario());
                     request.getSession().setAttribute("tipousuario", usuario.getTipoUser());
+                    request.getSession().setAttribute("nombreUser", modelo.obtenerNombreUsuario(usuario.getIdUsuario()));
                     switch (usuario.getTipoUser()) {
                         case 1:
                             request.getRequestDispatcher("/administrador/inicioAdmin.jsp").forward(request, response);
                             break;
                         case 2:
+                            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+                            request.setAttribute("ultimosProductos", ProductoModel.listaUltimosProductos());
+                            
                             request.getRequestDispatcher("/cliente/index.jsp").forward(request, response);
                             break;
                         case 3:
@@ -313,7 +321,7 @@ public class UsuarioController extends HttpServlet {
                             listaErrores.add("Usuario no encontrado");
                             request.setAttribute("listaErrores2", listaErrores);
                             request.setAttribute("url", urlmodel);
-                            request.getRequestDispatcher(urlmodel).forward(request, response);  
+                            request.getRequestDispatcher(urlmodel).forward(request, response);
                             break;
                     }
                 }
