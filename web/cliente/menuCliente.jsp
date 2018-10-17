@@ -112,7 +112,7 @@
 
                                     <c:forEach var="categorias" items="${requestScope.listaCategorias}">
                                         <div class="col-md-4 header-navigation-col">
-                                            <h4 ><a style="color: #757575;" href="${base}/clientes.do?operacion=vercategoria&idcat=${categorias.idCategoria}">${categorias.categoria}</a></h4>
+                                            <h4 ><a style="color: #757575;" href="${base}/clientes.do?operacion=versubcategoria&idcat=${categorias.idCategoria}">${categorias.categoria}</a></h4>
                                             <ul>
                                                 <sql:query var="ql" dataSource="jdbc/mysql">
                                                     SELECT * FROM sub_categoria WHERE id_categoria=${categorias.idCategoria}
@@ -162,12 +162,12 @@
     </div>
 </div>
 <script>
-    <c:if test="${estado eq 1}">
+    <c:if test="${estado eq 1 }">
     document.getElementById("crear").style.display = "none";
     document.getElementById("ver").style.display = "block";
     </c:if>
-    <c:if test="${estado eq 2 || estado eq 3}">
-    document.getElementById("crear").style.display = "none";
-    document.getElementById("ver").style.display = "block";
+    <c:if test="${estado eq 2 || estado eq 3 || estado eq 0}">
+    document.getElementById("crear").style.display = "block";
+    document.getElementById("ver").style.display = "none";
     </c:if>
 </script>

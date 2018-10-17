@@ -43,11 +43,14 @@ public class ClienteController extends HttpServlet {
                 case "publicIndex":
                     publicIndexClien(request, response);
                     break;
-                case "vercategoria":
+                case "versubcategoria":
                     vercategoriaClien(request, response);
                     break;
                 case "crearCarrito":
                     crearCarrito(request, response);
+                    break;
+                case "verProducto":
+                    verProducto(request, response);
                     break;
             }
         }
@@ -128,11 +131,22 @@ public class ClienteController extends HttpServlet {
             pedido.setIdUsuario((int) request.getSession().getAttribute("usuario"));
             if (clienteModel.crearCarrito(pedido) > 0) {
                 request.getSession().setAttribute("estado", clienteModel.estadoPedido((int) request.getSession().getAttribute("usuario")));
-                request.getSession().setAttribute("exito", "Tu carrito se ha creado exitosamente");                
+                request.getSession().setAttribute("exito", "Tu carrito se ha creado exitosamente");
                 response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=publicIndex");
             }
         } catch (SQLException | IOException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void verProducto(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int idpro= Integer.parseInt(request.getParameter("idproduct"));
+            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.setAttribute("producto", clienteModel.verProducto(idpro));
+            request.getRequestDispatcher("/cliente/producto.jsp").forward(request, response);
+        } catch (ServletException | IOException | SQLException ex) {
+            Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

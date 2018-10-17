@@ -2,6 +2,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<c:set var="base" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -86,7 +87,7 @@
                                                                 <a href="images/${ultpro.urlImagen}" class="btn btn-default fancybox-button">Ver producto</a>                               
                                                             </div>
                                                         </div>
-                                                        <h3 class="text-center"><a href="shop-item.html">${ultpro.producto}</a></h3>
+                                                        <h3 class="text-center"><a href="${base}/clientes.do?operacion=verProducto&idproduct=${ultpro.idProducto}">${ultpro.producto}</a></h3>
                                                         <div class="pi-price">Precio: $${ultpro.precioRegular}</div>
 
                                                     </div>
@@ -176,7 +177,7 @@
                                                 <a href="images/${categoriasfoot.urlCategoria}" class="btn btn-default fancybox-button">Ver categoria</a> 
                                             </div>
                                         </div>
-                                        <h3 class="text-center"><a href="clientes.do?operacion=vercategoria&idcat=${categoriasfoot.idCategoria}">${categoriasfoot.categoria}</a></h3>
+                                        <h3 class="text-center"><a href="${base}/clientes.do?operacion=versubcategoria&idcat=${categoriasfoot.idCategoria}">${categoriasfoot.categoria}</a></h3>
                                     </div>
                                 </div>
                             </c:forEach>
