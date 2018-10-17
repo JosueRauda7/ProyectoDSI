@@ -49,8 +49,8 @@ public class EmpresaController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            if (request.getParameter("operacion") == null) {
-                listar(request, response);
+            if (request.getSession().getAttribute("usuario") == null || !request.getSession().getAttribute("tipousuario").toString().equals("5")) {
+                response.sendRedirect(request.getContextPath() + "/index.jsp");
                 return;
             }
 
@@ -130,7 +130,8 @@ public class EmpresaController extends HttpServlet {
     private void listar(HttpServletRequest request, HttpServletResponse response) {
         try {
             int estado = Integer.parseInt(request.getParameter("estado"));
-            request.setAttribute("listarProducto", modeloProducto.listarProducto(2, estado));
+            int usuario = Integer.parseInt(request.getSession().getAttribute("usuario").toString());
+            request.setAttribute("listarProducto", modeloProducto.listarProducto(usuario, estado));
             try {
                 request.getRequestDispatcher("/empresa/listaProductos.jsp").forward(request, response);
             } catch (ServletException | IOException ex) {
@@ -156,6 +157,7 @@ public class EmpresaController extends HttpServlet {
     private void insertar(MultipartRequest multi, HttpServletRequest request, HttpServletResponse response) {
         try {
             listaErrores.clear();
+            int usuario = Integer.parseInt(request.getSession().getAttribute("usuario").toString());
             Producto producto = new Producto();
 
             producto.setProducto(multi.getParameter("producto"));
@@ -196,7 +198,7 @@ public class EmpresaController extends HttpServlet {
             }
 
             if (listaErrores.isEmpty()) {
-                if (modeloProducto.insertarProducto(producto, 1) == 1) {
+                if (modeloProducto.insertarProducto(producto, usuario) == 1) {
                     request.getSession().setAttribute("exito", "Producto registrado existosamente.");
                 } else {
                     request.getSession().setAttribute("fracaso", "Ocurrio un error, no se pudo registrar el producto...");
@@ -217,7 +219,8 @@ public class EmpresaController extends HttpServlet {
     private void obtener(HttpServletRequest request, HttpServletResponse response) {
         try {
             int codigo = Integer.parseInt(request.getParameter("id"));
-            Producto producto = modeloProducto.obtenerProducto(2, codigo);
+            int usuario = Integer.parseInt(request.getSession().getAttribute("usuario").toString());
+            Producto producto = modeloProducto.obtenerProducto(usuario, codigo);
             if (producto != null) {
                 request.setAttribute("producto", producto);
                 request.setAttribute("id", codigo);
@@ -236,6 +239,7 @@ public class EmpresaController extends HttpServlet {
         listaErrores.clear();
         try {
             Producto producto = new Producto();
+            int usuario = Integer.parseInt(request.getSession().getAttribute("usuario").toString());
             int codigo = Integer.parseInt(multi.getParameter("id"));
             producto.setProducto(multi.getParameter("producto"));
             producto.setDescripcion(multi.getParameter("descripcion"));

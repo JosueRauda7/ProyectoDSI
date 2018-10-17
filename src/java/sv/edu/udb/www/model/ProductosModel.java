@@ -56,10 +56,21 @@ public class ProductosModel extends Conexion {
         }
     }
 
-    public int insertarProducto(Producto producto, int empresa) throws SQLException {
+    public int insertarProducto(Producto producto, int usuario) throws SQLException {
         try {
+            int empresa=0;
             int filasAfectadas = 0;
-            String sql = "Insert into producto VALUES(NULL,?,?,?,?,?,?,?,1)";
+            
+            String sql = "Select id_empresa from empresa where id_usuario=?";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, usuario);
+            rs = st.executeQuery();
+            while(rs.next()){
+                empresa = rs.getInt("id_empresa");
+            }
+            
+            sql = "Insert into producto VALUES(NULL,?,?,?,?,?,?,?,1)";
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setString(1, producto.getProducto());
