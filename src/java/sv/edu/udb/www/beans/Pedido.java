@@ -18,6 +18,7 @@ public class Pedido {
     private Usuario usuario;
     private int idUsuario;
     private EstadoCompra estadoCompra;
+    private int idEstadoCompra;
     public Pedido(){
         this.idPedido=0;
         this.fechaCompra="";
@@ -25,6 +26,7 @@ public class Pedido {
         this.montoTotal="";
         this.usuario=null;
         this.idUsuario=0;
+        this.idEstadoCompra=0;
     }
 
     public int getIdPedido() {
@@ -73,6 +75,14 @@ public class Pedido {
 
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public int getIdEstadoCompra() {
+        return idEstadoCompra;
+    }
+
+    public void setIdEstadoCompra(int idEstadoCompra) {
+        this.idEstadoCompra = idEstadoCompra;
     }
     
 }

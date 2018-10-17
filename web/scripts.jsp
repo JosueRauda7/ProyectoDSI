@@ -13,4 +13,5 @@
 <script src="assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
 <script src="assets/plugins/rateit/src/jquery.rateit.js" type="text/javascript"></script>
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="assets/corporate/scripts/layout.js" type="text/javascript"></script>

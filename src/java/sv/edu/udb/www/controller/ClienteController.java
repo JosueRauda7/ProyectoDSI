@@ -16,7 +16,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import sv.edu.udb.www.beans.Pedido;
 import sv.edu.udb.www.model.CategoriasModel;
+import sv.edu.udb.www.model.ClientesModel;
 import sv.edu.udb.www.model.ProductosModel;
 import sv.edu.udb.www.model.SubCategoriasModel;
 
@@ -29,6 +31,7 @@ public class ClienteController extends HttpServlet {
 
     CategoriasModel CategoriaModel = new CategoriasModel();
     ProductosModel ProductoModel = new ProductosModel();
+    ClientesModel clienteModel = new ClientesModel();
     SubCategoriasModel subcategoriaModel = new SubCategoriasModel();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -112,13 +115,25 @@ public class ClienteController extends HttpServlet {
     }
 
     private void crearCarrito(HttpServletRequest request, HttpServletResponse response) {
-        Calendar c = Calendar.getInstance();
-        String dia, mes, annio, fecha;
-        dia = Integer.toString(c.get(Calendar.DATE));
-        mes = Integer.toString(c.get(Calendar.MONTH) + 1);
-        annio = Integer.toString(c.get(Calendar.YEAR));
-        fecha = annio +"-"+mes+"-"+dia;
-        
+        try {
+            Calendar c = Calendar.getInstance();
+            String dia, mes, annio, fecha;
+            dia = Integer.toString(c.get(Calendar.DATE));
+            mes = Integer.toString(c.get(Calendar.MONTH) + 1);
+            annio = Integer.toString(c.get(Calendar.YEAR));
+            fecha = annio + "-" + mes + "-" + dia;
+            Pedido pedido = new Pedido();
+            pedido.setFechaCompra(fecha);
+            pedido.setIdEstadoCompra(1);
+            pedido.setIdUsuario((int) request.getSession().getAttribute("usuario"));
+            if (clienteModel.crearCarrito(pedido) > 0) {
+                request.getSession().setAttribute("estado", clienteModel.estadoPedido((int) request.getSession().getAttribute("usuario")));
+                request.getSession().setAttribute("exito", "Tu carrito se ha creado exitosamente");                
+                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=publicIndex");
+            }
+        } catch (SQLException | IOException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

@@ -19,7 +19,7 @@
     <body class="ecommerce" style="overflow-x: hidden;">
         <jsp:include page="menuCliente.jsp"/>
         <!-- Header END -->
-       
+
         <!-- BEGIN SLIDER -->
         <div class="page-slider margin-bottom-35">
             <div id="carousel-example-generic" class="carousel slide carousel-slider">
@@ -86,9 +86,9 @@
                                                                 <a href="images/${ultpro.urlImagen}" class="btn btn-default fancybox-button">Ver producto</a>                               
                                                             </div>
                                                         </div>
-                                                                <h3 class="text-center"><a href="shop-item.html">${ultpro.producto}</a></h3>
+                                                        <h3 class="text-center"><a href="shop-item.html">${ultpro.producto}</a></h3>
                                                         <div class="pi-price">Precio: $${ultpro.precioRegular}</div>
-                                                      
+
                                                     </div>
                                                 </div>
                                             </c:forEach>
@@ -168,17 +168,17 @@
                         <center><h2>Categorias</h2></center>
                         <div class="owl-carousel owl-carousel4">
                             <c:forEach items="${requestScope.listaCategorias}"  var="categoriasfoot">
-                            <div>
-                                <div class="product-item">
-                                    <div class="pi-img-wrapper">
-                                        <img src="images/${categoriasfoot.urlCategoria}" class="img-responsive" alt="Berry Lace Dress">
-                                        <div>
-                                          <a href="images/${categoriasfoot.urlCategoria}" class="btn btn-default fancybox-button">Ver categoria</a> 
+                                <div>
+                                    <div class="product-item">
+                                        <div class="pi-img-wrapper">
+                                            <img src="images/${categoriasfoot.urlCategoria}" class="img-responsive" alt="Berry Lace Dress">
+                                            <div>
+                                                <a href="images/${categoriasfoot.urlCategoria}" class="btn btn-default fancybox-button">Ver categoria</a> 
+                                            </div>
                                         </div>
-                                    </div>
                                         <h3 class="text-center"><a href="clientes.do?operacion=vercategoria&idcat=${categoriasfoot.idCategoria}">${categoriasfoot.categoria}</a></h3>
+                                    </div>
                                 </div>
-                            </div>
                             </c:forEach>
 
                         </div>
@@ -203,8 +203,26 @@
                     Layout.initTouchspin();
                     Layout.initUniform();
                 });
+
+                <c:if test="${not empty exito}">
+                swal({
+                    title: "Felicidades!",
+                    text: "${exito}",
+                    icon: "success",
+                });
+                    <c:set var="exito" value="" scope="session"/>
+                </c:if>
+
+                <c:if test="${not empty fracaso}">
+                swal({
+                    title: "Ups!",
+                    text: "${fracaso}",
+                    icon: "error",
+                });
+                    <c:set var="fracaso" value="" scope="session"/>
+                </c:if>
             </script>
-             
+
             <!-- END PAGE LEVEL JAVASCRIPTS -->
     </body>
     <jsp:include page="footer.jsp" />

@@ -216,8 +216,10 @@ public class UsuariosModel extends Conexion {
             rs = st.executeQuery();
             if(rs.next()){
                 nombreuser= rs.getString("Nombre");
+                this.desconectar();
                 return nombreuser;
             }
+            this.desconectar();
             return "";
         } catch (SQLException ex) {
             Logger.getLogger(UsuariosModel.class.getName()).log(Level.SEVERE, null, ex);
