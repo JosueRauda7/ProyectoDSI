@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import sv.edu.udb.www.beans.Usuario;
 import sv.edu.udb.www.model.CategoriasModel;
+import sv.edu.udb.www.model.ClientesModel;
 import sv.edu.udb.www.model.ProductosModel;
 import sv.edu.udb.www.model.UsuariosModel;
 import sv.edu.udb.www.utils.Correo;
@@ -35,6 +36,8 @@ public class UsuarioController extends HttpServlet {
     ArrayList listaErrores = new ArrayList();
     CategoriasModel CategoriaModel = new CategoriasModel();
     ProductosModel ProductoModel = new ProductosModel();
+
+    ClientesModel clienteModel = new ClientesModel();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -304,7 +307,7 @@ public class UsuarioController extends HttpServlet {
                         case 2:
                             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
                             request.setAttribute("ultimosProductos", ProductoModel.listaUltimosProductos());
-                            
+                            request.getSession().setAttribute("estado", clienteModel.estadoPedido((int) request.getSession().getAttribute("usuario")));
                             request.getRequestDispatcher("/cliente/index.jsp").forward(request, response);
                             break;
                         case 3:

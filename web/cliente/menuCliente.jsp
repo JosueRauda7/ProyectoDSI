@@ -19,20 +19,20 @@
 
             <div class="top-cart-content-wrapper">
                 <div class="top-cart-content">
-                    <ul class="scroller" style="height: 250px;">
-                        <li>
+                    <ul class="scroller" style="height: 250px; ">
+                        <li >
                             <a href="shop-item.html"><img src="assets/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
                             <span class="cart-content-count">x 1</span>
                             <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
                             <em>$1230</em>
-                            <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
+                            <a  style="margin-left: 90%;margin-top: -8%;" href="#" class="del-goods">&nbsp;</a>
                         </li>
                         <li>
                             <a href="shop-item.html"><img src="assets/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
                             <span class="cart-content-count">x 1</span>
                             <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
                             <em>$1230</em>
-                            <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
+                            <a  style="margin-left: 90%;margin-top: -8%;"  href="javascript:void(0);" class="del-goods">&nbsp;</a>
                         </li>
                         <li>
                             <a href="shop-item.html"><img src="assets/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
@@ -77,7 +77,7 @@
                             <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
                         </li>
                     </ul>
-                    <div class="text-right">
+                    <div class="text-right" style="display: flex; margin-left: 2%;">
                         <a href="shop-shopping-cart.html" class="btn btn-default">Ver Carritos</a>
 
                         <a href="${base}/clientes.do?operacion=crearCarrito" id="crear" class="btn btn-primary" >Crear carrito</a>
