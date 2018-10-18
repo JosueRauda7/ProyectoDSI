@@ -3,7 +3,8 @@
     Created on : 09-14-2018, 08:03:03 PM
     Author     : admi
 --%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="base" value="${pageContext.request.contextPath}"/> 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!--
@@ -51,8 +52,8 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
                             <div class="pi-img-wrapper">
                                 <img src="../assets/pages/img/administrador/catalogoicon.png" style="min-height: 152px;"  class="col-lg-7" alt="Berry Lace Dress">
                             </div>
-                            <h3><a href="shop-item.html">Catalogo</a></h3>
-                            <a href="javascript:;" class="btn btn-default add2cart">Administrar</a>
+                            <h3><a href="shop-item.html">Categoria</a></h3>
+                            <a href="${base}/administrador.do?operacion=listarCategorias" class="btn btn-default add2cart">Administrar</a>
                         </div>
                     </div>
 
@@ -79,8 +80,8 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
                             <div class="pi-img-wrapper">
                                 <img src="../assets/pages/img/administrador/subcatalogoicon.png" class="col-lg-7" alt="Berry Lace Dress">
                             </div>
-                            <h3><a href="shop-item.html">Sub-catalogo</a></h3>
-                            <a href="javascript:;" class="btn btn-default add2cart">Administrar</a>
+                            <h3><a href="shop-item.html">Sub-categoria</a></h3>
+                            <a href="${base}/administrador.do?operacion=listarSubCategorias" class="btn btn-default add2cart">Administrar</a>
                         </div>
                     </div></div>
             </div>

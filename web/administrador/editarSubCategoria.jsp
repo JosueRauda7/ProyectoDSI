@@ -31,8 +31,8 @@
                             </div>
                         </c:if>
                         <!-- BEGIN FORM-->
-                        <form action="${pageContext.request.contextPath}/SubCategoria.do" class="default-form" role="form" method="POST" enctype="multipart/form-data">
-                            <input type="hidden" name="operacion" value="modificar"/>
+                        <form action="${pageContext.request.contextPath}/administrador.do" class="default-form" role="form" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="operacion" value="modificarSubCategoria"/>
                             <input type="hidden" name="id" value="${subCategoria.idSubCategoria}"/>
                             <div class="form-group">
                                 <label for="nombre">Sub Categoría:</label>
@@ -68,7 +68,7 @@
 
                             <div class="padding-top-20">                  
                                 <button type="submit" class="btn btn-primary">Registrar</button>
-                                <a style="background-color: #F3565D;color:white;" href="${pageContext.request.contextPath}/SubCategoria.do?operacion=listar" class="btn btn-primary">Cancelar</a>
+                                <a style="background-color: #F3565D;color:white;" href="${pageContext.request.contextPath}/administrador.do?operacion=listarSubCategorias" class="btn btn-primary">Cancelar</a>
                             </div>
                         </form>
                         <!-- END FORM--> 

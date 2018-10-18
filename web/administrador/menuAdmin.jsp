@@ -27,7 +27,7 @@
         <div class="header-navigation">
             <ul>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+                    <a href="${pageContext.request.contextPath}/administrador.do?operacion=inicio">
                         Inicio 
                     </a>
                     <!-- BEGIN DROPDOWN MENU -->
@@ -38,8 +38,8 @@
                         Categorías
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="nuevaCategoria.jsp">Registrar categoría</a></li>
-                        <li><a href="verCategorias.jsp">Ver categorías</a></li>
+                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=nuevaCategoria">Registrar categoría</a></li>
+                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=listarCategorias">Ver categorías</a></li>
                     </ul>
                 </li>
                 <li class="dropdown dropdown-megamenu">
@@ -47,34 +47,28 @@
                         Sub Categorías
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="${pageContext.request.contextPath}/SubCategoria.do?operacion=nuevo">Registrar sub categoría</a></li>
-                        <li><a href="${pageContext.request.contextPath}/SubCategoria.do?operacion=listar">Ver sub categorías</a></li>
+                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=nuevaSubCategoria">Registrar sub categoría</a></li>
+                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=listarSubCategorias">Ver sub categorías</a></li>
                     </ul>
                 </li>
-                
+
                 <li class="dropdown dropdown-megamenu">
                     <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
                         Productos
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="shop-product-list.html">Registrar productos</a></li>
-                        <li><a href="shop-product-list.html">Ver productos</a></li>
+                        <li><a href="#">Registrar productos</a></li>
+                        <li><a href="#">Ver productos</a></li>
                     </ul>
                 </li>
-                <!-- BEGIN TOP SEARCH -->
-                <li class="menu-search">
-                    <span class="sep"></span>
-                    <i class="fa fa-search search-btn"></i>
-                    <div class="search-box">
-                        <form action="#">
-                            <div class="input-group">
-                                <input type="text" placeholder="Buscar" class="form-control">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="submit">Buscar</button>
-                                </span>
-                            </div>
-                        </form>
-                    </div> 
+                <li class="dropdown dropdown-megamenu">
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+                        Empresas
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=nuevaEmpresa">Registrar empresa</a></li>
+                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=listarEmpresas">Ver empresas</a></li>
+                    </ul>
                 </li>
                 <!-- END TOP SEARCH -->
             </ul>

@@ -18,7 +18,7 @@
             <div class="container">
                 <div class="col-md-12 col-sm-12">
                     <h1>Lista de Categorias</h1>
-                    <a href="${pageContext.request.contextPath}/categorias.do?operacion=nuevo" class="btn btn-primary">Nueva Categoria</a>
+                    <a href="${pageContext.request.contextPath}/administrador.do?operacion=nuevaCategoria" class="btn btn-primary">Nueva Categoria</a>
                     <br><br>
                     <div class="goods-page">
                         <div class="goods-data clearfix">
@@ -103,7 +103,7 @@
                     dangerMode: true,
                 }).then((willDelete) => {
                     if (willDelete) {
-                        location.href = 'categorias.do?operacion=deshabilitar&id=' + id;
+                        location.href = 'administrador.do?operacion=deshabilitarCategoria&id=' + id;
                     }
                 });
             }
@@ -117,13 +117,13 @@
                     dangerMode: true,
                 }).then((willDelete) => {
                     if (willDelete) {
-                        location.href = 'categorias.do?operacion=habilitar&id=' + id;
+                        location.href = 'administrador.do?operacion=habilitarCategoria&id=' + id;
                     }
                 });
             }
             ;
             function modificar(id) {
-                location.href = 'categorias.do?operacion=modificar&id=' + id;
+                location.href = 'administrador.do?operacion=modificarCategoria&id=' + id;
             }
             ;
         </script>

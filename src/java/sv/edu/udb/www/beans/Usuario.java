@@ -40,7 +40,12 @@ public class Usuario {
         this.tipoUser =0;
         this.idConfirmacion =0;
     }
-
+    
+    public Usuario(String nombre, String apellido){
+        this.nombre = nombre;
+        this.apellido = apellido;
+    }
+    
     public int getIdUsuario() {
         return idUsuario;
     }
@@ -48,7 +53,7 @@ public class Usuario {
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
-
+    
     public String getCorreo() {
         return correo;
     }

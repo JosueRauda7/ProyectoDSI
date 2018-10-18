@@ -348,4 +348,34 @@ public class UsuariosModel extends Conexion {
 
     }
     //FIN PARTE RAUDA
+    
+    public List<Usuario> listaContactoDisponible() throws SQLException{
+        try{
+            List<Usuario> listaUsuario = new ArrayList<>();
+            String sql="Select * from usuarios u left join empresa e on u.id_usuario=e.id_usuario where u.id_tipo_usuario = 5 and e.id_usuario is null";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setIdUsuario(rs.getInt("id_usuario"));
+                usuario.setNombre(rs.getString("Nombre"));
+                usuario.setApellido(rs.getString("Apellido"));
+                usuario.setTelefono(rs.getString("Telefono"));
+                usuario.setDireccion(rs.getString("direccion"));
+                usuario.setDui(rs.getString("DUI"));
+                usuario.setCorreo(rs.getString("correo"));
+                usuario.setTipoUser(rs.getInt("id_tipo_usuario"));
+                usuario.setConfirmado(rs.getString("confirmado"));
+                listaUsuario.add(usuario);
+            }
+            this.desconectar();
+            return listaUsuario;          
+            
+        } catch (SQLException ex) {
+            this.desconectar();
+            return null;
+        }
+    }
 }

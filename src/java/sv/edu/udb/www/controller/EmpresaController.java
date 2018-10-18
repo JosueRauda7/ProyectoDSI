@@ -53,24 +53,37 @@ public class EmpresaController extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/index.jsp");
                 return;
             }
-
-            String operacion = request.getParameter("operacion");
-            switch (operacion) {
-                case "listar":
-                    listar(request, response);
-                    break;
-                case "nuevo":
-                    nuevo(request, response);
-                    break;
-                case "inicio":
-                    request.getRequestDispatcher("/empresa/inicioEmpresa.jsp").forward(request, response);
-                    break;
-                case "obtener":
-                    obtener(request, response);
-                    break;
-                default:
-                    request.getRequestDispatcher("/error404.jsp").forward(request, response);
-                    break;
+            if (request.getParameter("operacion") != null) {
+                String operacion = request.getParameter("operacion");
+                switch (operacion) {
+                    case "listar":
+                        listar(request, response);
+                        break;
+                    case "nuevo":
+                        nuevo(request, response);
+                        break;
+                    case "inicio":
+                        request.getRequestDispatcher("/empresa/inicioEmpresa.jsp").forward(request, response);
+                        break;
+                    case "obtener":
+                        obtener(request, response);
+                        break;
+                    default:
+                        request.getRequestDispatcher("/error404.jsp").forward(request, response);
+                        break;
+                }
+            } else {
+                String directorio = getServletContext().getRealPath("/images");
+                MultipartRequest multi = new MultipartRequest(request, directorio, 1 * 1024 * 1024, new DefaultFileRenamePolicy());
+                String operacion = multi.getParameter("operacion");
+                switch (operacion) {
+                    case "insertar":
+                        insertar(multi, request, response);
+                        break;
+                    case "reenviar":
+                        reenviarproducto(multi, request, response);
+                        break;
+                }
             }
         } finally {
             out.close();
@@ -103,18 +116,8 @@ public class EmpresaController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        listaErrores.clear();
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+        processRequest(request, response);
 
-        String directorio = getServletContext().getRealPath("/images");
-        MultipartRequest multi = new MultipartRequest(request, directorio, 1 * 1024 * 1024, new DefaultFileRenamePolicy());
-        String operacion = multi.getParameter("operacion");
-        if (operacion.equals("insertar")) {
-            insertar(multi, request, response);
-        } else if (operacion.equals("reenviar")) {
-            reenviarproducto(multi, request, response);
-        }
     }
 
     /**

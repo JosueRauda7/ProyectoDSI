@@ -35,8 +35,8 @@
                             </div><br>
                         </c:if>
                         <!-- BEGIN FORM-->
-                        <form action="${pageContext.request.contextPath}/categorias.do" method="POST" class="default-form" role="form" enctype="multipart/form-data">
-                            <input type="hidden" name="operacion" value="guardar"/>
+                        <form action="${pageContext.request.contextPath}/administrador.do" method="POST" class="default-form" role="form" enctype="multipart/form-data">
+                            <input type="hidden" name="operacion" value="guardarCategoria"/>
                             <input type="hidden" value="${requestScope.category.idCategoria}" name="codigo" id="codigo">
                             
                             <div class="form-group">
@@ -67,7 +67,7 @@
                             
                             <div class="padding-top-20">                  
                                 <button type="submit" class="btn btn-primary">Aceptar</button>
-                                <a href="${pageContext.request.contextPath}/categorias.do?operacion=listar" style="background-color: #F3565D;color:white;" class="btn btn-primary">Cancelar</a>
+                                <a href="${pageContext.request.contextPath}/administrador.do?operacion=listarCategorias" style="background-color: #F3565D;color:white;" class="btn btn-primary">Cancelar</a>
                             </div>
                         </form>
                         <!-- END FORM--> 

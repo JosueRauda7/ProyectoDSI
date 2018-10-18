@@ -39,7 +39,7 @@
 
                     <form role="form" action="${base}/empresas.do" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="operacion" value="reenviar"/>
-                        <input type="hidden" name="id" value="${id}">/
+                        <input type="hidden" name="id" value="${id}">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">

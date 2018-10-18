@@ -11,9 +11,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.udb.www.beans.Empresa;
+import sv.edu.udb.www.beans.EstadoEmpresa;
 import sv.edu.udb.www.beans.EstadoProducto;
 import sv.edu.udb.www.beans.Producto;
 import sv.edu.udb.www.beans.SubCategoria;
+import sv.edu.udb.www.beans.Usuario;
 import static sv.edu.udb.www.model.Conexion.conexion;
 
 /**
@@ -21,26 +23,23 @@ import static sv.edu.udb.www.model.Conexion.conexion;
  * @author ivanm
  */
 public class EmpresasModel extends Conexion {
-    public List<Producto> listarLibros() throws SQLException{
+    public List<Empresa> listarEmpresas() throws SQLException{
         try {
-            List<Producto> lista=new ArrayList<>();
-            String sql="Select * from producto p inner join sub_categoria sc on p.id_sub_categoria=sc.id_sub_categoria "
-                     + "inner join estado_producto ep on p.id_estado_producto=ep.id_estado_producto";
+            List<Empresa> lista=new ArrayList<>();
+            String sql="Select * from empresa e inner join usuarios u on "
+                     + "e.id_usuario=u.id_usuario inner join estado_empresa es on e.id_estado_empresa = es.id_estado_empresa";
             this.conectar();
             st=conexion.prepareStatement(sql);
             rs=st.executeQuery();
             while(rs.next()){
-                Producto producto=new Producto();
-                producto.setIdProducto(rs.getInt("id_producto"));
-                producto.setProducto(rs.getString("producto"));
-                producto.setDescripcion(rs.getString("descripcion"));
-                producto.setPrecioRegular(rs.getString("precio_regular"));
-                producto.setCantidad(rs.getString("cantidad"));
-                producto.setUrlImagen(rs.getString("url_imagen"));
-                
-                producto.setSubCategoria(new SubCategoria(rs.getString("subcategoria")));                
-                producto.setEstadoProducto(new EstadoProducto(rs.getString("estado")));
-                lista.add(producto);
+                Empresa empresa=new Empresa();
+                empresa.setIdEmpresa(rs.getInt("id_empresa"));
+                empresa.setEmpresa(rs.getString("empresa"));
+                empresa.setComision(rs.getString("comision"));                
+                empresa.setUrlEmpresa(rs.getString("Urlempresa"));
+                empresa.setUsuario(new Usuario(rs.getString("nombre"),rs.getString("apellido")));
+                empresa.setEstadoEmpresa(new EstadoEmpresa(rs.getString("estado_empresa")));
+                lista.add(empresa);
             }
             this.desconectar();
             return lista;
@@ -51,19 +50,17 @@ public class EmpresasModel extends Conexion {
         }
     }
     
-    public int insertarProducto (Producto producto, int empresa) throws SQLException{
+    public int insertarEmpresa (Empresa empresa) throws SQLException{
         try {
             int filasAfectadas=0;
-            String sql="Insert into producto VALUES(NULL,?,?,?,?,?,?,?,1)";
+            String sql="Insert into empresa VALUES(NULL,?,?,?,?,?)";
             this.conectar();
             st=conexion.prepareStatement(sql);
-            st.setString(1,producto.getProducto());
-            st.setString(2,producto.getDescripcion());
-            st.setDouble(3,Double.parseDouble(producto.getPrecioRegular()));
-            st.setInt(4, Integer.parseInt(producto.getCantidad()));
-            st.setString(5,producto.getUrlImagen());
-            st.setInt(6,empresa);
-            st.setInt(7,producto.getIdestadoProducto());            
+            st.setString(1,empresa.getEmpresa());
+            st.setDouble(2,Double.parseDouble(empresa.getComision()));
+            st.setInt(3,empresa.getIdUsuario());
+            st.setString(4, empresa.getUrlEmpresa());
+            st.setInt(5,empresa.getIdEstadoEmpresa());            
             filasAfectadas=st.executeUpdate();
             this.desconectar();
             return filasAfectadas;
@@ -72,28 +69,26 @@ public class EmpresasModel extends Conexion {
             this.desconectar();
             return 0;
         }
-    }
+    }        
     
-    public Producto obtenerProducto(int codigo){
+    public Empresa obtenerEmpresa(int codigo){
         try {
-            String sql ="Select * from producto where id_producto=?";
+            String sql ="Select * from empresa where id_empresa=?";
             this.conectar();
             st=conexion.prepareStatement(sql);
             st.setInt(1,codigo);
             rs=st.executeQuery();
             if(rs.next()){
-                Producto producto = new Producto();
-                /*producto.setCodigoLibro(rs.getString("codigo_libro"));
-                producto.setNombreLibro(rs.getString("nombre_libro"));
-                producto.setExistencias(rs.getInt("existencias"));
-                producto.setPrecio(rs.getDouble("precio"));
-                producto.setCodigoAutor(rs.getString("codigo_autor"));
-                producto.setCodigoEditorial(rs.getString("codigo_editorial"));
-                producto.setidGenero(rs.getInt("id_genero"));
-                producto.setDescripcion(rs.getString("descripcion")); */
+                Empresa empresa = new Empresa();
                 
+                empresa.setIdEmpresa(rs.getInt("id_empresa"));
+                empresa.setEmpresa(rs.getString("empresa"));
+                empresa.setComision(rs.getString("comision"));
+                empresa.setIdUsuario(rs.getInt("id_usuario"));
+                empresa.setUrlEmpresa(rs.getString("Urlempresa"));
+                empresa.setIdEstadoEmpresa(rs.getInt("id_estado_empresa"));
                 this.desconectar();
-                return producto;
+                return empresa;
             }
             this.desconectar();
             return null;
@@ -110,28 +105,69 @@ public class EmpresasModel extends Conexion {
         }
     }
     
-    public int modificarProducto(Producto producto) throws SQLException{
+    public int modificarEmpresa(Empresa empresa, int codigo) throws SQLException{
         try {
             int filasAfectadas=0;
-            String sql="Update libros set nombre_libro=?,existencias=?,precio=?,codigo_autor=?,"
-                       +"codigo_editorial=?, id_genero=?, descripcion=? where codigo_libro=?";
-            this.conectar();/*
-            st=conexion.prepareCall(sql);
-            st.setString(1, libro.getNombreLibro());
-            st.setInt(2, libro.getExistencias());
-            st.setDouble(3, libro.getPrecio());
-            st.setString(4, libro.getCodigoAutor());
-            st.setString(5, libro.getCodigoEditorial());
-            st.setInt(6, libro.getidGenero());
-            st.setString(7, libro.getDescripcion());
-            st.setString(8, libro.getCodigoLibro());
-            filasAfectadas=st.executeUpdate();*/
+            String sql="Update empresa set empresa=?,comision=?,id_usuario=?,Urlempresa=?"
+                       +" where id_empresa=?";
+            this.conectar();
+            st=conexion.prepareStatement(sql);
+            st.setString(1, empresa.getEmpresa());
+            st.setDouble(2, Double.parseDouble(empresa.getComision()));
+            st.setInt(3, empresa.getIdUsuario());
+            st.setString(4, empresa.getUrlEmpresa());
+            st.setInt(5, codigo);
+            filasAfectadas=st.executeUpdate();
             this.desconectar();
-            return 0;
+            return filasAfectadas;
         } catch (SQLException ex) {
             Logger.getLogger(EmpresasModel.class.getName()).log(Level.SEVERE, null, ex);
             this.desconectar();
             return 0;
         }
+    }
+    
+    public int deshabilitarEmpresa(int id) throws SQLException {
+        try {
+            int filasAfectadas = 0;
+            sql = "UPDATE empresa SET id_estado_empresa = 2 WHERE id_empresa = ?";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, id);
+
+            filasAfectadas = st.executeUpdate();
+
+            this.desconectar();
+
+            return filasAfectadas;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoriasModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        }
+
+    }
+    
+    public int habilitarEmpresa(int id) throws SQLException {
+        try {
+            int filasAfectadas = 0;
+            sql = "UPDATE empresa SET id_estado_empresa = 1 WHERE id_empresa = ?";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, id);
+
+            filasAfectadas = st.executeUpdate();
+
+            this.desconectar();
+
+            return filasAfectadas;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoriasModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        }
+
     }
 }

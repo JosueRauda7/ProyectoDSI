@@ -24,7 +24,7 @@
                     <div class="goods-page">
                         
                         <div class="goods-data clearfix">
-                            <a class="btn btn-info" style="color:white;" href="${pageContext.request.contextPath}/SubCategoria.do?operacion=nuevo">Nueva sub categoria</a><br/><br/>
+                            <a class="btn btn-info" style="color:white;" href="${pageContext.request.contextPath}/administrador.do?operacion=nuevaSubCategoria">Nueva sub categoria</a><br/><br/>
                             <h1>Lista de Sub Categorias</h1><br/>
                             
                             
@@ -53,12 +53,12 @@
                                             
 
                                             <td>
-                                                <a title="Editar" class="btn btn-success" style="color:white;" href="${pageContext.request.contextPath}/SubCategoria.do?operacion=obtener&id=${subCategoria.idSubCategoria}"><span class="glyphicon glyphicon-edit"></span></a>
+                                                <a title="Editar" class="btn btn-success" style="color:white;" href="${pageContext.request.contextPath}/administrador.do?operacion=obtenerSubCategoria&id=${subCategoria.idSubCategoria}"><span class="glyphicon glyphicon-edit"></span></a>
                                                 <c:if test="${subCategoria.estadoCategoria.estadoCategoria == 'activo'}">
                                                 <a title="Deshabilitar" class="btn btn-danger" style="color:white;" href="javascript:deshabilitar('${subCategoria.idSubCategoria}')"><span class="glyphicon glyphicon-trash"></span></a>
                                                 </c:if>
                                                 <c:if test="${subCategoria.estadoCategoria.estadoCategoria eq 'inactivo'}">
-                                                <a title="Habilitar" class="btn btn-info" style="color:white;" href="${pageContext.request.contextPath}/SubCategoria.do?operacion=habilitar&id=${subCategoria.idSubCategoria}"><span class="glyphicon glyphicon-check"></span></a>
+                                                <a title="Habilitar" class="btn btn-info" style="color:white;" href="${pageContext.request.contextPath}/administrador.do?operacion=habilitarSubCategoria&id=${subCategoria.idSubCategoria}"><span class="glyphicon glyphicon-check"></span></a>
                                                 </c:if>
                                             </td>
                                         </tr>
@@ -109,7 +109,7 @@
             })
                     .then((willDelete) => {
                         if (willDelete) {
-                            location.href = "SubCategoria.do?operacion=deshabilitar&id=" + id
+                            location.href = "administrador.do?operacion=deshabilitarSubCategoria&id=" + id
                         }
                     })
 
