@@ -20,7 +20,7 @@
                         </button>
                         <ul class="dropdown-menu">                                                        
                             <li><a style="padding: 10px" href="#">Cambiar contraseña</a></li>
-                            <li><a style="padding: 10px" href="#">Salir</a></li>
+                            <li><a style="padding: 10px" href="${base}/usuarios.do?operacion=cerrarSesion">Salir</a></li>
                         </ul>
                     </li>
                 </ul>

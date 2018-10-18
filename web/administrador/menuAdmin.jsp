@@ -19,7 +19,7 @@
                     <li><a style="padding: 10px" href="shop-product-list.html">Modo Cliente</a></li>
                     <li><a style="padding: 10px" href="shop-product-list.html">Mis Compras</a></li>
                     <li><a style="padding: 10px" href="shop-product-list.html">Configurar</a></li>
-                    <li><a style="padding: 10px" href="shop-product-list.html">Salir</a></li>
+                    <li><a style="padding: 10px" href="${base}/usuarios.do?operacion=cerrarSesion">Salir</a></li>
                 </ul>
             </div>
         </div>

@@ -49,41 +49,45 @@ public class EmpresaController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            if (request.getSession().getAttribute("usuario") == null || !request.getSession().getAttribute("tipousuario").toString().equals("5")) {
-                response.sendRedirect(request.getContextPath() + "/index.jsp");
-                return;
-            }
-            if (request.getParameter("operacion") != null) {
-                String operacion = request.getParameter("operacion");
-                switch (operacion) {
-                    case "listar":
-                        listar(request, response);
-                        break;
-                    case "nuevo":
-                        nuevo(request, response);
-                        break;
-                    case "inicio":
-                        request.getRequestDispatcher("/empresa/inicioEmpresa.jsp").forward(request, response);
-                        break;
-                    case "obtener":
-                        obtener(request, response);
-                        break;
-                    default:
-                        request.getRequestDispatcher("/error404.jsp").forward(request, response);
-                        break;
+            if (request.getSession().getAttribute("usuario") != null || request.getSession().getAttribute("tipousuario") != null || request.getSession().getAttribute("nombreUser") != null) {
+                if (request.getSession().getAttribute("usuario") == null || !request.getSession().getAttribute("tipousuario").toString().equals("5")) {
+                    response.sendRedirect(request.getContextPath() + "/index.jsp");
+                    return;
                 }
-            } else {
-                String directorio = getServletContext().getRealPath("/images");
-                MultipartRequest multi = new MultipartRequest(request, directorio, 1 * 1024 * 1024, new DefaultFileRenamePolicy());
-                String operacion = multi.getParameter("operacion");
-                switch (operacion) {
-                    case "insertar":
-                        insertar(multi, request, response);
-                        break;
-                    case "reenviar":
-                        reenviarproducto(multi, request, response);
-                        break;
+                if (request.getParameter("operacion") != null) {
+                    String operacion = request.getParameter("operacion");
+                    switch (operacion) {
+                        case "listar":
+                            listar(request, response);
+                            break;
+                        case "nuevo":
+                            nuevo(request, response);
+                            break;
+                        case "inicio":
+                            request.getRequestDispatcher("/empresa/inicioEmpresa.jsp").forward(request, response);
+                            break;
+                        case "obtener":
+                            obtener(request, response);
+                            break;
+                        default:
+                            request.getRequestDispatcher("/error404.jsp").forward(request, response);
+                            break;
+                    }
+                } else {
+                    String directorio = getServletContext().getRealPath("/images");
+                    MultipartRequest multi = new MultipartRequest(request, directorio, 1 * 1024 * 1024, new DefaultFileRenamePolicy());
+                    String operacion = multi.getParameter("operacion");
+                    switch (operacion) {
+                        case "insertar":
+                            insertar(multi, request, response);
+                            break;
+                        case "reenviar":
+                            reenviarproducto(multi, request, response);
+                            break;
+                    }
                 }
+            }else{
+                request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
             }
         } finally {
             out.close();
