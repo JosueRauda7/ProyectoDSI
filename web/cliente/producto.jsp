@@ -1,8 +1,8 @@
-
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="base" value="${pageContext.request.contextPath}"/>
 
+<!DOCTYPE html>
 <html lang="en">
 
     <!-- Head BEGIN -->
@@ -45,15 +45,17 @@
                             <div class="pull-left"  style="display: flex;">
                                 <label class="control-label">Cantidad disponible:</label><p>${requestScope.producto.cantidad}</p>  
                             </div>
-                            <div class="product-page-cart">
+                            <form class="product-page-cart" action="clientes.do">
+                                <input type="hidden" value="agregarProducto" name="operacion">
+                                <input type="hidden" value="${requestScope.producto.idProducto}" name="idproduct">
                                 <div class="product-quantity">
-                                    <input id="product-quantity" type="text" value="1" readonly class="form-control input-sm">
+                                    <input id="product-quantity" type="text" value="1" name="cantidad" readonly class="form-control input-sm">
                                 </div>
                                 <button class="btn btn-primary" type="submit">Agregar al carrito</button>
-                            </div>
+                            </form>
                             <div class="marca" >
-                                <label class="control-label">Empresa:</label><p>${requestScope.producto.empresa.empresa}</p>  
-                                <a href="images/${requestScope.producto.empresa.urlEmpresa}" class="fancybox-button" rel="photos-lib"><img alt="Berry Lace Dress" src="images/${requestScope.producto.empresa.urlEmpresa}" style="width: 30%;"></a>
+                                <label class="control-label">Empresa proveedora:</label><p>${requestScope.producto.empresa.empresa}</p>  
+                                <a href="images/${requestScope.producto.empresa.urlEmpresa}" class="fancybox-button" rel="photos-lib"><img alt="Berry Lace Dress" src="images/${requestScope.producto.empresa.urlEmpresa}" style="width: 35%;"></a>
                             </div>
                             <div class="review" style="display: flex;">
                                 <p>Subcategoria: </p><a href=""> ${requestScope.producto.subCategoria.subCategoria}</a> 
@@ -87,9 +89,28 @@
                 Layout.initTouchspin();
                 Layout.initUniform();
             });
+             
         </script>
         <!-- END PAGE LEVEL JAVASCRIPTS -->
     </body>
+    <script>  
+        <c:if test="${not empty exito}">
+                swal({
+                    title: "Felicidades!",
+                    text: "${exito}",
+                    icon: "success",
+                });
+                    <c:set var="exito" value="" scope="session"/>
+                </c:if>
+
+                <c:if test="${not empty fracaso}">
+                swal({
+                    title: "Ups!",
+                    text: "${fracaso}",
+                    icon: "error",
+                });
+                    <c:set var="fracaso" value="" scope="session"/>
+                </c:if></script>
     <jsp:include page="footer.jsp" />
     <!-- END BODY -->
 </html>
