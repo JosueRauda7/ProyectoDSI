@@ -4,13 +4,14 @@
     Author     : Ferh
 --%>
 
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="base" value="${pageContext.request.contextPath}"/> 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="utf-8">
-        <title>Nombre empresa | Administrador</title>
+        <title>Empresa</title>
 
         <jsp:include page="head.jsp"/>        
         <!-- Theme styles END -->
@@ -20,242 +21,66 @@
     <body class="ecommerce">
 
 
-        <jsp:include page="/administrador/menuAdmin.jsp"/>
+        <jsp:include page="menuAdmin.jsp"/>
 
 
         <div class="container">
-
             <div class="product-page-content">
-                <ul id="myTab" class="nav nav-tabs">
-                    <li class="active"><a href="#activos" data-toggle="tab">Productos activos</a></li>
-                    <li><a href="#vencidos" data-toggle="tab">Productos vencidos</a></li>
 
+                <ul id="myTab" class="nav nav-tabs" style="margin-bottom: 2%;">
+                    <li><a href="${base}/administrador.do?operacion=listarProductos&estado=1" >Listar en espera</a></li>
+                    <li><a href="${base}/administrador.do?operacion=listarProductos&estado=2" >Listar activos</a></li>
+                    <li><a href="${base}/administrador.do?operacion=listarProductos&estado=3" >Listar rechazados</a></li>                    
                 </ul>
-                <div id="myTabContent" class="tab-content">
-                    <div class="tab-pane fade in active" id="activos">
 
-
-
-                        <div class="goods-page">
-                            <div class="goods-data clearfix">
-                                <div class="table-wrapper-responsive">
-                                    <table summary="Shopping cart">
-                                        <tr>
-                                            <th class="goods-page-image">Imagen</th>
-                                            <th class="goods-page-description">Producto</th>
-                                            <th class="goods-page-description">Disponibles</th>
-                                            <th class="goods-page-quantity">Precio</th>
-                                            <th class="goods-page-quantity">Fecha de vencimiento</th>
-
-                                        </tr>
-                                        <tr>
-                                            <td class="goods-page-image">
-                                                <a href="javascript:;"><img src="assets/pages/img/products/model3.jpg" alt="Berry Lace Dress"></a>
-                                            </td>
-                                            <td class="goods-page-description">
-                                                <h3><a href="javascript:;">Sofá</a></h3>
-                                                <p>Café oscuro de madera tapizado</p>
-
-                                            </td>
-                                            <td class="goods-page-description">
-                                                50
-                                            </td>
-                                            <td class="goods-page-total">
-                                                <strong><span>$</span>100.00</strong>
-                                            </td>
-                                            <td class="goods-page-quantity">
-                                                15-04-2018
-                                            </td>
-
-
-
-                                        </tr>
-
-                                        <tr>
-                                            <td class="goods-page-image">
-                                                <a href="javascript:;"><img src="assets/pages/img/products/model3.jpg" alt="Berry Lace Dress"></a>
-                                            </td>
-                                            <td class="goods-page-description">
-                                                <h3><a href="javascript:;">Sofá</a></h3>
-                                                <p>Café oscuro de madera tapizado</p>
-
-                                            </td>
-                                            <td class="goods-page-description">
-                                                50
-                                            </td>
-                                            <td class="goods-page-total">
-                                                <strong><span>$</span>100.00</strong>
-                                            </td>
-                                            <td class="goods-page-quantity">
-                                                15-04-2018
-                                            </td>
-
-                                            <td class="goods-page-total">
-
-                                            </td>
-
-                                        </tr>
-
-                                    </table>
-                                </div>
-
-
+                <c:forEach var="producto" items="${requestScope.listarProducto}">
+                    <div class="col-md-4" style="margin-top: 2%;">
+                        <div class="product-item">
+                            <div class="pi-img-wrapper">
+                                <img src="${base}/images/${producto.urlImagen}" class="img-responsive" alt="Imagen">                            
                             </div>
-
-                        </div>
-
-
-
-                    </div>
-                    <div class="tab-pane fade" id="vencidos">
-
-
-                        <div class="goods-page">
-                            <div class="goods-data clearfix">
-                                <div class="table-wrapper-responsive">
-                                    <table summary="Shopping cart">
-                                        <tr>
-                                            <th class="goods-page-image">Imagen</th>
-                                            <th class="goods-page-description">Producto</th>
-                                            <th class="goods-page-description">Disponibles</th>
-                                            <th class="goods-page-quantity">Precio</th>
-                                            <th class="goods-page-quantity">Fecha de vencimiento</th>
-                                            <th class="goods-page-description">Operacion</th>
-                                        </tr>
-                                        <tr>
-                                            <td class="goods-page-image">
-                                                <a href="javascript:;"><img src="assets/pages/img/products/model3.jpg" alt="Berry Lace Dress"></a>
-                                            </td>
-                                            <td class="goods-page-description">
-                                                <h3><a href="javascript:;">Sofá</a></h3>
-                                                <p>Café oscuro de madera tapizado</p>
-
-                                            </td>
-                                            <td class="goods-page-description">
-                                                50
-                                            </td>
-                                            <td class="goods-page-total">
-                                                <strong><span>$</span>100.00</strong>
-                                            </td>
-                                            <td class="goods-page-quantity">
-                                                15-04-2018
-                                            </td>
-
-                                            <td class="goods-page-description">
-                                                <a class="btn btn-primary fancybox-fast-view" style="color:white; float: none;" href="#product-pop-up">Renovar</a>
-                                            </td>
-
-                                        </tr>
-
-                                        <tr>
-                                            <td class="goods-page-image">
-                                                <a href="javascript:;"><img src="assets/pages/img/products/model3.jpg" alt="Berry Lace Dress"></a>
-                                            </td>
-                                            <td class="goods-page-description">
-                                                <h3><a href="javascript:;">Sofá</a></h3>
-                                                <p>Café oscuro de madera tapizado</p>
-
-                                            </td>
-                                            <td class="goods-page-description">
-                                                50
-                                            </td>
-                                            <td class="goods-page-total">
-                                                <strong><span>$</span>100.00</strong>
-                                            </td>
-                                            <td class="goods-page-quantity">
-                                                15-04-2018
-                                            </td>
-
-                                            <td class="goods-page-description">
-
-                                                <a class="btn btn-primary fancybox-fast-view" style="color:white; float: none;" href="#product-pop-up">Renovar</a>
-
-                                            </td>
-
-                                        </tr>
-
-                                    </table>
-                                </div>
-
-
+                            <div class="text-center">
+                                <h3>Producto</h3>
+                                <p>${producto.producto}</p>
+                                <h3>Descripción</h3>
+                                <p>${producto.descripcion}</p>
+                                <h3>Existencias</h3>
+                                <p>${producto.cantidad}</p>
                             </div>
-
+                            <div class="pi-price">Precio: $${producto.precioRegular}</div>
+                            <c:if test="${producto.estadoProducto.estado eq 'En espera'}">
+                            <a href="${base}/administrador.do?operacion=aceptarRechazar&estado=2&id=${producto.idProducto}" class="btn btn-default add2cart">Aceptar</a>
+                            <a href="${base}/administrador.do?operacion=aceptarRechazar&estado=3&id=${producto.idProducto}" class="btn btn-default add2cart">Rechazar</a>
+                            </c:if>
                         </div>
-
-
                     </div>
-
-                </div>
+                </c:forEach>
             </div>
 
-        </div>
 
+            <br/><br/><br/>
 
+            <jsp:include page="footer.jsp"/>
 
-
-
-
-        <div id="product-pop-up" style="display: none; width: 700px;">
-            <div class="col-md-12">
-                <h3>Renovación de producto</h3>
-                <p>Nombre del prodcuto</p>
-                <form role="form" action="#">
-                    <div class="form-group">
-                        <label for="cantidad">Nueva cantidad</label>
-                        <input type="text" id="cantidad" class="form-control" name="cantidad">
-                    </div>
-                    <div class="form-group">
-                        <label for="vencimiento">Fecha de vencimiento</label>
-                        <input type="date" id="vencimiento" class="form-control" name="vencimiento">
-                    </div>
-                    
-                    <div class="padding-top-20">                  
-                        <button class="btn btn-primary" type="submit">Renovar</button>
-                    </div>
-                    <hr>
-                    
-                </form>
-            </div>
-        </div>
-
-        <br/><br/><br/>
-
-        <jsp:include page="footer.jsp"/>
-
-        <!-- END fast view of a product -->
-
-        <!-- Load javascripts at bottom, this will reduce page load time -->
-        <!-- BEGIN CORE PLUGINS(REQUIRED FOR ALL PAGES) -->
-        <!--[if lt IE 9]>
-        <script src="assets/plugins/respond.min.js"></script>  
-        <![endif]-->  
-        <script src="../assets/plugins/jquery.min.js" type="text/javascript"></script>
-        <script src="../assets/plugins/jquery-migrate.min.js" type="text/javascript"></script>
-        <script src="../assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>      
-
-        <script src="../assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-        <!-- END CORE PLUGINS -->
-
-        <!-- BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE) -->
-        <script src="../assets/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script><!-- pop up -->
-        <script src="../assets/plugins/owl.carousel/owl.carousel.min.js" type="text/javascript"></script><!-- slider for products -->
-        <script src='../assets/plugins/zoom/jquery.zoom.min.js' type="text/javascript"></script><!-- product zoom -->
-        <script src="../assets/plugins/bootstrap-touchspin/bootstrap.touchspin.js" type="text/javascript"></script><!-- Quantity -->
-        <script src="../assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-        <script src="../assets/plugins/rateit/src/jquery.rateit.js" type="text/javascript"></script>
-
-        <script src="../assets/corporate/scripts/layout.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            jQuery(document).ready(function () {
-                Layout.init();
-                Layout.initOWL();
-                Layout.initTwitter();
-                Layout.initImageZoom();
-                Layout.initTouchspin();
-                Layout.initUniform();
-            });
-        </script>
-        <!-- END PAGE LEVEL JAVASCRIPTS -->
+            <!-- END PAGE LEVEL JAVASCRIPTS -->
     </body>
-    <!-- END BODY -->
+    <script>
+        <c:if test="${not empty exito}">
+        swal({
+            title: "Bien!",
+            text: "${exito}",
+            icon: "success",
+        });
+            <c:set var="exito" value="" scope="session"/>
+        </c:if>
+
+        <c:if test="${not empty fracaso}">
+        swal({
+            title: "Ups!",
+            text: "${fracaso}",
+            icon: "error",
+        });
+            <c:set var="fracaso" value="" scope="session"/>
+        </c:if>
+    </script>
 </html>

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -23,10 +24,13 @@ import sv.edu.udb.www.beans.Categoria;
 import sv.edu.udb.www.beans.Empresa;
 import sv.edu.udb.www.beans.EstadoCategoria;
 import sv.edu.udb.www.beans.SubCategoria;
+import sv.edu.udb.www.beans.Usuario;
 import sv.edu.udb.www.model.CategoriasModel;
 import sv.edu.udb.www.model.EmpresasModel;
+import sv.edu.udb.www.model.ProductosModel;
 import sv.edu.udb.www.model.SubCategoriasModel;
 import sv.edu.udb.www.model.UsuariosModel;
+import sv.edu.udb.www.utils.Correo;
 import sv.edu.udb.www.utils.Validaciones;
 
 /**
@@ -40,6 +44,7 @@ public class AdministradorController extends HttpServlet {
     UsuariosModel modeloUsuario = new UsuariosModel();
     CategoriasModel modeloCategoria = new CategoriasModel();
     SubCategoriasModel modeloSubCategoria = new SubCategoriasModel();
+    ProductosModel modeloProducto = new ProductosModel();
     ArrayList listaErrores = new ArrayList();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -88,6 +93,37 @@ public class AdministradorController extends HttpServlet {
                         break;
                     case "habilitarSubCategoria":
                         habilitarSubCategoria(request, response);
+                        break;
+                    //--------------------------------------------------
+                    //------------------CONTROL DE USUARIOS-------------
+                    case "listarUsuarios":
+                        listarUsuarios(request, response);
+                        break;
+                    case "agregarUsuario":
+                        agregarUsuario(request, response);
+                        break;
+                    case "agregarAdministrador":
+                        agregarAdministrador(request, response);
+                        break;
+                    case "modificarUsuario":
+                        modificarUsuario(request, response);
+                        break;
+                    case "realizarModificacionUsuario":
+                        realizarModificacionUsuario(request, response);
+                        break;
+                    case "deshabilitarUsuario":
+                        deshabilitarUsuario(request, response);
+                        break;
+                    case "habilitarUsuario":
+                        habilitarUsuario(request, response);
+                        break;
+                    //--------------------------------------------------   
+                    //-----------APROVAR/RECHAZAR PRODUCTOS-------------
+                    case "listarProductos":
+                        listarProductos(request, response);
+                        break;
+                    case "aceptarRechazar":
+                        aceptarRechazar(request, response);
                         break;
                     //--------------------------------------------------
                     case "listarEmpresas":
@@ -624,6 +660,268 @@ public class AdministradorController extends HttpServlet {
             } catch (SQLException | IOException ex) {
                 Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+
+    private void listarUsuarios(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.setAttribute("listaUsuarios", modeloUsuario.listarUsuarios());
+            request.getRequestDispatcher("/administrador/verAdministradores.jsp").forward(request, response);
+        } catch (ServletException | IOException | SQLException ex) {
+            Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void agregarUsuario(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.getRequestDispatcher("/administrador/nuevoAdministrador.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void agregarAdministrador(HttpServletRequest request, HttpServletResponse response) {
+        try (PrintWriter out = response.getWriter()) {
+            listaErrores.clear();
+            String contraAleatoria = "";
+            String key = "abcdefghijklmnopqrstuvwxyz0123456789";
+            for (int i = 0; i < 6; i++) {
+                contraAleatoria += (key.charAt((int) (Math.random() * key.length())));
+            }
+            Usuario usuario = new Usuario();
+            usuario.setCorreo(request.getParameter("correo"));
+            usuario.setNombre(request.getParameter("nombre"));
+            usuario.setApellido(request.getParameter("apellido"));
+            usuario.setDireccion(request.getParameter("direccion"));
+            usuario.setDui(request.getParameter("dui"));
+            usuario.setPassword(contraAleatoria);
+            usuario.setTipoUser(Integer.parseInt(request.getParameter("tipoUsuario")));
+            usuario.setTelefono(request.getParameter("telefono"));
+
+//            String urlmodel = request.getParameter("url");
+//
+//            if (usuario.getCorreo().isEmpty()) {
+//                listaErrores.add("El correo es requerido");
+//            } else if (!Validaciones.esCorreo(usuario.getCorreo())) {
+//                listaErrores.add("El correo no tiene el formato correcto");
+//            }
+//
+//            if (usuario.getPassword().isEmpty()) {
+//                listaErrores.add("La contraseña es requerida");
+//            } else if (!Validaciones.esContraseña(usuario.getPassword())) {
+//                listaErrores.add("La contraseña debe tener una longitud mínima de 8 caracteres"
+//                        + " y debe contener al menos una mayuscula, "
+//                        + "una minuscula y un numero o caracter especial");
+//            }
+//
+//            if (!listaErrores.isEmpty()) {
+//                request.setAttribute("listaErrores2", listaErrores);
+//                request.setAttribute("url", urlmodel);
+//                request.getRequestDispatcher(urlmodel).forward(request, response);
+//            } else {
+//                if (modelo.verificarCuenta(usuario) == null) {
+//                    listaErrores.add("Usuario y/o clave incorrectos");
+//                    request.setAttribute("listaErrores2", listaErrores);
+//                    request.setAttribute("url", urlmodel);
+//                    request.getRequestDispatcher(urlmodel).forward(request, response);
+//                } else if (usuario.getIdConfirmacion() == 0) {
+//                    listaErrores.add("El usuario no ha sido confirmado");
+//                    request.setAttribute("listaErrores2", listaErrores);
+//                    request.setAttribute("url", urlmodel);
+//                    request.getRequestDispatcher(urlmodel).forward(request, response);
+//                }
+//            }
+//        } catch (SQLException | ServletException | IOException ex) {
+//            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+            if (usuario.getNombre().isEmpty()) {
+                listaErrores.add("El nombre es requerido");
+            }
+            if (usuario.getApellido().isEmpty()) {
+                listaErrores.add("El apellido es requerido");
+            }
+
+            if (usuario.getDireccion().isEmpty()) {
+                listaErrores.add("La direccion es requerida");
+            }
+
+            if (usuario.getDui().isEmpty()) {
+                listaErrores.add("El dui es requerido");
+            } else if (!Validaciones.esDui(usuario.getDui())) {
+                listaErrores.add("El dui no tiene el formato correcto");
+            }
+
+            if (usuario.getTelefono().isEmpty()) {
+                listaErrores.add("El numero de telefono es requerido");
+            } else if (!Validaciones.esTelefono(usuario.getTelefono())) {
+                listaErrores.add("El numero de telefono no tiene el formato correcto");
+
+            }
+
+            if (!listaErrores.isEmpty()) {
+                request.setAttribute("listaErrores", listaErrores);
+                request.setAttribute("usuario", usuario);
+                //request.setAttribute("url", urlmodel);
+                request.getRequestDispatcher("/administrador.do?operacion=agregarUsuario").forward(request, response);
+            } else {
+                String cadenaAleatoria = UUID.randomUUID().toString();
+
+                if (modeloUsuario.insertarUsuario(usuario, cadenaAleatoria) > 0) {
+                    request.getSession().setAttribute("exito", "Usuario registrado "
+                            + "existosamente. Se te ha enviado un correo para que "
+                            + "confirmes tu cuenta");
+
+                    String enlace = request.getRequestURL().toString()
+                            + "?operacion=verificar&id=" + cadenaAleatoria;
+                    String texto = "<div class='container2' style='color: white;border: solid black 2px;border-radius: 25px;width: 30%;padding: 1%;background-color: #e84d1c;'><h1 style=\"text-align: center;\">Bienvenido a BigShop</h1><div>"
+                            + "<p>BigShop es tu nueva tienda oline, aquí te ofrecemos una gran variedad de productos a un buen precio, tambien tenemos los mejores productos de tus marcas favoritas, todo lo que decees esta aqui.</p>"
+                            + "<p>Has sido registrado como administrador tu contraseña es: " + usuario.getPassword() + ".</p>"
+                            + "<p>Para poder acceder a nuestro sitio debes validar tu usuario, da click al boton para empezar a comprar.</p>"
+                            + "<a target='_blank' href='" + enlace + "'><button type='button' style='background-color: white;color: black;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;border: solid 1px #67656E;  font-family:fantasy;margin-left:30%;'   onmouseover='this.style.backgroundColor=\"#A5A1B3\" ' onmouseout='this.style.backgroundColor=\"\"'>Entrar</button></a></div></div>";
+                    Correo correo = new Correo();
+                    correo.setAsunto("Confirmacion de registro");
+                    correo.setMensaje(texto);
+                    correo.setDestinatario(usuario.getCorreo());
+                    correo.enviarCorreo();
+                    response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarUsuarios");
+                } else {
+                    listaErrores.add("Este usuario ya existe");
+                    request.setAttribute("listaErrores", listaErrores);
+                    request.setAttribute("usuario", usuario);
+                    request.getRequestDispatcher("/administrador.do?operacion=agregarUsuario").forward(request, response);
+                }
+            }
+        } catch (IOException | ServletException | SQLException ex) {
+            Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void modificarUsuario(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String id = request.getParameter("id");
+            request.setAttribute("usuario", modeloUsuario.obtenerUsuario(Integer.parseInt(id)));
+            request.getRequestDispatcher("/administrador/modificarAdministrador.jsp").forward(request, response);
+        } catch (SQLException | ServletException | IOException ex) {
+            Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void realizarModificacionUsuario(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            listaErrores.clear();
+            Usuario usuario = new Usuario();
+            usuario.setIdUsuario(Integer.parseInt(request.getParameter("codigo")));
+            usuario.setCorreo(request.getParameter("correo"));
+            usuario.setNombre(request.getParameter("nombre"));
+            usuario.setApellido(request.getParameter("apellido"));
+            usuario.setDireccion(request.getParameter("direccion"));
+            usuario.setTipoUser(Integer.parseInt(request.getParameter("tipoUsuario")));
+            usuario.setTelefono(request.getParameter("telefono"));
+
+            if (usuario.getCorreo().isEmpty()) {
+                listaErrores.add("El correo es requerido");
+            } else if (!Validaciones.esCorreo(usuario.getCorreo())) {
+                listaErrores.add("El correo no tiene el formato correcto");
+            }
+
+            if (usuario.getNombre().isEmpty()) {
+                listaErrores.add("El nombre es requerido");
+            }
+            if (usuario.getApellido().isEmpty()) {
+                listaErrores.add("El apellido es requerido");
+            }
+
+            if (usuario.getDireccion().isEmpty()) {
+                listaErrores.add("La direccion es requerida");
+            }
+
+            if (usuario.getTelefono().isEmpty()) {
+                listaErrores.add("El numero de telefono es requerido");
+            } else if (!Validaciones.esTelefono(usuario.getTelefono())) {
+                listaErrores.add("El numero de telefono no tiene el formato correcto");
+
+            }
+
+            if (!listaErrores.isEmpty()) {
+                request.setAttribute("listaErrores", listaErrores);
+                request.setAttribute("usuario", usuario);
+                request.getRequestDispatcher("/administrador.do?operacion=modificarUsuario").forward(request, response);
+            } else {
+                if (modeloUsuario.modificarUsuario(usuario) > 0) {
+                    request.getSession().setAttribute("exito", "Usuario modificado exitosamente");
+                    response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarUsuarios");
+                } else {
+                    request.getSession().setAttribute("fracaso", "Usuario no modificado exitosamente");
+                    response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarUsuarios");
+                }
+            }
+        } catch (ServletException | IOException | SQLException ex) {
+            Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void deshabilitarUsuario(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            if (modeloUsuario.deshabilitarUsuario(id) > 0) {
+                request.getSession().setAttribute("exito", "Usuario ha sido deshabilitado exitosamente");
+                response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarUsuarios");
+            } else {
+                request.getSession().setAttribute("fracaso", "Usuario no ha sido deshabilitado exitosamente");
+                response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarUsuarios");
+            }
+        } catch (SQLException | IOException ex) {
+            Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void habilitarUsuario(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            if (modeloUsuario.habilitarUsuario(id) > 0) {
+                request.getSession().setAttribute("exito", "Usuario ha sido habilitado exitosamente");
+                response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarUsuarios");
+            } else {
+                request.getSession().setAttribute("fracaso", "Usuario no ha sido habilitado exitosamente");
+                response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarUsuarios");
+            }
+        } catch (SQLException | IOException ex) {
+            Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void listarProductos(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int estado = Integer.parseInt(request.getParameter("estado"));
+            request.setAttribute("listarProducto", modeloProducto.listarProducto(estado));
+            try {
+                request.getRequestDispatcher("/administrador/listaProductos.jsp").forward(request, response);
+            } catch (ServletException | IOException ex) {
+                Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void aceptarRechazar(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int codigo = Integer.parseInt(request.getParameter("id"));
+            int estado = Integer.parseInt(request.getParameter("estado"));
+            if (modeloProducto.rechazarAceptarProducto(codigo, estado) == 0) {
+                request.getSession().setAttribute("fracaso", "Ocurrio un error, no se pudo aplicar la acción");
+            } else {
+                request.getSession().setAttribute("exito", "Producto calificado.");
+            }
+
+            request.setAttribute("listarProducto", modeloProducto.listarProducto(estado));
+            try {
+                request.getRequestDispatcher("/administrador/listaProductos.jsp").forward(request, response);
+            } catch (ServletException | IOException ex) {
+                Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

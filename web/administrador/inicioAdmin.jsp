@@ -41,16 +41,16 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
                     <div class="col-lg-4">
                         <div class="product-item">
                             <div class="pi-img-wrapper">
-                                <img src="../assets/pages/img/administrador/administradoricon.png" style="max-height: 200px;" class="col-lg-7" alt="Berry Lace Dress">
+                                <img src="${base}/assets/pages/img/administrador/administradoricon.png" style="max-height: 200px;" class="col-lg-7" alt="Berry Lace Dress">
                             </div>
                             <h3><a href="shop-item.html">Administrador</a></h3>
-                            <a href="javascript:;" class="btn btn-default add2cart">Administrar</a>
+                            <a href="${base}/administrador.do?operacion=listarUsuarios" class="btn btn-default add2cart">Administrar</a>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="product-item">
                             <div class="pi-img-wrapper">
-                                <img src="../assets/pages/img/administrador/catalogoicon.png" style="min-height: 152px;"  class="col-lg-7" alt="Berry Lace Dress">
+                                <img src="${base}/assets/pages/img/administrador/catalogoicon.png" style="min-height: 152px;"  class="col-lg-7" alt="Berry Lace Dress">
                             </div>
                             <h3><a href="shop-item.html">Categoria</a></h3>
                             <a href="${base}/administrador.do?operacion=listarCategorias" class="btn btn-default add2cart">Administrar</a>
@@ -60,25 +60,25 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
                     <div class="col-lg-4">
                         <div class="product-item">
                             <div class="pi-img-wrapper">
-                                <img src="../assets/pages/img/administrador/clientesicon.png" class="col-lg-7" alt="Berry Lace Dress">
+                                <img src="${base}/assets/pages/img/administrador/clientesicon.png" class="col-lg-7" alt="Berry Lace Dress">
                             </div>
-                            <h3><a href="shop-item.html">Clientes</a></h3>
-                            <a href="javascript:;" class="btn btn-default add2cart">Administrar</a>
+                            <h3><a href="shop-item.html">Usuarios</a></h3>
+                            <a href="${base}/administrador.do?operacion=listarUsuarios" class="btn btn-default add2cart">Administrar</a>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="product-item">
                             <div class="pi-img-wrapper">
-                                <img src="../assets/pages/img/administrador/productosicon.png" style="min-height: 160px;" class="col-lg-7" alt="Berry Lace Dress">
+                                <img src="${base}/assets/pages/img/administrador/productosicon.png" style="min-height: 160px;" class="col-lg-7" alt="Berry Lace Dress">
                             </div>
                             <h3><a href="shop-item.html">Productos</a></h3>
-                            <a href="javascript:;" class="btn btn-default add2cart">Administrar</a>
+                            <a href="${base}/administrador.do?operacion=listarProductos&estado=1" class="btn btn-default add2cart">Administrar</a>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="product-item">
                             <div class="pi-img-wrapper">
-                                <img src="../assets/pages/img/administrador/subcatalogoicon.png" class="col-lg-7" alt="Berry Lace Dress">
+                                <img src="${base}/assets/pages/img/administrador/subcatalogoicon.png" class="col-lg-7" alt="Berry Lace Dress">
                             </div>
                             <h3><a href="shop-item.html">Sub-categoria</a></h3>
                             <a href="${base}/administrador.do?operacion=listarSubCategorias" class="btn btn-default add2cart">Administrar</a>
