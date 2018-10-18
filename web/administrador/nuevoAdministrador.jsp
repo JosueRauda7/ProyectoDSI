@@ -32,7 +32,7 @@
                             </div>
                         </c:if>
                         <!-- BEGIN FORM-->
-                        <form action="${pageContext.request.contextPath}/usuarios.do" method="POST" class="default-form" role="form">
+                        <form action="${pageContext.request.contextPath}/administrador.do" method="POST" class="default-form" role="form">
                             <input type="hidden" name="operacion" value="agregarAdministrador"/>
                             <div class="form-group">
                                 <label for="nombre">Nombres:</label>

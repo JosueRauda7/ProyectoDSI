@@ -34,6 +34,7 @@ public class SubCategoriasModel extends Conexion {
                 Categoria categoria = new Categoria();
                 subCategoria.setIdSubCategoria(rs.getInt("id_sub_categoria"));
                 subCategoria.setSubCategoria(rs.getString("subcategoria"));
+                subCategoria.setUrlSubcategoria(rs.getString("Urlsubcategoria"));
                 estado.setIdEstadoCategoria(rs.getInt("id_estado_sub_categoria"));
                 estado.setEstadoCategoria(rs.getString("estado_sub_categoria"));
                 categoria.setIdCategoria(rs.getInt("id_categoria"));

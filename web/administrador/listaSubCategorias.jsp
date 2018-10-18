@@ -45,7 +45,7 @@
                                     <c:forEach items="${requestScope.listaSubCategorias}" var="subCategoria">
 
                                         <tr>
-                                            <td><img src="${pageContext.request.contextPath}/images/${subCategoria.urlSubcategoria}/"></td>
+                                            <td><img height="100px" src="${pageContext.request.contextPath}/images/${subCategoria.urlSubcategoria}"></td>
                                             <td>${subCategoria.idSubCategoria}</td>
                                             <td>${subCategoria.subCategoria}</td>
                                             <td>${subCategoria.categoria.categoria}</td>

@@ -32,7 +32,15 @@
                     </a>
                     <!-- BEGIN DROPDOWN MENU -->
                 </li>
-                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">Clientes</a></li>
+                <li class="dropdown dropdown-megamenu">
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+                        Clientes
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=agregarUsuario">Registrar Usuario</a></li>
+                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=listarUsuarios">Ver Usuarios</a></li>
+                    </ul>
+                </li>
                 <li class="dropdown dropdown-megamenu">
                     <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
                         Categorías
@@ -57,8 +65,7 @@
                         Productos
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Registrar productos</a></li>
-                        <li><a href="#">Ver productos</a></li>
+                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=listarProductos&estado=1">Ver productos</a></li>
                     </ul>
                 </li>
                 <li class="dropdown dropdown-megamenu">

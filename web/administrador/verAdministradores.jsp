@@ -19,7 +19,7 @@
             <div class="container">
                 <div class="col-md-12 col-sm-12">
                     <h1>Lista de Usuarios</h1>
-                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/usuarios.do?operacion=agregarUsuario">Nuevo Usuario</a>
+                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/administrador.do?operacion=agregarUsuario">Nuevo Usuario</a>
                     <br><br>
                     <div class="goods-page">
                         <div class="goods-data clearfix">
@@ -36,56 +36,56 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach items="${requestScope.listaUsuarios}" var="usuario">
-                                        <tr>
-                                            <td class="goods-page-image">
-                                                ${usuario.nombre}
-                                            </td>
-                                            <td class="goods-page-description">
-                                                ${usuario.apellido}
-                                            </td>
-                                            <td class="goods-page-ref-no">
-                                                ${usuario.correo}
-                                            </td>
-                                            <td class="goods-page-price">
-                                                ${usuario.telefono}
-                                            </td>
-                                            <td class="goods-page-price">
-                                        <c:choose>
-                                            <c:when test="${usuario.tipoUser == 1}">
-                                                Administrador
-                                            </c:when>
-                                            <c:when test="${usuario.tipoUser == 3}">
-                                                Empleado Marketing
-                                            </c:when>
-                                            <c:when test="${usuario.tipoUser == 4}">
-                                                Empleado Productos
-                                            </c:when>
-                                            <c:when test="${usuario.tipoUser == 5}">
-                                                Empresa
-                                            </c:when>
-                                                <c:otherwise>
-                                                    
-                                                </c:otherwise>
-                                        </c:choose>
-                                        </td>
-                                        <td class="goods-page-total">
-                                            <c:choose>
+                                        <c:forEach items="${requestScope.listaUsuarios}" var="usuario">
+                                            <tr>
+                                                <td class="goods-page-image">
+                                                    ${usuario.nombre}
+                                                </td>
+                                                <td class="goods-page-description">
+                                                    ${usuario.apellido}
+                                                </td>
+                                                <td class="goods-page-ref-no">
+                                                    ${usuario.correo}
+                                                </td>
+                                                <td class="goods-page-price">
+                                                    ${usuario.telefono}
+                                                </td>
+                                                <td class="goods-page-price">
+                                                    <c:choose>
+                                                        <c:when test="${usuario.tipoUser == 1}">
+                                                            Administrador
+                                                        </c:when>
+                                                        <c:when test="${usuario.tipoUser == 3}">
+                                                            Empleado Marketing
+                                                        </c:when>
+                                                        <c:when test="${usuario.tipoUser == 4}">
+                                                            Empleado Productos
+                                                        </c:when>
+                                                        <c:when test="${usuario.tipoUser == 5}">
+                                                            Empresa
+                                                        </c:when>
+                                                        <c:otherwise>
+
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td class="goods-page-total">
+                                                    <c:choose>
                                                         <c:when test="${usuario.confirmado eq '1'}">
                                                             <a onclick="javascript:modificar('${usuario.idUsuario}')" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span></a>
                                                             <a onclick="javascript:deshabilitar('${usuario.idUsuario}')" style="margin-left: 2%; color:white" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
-                                                        </c:when>
-                                                        <c:when test="${usuario.confirmado eq '0'}">
+                                                            </c:when>
+                                                            <c:when test="${usuario.confirmado eq '0'}">
                                                             Cuenta no confirmada
                                                         </c:when>
                                                         <c:otherwise>
                                                             <a onclick="javascript:modificar('${usuario.idUsuario}')" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span></a>
                                                             <a onclick="javascript:habilitar('${usuario.idUsuario}')" style="margin-left: 2%; color:white" class="btn btn-success"><span class="glyphicon glyphicon-check"></span></a>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                        </td>
-                                        </tr>
-                                    </c:forEach>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
@@ -97,59 +97,59 @@
                 <!-- END CONTENT -->
             </div>
         </div>
-        
+
         <script>
             <c:if test="${not empty exito}">
-                swal({
-                    title: "Bien!",
-                    text: "${exito}",
-                    icon: "success",
-                });
+            swal({
+                title: "Bien!",
+                text: "${exito}",
+                icon: "success",
+            });
                 <c:set var="exito" value="" scope="session"/>
             </c:if>
 
             <c:if test="${not empty fracaso}">
-                swal({
-                    title: "Ups!",
-                    text: "${fracaso}",
-                    icon: "error",
-                });
+            swal({
+                title: "Ups!",
+                text: "${fracaso}",
+                icon: "error",
+            });
                 <c:set var="fracaso" value="" scope="session"/>
             </c:if>
-                    function deshabilitar(id) {
-                    swal({
+            function deshabilitar(id) {
+                swal({
                     title: '¿Seguro que lo deseas deshabilitar?',
-                            text: "Si aceptas, lo puedes volver habilitar!",
-                            icon: 'warning',
-                            buttons: true,
-                            dangerMode: true,
-                    }).then((willDelete) => {
+                    text: "Si aceptas, lo puedes volver habilitar!",
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
                     if (willDelete) {
-                    location.href = 'usuarios.do?operacion=deshabilitarUsuario&id=' + id;
+                        location.href = 'administrador.do?operacion=deshabilitarUsuario&id=' + id;
                     }
-                    });
-                    }
-                    ;
+                });
+            }
+            ;
             function habilitar(id) {
-            swal({
-            title: '¿Seguro que lo deseas habilitar?',
+                swal({
+                    title: '¿Seguro que lo deseas habilitar?',
                     text: "Si aceptas, lo puedes volver deshabilitar!",
                     icon: 'warning',
                     buttons: true,
                     dangerMode: true,
-            }).then((willDelete) => {
-            if (willDelete) {
-            location.href = 'usuarios.do?operacion=habilitarUsuario&id=' + id;
-            }
-            });
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        location.href = 'administrador.do?operacion=habilitarUsuario&id=' + id;
+                    }
+                });
             }
             ;
             function modificar(id) {
-            location.href = 'usuarios.do?operacion=modificarUsuario&id=' + id;
+                location.href = 'administrador.do?operacion=modificarUsuario&id=' + id;
             }
             ;
-                    </script>
-                    <div class="margin-bottom-60"></div>
-                        <jsp:include page="footer.jsp"/>
-                        </body>
-                        </html>
+        </script>
+        <div class="margin-bottom-60"></div>
+        <jsp:include page="footer.jsp"/>
+    </body>
+</html>
