@@ -39,29 +39,15 @@
                      
                     </div>
                     <div class="availability">
-                      Availability: <strong>In Stock</strong>
+                      Estado: <strong>${requestScope.producto.estadoProducto.estado}</strong>
                     </div>
                   </div>
                   <div class="description">
                     <p>${requestScope.producto.descripcion}</p>
                   </div>
                   <div class="product-page-options">
-                    <div class="pull-left">
-                      <label class="control-label">Size:</label>
-                      <select class="form-control input-sm">
-                        <option>L</option>
-                        <option>M</option>
-                        <option>XL</option>
-                      </select>
-                    </div>
-                    <div class="pull-left">
-                      <label class="control-label">Color:</label>
-                      <select class="form-control input-sm">
-                        <option>Red</option>
-                        <option>Blue</option>
-                        <option>Black</option>
-                      </select>
-                    </div>
+                      <div class="pull-left"  style="display: flex;">
+                        <label class="control-label">Cantidad disponible:</label><p>${requestScope.producto.cantidad}</p>  
                   </div>
                   <div class="product-page-cart">
                     <div class="product-quantity">
@@ -69,11 +55,8 @@
                     </div>
                     <button class="btn btn-primary" type="submit">Agregar al carrito</button>
                   </div>
-                  <div class="review">
-                    <input type="range" value="4" step="0.25" id="backing4">
-                    <div class="rateit" data-rateit-backingfld="#backing4" data-rateit-resetable="false"  data-rateit-ispreset="true" data-rateit-min="0" data-rateit-max="5">
-                    </div>
-                    <a href="javascript:;">7 reviews</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:;">Write a review</a>
+                  <div class="review" style="display: flex;">
+                      <p>Subcategoria: </p><a href=""> ${requestScope.producto.subCategoria.subCategoria}</a> 
                   </div>
                   <ul class="social-icons">
                     <li><a class="facebook" data-original-title="facebook" href="javascript:;"></a></li>
