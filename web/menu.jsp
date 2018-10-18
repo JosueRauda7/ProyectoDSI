@@ -2,6 +2,7 @@
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<c:set var="base" value="${pageContext.request.contextPath}"/>
 <div class="header">
     <div class="container">
         <a class="site-logo" href="public.do?operacion=publicIndex">BigShop</a>
@@ -87,14 +88,15 @@
                     <span class="sep"></span>
                     <i class="fa fa-search search-btn"></i>
                     <div class="search-box">
-                        <form action="#">
+                        <form action="${base}/public.do">
+                            <input type="hidden" name="operacion" value="buscarProductos"/>
                             <div class="input-group">
-                                <input type="text" placeholder="Buscar articulo" class="form-control">
+                                <input type="text" placeholder="Buscar articulo" required="true" name="nombre" class="form-control" minlength="4">
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" type="submit">Buscar</button>
                                 </span>
                             </div>
-                        </form>
+                        </form
                     </div> 
                 </li>
                 <!-- END TOP SEARCH -->

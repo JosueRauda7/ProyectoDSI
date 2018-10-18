@@ -9,20 +9,19 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
- 
-  <head>
+    <head>
         <meta charset="utf-8">
-        <title>Productos busqueda</title>
-        <jsp:include page="/head.jsp"/>        
-        <jsp:include page="/scripts.jsp"/>
-    </head>
+        <title>Productos</title>
 
+        <jsp:include page="/head.jsp"/>        
+        <!-- Theme styles END -->
+    </head>
     <!-- Head END -->
 
     <body class="ecommerce">
 
 
-        <jsp:include page="menuCliente.jsp"/>
+        <jsp:include page="menu.jsp"/>
 
 
         <div class="container">

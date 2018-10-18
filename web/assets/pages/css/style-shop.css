@@ -1043,6 +1043,14 @@ table .product-quantity .input-group {
 	margin-bottom: 20px;
 	font-weight: 300;
 }
+.product-page .marca {
+	color: #6e7a85;
+	font-family: 'Open Sans', sans-serif;
+	border-bottom: 1px solid #f4f4f4;
+	padding-bottom: 18px;
+	margin-bottom: 20px;
+	font-weight: 300;
+}
 
 .product-page .rateit {
 	margin-right: 27px;

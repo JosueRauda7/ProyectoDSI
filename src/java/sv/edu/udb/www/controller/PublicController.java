@@ -42,6 +42,9 @@ public class PublicController extends HttpServlet {
                 case "vercategoria":
                     vercategoria(request, response);
                     break;
+                case "buscarProductos":
+                    buscarProductos(request, response);
+                    break;
             }
         }
     }
@@ -104,6 +107,23 @@ public class PublicController extends HttpServlet {
             request.getRequestDispatcher("subcategoria.jsp").forward(request, response);
         } catch (ServletException | IOException | SQLException ex) {
             Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void buscarProductos(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String nombre = request.getParameter("nombre");
+            
+            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.setAttribute("listarProductos", ProductoModel.busquedaProductos(nombre));
+            request.setAttribute("datoBusqueda", nombre);
+            try {
+                request.getRequestDispatcher("/resultadosBusqueda.jsp").forward(request, response);
+            } catch (ServletException | IOException ex) {
+                Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
