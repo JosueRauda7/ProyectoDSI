@@ -128,19 +128,21 @@ public class ClientesModel extends Conexion {
             if (rs.next()) {
                 pedido = rs.getInt("pedido");
             }
-            String sql2 = "SELECT dp.cantidad, p.producto, p.url_imagen,p.precio_regular FROM detalle_pedidos dp INNER JOIN producto p ON dp.id_producto = p.id_producto INNER JOIN pedidos pd ON dp.id_pedido = pd.id_pedido WHERE pd.id_pedido=? AND pd.id_estado_compra = 1 ORDER BY dp.id_detalle_pedido DESC";
+            String sql2 = "SELECT dp.cantidad,p.id_producto, p.producto, p.url_imagen,p.precio_regular FROM detalle_pedidos dp INNER JOIN producto p ON dp.id_producto = p.id_producto INNER JOIN pedidos pd ON dp.id_pedido = pd.id_pedido WHERE pd.id_pedido=? AND pd.id_estado_compra = 1 ORDER BY dp.id_detalle_pedido DESC";
             st = conexion.prepareStatement(sql2);
             st.setInt(1, pedido);
             rs = st.executeQuery();
-            while(rs.next()){
-            Producto producto = new Producto();
-            DetallePedido detalle = new DetallePedido();
-            producto.setProducto(rs.getString("producto"));
-            producto.setUrlImagen(rs.getString("url_imagen"));
-            producto.setCantidad(rs.getString("cantidad"));
-            detalle.setProducto(producto);
-            detalle.setCantidad(rs.getInt("cantidad"));
-            lista.add(detalle);
+            while (rs.next()) {
+                Producto producto = new Producto();
+                DetallePedido detalle = new DetallePedido();
+                producto.setIdProducto(rs.getInt("id_producto"));
+                producto.setProducto(rs.getString("producto"));
+                producto.setUrlImagen(rs.getString("url_imagen"));
+                producto.setCantidad(rs.getString("cantidad"));
+                producto.setPrecioRegular(rs.getString("precio_regular"));
+                detalle.setProducto(producto);
+                detalle.setCantidad(rs.getInt("cantidad"));
+                lista.add(detalle);
             }
             this.desconectar();
             return lista;
@@ -151,4 +153,31 @@ public class ClientesModel extends Conexion {
         }
     }
 
+    public int cantidadProduct(int iduser) throws SQLException {
+        try {
+            String sql = "SELECT MAX(id_pedido) AS pedido FROM pedidos WHERE id_usuario = ?";
+            int pedido = 0;
+            int cantidad = 0;
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, iduser);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                pedido = rs.getInt("pedido");
+            }
+            String sql2 = "SELECT COUNT(id_detalle_pedido) AS cantidad FROM detalle_pedidos WHERE id_pedido=?";
+            st = conexion.prepareStatement(sql2);
+            st.setInt(1, pedido);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                cantidad = rs.getInt("cantidad");
+            }
+            this.desconectar();
+            return cantidad;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        }
+    }
 }
