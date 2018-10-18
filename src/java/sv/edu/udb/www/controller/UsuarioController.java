@@ -50,7 +50,7 @@ public class UsuarioController extends HttpServlet {
             }
             if (request.getSession().getAttribute("usuario") != null || request.getSession().getAttribute("tipousuario") != null || request.getSession().getAttribute("nombreUser") != null) {
                 if (request.getSession().getAttribute("usuario") == null || !request.getSession().getAttribute("tipousuario").toString().equals("1")) {
-                    response.sendRedirect(request.getContextPath()+"/public.do?operacion=publicIndex");
+                    response.sendRedirect(request.getContextPath() + "/public.do?operacion=publicIndex");
                     return;
                 }
                 switch (operacion) {
@@ -101,7 +101,7 @@ public class UsuarioController extends HttpServlet {
                         break;
                 }
             }
-        } 
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -220,6 +220,7 @@ public class UsuarioController extends HttpServlet {
                     correo.setMensaje(texto);
                     correo.setDestinatario(usuario.getCorreo());
                     correo.enviarCorreo();
+                    request.getSession().setAttribute("exito", "Tu usuario se creo exitosamente.");
                     response.sendRedirect(request.getContextPath() + "/" + urlmodel);
                 } else {
                     listaErrores.add("Este usuario ya existe");
@@ -326,7 +327,7 @@ public class UsuarioController extends HttpServlet {
                             request.getSession().setAttribute("estado", clienteModel.estadoPedido((int) request.getSession().getAttribute("usuario")));
                             request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
                             request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
-
+                            
                             request.getRequestDispatcher("/cliente/index.jsp").forward(request, response);
                             break;
                         case 3:
@@ -587,6 +588,7 @@ public class UsuarioController extends HttpServlet {
             request.getSession().setAttribute("usuario", null);
             request.getSession().setAttribute("tipousuario", null);
             request.getSession().setAttribute("nombreUser", null);
+            request.getSession().invalidate();
             request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
         } catch (ServletException | IOException ex) {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);

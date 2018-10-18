@@ -4,7 +4,10 @@
     Author     : Ferh
 --%>
 
-<!-- BEGIN HEADER -->
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="base" value="${pageContext.request.contextPath}"/> 
+
 <div class="header">
     <div class="container">
         <a class="site-logo" href="shop-index.html">BigShop</a>
@@ -43,20 +46,20 @@
                 </li>
                 <li class="dropdown dropdown-megamenu">
                     <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
-                        Categorías
+                        CategorÃ­as
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=nuevaCategoria">Registrar categoría</a></li>
-                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=listarCategorias">Ver categorías</a></li>
+                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=nuevaCategoria">Registrar categorÃ­a</a></li>
+                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=listarCategorias">Ver categorÃ­as</a></li>
                     </ul>
                 </li>
                 <li class="dropdown dropdown-megamenu">
                     <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
-                        Sub Categorías
+                        Sub CategorÃ­as
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=nuevaSubCategoria">Registrar sub categoría</a></li>
-                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=listarSubCategorias">Ver sub categorías</a></li>
+                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=nuevaSubCategoria">Registrar sub categorÃ­a</a></li>
+                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=listarSubCategorias">Ver sub categorÃ­as</a></li>
                     </ul>
                 </li>
 

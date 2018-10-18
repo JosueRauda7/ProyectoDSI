@@ -194,7 +194,8 @@
 
 
 
-            <script type="text/javascript">
+          
+              <script type="text/javascript">
                 jQuery(document).ready(function () {
                     Layout.init();
                     Layout.initOWL();
@@ -203,6 +204,24 @@
                     Layout.initTouchspin();
                     Layout.initUniform();
                 });
+
+                <c:if test="${not empty exito}">
+                swal({
+                    title: "Felicidades!",
+                    text: "${exito}",
+                    icon: "success",
+                });
+                    <c:set var="exito" value="" scope="session"/>
+                </c:if>
+
+                <c:if test="${not empty fracaso}">
+                swal({
+                    title: "Ups!",
+                    text: "${fracaso}",
+                    icon: "error",
+                });
+                    <c:set var="fracaso" value="" scope="session"/>
+                </c:if>
             </script>
              
                  

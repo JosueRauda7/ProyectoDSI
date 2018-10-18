@@ -26,7 +26,7 @@
 
         <div class="container">
             <div class="product-page-content">
-                <li style="margin-bottom: 2%;"><a class="btn btn-primary btn-md" href="${pageContext.request.contextPath}/empresas.do?operacion=nuevo">Nuevo producto</a></li>
+                <a style="margin-bottom: 2%;" class="btn btn-primary btn-md" href="${pageContext.request.contextPath}/empresas.do?operacion=nuevo">Nuevo producto</a>
                 <ul id="myTab" class="nav nav-tabs">
                     <li><a href="${base}/empresas.do?operacion=listar&estado=1" data-toggle="tab">Listar en espera</a></li>
                     <li><a href="${base}/empresas.do?operacion=listar&estado=2" data-toggle="tab">Listar activos</a></li>
