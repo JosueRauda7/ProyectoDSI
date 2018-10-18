@@ -23,7 +23,9 @@ import sv.edu.udb.www.model.ProductosModel;
  */
 @WebServlet(name = "EmpleadoProductoController", urlPatterns = {"/empleados.do"})
 public class EmpleadoProductoController extends HttpServlet {
+
     ProductosModel modeloProducto = new ProductosModel();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,20 +46,24 @@ public class EmpleadoProductoController extends HttpServlet {
             }
 
             String operacion = request.getParameter("operacion");
-            switch (operacion) {
-                case "listar":
-                    listar(request, response);
-                    break;                
-                case "inicio":
-                    request.getRequestDispatcher("/empleadoProducto/inicioEmpresaProducto.jsp").forward(request, response);
-                    break;
-                case "aceptarRechazar":
-                    aceptarRechazar(request,response);
-                    break;
+            if (request.getSession().getAttribute("usuario") != null || request.getSession().getAttribute("tipousuario") != null || request.getSession().getAttribute("nombreUser") != null) {
+                switch (operacion) {
+                    case "listar":
+                        listar(request, response);
+                        break;
+                    case "inicio":
+                        request.getRequestDispatcher("/empleadoProducto/inicioEmpresaProducto.jsp").forward(request, response);
+                        break;
+                    case "aceptarRechazar":
+                        aceptarRechazar(request, response);
+                        break;
 
-                default:
-                    request.getRequestDispatcher("/error404.jsp").forward(request, response);
-                    break;
+                    default:
+                        request.getRequestDispatcher("/error404.jsp").forward(request, response);
+                        break;
+                }
+            } else {
+                request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
             }
         } finally {
             out.close();
@@ -118,15 +124,15 @@ public class EmpleadoProductoController extends HttpServlet {
     }
 
     private void aceptarRechazar(HttpServletRequest request, HttpServletResponse response) {
-         try {
+        try {
             int codigo = Integer.parseInt(request.getParameter("id"));
             int estado = Integer.parseInt(request.getParameter("estado"));
-            if(modeloProducto.rechazarAceptarProducto(codigo, estado)==0){
+            if (modeloProducto.rechazarAceptarProducto(codigo, estado) == 0) {
                 request.getSession().setAttribute("fracaso", "Ocurrio un error, no se pudo aplicar la acción");
-            }else{
+            } else {
                 request.getSession().setAttribute("exito", "Producto calificado.");
             }
-                
+
             request.setAttribute("listarProducto", modeloProducto.listarProducto(1));
             try {
                 request.getRequestDispatcher("/empleadoProducto/listaProductos.jsp").forward(request, response);
@@ -137,6 +143,5 @@ public class EmpleadoProductoController extends HttpServlet {
             Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-   
 
 }

@@ -56,116 +56,119 @@ public class AdministradorController extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/index.jsp");
                 return;
             }*/
+            if (request.getSession().getAttribute("usuario") != null || request.getSession().getAttribute("tipousuario") != null || request.getSession().getAttribute("nombreUser") != null) {
+                if (request.getParameter("operacion") != null) {
 
-            if (request.getParameter("operacion") != null) {
-
-                String operacion = request.getParameter("operacion");
-                switch (operacion) {
-                    //-------------------CATEGORIAS!--------------------
-                    case "listarCategorias":
-                        listarCategorias(request, response);
-                        break;
-                    case "nuevaCategoria":
-                        nuevaCategoria(request, response);
-                        break;
-                    case "modificarCategoria":
-                        modificarCategoria(request, response);
-                        break;
-                    case "deshabilitarCategoria":
-                        deshabilitarCategoria(request, response);
-                        break;
-                    case "habilitarCategoria":
-                        habilitarCategoria(request, response);
-                        break;
-                    //--------------------------------------------------
-                    //--------------------SUB CATEGORIAS!---------------
-                    case "listarSubCategorias":
-                        listarSubCategorias(request, response);
-                        break;
-                    case "nuevaSubCategoria":
-                        nuevaSubCategoria(request, response);
-                        break;
-                    case "obtenerSubCategoria":
-                        obtenerSubCategoria(request, response);
-                        break;
-                    case "deshabilitarSubCategoria":
-                        deshabilitarSubCategoria(request, response);
-                        break;
-                    case "habilitarSubCategoria":
-                        habilitarSubCategoria(request, response);
-                        break;
-                    //--------------------------------------------------
-                    //------------------CONTROL DE USUARIOS-------------
-                    case "listarUsuarios":
-                        listarUsuarios(request, response);
-                        break;
-                    case "agregarUsuario":
-                        agregarUsuario(request, response);
-                        break;
-                    case "agregarAdministrador":
-                        agregarAdministrador(request, response);
-                        break;
-                    case "modificarUsuario":
-                        modificarUsuario(request, response);
-                        break;
-                    case "realizarModificacionUsuario":
-                        realizarModificacionUsuario(request, response);
-                        break;
-                    case "deshabilitarUsuario":
-                        deshabilitarUsuario(request, response);
-                        break;
-                    case "habilitarUsuario":
-                        habilitarUsuario(request, response);
-                        break;
-                    //--------------------------------------------------   
-                    //-----------APROVAR/RECHAZAR PRODUCTOS-------------
-                    case "listarProductos":
-                        listarProductos(request, response);
-                        break;
-                    case "aceptarRechazar":
-                        aceptarRechazar(request, response);
-                        break;
-                    //--------------------------------------------------
-                    case "listarEmpresas":
-                        listarEmpresas(request, response);
-                        break;
-                    case "nuevaEmpresa":
-                        nuevaEmpresa(request, response);
-                        break;
-                    case "obtenerEmpresa":
-                        obtenerEmpresa(request, response);
-                        break;
-                    case "inicio":
-                        request.getRequestDispatcher("/administrador/inicioAdmin.jsp").forward(request, response);
-                        break;
-                    default:
-                        request.getRequestDispatcher("/error404.jsp").forward(request, response);
-                        break;
+                    String operacion = request.getParameter("operacion");
+                    switch (operacion) {
+                        //-------------------CATEGORIAS!--------------------
+                        case "listarCategorias":
+                            listarCategorias(request, response);
+                            break;
+                        case "nuevaCategoria":
+                            nuevaCategoria(request, response);
+                            break;
+                        case "modificarCategoria":
+                            modificarCategoria(request, response);
+                            break;
+                        case "deshabilitarCategoria":
+                            deshabilitarCategoria(request, response);
+                            break;
+                        case "habilitarCategoria":
+                            habilitarCategoria(request, response);
+                            break;
+                        //--------------------------------------------------
+                        //--------------------SUB CATEGORIAS!---------------
+                        case "listarSubCategorias":
+                            listarSubCategorias(request, response);
+                            break;
+                        case "nuevaSubCategoria":
+                            nuevaSubCategoria(request, response);
+                            break;
+                        case "obtenerSubCategoria":
+                            obtenerSubCategoria(request, response);
+                            break;
+                        case "deshabilitarSubCategoria":
+                            deshabilitarSubCategoria(request, response);
+                            break;
+                        case "habilitarSubCategoria":
+                            habilitarSubCategoria(request, response);
+                            break;
+                        //--------------------------------------------------
+                        //------------------CONTROL DE USUARIOS-------------
+                        case "listarUsuarios":
+                            listarUsuarios(request, response);
+                            break;
+                        case "agregarUsuario":
+                            agregarUsuario(request, response);
+                            break;
+                        case "agregarAdministrador":
+                            agregarAdministrador(request, response);
+                            break;
+                        case "modificarUsuario":
+                            modificarUsuario(request, response);
+                            break;
+                        case "realizarModificacionUsuario":
+                            realizarModificacionUsuario(request, response);
+                            break;
+                        case "deshabilitarUsuario":
+                            deshabilitarUsuario(request, response);
+                            break;
+                        case "habilitarUsuario":
+                            habilitarUsuario(request, response);
+                            break;
+                        //--------------------------------------------------   
+                        //-----------APROVAR/RECHAZAR PRODUCTOS-------------
+                        case "listarProductos":
+                            listarProductos(request, response);
+                            break;
+                        case "aceptarRechazar":
+                            aceptarRechazar(request, response);
+                            break;
+                        //--------------------------------------------------
+                        case "listarEmpresas":
+                            listarEmpresas(request, response);
+                            break;
+                        case "nuevaEmpresa":
+                            nuevaEmpresa(request, response);
+                            break;
+                        case "obtenerEmpresa":
+                            obtenerEmpresa(request, response);
+                            break;
+                        case "inicio":
+                            request.getRequestDispatcher("/administrador/inicioAdmin.jsp").forward(request, response);
+                            break;
+                        default:
+                            request.getRequestDispatcher("/error404.jsp").forward(request, response);
+                            break;
+                    }
+                } else {
+                    String directorio = getServletContext().getRealPath("/images");
+                    MultipartRequest multi = new MultipartRequest(request, directorio, 1 * 1024 * 1024, new DefaultFileRenamePolicy());
+                    String operacion = multi.getParameter("operacion");
+                    switch (operacion) {
+                        case "agregarCategoria":
+                            agregarCategoria(multi, request, response);
+                            break;
+                        case "guardarCategoria":
+                            guardarCategoria(multi, request, response);
+                            break;
+                        case "insertarSubCategoria":
+                            insertarSubCategoria(multi, request, response);
+                            break;
+                        case "modificarSubCategoria":
+                            modificarSubCategoria(multi, request, response);
+                            break;
+                        case "insertarEmpresa":
+                            insertarEmpresa(multi, request, response);
+                            break;
+                        case "modificarEmpresa":
+                            modificarEmpresa(multi, request, response);
+                            break;
+                    }
                 }
             } else {
-                String directorio = getServletContext().getRealPath("/images");
-                MultipartRequest multi = new MultipartRequest(request, directorio, 1 * 1024 * 1024, new DefaultFileRenamePolicy());
-                String operacion = multi.getParameter("operacion");
-                switch (operacion) {
-                    case "agregarCategoria":
-                        agregarCategoria(multi, request, response);
-                        break;
-                    case "guardarCategoria":
-                        guardarCategoria(multi, request, response);
-                        break;
-                    case "insertarSubCategoria":
-                        insertarSubCategoria(multi, request, response);
-                        break;
-                    case "modificarSubCategoria":
-                        modificarSubCategoria(multi, request, response);
-                        break;
-                    case "insertarEmpresa":
-                        insertarEmpresa(multi, request, response);
-                        break;
-                    case "modificarEmpresa":
-                        modificarEmpresa(multi, request, response);
-                        break;
-                }
+                request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
             }
         } finally {
             out.close();

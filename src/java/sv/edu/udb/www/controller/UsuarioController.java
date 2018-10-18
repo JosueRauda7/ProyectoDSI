@@ -48,7 +48,7 @@ public class UsuarioController extends HttpServlet {
                 cerrarSesion(request, response);
                 return;
             }
-
+            if (request.getSession().getAttribute("usuario") != null || request.getSession().getAttribute("tipousuario") != null || request.getSession().getAttribute("nombreUser") != null) {
             switch (operacion) {
                 case "registroCliente":
                     registroClien(request, response);
@@ -90,7 +90,9 @@ public class UsuarioController extends HttpServlet {
                     habilitarUsuario(request, response);
                     break;
             }
-
+            }else{
+                request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
+            }
         }
     }
 

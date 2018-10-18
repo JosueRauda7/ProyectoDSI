@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import sv.edu.udb.www.model.CategoriasModel;
+import sv.edu.udb.www.model.ClientesModel;
 import sv.edu.udb.www.model.ProductosModel;
 import sv.edu.udb.www.model.SubCategoriasModel;
 
@@ -29,23 +30,53 @@ public class PublicController extends HttpServlet {
     CategoriasModel CategoriaModel = new CategoriasModel();
     ProductosModel ProductoModel = new ProductosModel();
     SubCategoriasModel subcategoriaModel = new SubCategoriasModel();
+    ClientesModel clienteModel = new ClientesModel();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String operacion = request.getParameter("operacion");
-            switch (operacion) {
-                case "publicIndex":
-                    publicIndex(request, response);
-                    break;
-                case "vercategoria":
-                    vercategoria(request, response);
-                    break;
-                case "buscarProductos":
-                    buscarProductos(request, response);
-                    break;
+            if (request.getSession().getAttribute("usuario") == null || request.getSession().getAttribute("tipousuario") == null || request.getSession().getAttribute("nombreUser") == null) {
+                switch (operacion) {
+                    case "publicIndex":
+                        publicIndex(request, response);
+                        break;
+                    case "vercategoria":
+                        vercategoria(request, response);
+                        break;
+                    case "buscarProductos":
+                        buscarProductos(request, response);
+                        break;
+                }
+            } else {
+                switch (Integer.parseInt(request.getSession().getAttribute("tipousuario").toString())) {
+                    case 1:
+                        request.getRequestDispatcher("/administrador/inicioAdmin.jsp").forward(request, response);
+                        break;
+                    case 2:
+                        request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+                        request.setAttribute("ultimosProductos", ProductoModel.listaUltimosProductos());
+                        request.getSession().setAttribute("estado", clienteModel.estadoPedido((int) request.getSession().getAttribute("usuario")));
+                        request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
+                        request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
+
+                        request.getRequestDispatcher("/cliente/index.jsp").forward(request, response);
+                        break;
+                    case 3:
+                        //Aun no existe
+                        request.getRequestDispatcher("/marketing/inicioMarketing.jsp").forward(request, response);
+                        break;
+                    case 4:
+                        request.getRequestDispatcher("/empleadoProducto/inicioEmpresaProducto").forward(request, response);
+                        break;
+                    case 5:
+                        request.getRequestDispatcher("/empresa/inicioEmpresa.jsp").forward(request, response);
+                        break;
+                }
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -100,20 +131,20 @@ public class PublicController extends HttpServlet {
 
     private void vercategoria(HttpServletRequest request, HttpServletResponse response) {
         try {
-            int idcat= Integer.parseInt(request.getParameter("idcat"));
+            int idcat = Integer.parseInt(request.getParameter("idcat"));
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-            request.setAttribute("listaSubcategoria",subcategoriaModel.listarporCategoria(idcat));
-            request.setAttribute("nombreCategoria",CategoriaModel.nombreCaterogia(idcat));
+            request.setAttribute("listaSubcategoria", subcategoriaModel.listarporCategoria(idcat));
+            request.setAttribute("nombreCategoria", CategoriaModel.nombreCaterogia(idcat));
             request.getRequestDispatcher("subcategoria.jsp").forward(request, response);
         } catch (ServletException | IOException | SQLException ex) {
             Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void buscarProductos(HttpServletRequest request, HttpServletResponse response) {
         try {
             String nombre = request.getParameter("nombre");
-            
+
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
             request.setAttribute("listarProductos", ProductoModel.busquedaProductos(nombre));
             request.setAttribute("datoBusqueda", nombre);
