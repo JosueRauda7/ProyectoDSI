@@ -44,6 +44,11 @@ public class UsuarioController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String operacion = request.getParameter("operacion");
+            if (request.getParameter("operacion").equals("cerrarSesion")) {
+                cerrarSesion(request, response);
+                return;
+            }
+
             switch (operacion) {
                 case "registroCliente":
                     registroClien(request, response);
@@ -85,6 +90,7 @@ public class UsuarioController extends HttpServlet {
                     habilitarUsuario(request, response);
                     break;
             }
+
         }
     }
 
@@ -562,5 +568,17 @@ public class UsuarioController extends HttpServlet {
         }
 
     }
+
+    private void cerrarSesion(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.getSession().setAttribute("usuario", null);
+            request.getSession().setAttribute("tipousuario", null);
+            request.getSession().setAttribute("nombreUser", null);
+            request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     //FIN PARTE RAUDA
+
 }
