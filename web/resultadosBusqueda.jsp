@@ -21,7 +21,7 @@
     <body class="ecommerce">
 
 
-        <jsp:include page="menuCliente.jsp"/>
+        <jsp:include page="menu.jsp"/>
 
 
         <div class="container">
