@@ -49,50 +49,82 @@ public class UsuarioController extends HttpServlet {
                 return;
             }
             if (request.getSession().getAttribute("usuario") != null || request.getSession().getAttribute("tipousuario") != null || request.getSession().getAttribute("nombreUser") != null) {
-            switch (operacion) {
-                case "registroCliente":
-                    registroClien(request, response);
-                    break;
-                case "verificar":
-                    confirmar(request, response);
-                    break;
+                if (request.getSession().getAttribute("usuario") == null || !request.getSession().getAttribute("tipousuario").toString().equals("1")) {
+                    switch (Integer.parseInt(request.getSession().getAttribute("tipousuario").toString())) {
+                    case 1:
+                        request.getRequestDispatcher("/administrador/inicioAdmin.jsp").forward(request, response);
+                        break;
+                    case 2:
+                        request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+                        request.setAttribute("ultimosProductos", ProductoModel.listaUltimosProductos());
+                        request.getSession().setAttribute("estado", clienteModel.estadoPedido((int) request.getSession().getAttribute("usuario")));
+                        request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
+                        request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
 
-                case "login":
-                    login(request, response);
+                        request.getRequestDispatcher("/cliente/index.jsp").forward(request, response);
+                        break;
+                    case 3:
+                        //Aun no existe
+                        request.getRequestDispatcher("/marketing/inicioMarketing.jsp").forward(request, response);
+                        break;
+                    case 4:
+                        request.getRequestDispatcher("/empleadoProducto/inicioEmpresaProducto").forward(request, response);
+                        break;
+                    case 5:
+                        request.getRequestDispatcher("/empresa/inicioEmpresa.jsp").forward(request, response);
+                        break;
+                }
+                }
+                switch (operacion) {
+                    case "listarClientes":
+                        listarClientes(request, response);
+                        break;
+                    case "comprasCliente":
+                        obtenerProductosCliente(request, response);
 
-                    break;
-                case "listarClientes":
-                    listarClientes(request, response);
-                    break;
-                case "comprasCliente":
-                    obtenerProductosCliente(request, response);
+                        break;
+                    case "agregarAdministrador":
+                        agregarAdministrador(request, response);
+                        break;
+                    case "listarUsuarios":
+                        listarUsuarios(request, response);
+                        break;
+                    case "agregarUsuario":
+                        agregarUsuario(request, response);
+                        break;
+                    case "modificarUsuario":
+                        modificarUsuario(request, response);
+                        break;
+                    case "realizarModificacionUsuario":
+                        realizarModificacionUsuario(request, response);
+                        break;
+                    case "deshabilitarUsuario":
+                        deshabilitarUsuario(request, response);
+                        break;
+                    case "habilitarUsuario":
+                        habilitarUsuario(request, response);
+                        break;
+                }
+            } else {
+                switch (operacion) {
+                    case "registroCliente":
+                        registroClien(request, response);
+                        break;
+                    case "verificar":
+                        confirmar(request, response);
+                        break;
 
-                    break;
-                case "agregarAdministrador":
-                    agregarAdministrador(request, response);
-                    break;
-                case "listarUsuarios":
-                    listarUsuarios(request, response);
-                    break;
-                case "agregarUsuario":
-                    agregarUsuario(request, response);
-                    break;
-                case "modificarUsuario":
-                    modificarUsuario(request, response);
-                    break;
-                case "realizarModificacionUsuario":
-                    realizarModificacionUsuario(request, response);
-                    break;
-                case "deshabilitarUsuario":
-                    deshabilitarUsuario(request, response);
-                    break;
-                case "habilitarUsuario":
-                    habilitarUsuario(request, response);
-                    break;
+                    case "login":
+                        login(request, response);
+
+                        break;
+                    default:
+                        request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
+                        break;
+                }
             }
-            }else{
-                request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
-            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

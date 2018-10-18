@@ -26,6 +26,7 @@ import sv.edu.udb.www.beans.EstadoCategoria;
 import sv.edu.udb.www.beans.SubCategoria;
 import sv.edu.udb.www.beans.Usuario;
 import sv.edu.udb.www.model.CategoriasModel;
+import sv.edu.udb.www.model.ClientesModel;
 import sv.edu.udb.www.model.EmpresasModel;
 import sv.edu.udb.www.model.ProductosModel;
 import sv.edu.udb.www.model.SubCategoriasModel;
@@ -46,6 +47,11 @@ public class AdministradorController extends HttpServlet {
     SubCategoriasModel modeloSubCategoria = new SubCategoriasModel();
     ProductosModel modeloProducto = new ProductosModel();
     ArrayList listaErrores = new ArrayList();
+    
+    CategoriasModel CategoriaModel = new CategoriasModel();
+    ProductosModel ProductoModel = new ProductosModel();
+
+    ClientesModel clienteModel = new ClientesModel();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -57,6 +63,32 @@ public class AdministradorController extends HttpServlet {
                 return;
             }*/
             if (request.getSession().getAttribute("usuario") != null || request.getSession().getAttribute("tipousuario") != null || request.getSession().getAttribute("nombreUser") != null) {
+                if (request.getSession().getAttribute("usuario") == null || !request.getSession().getAttribute("tipousuario").toString().equals("1")) {
+                    switch (Integer.parseInt(request.getSession().getAttribute("tipousuario").toString())) {
+                    case 1:
+                        request.getRequestDispatcher("/administrador/inicioAdmin.jsp").forward(request, response);
+                        break;
+                    case 2:
+                        request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+                        request.setAttribute("ultimosProductos", ProductoModel.listaUltimosProductos());
+                        request.getSession().setAttribute("estado", clienteModel.estadoPedido((int) request.getSession().getAttribute("usuario")));
+                        request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
+                        request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
+
+                        request.getRequestDispatcher("/cliente/index.jsp").forward(request, response);
+                        break;
+                    case 3:
+                        //Aun no existe
+                        request.getRequestDispatcher("/marketing/inicioMarketing.jsp").forward(request, response);
+                        break;
+                    case 4:
+                        request.getRequestDispatcher("/empleadoProducto/inicioEmpresaProducto").forward(request, response);
+                        break;
+                    case 5:
+                        request.getRequestDispatcher("/empresa/inicioEmpresa.jsp").forward(request, response);
+                        break;
+                }
+                }
                 if (request.getParameter("operacion") != null) {
 
                     String operacion = request.getParameter("operacion");
@@ -170,6 +202,8 @@ public class AdministradorController extends HttpServlet {
             } else {
                 request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();
         }

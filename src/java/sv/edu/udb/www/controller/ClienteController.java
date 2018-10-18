@@ -39,26 +39,58 @@ public class ClienteController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String operacion = request.getParameter("operacion");
-            switch (operacion) {
-                case "publicIndex":
-                    publicIndexClien(request, response);
-                    break;
-                case "versubcategoria":
-                    vercategoriaClien(request, response);
-                    break;
-                case "crearCarrito":
-                    crearCarrito(request, response);
-                    break;
-                case "verProducto":
-                    verProducto(request, response);
-                    break;
-                case "buscarProductos":
-                    buscarProductos(request, response);
-                    break;
-                case "agregarProducto":
-                    agregarProducto(request, response);
-                    break;
+            if (request.getSession().getAttribute("usuario") != null || request.getSession().getAttribute("tipousuario") != null || request.getSession().getAttribute("nombreUser") != null) {
+                if (request.getSession().getAttribute("usuario") == null || !request.getSession().getAttribute("tipousuario").toString().equals("2")) {
+                    switch (Integer.parseInt(request.getSession().getAttribute("tipousuario").toString())) {
+                    case 1:
+                        request.getRequestDispatcher("/administrador/inicioAdmin.jsp").forward(request, response);
+                        break;
+                    case 2:
+                        request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+                        request.setAttribute("ultimosProductos", ProductoModel.listaUltimosProductos());
+                        request.getSession().setAttribute("estado", clienteModel.estadoPedido((int) request.getSession().getAttribute("usuario")));
+                        request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
+                        request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
+
+                        request.getRequestDispatcher("/cliente/index.jsp").forward(request, response);
+                        break;
+                    case 3:
+                        //Aun no existe
+                        request.getRequestDispatcher("/marketing/inicioMarketing.jsp").forward(request, response);
+                        break;
+                    case 4:
+                        request.getRequestDispatcher("/empleadoProducto/inicioEmpresaProducto").forward(request, response);
+                        break;
+                    case 5:
+                        request.getRequestDispatcher("/empresa/inicioEmpresa.jsp").forward(request, response);
+                        break;
+                }
+                }
+                switch (operacion) {
+                    case "publicIndex":
+                        publicIndexClien(request, response);
+                        break;
+                    case "versubcategoria":
+                        vercategoriaClien(request, response);
+                        break;
+                    case "crearCarrito":
+                        crearCarrito(request, response);
+                        break;
+                    case "verProducto":
+                        verProducto(request, response);
+                        break;
+                    case "buscarProductos":
+                        buscarProductos(request, response);
+                        break;
+                    case "agregarProducto":
+                        agregarProducto(request, response);
+                        break;
+                }
+            } else {
+                request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -178,12 +210,12 @@ public class ClienteController extends HttpServlet {
             int idproduct = Integer.parseInt(request.getParameter("idproduct"));
             int cantidad = Integer.parseInt(request.getParameter("cantidad"));
             int user = (int) request.getSession().getAttribute("usuario");
-            if (clienteModel.agregarProducto(user, idproduct, cantidad) > 0) {                
+            if (clienteModel.agregarProducto(user, idproduct, cantidad) > 0) {
                 request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
                 request.setAttribute("producto", clienteModel.verProducto(idproduct));
                 request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
-                
+
                 request.getSession().setAttribute("exito", "Has añadido este articulo a tu carrito.");
                 request.getRequestDispatcher("/cliente/producto.jsp").forward(request, response);
             }
