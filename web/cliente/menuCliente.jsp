@@ -3,6 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <c:set var="base" value="${pageContext.request.contextPath}"/>
+
 <div class="header">
     <div class="container">
         <a class="site-logo" href="${base}/clientes.do?operacion=publicIndex">BigShop</a>

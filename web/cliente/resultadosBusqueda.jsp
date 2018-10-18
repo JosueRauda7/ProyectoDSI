@@ -9,13 +9,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
-    <head>
+ 
+  <head>
         <meta charset="utf-8">
-        <title>Productos</title>
-
+        <title>Productos busqueda</title>
         <jsp:include page="/head.jsp"/>        
-        <!-- Theme styles END -->
+        <jsp:include page="/scripts.jsp"/>
     </head>
+
     <!-- Head END -->
 
     <body class="ecommerce">

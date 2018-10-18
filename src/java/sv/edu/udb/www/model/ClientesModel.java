@@ -61,13 +61,16 @@ public class ClientesModel extends Conexion {
             rs = st.executeQuery();
             while (rs.next()) {
                 Producto producto = new Producto();
+                Empresa empresa = new Empresa();
                 producto.setIdProducto(rs.getInt("id_producto"));
                 producto.setProducto(rs.getString("producto"));
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecioRegular(rs.getString("precio_regular"));
                 producto.setCantidad(rs.getString("cantidad"));
                 producto.setUrlImagen(rs.getString("url_imagen"));
-                producto.setEmpresa(new Empresa(rs.getString("empresa")));
+                empresa.setEmpresa(rs.getString("empresa"));
+                empresa.setUrlEmpresa(rs.getString("Urlempresa"));
+                producto.setEmpresa(empresa);
                 producto.setSubCategoria(new SubCategoria(rs.getString("subcategoria")));
                 producto.setEstadoProducto(new EstadoProducto(rs.getString("estado")));
                 this.desconectar();
