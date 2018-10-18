@@ -55,6 +55,9 @@ public class ClienteController extends HttpServlet {
                 case "buscarProductos":
                     buscarProductos(request, response);
                     break;
+                case "agregarProducto":
+                    agregarProducto(request, response);
+                    break;
             }
         }
     }
@@ -144,7 +147,7 @@ public class ClienteController extends HttpServlet {
 
     private void verProducto(HttpServletRequest request, HttpServletResponse response) {
         try {
-            int idpro= Integer.parseInt(request.getParameter("idproduct"));
+            int idpro = Integer.parseInt(request.getParameter("idproduct"));
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
             request.setAttribute("producto", clienteModel.verProducto(idpro));
             request.getRequestDispatcher("/cliente/producto.jsp").forward(request, response);
@@ -152,11 +155,11 @@ public class ClienteController extends HttpServlet {
             Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void buscarProductos(HttpServletRequest request, HttpServletResponse response) {
         try {
             String nombre = request.getParameter("nombre");
-            
+
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
             request.setAttribute("listarProductos", ProductoModel.busquedaProductos(nombre));
             request.setAttribute("datoBusqueda", nombre);
@@ -166,6 +169,22 @@ public class ClienteController extends HttpServlet {
                 Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (SQLException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void agregarProducto(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int idproduct = Integer.parseInt(request.getParameter("idproduct"));
+            int cantidad = Integer.parseInt(request.getParameter("cantidad"));
+            int user = (int) request.getSession().getAttribute("usuario");
+            if (clienteModel.agregarProducto(user, idproduct, cantidad) > 0) {                
+                request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+                request.setAttribute("producto", clienteModel.verProducto(idproduct));
+                request.getSession().setAttribute("exito", "Has añadido este articulo a tu carrito.");
+                request.getRequestDispatcher("/cliente/producto.jsp").forward(request, response);
+            }
+        } catch (SQLException | IOException | ServletException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -1,8 +1,11 @@
 package sv.edu.udb.www.model;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sv.edu.udb.www.beans.DetallePedido;
 import sv.edu.udb.www.beans.Empresa;
 import sv.edu.udb.www.beans.EstadoProducto;
 import sv.edu.udb.www.beans.Pedido;
@@ -78,6 +81,69 @@ public class ClientesModel extends Conexion {
             }
             this.desconectar();
             return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+    }
+
+    public int agregarProducto(int iduser, int idproduct, int cantidad) throws SQLException {
+        try {
+            String sql = "SELECT MAX(id_pedido) AS pedido FROM pedidos WHERE id_usuario = ?";
+            int pedido = 0;
+            int filasAfectadas = 0;
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, iduser);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                pedido = rs.getInt("pedido");
+            }
+            String sql2 = "INSERT INTO detalle_pedidos(id_pedido, id_producto,cantidad) VALUES(?,?,?)";
+            st = conexion.prepareStatement(sql2);
+            st.setInt(1, pedido);
+            st.setInt(2, idproduct);
+            st.setInt(3, cantidad);
+            filasAfectadas = st.executeUpdate();
+            this.desconectar();
+            return filasAfectadas;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        }
+    }
+
+    public List<DetallePedido> listaCarrito(int iduser) throws SQLException {
+        try {
+            List<DetallePedido> lista = new ArrayList<>();
+            String sql = "SELECT MAX(id_pedido) AS pedido FROM pedidos WHERE id_usuario = ?";
+            int pedido = 0;
+            int filasAfectadas = 0;
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, iduser);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                pedido = rs.getInt("pedido");
+            }
+            String sql2 = "SELECT dp.cantidad, p.producto, p.url_imagen,p.precio_regular FROM detalle_pedidos dp INNER JOIN producto p ON dp.id_producto = p.id_producto INNER JOIN pedidos pd ON dp.id_pedido = pd.id_pedido WHERE pd.id_pedido=? AND pd.id_estado_compra = 1 ORDER BY dp.id_detalle_pedido DESC";
+            st = conexion.prepareStatement(sql2);
+            st.setInt(1, pedido);
+            rs = st.executeQuery();
+            while(rs.next()){
+            Producto producto = new Producto();
+            DetallePedido detalle = new DetallePedido();
+            producto.setProducto(rs.getString("producto"));
+            producto.setUrlImagen(rs.getString("url_imagen"));
+            producto.setCantidad(rs.getString("cantidad"));
+            detalle.setProducto(producto);
+            detalle.setCantidad(rs.getInt("cantidad"));
+            lista.add(detalle);
+            }
+            this.desconectar();
+            return lista;
         } catch (SQLException ex) {
             Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
             this.desconectar();
