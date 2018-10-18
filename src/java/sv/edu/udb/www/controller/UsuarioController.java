@@ -50,30 +50,8 @@ public class UsuarioController extends HttpServlet {
             }
             if (request.getSession().getAttribute("usuario") != null || request.getSession().getAttribute("tipousuario") != null || request.getSession().getAttribute("nombreUser") != null) {
                 if (request.getSession().getAttribute("usuario") == null || !request.getSession().getAttribute("tipousuario").toString().equals("1")) {
-                    switch (Integer.parseInt(request.getSession().getAttribute("tipousuario").toString())) {
-                    case 1:
-                        request.getRequestDispatcher("/administrador/inicioAdmin.jsp").forward(request, response);
-                        break;
-                    case 2:
-                        request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-                        request.setAttribute("ultimosProductos", ProductoModel.listaUltimosProductos());
-                        request.getSession().setAttribute("estado", clienteModel.estadoPedido((int) request.getSession().getAttribute("usuario")));
-                        request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
-                        request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
-
-                        request.getRequestDispatcher("/cliente/index.jsp").forward(request, response);
-                        break;
-                    case 3:
-                        //Aun no existe
-                        request.getRequestDispatcher("/marketing/inicioMarketing.jsp").forward(request, response);
-                        break;
-                    case 4:
-                        request.getRequestDispatcher("/empleadoProducto/inicioEmpresaProducto").forward(request, response);
-                        break;
-                    case 5:
-                        request.getRequestDispatcher("/empresa/inicioEmpresa.jsp").forward(request, response);
-                        break;
-                }
+                    response.sendRedirect(request.getContextPath()+"/public.do?operacion=publicIndex");
+                    return;
                 }
                 switch (operacion) {
                     case "listarClientes":
@@ -123,9 +101,7 @@ public class UsuarioController extends HttpServlet {
                         break;
                 }
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

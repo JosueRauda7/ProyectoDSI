@@ -56,31 +56,8 @@ public class EmpresaController extends HttpServlet {
         try {
             if (request.getSession().getAttribute("usuario") != null || request.getSession().getAttribute("tipousuario") != null || request.getSession().getAttribute("nombreUser") != null) {
                 if (request.getSession().getAttribute("usuario") == null || !request.getSession().getAttribute("tipousuario").toString().equals("5")) {
-                    switch (Integer.parseInt(request.getSession().getAttribute("tipousuario").toString())) {
-                        case 1:
-                            request.getRequestDispatcher("/administrador/inicioAdmin.jsp").forward(request, response);
-                            break;
-                        case 2:
-                            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-                            request.setAttribute("ultimosProductos", ProductoModel.listaUltimosProductos());
-                            request.getSession().setAttribute("estado", clienteModel.estadoPedido((int) request.getSession().getAttribute("usuario")));
-                            request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
-                            request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
-
-                            request.getRequestDispatcher("/cliente/index.jsp").forward(request, response);
-                            break;
-                        case 3:
-                            //Aun no existe
-                            request.getRequestDispatcher("/marketing/inicioMarketing.jsp").forward(request, response);
-                            break;
-                        case 4:
-                            request.getRequestDispatcher("/empleadoProducto/inicioEmpresaProducto").forward(request, response);
-                            break;
-                        case 5:
-                            request.getRequestDispatcher("/empresa/inicioEmpresa.jsp").forward(request, response);
-                            break;
-                    }
-
+                    response.sendRedirect(request.getContextPath()+"/public.do?operacion=publicIndex");
+                    return;
                 }
                 if (request.getParameter("operacion") != null) {
                     String operacion = request.getParameter("operacion");
@@ -117,8 +94,6 @@ public class EmpresaController extends HttpServlet {
             } else {
                 request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();
         }
