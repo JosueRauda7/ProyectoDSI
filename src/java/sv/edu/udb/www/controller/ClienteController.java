@@ -52,6 +52,9 @@ public class ClienteController extends HttpServlet {
                 case "verProducto":
                     verProducto(request, response);
                     break;
+                case "buscarProductos":
+                    buscarProductos(request, response);
+                    break;
             }
         }
     }
@@ -147,6 +150,23 @@ public class ClienteController extends HttpServlet {
             request.getRequestDispatcher("/cliente/producto.jsp").forward(request, response);
         } catch (ServletException | IOException | SQLException ex) {
             Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void buscarProductos(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String nombre = request.getParameter("nombre");
+            
+            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.setAttribute("listarProductos", ProductoModel.busquedaProductos(nombre));
+            request.setAttribute("datoBusqueda", nombre);
+            try {
+                request.getRequestDispatcher("/cliente/resultadosBusqueda.jsp").forward(request, response);
+            } catch (ServletException | IOException ex) {
+                Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

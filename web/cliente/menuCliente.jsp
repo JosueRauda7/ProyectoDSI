@@ -145,9 +145,10 @@
                     <span class="sep"></span>
                     <i class="fa fa-search search-btn"></i>
                     <div class="search-box">
-                        <form action="#">
+                        <form action="${base}/clientes.do">
+                            <input type="hidden" name="operacion" value="buscarProductos"/>
                             <div class="input-group">
-                                <input type="text" placeholder="Buscar articulo" class="form-control">
+                                <input type="text" placeholder="Buscar articulo" required="true" name="nombre" class="form-control" minlength="4">
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" type="submit">Buscar</button>
                                 </span>

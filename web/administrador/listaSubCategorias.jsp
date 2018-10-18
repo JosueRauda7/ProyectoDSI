@@ -32,6 +32,7 @@
                                 <table summary="Shopping cart">
 
                                     <tr>
+                                        <th class="goods-page-image"></th>
                                         <th class="goods-page-image">ID</th>
                                         <th class="goods-page-description">Sub Categoria</th>
                                         <th class="goods-page-ref-no">Categoria</th>
@@ -44,6 +45,7 @@
                                     <c:forEach items="${requestScope.listaSubCategorias}" var="subCategoria">
 
                                         <tr>
+                                            <td><img src="${pageContext.request.contextPath}/images/${subCategoria.urlSubcategoria}/"></td>
                                             <td>${subCategoria.idSubCategoria}</td>
                                             <td>${subCategoria.subCategoria}</td>
                                             <td>${subCategoria.categoria.categoria}</td>
