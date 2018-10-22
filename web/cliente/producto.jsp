@@ -63,13 +63,13 @@
                             </div>
 
                             <ul class="social-icons">
-                                <li><a class="facebook" data-original-title="facebook" href="javascript:;"></a></li>
-                                <li><a class="twitter" data-original-title="twitter" href="javascript:;"></a></li>
-                                <li><a class="googleplus" data-original-title="googleplus" href="javascript:;"></a></li>
-                                <li><a class="evernote" data-original-title="evernote" href="javascript:;"></a></li>
-                                <li><a class="tumblr" data-original-title="tumblr" href="javascript:;"></a></li>
+                                <li><a class="facebook social-button" data-original-title="facebook"  href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:8080/ProyectoDSI/clientes.do?operacion=verProducto&idproduct=8"  target="_blank" rel="nofollow"></a></li>
+                                <li><a class="twitter social-button"  data-original-title="twitter" href="https://twitter.com/share?url=http://localhost:8080/ProyectoDSI/clientes.do?operacion=verProducto&idproduct=8&text=Hola" target="_blank" rel="nofollow"></a></li>
+                                <li><a class="googleplus social-button"  data-original-title="googleplus" href="https://plus.google.com/share?text=localhost:8080/ProyectoDSI/clientes.do?operacion=verProducto&idproduct=7"  target="_blan" rel="nofollow"></a></li>
+                                <li><a class="evernote social-button" data-original-title="evernote" href="javascript:;"></a></li>
+                                <li><a class="tumblr social-button"  data-original-title="tumblr" href="javascript:;"></a></li>
                             </ul>
-
+                               
                         </div>
 
                     </div>
@@ -89,7 +89,19 @@
                 Layout.initTouchspin();
                 Layout.initUniform();
             });
-             
+            var URLactual = window.location;
+              var lba = document.getElementsByClassName("social-button");
+
+        function myPopup() {
+            window.open(this.href, 'mywin',
+                    'left=20,top=20,width=500,height=500,toolbar=1,resizable=0');
+            event.preventDefault();
+            return false;
+        }
+
+        for (var i = 0; i < lba.length; i++) {
+            lba[i].addEventListener("click", myPopup, false);
+        }
         </script>
         <!-- END PAGE LEVEL JAVASCRIPTS -->
     </body>
