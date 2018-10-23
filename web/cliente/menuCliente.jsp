@@ -26,12 +26,22 @@
                             <li >
                             <a href="shop-item.html"><img src="images/${productos.producto.urlImagen}" alt="${productos.producto.producto}" width="37" height="34"></a>
                             <span class="cart-content-count">x ${productos.cantidad}</span>
-                            <strong><a href="${base}/clientes.do?operacion=verProducto&idproduct=${productos.producto.idProducto}">${productos.producto.producto}</a></strong>
+                            <strong><a href="${base}/clientes.do?operacion=verProducto&idproduct=${productos.producto.idProducto}">${productos.producto.producto}l</a></strong>
                             <em>$${productos.producto.precioRegular}</em>
                             <a  style="margin-left: 90%;margin-top: -8%;" href="#" class="del-goods">&nbsp;</a>
                         </li>
                         </c:forEach>  
+                        <br>
                         <h4 class="text-center">Ofertas</h4>
+                         <c:forEach var="ofertas" items="${sessionScope.pedidosOfert}">
+                            <li >
+                            <a href="shop-item.html"><img src="images/${ofertas.oferta.urlFoto}" alt="${ofertas.oferta.titulo}" width="37" height="34"></a>
+                            <span class="cart-content-count">x ${ofertas.cantidad}</span>
+                            <strong class="textos"><a href="${base}/clientes.do?operacion=verProducto&idproduct=${ofertas.oferta.idOferta}">${ofertas.oferta.titulo}</a></strong>
+                            <em>$${ofertas.oferta.totalDescuento}</em>
+                            <a  style="margin-left: 90%;margin-top: -8%;" href="#" class="del-goods">&nbsp;</a>
+                        </li>
+                        </c:forEach>
                     </ul>
                     <div class="text-right" style="display: flex; margin-left: 2%;">
                         <a href="shop-shopping-cart.html" class="btn btn-default">Ver Carritos</a>
@@ -127,4 +137,11 @@
     document.getElementById("crear").style.display = "block";
     document.getElementById("ver").style.display = "none";
     </c:if>
+</script>
+<script>
+    var elements = document.getElementsByTagName("textos");
+    
+    for(var i = 0;i < elements.length;i++){
+        alert(i);
+    }
 </script>

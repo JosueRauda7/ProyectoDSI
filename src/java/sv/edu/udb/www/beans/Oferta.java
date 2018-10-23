@@ -14,6 +14,7 @@ import java.util.Date;
 public class Oferta {
     private int idOferta;
     private String titulo;
+    private String titulocorto;
     private String descripcion;
     private String fechaInicio;
     private String fechaFin;
@@ -115,5 +116,14 @@ public class Oferta {
     public void setEstadoOferta(EstadoOferta estadoOferta) {
         this.estadoOferta = estadoOferta;
     }
+
+    public String getTitulocorto() {
+        return titulocorto;
+    }
+
+    public void setTitulocorto(String titulocorto) {
+        this.titulocorto = titulocorto;
+    }
+    
     
 }
