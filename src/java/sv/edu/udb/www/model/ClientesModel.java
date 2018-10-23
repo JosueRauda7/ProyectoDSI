@@ -176,8 +176,12 @@ public class ClientesModel extends Conexion {
                 DetallePedido detalle = new DetallePedido();
                 oferta.setTitulo(rs.getString("titulo"));
                 oferta.setDescripcion(rs.getString("descripcion"));
-                
-                detalle.setProducto(oferta);
+                oferta.setFechaInicio(rs.getString("fecha_inicio"));
+                oferta.setFechaFin(rs.getString("fecha_fin"));
+                oferta.setDescuento(rs.getInt("descuento"));
+                oferta.setTotalDescuento(rs.getDouble("total_descuento"));
+                oferta.setUrlFoto(rs.getString("Url_foto"));
+                detalle.setOferta(oferta);
                 detalle.setCantidad(rs.getInt("cantidad"));
                 lista.add(detalle);
             }

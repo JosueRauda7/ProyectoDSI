@@ -16,8 +16,8 @@ public class Oferta {
     private String titulo;
     private String descripcion;
     private String fechaInicio;
-    private Date fechaFin;
-    private double descuento;
+    private String fechaFin;
+    private int descuento;
     private double totalDescuento;
     private String urlFoto;
     private Producto producto;
@@ -28,7 +28,7 @@ public class Oferta {
         this.titulo = "";
         this.descripcion = "";
         this.fechaInicio = "";
-        this.fechaFin = new Date();
+        this.fechaFin = "";
         this.descuento = 0;
         this.totalDescuento = 0;
         this.urlFoto = "";
@@ -68,19 +68,19 @@ public class Oferta {
         this.fechaInicio = fechaInicio;
     }
 
-    public Date getFechaFin() {
+    public String getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(Date fechaFin) {
+    public void setFechaFin(String fechaFin) {
         this.fechaFin = fechaFin;
     }
 
-    public double getDescuento() {
+    public int getDescuento() {
         return descuento;
     }
 
-    public void setDescuento(double descuento) {
+    public void setDescuento(int descuento) {
         this.descuento = descuento;
     }
 
