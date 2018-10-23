@@ -19,7 +19,7 @@
             </div>
             <div class="modal-body">
                 <div  id="Logueo" class="tabcontent">
-                      <c:if test="${not empty requestScope.listaErrores2}">
+                    <c:if test="${not empty requestScope.listaErrores2}">
                         <div class="alert alert-danger">
                             <ul>
                                 <c:forEach var="error" items="${requestScope.listaErrores2}">
@@ -29,21 +29,20 @@
                         </div>
                     </c:if>
                     <form class="form-horizontal" action="${pageContext.request.contextPath}/usuarios.do" method="post" style="width: 80%;margin-left: 10%;">
-                       <input type="hidden" name="operacion" value="login"/>
+                        <input type="hidden" name="operacion" value="login"/>
                         <input type="hidden" id="url" name="url">
                         <div class="form-group">
                             <label for="nombre" class="text-center">Correo:</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="correo" id="nombre"  placeholder="Ingresa tu correo"  >
+                                <input type="text" class="form-control" name="correo" id="nombre"  placeholder="Ingresa tu correo" pattern="^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$" required="" >
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="nombre" class="text-center">Contraseña:</label>
-                            <div class="input-group">
-                                <input type="password" class="form-control" name="password" id="nombre"  placeholder="Ingresa tu contraseña"  >
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                            </div>
+                       
+                                <input type="password" class="form-control" name="password" id="nombre" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"  required=""  placeholder="Ingresa tu contraseña"  data-toggle="password" >
+                               
                         </div>
                         <div class="form-group">
                             <div class="col-md-12 text-center">
@@ -110,19 +109,14 @@
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-info-sign"></span></span>
                             </div>
                         </div>
+                      
                         <div class="form-group">
-                            <label for="nombre" class="text-center">Fecha nacimiento:</label>
-                            <div class="input-group">
-                                <input type="date" class="form-control" ${usuario.fecha_nac} name="fechanac" id="fechanac"  required="" placeholder="Ingresa tu fecha de nacimiento" >
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                            </div>
+                            <label for="nombre" class="text-center">Contraseña: (maximo 8 caracteres 1 mayuscula y un caracter especial)</label>                              
+                            <input type="password" class="form-control" ${usuario.password} name="contrasena" id="contrasena" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"  required=""  placeholder="Ingresa tu contraseña"  data-toggle="password">                               
                         </div>
                         <div class="form-group">
-                            <label for="nombre" class="text-center">Contraseña:</label>
-                            <div class="input-group">
-                                <input type="password" class="form-control" ${usuario.password} name="contrasena" id="contrasena" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required=""  placeholder="max(8 caracteres) 1 mayuscula y un caracter especial" >
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                            </div>
+                            <label for="nombre" class="text-center">Confirmar contraseña:</label>                              
+                            <input type="password" class="form-control" ${usuario.password} name="contrasena2" id="contrasena" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"  required=""  placeholder="Debe coincidir exactamente"  data-toggle="password">                               
                         </div>
                         <div class="form-group">
                             <div class="col-md-12 text-center">
@@ -151,7 +145,7 @@
         document.getElementById("url").value = "${requestScope.url}";
     });
     </c:if>
-       <c:if test="${not empty requestScope.listaErrores2}">
+    <c:if test="${not empty requestScope.listaErrores2}">
     $(document).ready(function () {
         $('#exampleModal').modal('show');
         document.getElementById("Registro").style.display = "none";

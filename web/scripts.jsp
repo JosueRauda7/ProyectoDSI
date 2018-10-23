@@ -14,4 +14,5 @@
 <script src="assets/plugins/rateit/src/jquery.rateit.js" type="text/javascript"></script>
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript" src="assets/plugins/bootstrap-show-password.min.js"></script>
 <script src="assets/corporate/scripts/layout.js" type="text/javascript"></script>
