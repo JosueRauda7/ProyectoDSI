@@ -21,7 +21,7 @@
             <div class="top-cart-content-wrapper">
                 <div class="top-cart-content">
                     <ul class="scroller" style="height: 250px; ">
-                      
+                        <h4 class="text-center">Productos</h4>
                         <c:forEach var="productos" items="${sessionScope.pedidosProduc}">
                             <li >
                             <a href="shop-item.html"><img src="images/${productos.producto.urlImagen}" alt="${productos.producto.producto}" width="37" height="34"></a>
@@ -30,7 +30,8 @@
                             <em>$${productos.producto.precioRegular}</em>
                             <a  style="margin-left: 90%;margin-top: -8%;" href="#" class="del-goods">&nbsp;</a>
                         </li>
-                        </c:forEach>                      
+                        </c:forEach>  
+                        <h4 class="text-center">Ofertas</h4>
                     </ul>
                     <div class="text-right" style="display: flex; margin-left: 2%;">
                         <a href="shop-shopping-cart.html" class="btn btn-default">Ver Carritos</a>

@@ -15,7 +15,7 @@ public class Oferta {
     private int idOferta;
     private String titulo;
     private String descripcion;
-    private Date fechaInicio;
+    private String fechaInicio;
     private Date fechaFin;
     private double descuento;
     private double totalDescuento;
@@ -27,7 +27,7 @@ public class Oferta {
         this.idOferta = 0;
         this.titulo = "";
         this.descripcion = "";
-        this.fechaInicio = new Date();
+        this.fechaInicio = "";
         this.fechaFin = new Date();
         this.descuento = 0;
         this.totalDescuento = 0;
@@ -60,11 +60,11 @@ public class Oferta {
         this.descripcion = descripcion;
     }
 
-    public Date getFechaInicio() {
+    public String getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(String fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 

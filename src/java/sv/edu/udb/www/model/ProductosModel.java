@@ -204,7 +204,7 @@ public class ProductosModel extends Conexion {
 
     public List<Producto> listaUltimosProductos() throws SQLException {
         try {
-            String sql = "SELECT * FROM producto p INNER JOIN empresa e on p.id_empresa = e.id_empresa INNER JOIN sub_categoria s on p.id_sub_categoria = s.id_sub_categoria WHERE id_estado_producto=2 ORDER by id_producto DESC LIMIT 6";
+            String sql = "SELECT DISTINCT i.id_producto, p.producto,p.descripcion, p.precio_regular, p.cantidad, i.Url_imagen FROM producto p INNER JOIN empresa e on p.id_empresa = e.id_empresa INNER JOIN sub_categoria s on p.id_sub_categoria = s.id_sub_categoria INNER JOIN imagen i ON i.id_producto= p.id_producto WHERE id_estado_producto=2 GROUP by i.id_producto ORDER by p.id_producto DESC LIMIT 6";
             List<Producto> lista = new ArrayList<>();
             this.conectar();
             st = conexion.prepareStatement(sql);
@@ -216,9 +216,7 @@ public class ProductosModel extends Conexion {
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecioRegular(rs.getString("precio_regular"));
                 producto.setCantidad(rs.getString("cantidad"));
-                producto.setUrlImagen(rs.getString("url_imagen"));
-                producto.setEmpresa(new Empresa(rs.getString("empresa")));
-                producto.setSubCategoria(new SubCategoria(rs.getString("subcategoria")));
+                producto.setUrlImagen(rs.getString("Url_imagen"));
                 lista.add(producto);
             }
             this.desconectar();

@@ -191,7 +191,6 @@ public class ClienteController extends HttpServlet {
                 request.setAttribute("producto", clienteModel.verProducto(idproduct));
                 request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
-
                 request.getSession().setAttribute("exito", "Has añadido este articulo a tu carrito.");
                 request.getRequestDispatcher("/cliente/producto.jsp").forward(request, response);
             }
