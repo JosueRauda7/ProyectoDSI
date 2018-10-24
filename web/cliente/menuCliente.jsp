@@ -28,7 +28,7 @@
                             <span class="cart-content-count">x ${productos.cantidad}</span>
                             <strong><a href="${base}/clientes.do?operacion=verProducto&idproduct=${productos.producto.idProducto}">${productos.producto.producto}l</a></strong>
                             <em>$${productos.producto.precioRegular}</em>
-                            <a  style="margin-left: 90%;margin-top: -8%;" href="#" class="del-goods">&nbsp;</a>
+                            <a  style="margin-left: 90%;margin-top: -8%; cursor: pointer;" onclick="javascript:eliminar('${productos.idDetallePedido}')" class="del-goods">&nbsp;</a>
                         </li>
                         </c:forEach>  
                         <br>
@@ -39,7 +39,7 @@
                             <span class="cart-content-count">x ${ofertas.cantidad}</span>
                             <strong class="textos"><a href="${base}/clientes.do?operacion=verProducto&idproduct=${ofertas.oferta.idOferta}">${ofertas.oferta.titulo}</a></strong>
                             <em>$${ofertas.oferta.totalDescuento}</em>
-                            <a  style="margin-left: 90%;margin-top: -8%;" href="#" class="del-goods">&nbsp;</a>
+                            <a  style="margin-left: 90%;margin-top: -8%;"  class="del-goods">&nbsp;</a>
                         </li>
                         </c:forEach>
                     </ul>
@@ -53,9 +53,7 @@
                 </div>
             </div>            
         </div>
-        <!--END CART -->
 
-        <!-- BEGIN NAVIGATION -->
         <div class="header-navigation">
             <ul>
                 <li class="">
@@ -114,7 +112,7 @@
                         <form action="${base}/clientes.do">
                             <input type="hidden" name="operacion" value="buscarProductos"/>
                             <div class="input-group">
-                                <input type="text" placeholder="Buscar articulo" required="true" name="nombre" class="form-control" minlength="4">
+                                <input type="text" placeholder="Buscar articulo"  required="true" name="nombre" class="form-control" minlength="4">
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" type="submit">Buscar</button>
                                 </span>
@@ -129,6 +127,10 @@
     </div>
 </div>
 <script>
+    
+    var URLactual = window.location;
+    var url = URLactual.toString().substring(34);
+   
     <c:if test="${estado eq 1 }">
     document.getElementById("crear").style.display = "none";
     document.getElementById("ver").style.display = "block";
@@ -137,11 +139,19 @@
     document.getElementById("crear").style.display = "block";
     document.getElementById("ver").style.display = "none";
     </c:if>
-</script>
-<script>
-    var elements = document.getElementsByTagName("textos");
-    
-    for(var i = 0;i < elements.length;i++){
-        alert(i);
-    }
+        
+          function eliminar(id) {
+                swal({
+                    title: '¿Seguro que quieres eliminar este articulo del carrito?',
+                    text: "Una vez eliminado, no habra vuelta atras.",
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        location.href = 'clientes.do?operacion=eliminarArticulo&iddetalle=' + id +'&url='+url;
+                    }
+                });
+            }
+            ;
 </script>

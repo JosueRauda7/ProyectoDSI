@@ -41,7 +41,7 @@ public class ClienteController extends HttpServlet {
             String operacion = request.getParameter("operacion");
             if (request.getSession().getAttribute("usuario") != null || request.getSession().getAttribute("tipousuario") != null || request.getSession().getAttribute("nombreUser") != null) {
                 if (request.getSession().getAttribute("usuario") == null || !request.getSession().getAttribute("tipousuario").toString().equals("2")) {
-                    response.sendRedirect(request.getContextPath()+"/public.do?operacion=publicIndex");
+                    response.sendRedirect(request.getContextPath() + "/public.do?operacion=publicIndex");
                     return;
                 }
                 switch (operacion) {
@@ -63,11 +63,14 @@ public class ClienteController extends HttpServlet {
                     case "agregarProducto":
                         agregarProducto(request, response);
                         break;
+                    case "eliminarArticulo":
+                        eliminarArticulo(request, response);
+                        break;
                 }
             } else {
                 request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
             }
-        } 
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -193,6 +196,27 @@ public class ClienteController extends HttpServlet {
                 request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("exito", "Has añadido este articulo a tu carrito.");
                 request.getRequestDispatcher("/cliente/producto.jsp").forward(request, response);
+            }
+        } catch (SQLException | IOException | ServletException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void eliminarArticulo(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int iddetallepedido = Integer.parseInt(request.getParameter("iddetalle"));
+            String urlactual ="/" + request.getParameter("url");
+            if (clienteModel.eliminarArticuloCarrito(iddetallepedido) > 0) {
+                if (urlactual.equals("/usuarios.do")) {
+                    request.getSession().setAttribute("exito", "Tu carrito se ha creado exitosamente");
+                    request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
+                    request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
+                     request.getRequestDispatcher("/clientes.do?operacion=publicIndex").forward(request, response);
+                }
+                request.getSession().setAttribute("exito", "Tu carrito se ha creado exitosamente");
+                request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
+                request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
+                request.getRequestDispatcher(urlactual).forward(request, response);
             }
         } catch (SQLException | IOException | ServletException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);

@@ -129,7 +129,7 @@ public class ClientesModel extends Conexion {
             if (rs.next()) {
                 pedido = rs.getInt("pedido");
             }
-            String sql2 = "SELECT DISTINCT i.id_producto, dp.cantidad,p.id_producto, p.producto, i.Url_imagen,p.precio_regular FROM detalle_pedidos dp INNER JOIN producto p ON dp.id_producto = p.id_producto INNER JOIN pedidos pd ON dp.id_pedido = pd.id_pedido INNER JOIN imagen i ON i.id_producto = p.id_producto WHERE pd.id_pedido=? AND pd.id_estado_compra = 1 GROUP by i.id_producto ORDER BY dp.id_detalle_pedido DESC";
+            String sql2 = "SELECT DISTINCT i.id_producto, dp.cantidad,dp.id_detalle_pedido,p.id_producto, p.producto, i.Url_imagen,p.precio_regular FROM detalle_pedidos dp INNER JOIN producto p ON dp.id_producto = p.id_producto INNER JOIN pedidos pd ON dp.id_pedido = pd.id_pedido INNER JOIN imagen i ON i.id_producto = p.id_producto WHERE pd.id_pedido=? AND pd.id_estado_compra = 1 GROUP by i.id_producto ORDER BY dp.id_detalle_pedido DESC";
             st = conexion.prepareStatement(sql2);
             st.setInt(1, pedido);
             rs = st.executeQuery();
@@ -143,6 +143,7 @@ public class ClientesModel extends Conexion {
                 producto.setPrecioRegular(rs.getString("precio_regular"));
                 detalle.setProducto(producto);
                 detalle.setCantidad(rs.getInt("cantidad"));
+                detalle.setIdDetallePedido(rs.getInt("id_detalle_pedido"));
                 lista.add(detalle);
             }
             this.desconectar();
@@ -167,7 +168,7 @@ public class ClientesModel extends Conexion {
             if (rs.next()) {
                 pedido = rs.getInt("pedido");
             }
-            String sql2 = "SELECT o.*, dp.cantidad FROM detalle_pedidos dp INNER JOIN ofertas o on dp.id_oferta = o.id_oferta WHERE dp.id_pedido=? AND o.id_estado_oferta = 1 ORDER BY dp.id_detalle_pedido DESC";
+            String sql2 = "SELECT o.*, dp.cantidad,dp.id_detalle_pedido FROM detalle_pedidos dp INNER JOIN ofertas o on dp.id_oferta = o.id_oferta WHERE dp.id_pedido=? AND o.id_estado_oferta = 1 ORDER BY dp.id_detalle_pedido DESC";
             st = conexion.prepareStatement(sql2);
             st.setInt(1, pedido);
             rs = st.executeQuery();
@@ -183,6 +184,7 @@ public class ClientesModel extends Conexion {
                 oferta.setUrlFoto(rs.getString("Url_foto"));
                 detalle.setOferta(oferta);
                 detalle.setCantidad(rs.getInt("cantidad"));
+                detalle.setIdDetallePedido(rs.getInt("id_detalle_pedido"));
                 lista.add(detalle);
             }
             this.desconectar();
@@ -220,5 +222,22 @@ public class ClientesModel extends Conexion {
             this.desconectar();
             return 0;
         }
+    }
+    public int eliminarArticuloCarrito(int iddetalle) throws SQLException{
+        try {
+            String sql = "DELETE FROM detalle_pedidos WHERE id_detalle_pedido = ?";
+            int filasAfectadas=0;
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, iddetalle);
+            filasAfectadas = st.executeUpdate();
+            this.desconectar();
+            return filasAfectadas;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        }
+        
     }
 }
