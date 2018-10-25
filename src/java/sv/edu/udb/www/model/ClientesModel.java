@@ -94,6 +94,9 @@ public class ClientesModel extends Conexion {
             String sql = "SELECT MAX(id_pedido) AS pedido FROM pedidos WHERE id_usuario = ?";
             int pedido = 0;
             int filasAfectadas = 0;
+            int countproduc = 0;
+            int existencias = 0;
+            int dpcantidad = 0;
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setInt(1, iduser);
@@ -101,18 +104,53 @@ public class ClientesModel extends Conexion {
             if (rs.next()) {
                 pedido = rs.getInt("pedido");
             }
-            String sql2 = "INSERT INTO detalle_pedidos(id_pedido, id_producto,cantidad) VALUES(?,?,?)";
+            String sql2 = "SELECT p.cantidad, COUNT(dp.id_producto) AS countproduct, dp.cantidad as dpcantidad FROM detalle_pedidos dp INNER JOIN producto p ON dp.id_producto = p.id_producto WHERE id_pedido =? AND dp.id_producto =?";
             st = conexion.prepareStatement(sql2);
             st.setInt(1, pedido);
             st.setInt(2, idproduct);
-            st.setInt(3, cantidad);
-            filasAfectadas = st.executeUpdate();
-            this.desconectar();
-            return filasAfectadas;
+            rs = st.executeQuery();
+            if (rs.next()) {
+                countproduc = rs.getInt("countproduct");
+                existencias = rs.getInt("cantidad");
+                dpcantidad = rs.getInt("dpcantidad");
+            }
+            if (existencias <= 0 || existencias < cantidad) {
+                return 0;
+            } else {
+                if (countproduc == 0) {
+                    String sql3 = "INSERT INTO detalle_pedidos(id_pedido, id_producto,cantidad) VALUES(?,?,?)";
+                    st = conexion.prepareStatement(sql3);
+                    st.setInt(1, pedido);
+                    st.setInt(2, idproduct);
+                    st.setInt(3, cantidad);
+                    st.executeUpdate();
+                    String sql4 = "UPDATE producto SET cantidad = ? WHERE id_producto =?";
+                    st = conexion.prepareStatement(sql4);
+                    st.setInt(1, existencias - 1);
+                    st.setInt(2, idproduct);
+                    filasAfectadas = st.executeUpdate();
+                    return filasAfectadas;
+                } else {
+                    String sql3 = "UPDATE detalle_pedidos SET cantidad = ? WHERE id_pedido = ? AND id_producto = ?";
+                    st = conexion.prepareStatement(sql3);
+                    st.setInt(1, dpcantidad + cantidad);
+                    st.setInt(2, pedido);
+                    st.setInt(3, idproduct);
+                    st.executeUpdate();
+                    String sql4 = "UPDATE producto SET cantidad = ? WHERE id_producto =?";
+                    st = conexion.prepareStatement(sql4);
+                    st.setInt(1, existencias - cantidad);
+                    st.setInt(2, idproduct);
+                    return filasAfectadas = st.executeUpdate();
+                }
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
             this.desconectar();
             return 0;
+        } finally {
+            this.desconectar();
         }
     }
 
@@ -154,7 +192,7 @@ public class ClientesModel extends Conexion {
             return null;
         }
     }
-    
+
     public List<DetallePedido> listaCarritoOfertas(int iduser) throws SQLException {
         try {
             List<DetallePedido> lista = new ArrayList<>();
@@ -223,11 +261,29 @@ public class ClientesModel extends Conexion {
             return 0;
         }
     }
-    public int eliminarArticuloCarrito(int iddetalle) throws SQLException{
+
+    public int eliminarProductoCarrito(int iddetalle) throws SQLException {
         try {
-            String sql = "DELETE FROM detalle_pedidos WHERE id_detalle_pedido = ?";
-            int filasAfectadas=0;
+            String sql2 = "SELECT dp.id_producto, dp.cantidad, p.cantidad AS cantidadpro FROM detalle_pedidos dp INNER JOIN producto p ON dp.id_producto = p.id_producto WHERE dp.id_detalle_pedido = ?";
+            int cantidad = 0;
+            int producto = 0;
+            int cantidadpro = 0;
             this.conectar();
+            st = conexion.prepareStatement(sql2);
+            st.setInt(1, iddetalle);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                cantidad = rs.getInt("cantidad");
+                producto = rs.getInt("id_producto");
+                cantidadpro = rs.getInt("cantidadpro");
+            }
+            String sql3 = "UPDATE producto SET cantidad =? WHERE id_producto = ?";
+            st = conexion.prepareStatement(sql3);
+            st.setInt(1, cantidadpro+ cantidad);
+            st.setInt(2, producto);
+            st.executeUpdate();
+            String sql = "DELETE FROM detalle_pedidos WHERE id_detalle_pedido = ?";
+            int filasAfectadas = 0;
             st = conexion.prepareStatement(sql);
             st.setInt(1, iddetalle);
             filasAfectadas = st.executeUpdate();
@@ -238,6 +294,32 @@ public class ClientesModel extends Conexion {
             this.desconectar();
             return 0;
         }
-        
+    }
+
+    public String totalPedido(int iduser) {
+        try {
+            String sql = "SELECT MAX(id_pedido) AS pedido FROM pedidos WHERE id_usuario = ?";
+            int pedido = 0;
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, iduser);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                pedido = rs.getInt("pedido");
+            }
+            String sql2 = "SELECT ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total FROM detalle_pedidos dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta WHERE dp.id_pedido = ?";
+            this.conectar();
+            String total = "";
+            st = conexion.prepareStatement(sql2);
+            st.setInt(1, pedido);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                total = rs.getString("total");
+            }
+            return total;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            return "0";
+        }
     }
 }

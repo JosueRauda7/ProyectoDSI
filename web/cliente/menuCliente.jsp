@@ -14,7 +14,7 @@
         <div class="top-cart-block">
             <div class="top-cart-info">
                 <a href="javascript:void(0);" class="top-cart-info-count">${sessionScope.cantidadpedidos} items</a>
-                <a href="javascript:void(0);" class="top-cart-info-value">$1260</a>
+                <a href="javascript:void(0);" class="top-cart-info-value">$${sessionScope.totalPedido}</a>
             </div>
             <i class="fa fa-shopping-cart"></i>
 
