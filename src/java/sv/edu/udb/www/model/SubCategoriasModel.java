@@ -27,6 +27,41 @@ public class SubCategoriasModel extends Conexion {
             sql = "SELECT t1.*, t2.*, t3.* FROM sub_categoria t1 INNER JOIN estado_sub_categoria t2 ON t1.id_estado_sub_categoria = t2.id_estado_sub_categoria  INNER JOIN categoria t3 ON t1.id_categoria=t3.id_categoria";
             this.conectar();
             st = conexion.prepareStatement(sql);
+            
+            rs = st.executeQuery();
+            while (rs.next()) {
+                SubCategoria subCategoria = new SubCategoria();
+                EstadoCategoria estado = new EstadoCategoria();
+                Categoria categoria = new Categoria();
+                subCategoria.setIdSubCategoria(rs.getInt("id_sub_categoria"));
+                subCategoria.setSubCategoria(rs.getString("subcategoria"));
+                subCategoria.setUrlSubcategoria(rs.getString("Urlsubcategoria"));
+                estado.setIdEstadoCategoria(rs.getInt("id_estado_sub_categoria"));
+                estado.setEstadoCategoria(rs.getString("estado_sub_categoria"));
+                categoria.setIdCategoria(rs.getInt("id_categoria"));
+                categoria.setCategoria(rs.getString("categoria"));
+                subCategoria.setCategoria(categoria);
+                subCategoria.setEstadoCategoria(estado);
+                lista.add(subCategoria);
+            }
+
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(SubCategoriasModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+
+    }
+    
+    public List<SubCategoria> listarSubCategorias(int id) throws SQLException {
+        try {
+            List<SubCategoria> lista = new ArrayList<>();
+            sql = "SELECT t1.*, t2.*, t3.* FROM sub_categoria t1 INNER JOIN estado_sub_categoria t2 ON t1.id_estado_sub_categoria = t2.id_estado_sub_categoria  INNER JOIN categoria t3 ON t1.id_categoria=t3.id_categoria WHERE t3.id_categoria = ?";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, id);
             rs = st.executeQuery();
             while (rs.next()) {
                 SubCategoria subCategoria = new SubCategoria();

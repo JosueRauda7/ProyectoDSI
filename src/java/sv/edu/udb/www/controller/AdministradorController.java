@@ -512,14 +512,15 @@ public class AdministradorController extends HttpServlet {
 
     private void listarSubCategorias(HttpServletRequest request, HttpServletResponse response) {
         try {
-            request.setAttribute("listaSubCategorias", modeloSubCategoria.listarSubCategorias());
+            int id = Integer.parseInt(request.getParameter("id").toString());
+            request.setAttribute("listaSubCategorias", modeloSubCategoria.listarSubCategorias(id));
             try {
                 request.getRequestDispatcher("/administrador/listaSubCategorias.jsp").forward(request, response);
             } catch (ServletException | IOException ex) {
                 Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

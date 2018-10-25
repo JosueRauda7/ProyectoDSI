@@ -54,14 +54,15 @@
                                                 <td class="goods-page-total">
                                                     <c:choose>
                                                         <c:when test="${categoria.estadoCategoria.idEstadoCategoria eq '1'}">
-                                                            <a onclick="javascript:modificar('${categoria.idCategoria}')" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span></a>
-                                                            <a onclick="javascript:deshabilitar('${categoria.idCategoria}')" style="margin-left: 2%; color:white" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+                                                            <a onclick="javascript:modificar('${categoria.idCategoria}')" class="btn btn-default" title="Editar"><span class="glyphicon glyphicon-edit"></span></a>
+                                                            <a onclick="javascript:deshabilitar('${categoria.idCategoria}')" style="margin-left: 2%; color:white" class="btn btn-danger" title="Deshabilitar"><span class="glyphicon glyphicon-trash"></span></a>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <a onclick="javascript:modificar('${categoria.idCategoria}')" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span></a>
-                                                            <a onclick="javascript:habilitar('${categoria.idCategoria}')" style="margin-left: 2%; color:white" class="btn btn-success"><span class="glyphicon glyphicon-check"></span></a>
+                                                        <a onclick="javascript:modificar('${categoria.idCategoria}')" class="btn btn-default"><span class="glyphicon glyphicon-edit" title="Editar"></span></a>
+                                                        <a onclick="javascript:habilitar('${categoria.idCategoria}')" style="margin-left: 2%; color:white" class="btn btn-success" title="Habilitar"><span class="glyphicon glyphicon-check"></span></a>
                                                         </c:otherwise>
                                                     </c:choose>
+                                                            <a href="${pageContext.request.contextPath}/administrador.do?operacion=listarSubCategorias&id=${categoria.idCategoria}" class="btn btn-info" style="margin-left: 2%; color:white" title="Ver sub categorias"><span class="glyphicon glyphicon-eye-open"></span></a>
                                                 </td>
                                             </tr>
                                         </c:forEach>
