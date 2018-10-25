@@ -15,7 +15,7 @@
 
         <jsp:include page="head.jsp"/>        
         
-        <link href="/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        
         <!-- Theme styles END -->
     </head>
     <!-- Head END -->
@@ -30,9 +30,9 @@
             <div class="product-page-content">
                 <a style="margin-bottom: 2%;" class="btn btn-primary btn-md" href="${pageContext.request.contextPath}/empresas.do?operacion=nuevo">Nuevo producto</a>
                 <ul id="myTab" class="nav nav-tabs">                    
-                    <li <c:if test="${requestScope.tab eq 1}"> class="active"</c:if> ><a href="${base}/empresas.do?operacion=listar&estado=1" data-toggle="tab">Listar en espera</a></li>
-                    <li <c:if test="${requestScope.tab eq 2}"> class="active"</c:if> ><a href="${base}/empresas.do?operacion=listar&estado=2" data-toggle="tab">Listar activos</a></li>
-                    <li <c:if test="${requestScope.tab eq 3}"> class="active"</c:if> ><a href="${base}/empresas.do?operacion=listar&estado=3" data-toggle="tab">Listar rechazados</a></li>                    
+                    <li <c:if test="${requestScope.tab eq 1}"> class="active"</c:if> ><a href="${base}/empresas.do?operacion=listar&estado=1" data-toggle="activos">Listar en espera</a></li>
+                    <li <c:if test="${requestScope.tab eq 2}"> class="active"</c:if> ><a href="${base}/empresas.do?operacion=listar&estado=2" data-toggle="activos">Listar activos</a></li>
+                    <li <c:if test="${requestScope.tab eq 3}"> class="active"</c:if> ><a href="${base}/empresas.do?operacion=listar&estado=3" data-toggle="activos">Listar rechazados</a></li>                    
                     </ul>
 
                     <div class="tab-pane fade in active" id="activos">
