@@ -24,23 +24,23 @@
                         <h4 class="text-center">Productos</h4>
                         <c:forEach var="productos" items="${sessionScope.pedidosProduc}">
                             <li >
-                            <a href="shop-item.html"><img src="images/${productos.producto.urlImagen}" alt="${productos.producto.producto}" width="37" height="34"></a>
-                            <span class="cart-content-count">x ${productos.cantidad}</span>
-                            <strong><a href="${base}/clientes.do?operacion=verProducto&idproduct=${productos.producto.idProducto}">${productos.producto.producto}l</a></strong>
-                            <em>$${productos.producto.precioRegular}</em>
-                            <a  style="margin-left: 90%;margin-top: -8%; cursor: pointer;" onclick="javascript:eliminar('${productos.idDetallePedido}')" class="del-goods">&nbsp;</a>
-                        </li>
+                                <a href="shop-item.html"><img src="images/${productos.producto.urlImagen}" alt="${productos.producto.producto}" width="37" height="34"></a>
+                                <span class="cart-content-count">x ${productos.cantidad}</span>
+                                <strong><a href="${base}/clientes.do?operacion=verProducto&idproduct=${productos.producto.idProducto}">${productos.producto.producto}l</a></strong>
+                                <em>$${productos.producto.precioRegular}</em>
+                                <a  style="margin-left: 90%;margin-top: -8%; cursor: pointer;" onclick="javascript:eliminar('${productos.idDetallePedido}')" class="del-goods">&nbsp;</a>
+                            </li>
                         </c:forEach>  
                         <br>
                         <h4 class="text-center">Ofertas</h4>
-                         <c:forEach var="ofertas" items="${sessionScope.pedidosOfert}">
+                        <c:forEach var="ofertas" items="${sessionScope.pedidosOfert}">
                             <li >
-                            <a href="shop-item.html"><img src="images/${ofertas.oferta.urlFoto}" alt="${ofertas.oferta.titulo}" width="37" height="34"></a>
-                            <span class="cart-content-count">x ${ofertas.cantidad}</span>
-                            <strong class="textos"><a href="${base}/clientes.do?operacion=verProducto&idproduct=${ofertas.oferta.idOferta}">${ofertas.oferta.titulo}</a></strong>
-                            <em>$${ofertas.oferta.totalDescuento}</em>
-                            <a  style="margin-left: 90%;margin-top: -8%;"  class="del-goods">&nbsp;</a>
-                        </li>
+                                <a href="shop-item.html"><img src="images/${ofertas.oferta.urlFoto}" alt="${ofertas.oferta.titulo}" width="37" height="34"></a>
+                                <span class="cart-content-count">x ${ofertas.cantidad}</span>
+                                <strong class="textos"><a href="${base}/clientes.do?operacion=verProducto&idproduct=${ofertas.oferta.idOferta}">${ofertas.oferta.titulo}</a></strong>
+                                <em>$${ofertas.oferta.totalDescuento}</em>
+                                <a  style="margin-left: 90%;margin-top: -8%;"  class="del-goods">&nbsp;</a>
+                            </li>
                         </c:forEach>
                     </ul>
                     <div class="text-right" style="display: flex; margin-left: 2%;">
@@ -127,10 +127,8 @@
     </div>
 </div>
 <script>
-    
-    var URLactual = window.location;
-    var url = URLactual.toString().substring(34);
-   
+
+
     <c:if test="${estado eq 1 }">
     document.getElementById("crear").style.display = "none";
     document.getElementById("ver").style.display = "block";
@@ -139,19 +137,24 @@
     document.getElementById("crear").style.display = "block";
     document.getElementById("ver").style.display = "none";
     </c:if>
-        
-          function eliminar(id) {
-                swal({
-                    title: '¿Seguro que quieres eliminar este articulo del carrito?',
-                    text: "Una vez eliminado, no habra vuelta atras.",
-                    icon: 'warning',
-                    buttons: true,
-                    dangerMode: true,
-                }).then((willDelete) => {
-                    if (willDelete) {
-                        location.href = 'clientes.do?operacion=eliminarArticulo&iddetalle=' + id +'&url='+url;
-                    }
-                });
+
+    function eliminar(id) {
+
+        var URLactual = window.location;
+        var url = URLactual.toString().substring(34);
+        swal({
+            title: '¿Seguro que quieres eliminar este articulo del carrito?',
+            text: "Una vez eliminado, no habra vuelta atras.",
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+               
+                location.href = 'clientes.do?operacion=eliminarArticulo&iddetalle=' + id + '&url=' + url;
             }
-            ;
+        });
+    }
+    ;
+  
 </script>
