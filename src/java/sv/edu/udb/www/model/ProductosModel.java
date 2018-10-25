@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.udb.www.beans.Empresa;
 import sv.edu.udb.www.beans.EstadoProducto;
+import sv.edu.udb.www.beans.Imagen;
 import sv.edu.udb.www.beans.Producto;
 import sv.edu.udb.www.beans.SubCategoria;
 
@@ -41,11 +42,35 @@ public class ProductosModel extends Conexion {
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecioRegular(rs.getString("precio_regular"));
                 producto.setCantidad(rs.getString("cantidad"));
-                producto.setUrlImagen(rs.getString("url_imagen"));
-
                 producto.setSubCategoria(new SubCategoria(rs.getString("subcategoria")));
                 producto.setEstadoProducto(new EstadoProducto(rs.getString("estado")));
                 lista.add(producto);
+            }
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(EmpresasModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+    }
+    
+    public List<Imagen> listarImagenesProducto() throws SQLException{
+         try {
+
+            List<Imagen> lista = new ArrayList<>();
+            String sql = "Select * from Imagen";
+                    
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Imagen imagen = new Imagen();
+                imagen.setIdImagenProducto(rs.getInt("id_imagen_producto"));
+                imagen.setUrlimagen(rs.getString("Url_imagen"));
+                imagen.setIdProducto(rs.getInt("id_producto"));
+                lista.add(imagen);
             }
             this.desconectar();
             return lista;
@@ -70,16 +95,15 @@ public class ProductosModel extends Conexion {
                 empresa = rs.getInt("id_empresa");
             }
             
-            sql = "Insert into producto VALUES(NULL,?,?,?,?,?,?,?,1)";
+            sql = "Insert into producto VALUES(NULL,?,?,?,?,?,?,1)";
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setString(1, producto.getProducto());
             st.setString(2, producto.getDescripcion());
             st.setDouble(3, Double.parseDouble(producto.getPrecioRegular()));
             st.setInt(4, Integer.parseInt(producto.getCantidad()));
-            st.setString(5, producto.getUrlImagen());
-            st.setInt(6, producto.getIdsubCategoria());
-            st.setInt(7, empresa);
+            st.setInt(5, producto.getIdsubCategoria());
+            st.setInt(6, empresa);
             filasAfectadas = st.executeUpdate();
             this.desconectar();
             return filasAfectadas;
@@ -107,7 +131,6 @@ public class ProductosModel extends Conexion {
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecioRegular(rs.getString("precio_regular"));
                 producto.setCantidad(rs.getString("cantidad"));
-                producto.setUrlImagen(rs.getString("url_imagen"));
 
                 producto.setSubCategoria(new SubCategoria(rs.getString("subcategoria")));
                 producto.setEstadoProducto(new EstadoProducto(rs.getString("estado")));
@@ -133,14 +156,13 @@ public class ProductosModel extends Conexion {
         try {
             int filasAfectadas = 0;
             String sql = "Update producto set producto=?,descripcion=?,precio_regular=?,cantidad=?,"
-                    + "url_imagen=?, id_sub_categoria=?, id_estado_producto=1 where id_producto=?";
+                    + " id_sub_categoria=?, id_estado_producto=1 where id_producto=?";
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setString(1, producto.getProducto());
             st.setString(2, producto.getDescripcion());
             st.setDouble(3, Double.parseDouble(producto.getPrecioRegular()));
             st.setInt(4, Integer.parseInt(producto.getCantidad()));
-            st.setString(5, producto.getUrlImagen());
             st.setInt(6, producto.getIdsubCategoria());
             st.setInt(7, codigo);
             filasAfectadas = st.executeUpdate();

@@ -144,6 +144,8 @@ public class EmpresaController extends HttpServlet {
             int estado = Integer.parseInt(request.getParameter("estado"));
             int usuario = Integer.parseInt(request.getSession().getAttribute("usuario").toString());
             request.setAttribute("listarProducto", modeloProducto.listarProducto(usuario, estado));
+            request.setAttribute("listarImagenes", modeloProducto.listarImagenesProducto());
+            request.setAttribute("tab",estado);
             try {
                 request.getRequestDispatcher("/empresa/listaProductos.jsp").forward(request, response);
             } catch (ServletException | IOException ex) {
@@ -202,12 +204,12 @@ public class EmpresaController extends HttpServlet {
                 listaErrores.add("La cantidad debe ser un número positivo");
             }
 
-            if (multi.getFile("archivo") == null) {
-                listaErrores.add("La imagen es obligatoria");
-            } else {
-                File ficheroTemp = multi.getFile("archivo");
-                producto.setUrlImagen(ficheroTemp.getName());
-            }
+//            if (multi.getFile("archivo") == null) {
+//                listaErrores.add("La imagen es obligatoria");
+//            } else {
+//                File ficheroTemp = multi.getFile("archivo");
+//                producto.setUrlImagen(ficheroTemp.getName());
+//            }
 
             if (listaErrores.isEmpty()) {
                 if (modeloProducto.insertarProducto(producto, usuario) == 1) {

@@ -3,7 +3,7 @@
     Created on : 18-sep-2018, 18:24:00
     Author     : Ferh
 --%>
-
+<%@taglib prefix="ckeditor" uri="http://ckeditor.com" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="base" value="${pageContext.request.contextPath}"/> 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -14,7 +14,6 @@
         <title>Empresa</title>
 
         <jsp:include page="head.jsp"/>
-
     </head>
     <!-- Head END -->
 
@@ -54,21 +53,22 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="descripcion">Descripción</label>
-                                    <textarea id="descripcion" name="descripcion" class="form-control" value="${producto.descripcion}"></textarea>
+                                    <textarea id="descripcion" name="descripcion" value="${producto.descripcion}"></textarea>
                                 </div>
                             </div>
+                            
+                        </div>
+
+                        <div class="row">         
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="regular">Precio regular</label>
                                     <input type="number" step="0.01" id="regular" name="regular" class="form-control" value="${producto.precioRegular}">
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row">                            
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="subcategoria">Sub categoría</label>
@@ -79,13 +79,13 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <!--<div class="col-md-6">
                                 <div class="form-group">
                                     <label for="imagen">Imagen</label>
                                     <input data-language="es" type="file" name="archivo" id="imagen" class="form-control file file-loading" data-allowed-file-extensions='["jpg", "png"]'
                                            value="${base}/images/${producto.urlImagen}/"/>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="text-center" style="padding-bottom: 2%; ">                  
@@ -96,7 +96,9 @@
             </div>
         </div>
 
+        
         <jsp:include page="footer.jsp"/>       
+        <ckeditor:replace replace="descripcion" basePath="${base}/ckeditor/" />
     </body>
     <!-- END BODY -->
 </html>

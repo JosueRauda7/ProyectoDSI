@@ -14,6 +14,8 @@
         <title>Empresa</title>
 
         <jsp:include page="head.jsp"/>        
+        
+        <link href="/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <!-- Theme styles END -->
     </head>
     <!-- Head END -->
@@ -27,30 +29,30 @@
         <div class="container">
             <div class="product-page-content">
                 <a style="margin-bottom: 2%;" class="btn btn-primary btn-md" href="${pageContext.request.contextPath}/empresas.do?operacion=nuevo">Nuevo producto</a>
-                <ul id="myTab" class="nav nav-tabs">
-                    <li><a href="${base}/empresas.do?operacion=listar&estado=1" data-toggle="tab">Listar en espera</a></li>
-                    <li><a href="${base}/empresas.do?operacion=listar&estado=2" data-toggle="tab">Listar activos</a></li>
-                    <li><a href="${base}/empresas.do?operacion=listar&estado=3" data-toggle="tab">Listar rechazados</a></li>                    
-                </ul>
+                <ul id="myTab" class="nav nav-tabs">                    
+                    <li <c:if test="${requestScope.tab eq 1}"> class="active"</c:if> ><a href="${base}/empresas.do?operacion=listar&estado=1" data-toggle="tab">Listar en espera</a></li>
+                    <li <c:if test="${requestScope.tab eq 2}"> class="active"</c:if> ><a href="${base}/empresas.do?operacion=listar&estado=2" data-toggle="tab">Listar activos</a></li>
+                    <li <c:if test="${requestScope.tab eq 3}"> class="active"</c:if> ><a href="${base}/empresas.do?operacion=listar&estado=3" data-toggle="tab">Listar rechazados</a></li>                    
+                    </ul>
 
-                <div class="tab-pane fade in active" id="activos">
+                    <div class="tab-pane fade in active" id="activos">
 
-                    <div class="goods-page">
-                        <div class="goods-data clearfix">
-                            <div class="table-wrapper-responsive">
-                                <table  id="tabla">
-                                    <thead>
-                                        <tr>
-                                            <th class="goods-page-description text-center">Producto</th>
-                                            <th class="goods-page-quantity text-center">Precio</th>
-                                            <th class="goods-page-description text-center">Disponibles</th>                                            
-                                            <th class="goods-page-image text-center">Imagen</th>                                                                                       
-                                            <th class="goods-page text-center">Operacion</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="${requestScope.listarProducto}" var="productos">
+                        <div class="goods-page">
+                            <div class="goods-data clearfix">
+                                <div class="table-wrapper-responsive">
+                                    <table  id="tabla">
+                                        <thead>
                                             <tr>
+                                                <th class="goods-page-description text-center">Producto</th>
+                                                <th class="goods-page-quantity text-center">Precio</th>
+                                                <th class="goods-page-description text-center">Disponibles</th>                                            
+                                                <th class="goods-page-image text-center">Imagen</th>                                                                                       
+                                                <th class="goods-page text-center">Operacion</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach items="${requestScope.listarProducto}" var="productos">
+                                            <tr class="text-center">
                                                 <td class="goods-page-description">
                                                     ${productos.producto}
                                                 </td>
@@ -61,12 +63,16 @@
                                                     ${productos.cantidad}
                                                 </td>
                                                 <td class="goods-page-image">
-                                                    <img height="100px" src="${base}/images/${productos.urlImagen}"/>
+                                                    <c:forEach items="${requestScope.listarImagenes}" var="imagenes">
+                                                        <c:if test="${productos.idProducto eq imagenes.idProducto}">
+                                                            <img height="100px" src="${base}/images/${imagenes.urlimagen}"/>
+                                                        </c:if>
+                                                    </c:forEach>
                                                 </td>
                                                 <td class="goods-page text-center">
                                                     <c:choose>
                                                         <c:when test="${productos.estadoProducto.estado eq 'Activo'}">
-                                                            <a class="btn btn-info" title="agregar" style="padding: 5%;" href="#">+</a>
+                                                            <a class="btn btn-info" title="agregar" style="padding: 5%;" href="#product-pop-up">+</a>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <c:choose>
@@ -90,36 +96,38 @@
 
         </div>
 
-        <div id="product-pop-up" style="display: none; width: 700px;">
-            <div class="col-md-12">
-                <h3>Renovación de producto</h3>
-                <p>Nombre del prodcuto</p>
-                <form role="form" action="#">
-                    <div class="form-group">
-                        <label for="cantidad">Nueva cantidad</label>
-                        <input type="text" id="cantidad" class="form-control" name="cantidad">
-                    </div>
-                    <div class="form-group">
-                        <label for="vencimiento">Fecha de vencimiento</label>
-                        <input type="date" id="vencimiento" class="form-control" name="vencimiento">
-                    </div>
+        <!-- Button trigger modal -->
+        <a class="btn btn-primary" data-toggle="modal" href="#exampleModal">
+            Launch demo modal
+        </a>
 
-                    <div class="padding-top-20">                  
-                        <button class="btn btn-primary" type="submit">Renovar</button>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <hr>
-
-                </form>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <br/><br/><br/>
 
         <jsp:include page="footer.jsp"/>
 
         <!-- END PAGE LEVEL JAVASCRIPTS -->
     </body>
-    <script>
+    <script type="text/javascript">
+    
         <c:if test="${not empty exito}">
         swal({
             title: "Bien!",
