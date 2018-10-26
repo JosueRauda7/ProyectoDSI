@@ -43,7 +43,7 @@
                                     <a href="images/${ultpro.urlImagen}" class="btn btn-default fancybox-button">Ver producto</a>                               
                                 </div>
                             </div>
-                            <h3 class="text-center"><a href="shop-item.html">${ultpro.producto}</a></h3>
+                            <h3 class="text-center"><a href="${base}/public.do?operacion=verProducto&idproduct=${ultpro.idProducto}">${ultpro.producto}</a></h3>
                             <div class="pi-price">Precio: $${ultpro.precioRegular}</div>
 
                         </div>

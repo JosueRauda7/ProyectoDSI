@@ -47,7 +47,7 @@ public class AdministradorController extends HttpServlet {
     SubCategoriasModel modeloSubCategoria = new SubCategoriasModel();
     ProductosModel modeloProducto = new ProductosModel();
     ArrayList listaErrores = new ArrayList();
-    
+
     CategoriasModel CategoriaModel = new CategoriasModel();
     ProductosModel ProductoModel = new ProductosModel();
 
@@ -64,7 +64,7 @@ public class AdministradorController extends HttpServlet {
             }*/
             if (request.getSession().getAttribute("usuario") != null || request.getSession().getAttribute("tipousuario") != null || request.getSession().getAttribute("nombreUser") != null) {
                 if (request.getSession().getAttribute("usuario") == null || !request.getSession().getAttribute("tipousuario").toString().equals("1")) {
-                    response.sendRedirect(request.getContextPath()+"/public.do?operacion=publicIndex");
+                    response.sendRedirect(request.getContextPath() + "/public.do?operacion=publicIndex");
                     return;
                 }
                 if (request.getParameter("operacion") != null) {
@@ -180,7 +180,7 @@ public class AdministradorController extends HttpServlet {
             } else {
                 request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
             }
-        }  finally {
+        } finally {
             out.close();
         }
     }
@@ -512,8 +512,19 @@ public class AdministradorController extends HttpServlet {
 
     private void listarSubCategorias(HttpServletRequest request, HttpServletResponse response) {
         try {
-            int id = Integer.parseInt(request.getParameter("id").toString());
-            request.setAttribute("listaSubCategorias", modeloSubCategoria.listarSubCategorias(id));
+
+            if (request.getParameter("id") != null) {
+                int id = Integer.parseInt(request.getParameter("id").toString());
+                request.setAttribute("categoria", modeloCategoria.obtenerCategoria(request.getParameter("id")));
+
+                if (request.getAttribute("categoria").equals(null)) {
+                    response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarCategorias");
+                }
+                request.setAttribute("listaSubCategorias", modeloSubCategoria.listarSubCategorias(id));
+
+            } else {
+                response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarCategorias");
+            }
             try {
                 request.getRequestDispatcher("/administrador/listaSubCategorias.jsp").forward(request, response);
             } catch (ServletException | IOException ex) {
@@ -521,26 +532,48 @@ public class AdministradorController extends HttpServlet {
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarCategorias");
+            } catch (IOException ex1) {
+                Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex1);
+            }
         }
     }
 
     private void nuevaSubCategoria(HttpServletRequest request, HttpServletResponse response) {
         try {
-            request.setAttribute("listaCategorias", modeloSubCategoria.listarCategorias());
+            request.setAttribute("categoria", modeloCategoria.obtenerCategoria(request.getParameter("idCategoria")));
+
+            if (request.getAttribute("categoria").equals(null)) {
+                response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarCategorias");
+            }
+
             request.getRequestDispatcher("/administrador/nuevaSubCategoria.jsp").forward(request, response);
-        } catch (SQLException | ServletException | IOException ex) {
-            Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            try {
+                response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarCategorias");
+            } catch (IOException ex1) {
+                Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex1);
+            }
         }
     }
 
     private void obtenerSubCategoria(HttpServletRequest request, HttpServletResponse response) {
         try {
-            request.setAttribute("listaCategorias", modeloCategoria.listarCategorias());
+            request.setAttribute("categoria", modeloCategoria.obtenerCategoria(request.getParameter("idCategoria")));
+
+            if (request.getAttribute("categoria").equals(null)) {
+                response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarCategorias");
+            }
+
             request.setAttribute("subCategoria", modeloSubCategoria.obtenerSubCategoria(request.getParameter("id")));
             request.getRequestDispatcher("/administrador/editarSubCategoria.jsp").forward(request, response);
-        } catch (SQLException | ServletException | IOException ex) {
-            Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            try {
+                response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarCategorias");
+            } catch (IOException ex1) {
+                Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex1);
+            }
         }
     }
 
@@ -616,10 +649,10 @@ public class AdministradorController extends HttpServlet {
 
                 if (modeloSubCategoria.insertarSubCategoria(subCategoria) > 0) {
                     request.getSession().setAttribute("exito", "Sub categoria registrada exitosamente");
-                    response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarSubCategorias");
+                    response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarSubCategorias&id=" + categoria.getIdCategoria());
                 } else {
                     request.getSession().setAttribute("fracaso", "Dato no registrado. Ya existe esta sub categoria");
-                    response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarSubCategorias");
+                    response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarSubCategorias&id=" + categoria.getIdCategoria());
                 }
             } catch (SQLException | IOException ex) {
                 Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
@@ -666,10 +699,10 @@ public class AdministradorController extends HttpServlet {
 
                 if (modeloSubCategoria.modificarSubCategoria(subCategoria) > 0) {
                     request.getSession().setAttribute("exito", "Sub categoria modificada exitosamente");
-                    response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarSubCategorias");
+                    response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarSubCategorias&id=" + categoria.getIdCategoria());
                 } else {
                     request.getSession().setAttribute("fracaso", "Dato no modificado. Ya existe esta sub categoria");
-                    response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarSubCategorias");
+                    response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarSubCategorias&id=" + categoria.getIdCategoria());
                 }
             } catch (SQLException | IOException ex) {
                 Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);

@@ -153,7 +153,7 @@ public class SubCategoriasModel extends Conexion {
     public int modificarSubCategoria(SubCategoria subCategoria) throws SQLException {
         try {
             int filasAfectadas = 0;
-            if (subCategoria.getUrlSubcategoria() == null) {
+            if (subCategoria.getUrlSubcategoria().isEmpty()) {
                 sql = "UPDATE sub_categoria SET subcategoria=?, id_categoria=? WHERE id_sub_categoria = ?";
                 this.conectar();
                 st = conexion.prepareStatement(sql);
