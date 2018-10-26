@@ -206,6 +206,7 @@
                 });
 
                 <c:if test="${not empty exito}">
+
                 swal({
                     title: "Felicidades!",
                     text: "${exito}",
