@@ -26,9 +26,6 @@
 <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <!-- Global styles END --> 
 
-<script src="${pageContext.request.contextPath}/assets/plugins/jquery.min.js" type="text/javascript"></script>
-<script src="${pageContext.request.contextPath}/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>     
-
 <!-- Page level plugin styles START -->
 <link href="assets/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet">
 <link href="assets/pages/css/estilomodallog.css" rel="stylesheet">
