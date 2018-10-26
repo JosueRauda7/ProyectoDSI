@@ -69,12 +69,12 @@
                                                 </td>
                                                 <td class="goods-page-quantity">
                                                     <div class="product-quantity">
-                                                        <input id="campo${loop.index +1}"  type="text" value="${productos.cantidad}" onchange="funciona${loop.index +1}(${productos.idDetallePedido});"  readonly class="form-control input-sm">
+                                                        <input id="campo${loop.index +1}"  type="text" value="${productos.cantidad}" onchange="funciona${loop.index +1}(${productos.idDetallePedido},${productos.producto.idProducto});"   class="form-control input-sm">
                                                         <script>
-                                                            function funciona${loop.index +1}(valor) {
+                                                            function funciona${loop.index +1}(valor, producto) {
                                                                 var cantidad = document.getElementById("campo${loop.index +1}").value;
                                                                
-                                                                location.href = 'clientes.do?operacion=cantidadProducto&cantidad=' + cantidad + '&iddetalle=' + valor;
+                                                               location.href = 'clientes.do?operacion=cantidadProducto&cantidad=' + cantidad + '&iddetalle=' + valor + '&idproduc='+ producto;
                                                             }
                                                         </script>
                                                     </div>

@@ -255,13 +255,21 @@ public class ClienteController extends HttpServlet {
         try {
             int cantidad = Integer.parseInt(request.getParameter("cantidad"));
             int iddetalle = Integer.parseInt(request.getParameter("iddetalle"));
-            if (clienteModel.cantidadProducto(cantidad, iddetalle) > 0) {
-                request.getSession().setAttribute("exito", "Item modificado exitosamente.");
-                request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
+            int idproduct = Integer.parseInt(request.getParameter("idproduc"));
+            if (cantidad <= 0) {
+                request.getSession().setAttribute("fracaso", "La cantidad debe ser mayor a 1");
                 response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verCarrito");
             } else {
-                request.getSession().setAttribute("fracaso", "Algo salio mal");
-                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verCarrito");
+
+                if (clienteModel.cantidadProducto(cantidad, iddetalle, idproduct) > 0) {
+                    request.getSession().setAttribute("exito", "Item modificado exitosamente.");
+                    request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
+                    request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
+                    response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verCarrito");
+                } else {
+                    request.getSession().setAttribute("fracaso", "Existencias limitadas de este articulo");
+                    response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verCarrito");
+                }
             }
         } catch (SQLException | IOException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
