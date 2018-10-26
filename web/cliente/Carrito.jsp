@@ -51,45 +51,51 @@
                                             <th class="goods-page-total">Total</th>
                                             <th>Eliminar</th>
                                         </tr>
+                                        <c:if test="${not empty sessionScope.pedidosProduc}">
+                                            <c:forEach var="productos" varStatus="loop"  items="${sessionScope.pedidosProduc}" >
+                                                <tr>
+                                                    <td class="goods-page-image">
+                                                        <a href="javascript:;"><img src="images/${productos.producto.urlImagen}" alt="${productos.producto.producto}"></a>
+                                                    </td>
+                                                    <td class="goods-page-description" style="width: 35%;">
+                                                        <h3><a href="${base}/clientes.do?operacion=verProducto&idproduct=${productos.producto.idProducto}">${productos.producto.producto}</a></h3>
+                                                        <p><strong>Item ${loop.index +1}</strong> -${productos.producto.descripcion}</p>
 
-                                        <c:forEach var="productos" varStatus="loop"  items="${sessionScope.pedidosProduc}" >
+                                                    </td>
+                                                    <td class="goods-page-ref-no">
+                                                        ${productos.producto.empresa.empresa}
+                                                        <br>
+                                                        <a href="javascript:;"><img src="images/${productos.producto.empresa.urlEmpresa}" alt="${productos.producto.empresa.empresa}" width="100"></a>
+                                                    </td>
+                                                    <td class="goods-page-quantity">
+                                                        <div class="product-quantity">
+                                                            <input id="campo${loop.index +1}"  type="text" value="${productos.cantidad}" onchange="funciona${loop.index +1}(${productos.idDetallePedido},${productos.producto.idProducto});"   class="form-control input-sm">
+                                                            <script>
+                                                                function funciona${loop.index +1}(valor, producto) {
+                                                                    var cantidad = document.getElementById("campo${loop.index +1}").value;
+
+                                                                    location.href = 'clientes.do?operacion=cantidadProducto&cantidad=' + cantidad + '&iddetalle=' + valor + '&idproduc=' + producto;
+                                                                }
+                                                            </script>
+                                                        </div>
+                                                    </td>
+                                                    <td class="goods-page-price">
+                                                        <strong><span>$</span>${productos.producto.precioRegular}</strong>
+                                                    </td>
+                                                    <td class="goods-page-total">
+                                                        <strong><span>$</span>${productos.producto.precioRegular * productos.cantidad}</strong>
+                                                    </td>
+                                                    <td >
+                                                        <a style="cursor: pointer;" class="del-goods" onclick="javascript:eliminar('${productos.idDetallePedido}')" >&nbsp;</a>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach> 
+                                        </c:if>
+                                        <c:if test="${empty sessionScope.pedidosProduc}">
                                             <tr>
-                                                <td class="goods-page-image">
-                                                    <a href="javascript:;"><img src="images/${productos.producto.urlImagen}" alt="${productos.producto.producto}"></a>
-                                                </td>
-                                                <td class="goods-page-description" style="width: 35%;">
-                                                    <h3><a href="${base}/clientes.do?operacion=verProducto&idproduct=${productos.producto.idProducto}">${productos.producto.producto}</a></h3>
-                                                    <p><strong>Item ${loop.index +1}</strong> -${productos.producto.descripcion}</p>
-
-                                                </td>
-                                                <td class="goods-page-ref-no">
-                                                    ${productos.producto.empresa.empresa}
-                                                    <br>
-                                                    <a href="javascript:;"><img src="images/${productos.producto.empresa.urlEmpresa}" alt="${productos.producto.empresa.empresa}" width="100"></a>
-                                                </td>
-                                                <td class="goods-page-quantity">
-                                                    <div class="product-quantity">
-                                                        <input id="campo${loop.index +1}"  type="text" value="${productos.cantidad}" onchange="funciona${loop.index +1}(${productos.idDetallePedido},${productos.producto.idProducto});"   class="form-control input-sm">
-                                                        <script>
-                                                            function funciona${loop.index +1}(valor, producto) {
-                                                                var cantidad = document.getElementById("campo${loop.index +1}").value;
-                                                               
-                                                               location.href = 'clientes.do?operacion=cantidadProducto&cantidad=' + cantidad + '&iddetalle=' + valor + '&idproduc='+ producto;
-                                                            }
-                                                        </script>
-                                                    </div>
-                                                </td>
-                                                <td class="goods-page-price">
-                                                    <strong><span>$</span>${productos.producto.precioRegular}</strong>
-                                                </td>
-                                                <td class="goods-page-total">
-                                                    <strong><span>$</span>${productos.producto.precioRegular * productos.cantidad}</strong>
-                                                </td>
-                                                <td >
-                                                    <a style="cursor: pointer;" class="del-goods" onclick="javascript:eliminar('${productos.idDetallePedido}')" >&nbsp;</a>
-                                                </td>
+                                                <td colspan="7"><h4 class="text-center">No hay productos que mostrar</h4></td>
                                             </tr>
-                                        </c:forEach> 
+                                        </c:if>
                                         <tr>
                                             <td colspan="7"><h4 class="text-center">Ofertas</h4></td>
                                         </tr>
@@ -102,35 +108,42 @@
                                             <th class="goods-page-total">Total</th>
                                             <th>Eliminar</th>
                                         </tr>
-                                        <c:forEach var="ofertas" varStatus="loop" items="${sessionScope.pedidosOfert}">
-                                            <tr>
-                                                <td class="goods-page-image">
-                                                    <a href="javascript:;"><img src="images/${ofertas.oferta.urlFoto}" alt="${ofertas.oferta.titulo}"></a>
-                                                </td>
-                                                <td class="goods-page-description" style="width: 35%;">
-                                                    <h3><a href="#">${ofertas.oferta.titulo}</a></h3>
-                                                    <p><strong>Item ${loop.index +1}</strong> -${ofertas.oferta.descripcion}</p>
+                                        <c:if test="${not empty sessionScope.pedidosOfert}">
+                                            <c:forEach var="ofertas" varStatus="loop" items="${sessionScope.pedidosOfert}">
+                                                <tr>
+                                                    <td class="goods-page-image">
+                                                        <a href="javascript:;"><img src="images/${ofertas.oferta.urlFoto}" alt="${ofertas.oferta.titulo}"></a>
+                                                    </td>
+                                                    <td class="goods-page-description" style="width: 35%;">
+                                                        <h3><a href="#">${ofertas.oferta.titulo}</a></h3>
+                                                        <p><strong>Item ${loop.index +1}</strong> -${ofertas.oferta.descripcion}</p>
 
-                                                </td>
-                                                <td class="goods-page-ref-no">
-                                                    <p>%${ofertas.oferta.descuento}</p>
-                                                </td>
-                                                <td class="goods-page-quantity">
-                                                    <div class="product-quantity">
-                                                        <input id="product-quantity" type="text" value="${ofertas.cantidad}" readonly class="form-control input-sm">
-                                                    </div>
-                                                </td>
-                                                <td class="goods-page-price">
-                                                    <strong><span>$</span>${ofertas.oferta.totalDescuento}</strong>
-                                                </td>
-                                                <td class="goods-page-total">
-                                                    <strong><span>$</span>$${ofertas.oferta.totalDescuento * ofertas.cantidad}</strong>
-                                                </td>
-                                                <td >
-                                                    <a style="cursor: pointer;" class="del-goods" onclick="javascript:eliminar('${productos.idDetallePedido}')" >&nbsp;</a>
-                                                </td>
+                                                    </td>
+                                                    <td class="goods-page-ref-no">
+                                                        <p>%${ofertas.oferta.descuento}</p>
+                                                    </td>
+                                                    <td class="goods-page-quantity">
+                                                        <div class="product-quantity">
+                                                            <input id="product-quantity" type="text" value="${ofertas.cantidad}" readonly class="form-control input-sm">
+                                                        </div>
+                                                    </td>
+                                                    <td class="goods-page-price">
+                                                        <strong><span>$</span>${ofertas.oferta.totalDescuento}</strong>
+                                                    </td>
+                                                    <td class="goods-page-total">
+                                                        <strong><span>$</span>$${ofertas.oferta.totalDescuento * ofertas.cantidad}</strong>
+                                                    </td>
+                                                    <td >
+                                                        <a style="cursor: pointer;" class="del-goods" onclick="javascript:eliminar('${productos.idDetallePedido}')" >&nbsp;</a>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach> 
+                                        </c:if>
+                                        <c:if test="${empty sessionScope.pedidosOfert}">
+                                            <tr>
+                                                <td colspan="7"><h4 class="text-center">No hay ofertas que mostrar</h4></td>
                                             </tr>
-                                        </c:forEach> 
+                                        </c:if>
                                     </table>
                                 </div>
 
@@ -189,41 +202,41 @@
         <script>
             <c:if test="${not empty exito}">
 
-            swal({
-                title: "Felicidades!",
-                text: "${exito}",
-                icon: "success",
-            });
+                swal({
+                    title: "Felicidades!",
+                    text: "${exito}",
+                    icon: "success",
+                });
                 <c:set var="exito" value="" scope="session"/>
             </c:if>
 
             <c:if test="${not empty fracaso}">
-            swal({
-                title: "Ups!",
-                text: "${fracaso}",
-                icon: "error",
-            });
+                swal({
+                    title: "Ups!",
+                    text: "${fracaso}",
+                    icon: "error",
+                });
                 <c:set var="fracaso" value="" scope="session"/>
             </c:if>
 
-            function eliminar(id) {
+                function eliminar(id) {
 
-                var URLactual = window.location;
-                var url = URLactual.toString().substring(34);
-                swal({
-                    title: '¿Seguro que quieres eliminar este articulo del carrito?',
-                    text: "Una vez eliminado, no habra vuelta atras.",
-                    icon: 'warning',
-                    buttons: true,
-                    dangerMode: true,
-                }).then((willDelete) => {
-                    if (willDelete) {
+                    var URLactual = window.location;
+                    var url = URLactual.toString().substring(34);
+                    swal({
+                        title: '¿Seguro que quieres eliminar este articulo del carrito?',
+                        text: "Una vez eliminado, no habra vuelta atras.",
+                        icon: 'warning',
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willDelete) => {
+                        if (willDelete) {
 
-                        location.href = 'clientes.do?operacion=eliminarArticulo&iddetalle=' + id + '&url=' + url;
-                    }
-                });
-            }
-            ;
+                            location.href = 'clientes.do?operacion=eliminarArticulo&iddetalle=' + id + '&url=' + url;
+                        }
+                    });
+                }
+                ;
 
         </script>
 

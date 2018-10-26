@@ -36,7 +36,7 @@ public class ClientesModel extends Conexion {
 
     public int estadoPedido(int iduser) throws SQLException {
         try {
-            String sql = "SELECT MAX(id_estado_compra) AS estado FROM pedidos WHERE id_usuario = ?";
+            String sql = "SELECT MAX(id_pedido), id_estado_compra AS estado FROM pedidos WHERE id_usuario = ?";
             int estado = 0;
             this.conectar();
             st = conexion.prepareStatement(sql);
@@ -212,7 +212,7 @@ public class ClientesModel extends Conexion {
             if (rs.next()) {
                 pedido = rs.getInt("pedido");
             }
-            String sql2 = "SELECT o.*, dp.cantidad,dp.id_detalle_pedido FROM detalle_pedidos dp INNER JOIN ofertas o on dp.id_oferta = o.id_oferta WHERE dp.id_pedido=? AND o.id_estado_oferta = 1 ORDER BY dp.id_detalle_pedido DESC";
+            String sql2 = "SELECT o.*, dp.cantidad,dp.id_detalle_pedido FROM detalle_pedidos dp INNER JOIN ofertas o on dp.id_oferta = o.id_oferta INNER JOIN pedidos pd ON dp.id_pedido = pd.id_pedido WHERE dp.id_pedido=? AND o.id_estado_oferta = 1 AND pd.id_estado_compra =1 ORDER BY dp.id_detalle_pedido DESC";
             st = conexion.prepareStatement(sql2);
             st.setInt(1, pedido);
             rs = st.executeQuery();
@@ -252,7 +252,7 @@ public class ClientesModel extends Conexion {
             if (rs.next()) {
                 pedido = rs.getInt("pedido");
             }
-            String sql2 = "SELECT COUNT(id_detalle_pedido) AS cantidad FROM detalle_pedidos WHERE id_pedido=?";
+            String sql2 = "SELECT COUNT(id_detalle_pedido) AS cantidad FROM detalle_pedidos dp INNER JOIN pedidos pd ON dp.id_pedido = pd.id_pedido WHERE pd.id_pedido=? AND pd.id_estado_compra = 1";
             st = conexion.prepareStatement(sql2);
             st.setInt(1, pedido);
             rs = st.executeQuery();
@@ -313,7 +313,7 @@ public class ClientesModel extends Conexion {
             if (rs.next()) {
                 pedido = rs.getInt("pedido");
             }
-            String sql2 = "SELECT ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total FROM detalle_pedidos dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta WHERE dp.id_pedido = ?";
+            String sql2 = "SELECT ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total FROM detalle_pedidos dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on dp.id_pedido = pd.id_pedido WHERE dp.id_pedido = ? AND pd.id_estado_compra =1";
             this.conectar();
             String total = "";
             st = conexion.prepareStatement(sql2);

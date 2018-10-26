@@ -179,7 +179,7 @@ public class ClienteController extends HttpServlet {
             String nombre = request.getParameter("nombre");
 
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-            request.setAttribute("listarProductos", ProductoModel.busquedaProductos(nombre));
+            //request.setAttribute("listarProductos", ProductoModel.busquedaProductos(nombre));
             request.setAttribute("datoBusqueda", nombre);
             try {
                 request.getRequestDispatcher("/cliente/resultadosBusqueda.jsp").forward(request, response);
