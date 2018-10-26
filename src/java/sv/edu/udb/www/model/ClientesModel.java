@@ -126,7 +126,7 @@ public class ClientesModel extends Conexion {
                     st.executeUpdate();
                     String sql4 = "UPDATE producto SET cantidad = ? WHERE id_producto =?";
                     st = conexion.prepareStatement(sql4);
-                    st.setInt(1, existencias - 1);
+                    st.setInt(1, existencias - cantidad);
                     st.setInt(2, idproduct);
                     filasAfectadas = st.executeUpdate();
                     return filasAfectadas;
@@ -167,18 +167,24 @@ public class ClientesModel extends Conexion {
             if (rs.next()) {
                 pedido = rs.getInt("pedido");
             }
-            String sql2 = "SELECT DISTINCT i.id_producto, dp.cantidad,dp.id_detalle_pedido,p.id_producto, p.producto, i.Url_imagen,p.precio_regular FROM detalle_pedidos dp INNER JOIN producto p ON dp.id_producto = p.id_producto INNER JOIN pedidos pd ON dp.id_pedido = pd.id_pedido INNER JOIN imagen i ON i.id_producto = p.id_producto WHERE pd.id_pedido=? AND pd.id_estado_compra = 1 GROUP by i.id_producto ORDER BY dp.id_detalle_pedido DESC";
+            String sql2 = "SELECT DISTINCT i.id_producto, dp.cantidad,dp.id_detalle_pedido,p.id_producto, p.producto, i.Url_imagen,p.precio_regular, p.descripcion, sc.subcategoria, em.empresa,em.Urlempresa FROM detalle_pedidos dp INNER JOIN producto p ON dp.id_producto = p.id_producto INNER JOIN pedidos pd ON dp.id_pedido = pd.id_pedido INNER JOIN imagen i ON i.id_producto = p.id_producto INNER JOIN sub_categoria sc on p.id_sub_categoria = sc.id_sub_categoria INNER JOIN empresa em ON p.id_empresa = em.id_empresa WHERE pd.id_pedido=? AND pd.id_estado_compra = 1 GROUP by i.id_producto ORDER BY dp.id_detalle_pedido DESC";
             st = conexion.prepareStatement(sql2);
             st.setInt(1, pedido);
             rs = st.executeQuery();
             while (rs.next()) {
                 Producto producto = new Producto();
+                Empresa empresa = new Empresa();
                 DetallePedido detalle = new DetallePedido();
                 producto.setIdProducto(rs.getInt("id_producto"));
                 producto.setProducto(rs.getString("producto"));
                 producto.setUrlImagen(rs.getString("Url_imagen"));
                 producto.setCantidad(rs.getString("cantidad"));
                 producto.setPrecioRegular(rs.getString("precio_regular"));
+                producto.setDescripcion(rs.getString("descripcion"));
+                producto.setSubCategoria(new SubCategoria(rs.getString("subcategoria")));
+                empresa.setEmpresa(rs.getString("empresa"));
+                empresa.setUrlEmpresa(rs.getString("Urlempresa"));
+                producto.setEmpresa(empresa);
                 detalle.setProducto(producto);
                 detalle.setCantidad(rs.getInt("cantidad"));
                 detalle.setIdDetallePedido(rs.getInt("id_detalle_pedido"));
@@ -279,7 +285,7 @@ public class ClientesModel extends Conexion {
             }
             String sql3 = "UPDATE producto SET cantidad =? WHERE id_producto = ?";
             st = conexion.prepareStatement(sql3);
-            st.setInt(1, cantidadpro+ cantidad);
+            st.setInt(1, cantidadpro + cantidad);
             st.setInt(2, producto);
             st.executeUpdate();
             String sql = "DELETE FROM detalle_pedidos WHERE id_detalle_pedido = ?";
@@ -320,6 +326,23 @@ public class ClientesModel extends Conexion {
         } catch (SQLException ex) {
             Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
             return "0";
+        }
+    }
+    public int cantidadProducto(int cantidad, int iddetalle) throws SQLException{
+        try {
+            String sql = "UPDATE detalle_pedidos SET cantidad = ? WHERE id_detalle_pedido = ?";
+            int filasAfectadas = 0;
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, cantidad);
+            st.setInt(2, iddetalle);
+            filasAfectadas = st.executeUpdate();
+            this.desconectar();
+            return filasAfectadas;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
         }
     }
 }

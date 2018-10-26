@@ -67,6 +67,12 @@ public class ClienteController extends HttpServlet {
                     case "eliminarArticulo":
                         eliminarArticulo(request, response);
                         break;
+                    case "verCarrito":
+                        verCarrito(request, response);
+                        break;
+                    case "cantidadProducto":
+                        cantidadProducto(request, response);
+                        break;
                 }
             } else {
                 request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
@@ -197,15 +203,15 @@ public class ClienteController extends HttpServlet {
                 request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("exito", "Has añadido este articulo a tu carrito.");
-                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct="+idproduct);
+                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct=" + idproduct);
             } else {
-                 request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+                request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
                 request.setAttribute("producto", clienteModel.verProducto(idproduct));
                 request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
-                request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));              
+                request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("fracaso", "Ya no hay existencias de este producto");
-                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct="+idproduct);
+                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct=" + idproduct);
             }
         } catch (SQLException | IOException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
@@ -230,6 +236,32 @@ public class ClienteController extends HttpServlet {
                 request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
                 out.println("<script>window.location = document.referrer;</script>");
+            }
+        } catch (SQLException | IOException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void verCarrito(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.getRequestDispatcher("/cliente/Carrito.jsp").forward(request, response);
+        } catch (ServletException | IOException | SQLException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void cantidadProducto(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int cantidad = Integer.parseInt(request.getParameter("cantidad"));
+            int iddetalle = Integer.parseInt(request.getParameter("iddetalle"));
+            if (clienteModel.cantidadProducto(cantidad, iddetalle) > 0) {
+                request.getSession().setAttribute("exito", "Item modificado exitosamente.");
+                request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
+                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verCarrito");
+            } else {
+                request.getSession().setAttribute("fracaso", "Algo salio mal");
+                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verCarrito");
             }
         } catch (SQLException | IOException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);

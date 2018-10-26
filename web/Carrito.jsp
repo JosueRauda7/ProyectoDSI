@@ -10,7 +10,7 @@
     <head>
         <title>Carrito de compra</title>
         <jsp:include page="/head.jsp"/>        
-           <jsp:include page="/scripts.jsp"/>
+        <jsp:include page="/scripts.jsp"/>
     </head>
     <!-- Head END -->
 
@@ -21,7 +21,7 @@
         <!-- END BEGIN STYLE CUSTOMIZER --> 
 
 
-    <jsp:include page="/menu.jsp"/>       
+        <jsp:include page="/menu.jsp"/>       
         <!-- END SLIDER -->
         <jsp:include page="/modal.jsp"/>
         <div class="main" style="margin-bottom: 5%;">
@@ -54,8 +54,8 @@
                                                 <em>Mas informacion aqui</em>
                                             </td>
                                             <td class="goods-page-ref-no">
-                                               
-                                                 ROPCHA001
+
+                                                ROPCHA001
                                             </td>
                                             <td class="goods-page-quantity">
                                                 <div class="product-quantity">
@@ -77,7 +77,7 @@
                                                 <a href="javascript:;"><img src="assets/pages/img/products/model4.jpg" alt="Berry Lace Dress"></a>
                                             </td>
                                             <td class="goods-page-description">
-                                                 <h3><a href="javascript:;">Camisa tipo centro Sport</a></h3>
+                                                <h3><a href="javascript:;">Camisa tipo centro Sport</a></h3>
                                                 <p><strong>Item 2</strong> - Color: Celeste; Talla: M</p>
                                                 <em>Mas informacion aqui</em>
                                             </td>
@@ -137,9 +137,9 @@
         <!-- END SIDEBAR & CONTENT -->
 
         <!-- BEGIN FOOTER -->
-   
 
-      
+
+
         <script type="text/javascript">
             jQuery(document).ready(function () {
                 Layout.init();
