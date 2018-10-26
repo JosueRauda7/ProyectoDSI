@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <c:set var="base" value="${pageContext.request.contextPath}"/>
 
-<div class="header" >
+<div class="header" style="margin-bottom: 0;" >
     <div class="container">
         <a class="site-logo" href="${base}/clientes.do?operacion=publicIndex">BigShop</a>
 

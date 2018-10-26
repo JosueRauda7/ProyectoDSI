@@ -69,9 +69,54 @@
                                 <li><a class="evernote social-button" data-original-title="evernote" href="javascript:;"></a></li>
                                 <li><a class="tumblr social-button"  data-original-title="tumblr" href="javascript:;"></a></li>
                             </ul>
-                               
+
                         </div>
 
+                    </div>
+                    <div class="product-page-content">
+                        <ul id="myTab" class="nav nav-tabs">
+                            <li><a href="#Description" data-toggle="tab">Ofertas relacionadas</a></li>                           
+                            <li class="active"><a href="#Reviews" data-toggle="tab">Comentarios</a></li>
+                        </ul>
+                        <div id="myTabContent" class="tab-content">
+                            <div class="tab-pane fade" id="Description">
+                                <p>Lorem ipsum dolor ut sit ame dolore  adipiscing elit, sed sit nonumy nibh sed euismod laoreet dolore magna aliquarm erat sit volutpat Nostrud duis molestie at dolore. Lorem ipsum dolor ut sit ame dolore  adipiscing elit, sed sit nonumy nibh sed euismod laoreet dolore magna aliquarm erat sit volutpat Nostrud duis molestie at dolore. Lorem ipsum dolor ut sit ame dolore  adipiscing elit, sed sit nonumy nibh sed euismod laoreet dolore magna aliquarm erat sit volutpat Nostrud duis molestie at dolore. </p>
+                            </div>
+
+                            <div class="tab-pane fade in active" id="Reviews">
+                                <!--<p>There are no reviews for this product.</p>-->
+                                 <c:forEach var="comentarios" items="${requestScope.comentarios}">
+                                <div class="review-item clearfix">
+                                   
+                                    <div class="review-item-submitted">
+                                        <strong>${comentarios.usuario.nombre}</strong>
+                                        <em>${comentarios.fechaComentario} - ${comentarios.horaComentario}</em>
+                                     
+                                    </div>                                              
+                                    <div class="review-item-content">
+                                        <p>${comentarios.comentario}</p>
+                                    </div>
+                                  
+                                </div>
+                                 </c:forEach>
+
+                                <!-- BEGIN FORM-->
+                                <form action="${base}/clientes.do" class="reviews-form" role="form">
+                                    <h2>Escribe un comentario:</h2>
+                                    <input type="hidden" name="operacion" value="agregarComentario">
+                                    <input type="hidden" name="idproducto" value="${requestScope.producto.idProducto}">
+                                    <div class="form-group">
+                                        <label for="review">Comentario: <span class="require">*</span></label>
+                                        <textarea class="form-control" name="comentario" rows="8" id="review"></textarea>
+                                    </div>
+                                    
+                                    <div class="padding-top-20">                  
+                                        <button type="submit" class="btn btn-primary">Enviar</button>
+                                    </div>
+                                </form>
+                                <!-- END FORM--> 
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -90,39 +135,39 @@
                 Layout.initUniform();
             });
             var URLactual = window.location;
-              var lba = document.getElementsByClassName("social-button");
+            var lba = document.getElementsByClassName("social-button");
 
-        function myPopup() {
-            window.open(this.href, 'mywin',
-                    'left=20,top=20,width=500,height=500,toolbar=1,resizable=0');
-            event.preventDefault();
-            return false;
-        }
+            function myPopup() {
+                window.open(this.href, 'mywin',
+                        'left=20,top=20,width=500,height=500,toolbar=1,resizable=0');
+                event.preventDefault();
+                return false;
+            }
 
-        for (var i = 0; i < lba.length; i++) {
-            lba[i].addEventListener("click", myPopup, false);
-        }
+            for (var i = 0; i < lba.length; i++) {
+                lba[i].addEventListener("click", myPopup, false);
+            }
         </script>
         <!-- END PAGE LEVEL JAVASCRIPTS -->
     </body>
-    <script>  
+    <script>
         <c:if test="${not empty exito}">
-                swal({
-                    title: "Felicidades!",
-                    text: "${exito}",
-                    icon: "success",
-                });
-                    <c:set var="exito" value="" scope="session"/>
-                </c:if>
+        swal({
+            title: "Felicidades!",
+            text: "${exito}",
+            icon: "success",
+        });
+            <c:set var="exito" value="" scope="session"/>
+        </c:if>
 
-                <c:if test="${not empty fracaso}">
-                swal({
-                    title: "Ups!",
-                    text: "${fracaso}",
-                    icon: "error",
-                });
-                    <c:set var="fracaso" value="" scope="session"/>
-                </c:if></script>
-    <jsp:include page="footer.jsp" />
+        <c:if test="${not empty fracaso}">
+        swal({
+            title: "Ups!",
+            text: "${fracaso}",
+            icon: "error",
+        });
+            <c:set var="fracaso" value="" scope="session"/>
+        </c:if></script>
+        <jsp:include page="footer.jsp" />
     <!-- END BODY -->
 </html>

@@ -5,7 +5,7 @@
 <c:set var="base" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" style="overflow-y: scroll;">
     <!--<![endif]-->
 
     <!-- Head BEGIN -->
@@ -15,7 +15,7 @@
         <jsp:include page="/scripts.jsp"/>
     </head>
     <!-- Head END -->
-    <jsp:include page="menuCliente.jsp"/>
+    <jsp:include page="menuCliente2.jsp"/>
     <!-- Body BEGIN -->
     <body class="ecommerce" style="overflow-x: hidden; ">
 
@@ -25,7 +25,7 @@
                 <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
                 <li data-target="#myCarousel" data-slide-to="1"></li>
                 <li data-target="#myCarousel" data-slide-to="2"></li>
-                 <li data-target="#myCarousel" data-slide-to="3"></li>
+                <li data-target="#myCarousel" data-slide-to="3"></li>
             </ol>
 
             <!-- Wrapper for slides -->
@@ -33,18 +33,22 @@
                 <div class="item active" id="myNavbar">
 
                     <img src="images/shopping.png" alt="Los Angeles"  style="height: 570px;">
-                    <div class="carousel-caption d-none d-md-block">
+                    <div class="carousel-caption d-none d-md-block" style="background-color: rgba(0,0,0,.5)">
                         <h1 style="color: orangered;">Bienvenido a BigShop</h1>
                         <p>Tu sitio de compras online.</p>
                         <a href="#ultimos"><button class="btn btn-primary">Empezar a comprar</button></a>
                     </div>
                 </div>
-
-
-
-                <div class="item">
-                    <img src="assets/pages/img/shop-slider/slide2/bg.jpg" alt="New York">
-                </div>
+                <c:forEach var="ofertas" items="${requestScope.ultimasOfertas}">
+                    <div class="item">
+                        <img  src="images/${ofertas.urlFoto}" alt="New York" style="height: 570px; width: 100%;">
+                        <div class="carousel-caption d-none d-md-block" style="background-color: rgba(0,0,0,.5)">
+                            <h1 style="color: orangered;">${ofertas.titulo}</h1>
+                            <p>${ofertas.descripcion}</p>
+                            <a href="#ultimos"><button class="btn btn-primary">Ir a la oferta</button></a>
+                        </div>
+                    </div>
+                </c:forEach>
             </div>
 
             <!-- Left and right controls -->
@@ -225,32 +229,32 @@
             </c:if>
         </script>
         <script>
-		$(document).ready(function() {
-			// Add scrollspy to <body>
-			$('body').scrollspy({
-				target: ".navbar",
-				offset: 50
-			});
-			// Add smooth scrolling on all links inside the navbar
-			$("#myNavbar a").on('click', function(event) {
-				// Make sure this.hash has a value before overriding default behavior
-				if (this.hash !== "") {
-					// Prevent default anchor click behavior
-					event.preventDefault();
-					// Store hash
-					var hash = this.hash;
-					// Using jQuery's animate() method to add smooth page scroll
-					// The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-					$('html, body').animate({
-						scrollTop: $(hash).offset().top
-					}, 800, function() {
-						// Add hash (#) to URL when done scrolling (default click behavior)
-						window.location.hash = hash;
-					});
-				} // End if
-			});
-		});
-	</script>
+            $(document).ready(function () {
+                // Add scrollspy to <body>
+                $('body').scrollspy({
+                    target: ".navbar",
+                    offset: 50
+                });
+                // Add smooth scrolling on all links inside the navbar
+                $("#myNavbar a").on('click', function (event) {
+                    // Make sure this.hash has a value before overriding default behavior
+                    if (this.hash !== "") {
+                        // Prevent default anchor click behavior
+                        event.preventDefault();
+                        // Store hash
+                        var hash = this.hash;
+                        // Using jQuery's animate() method to add smooth page scroll
+                        // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+                        $('html, body').animate({
+                            scrollTop: $(hash).offset().top
+                        }, 800, function () {
+                            // Add hash (#) to URL when done scrolling (default click behavior)
+                            window.location.hash = hash;
+                        });
+                    } // End if
+                });
+            });
+        </script>
 
         <!-- END PAGE LEVEL JAVASCRIPTS -->
     </body>

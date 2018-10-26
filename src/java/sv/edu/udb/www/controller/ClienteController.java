@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import sv.edu.udb.www.beans.Comentario;
 import sv.edu.udb.www.beans.Pedido;
 import sv.edu.udb.www.model.CategoriasModel;
 import sv.edu.udb.www.model.ClientesModel;
@@ -73,6 +74,9 @@ public class ClienteController extends HttpServlet {
                     case "cantidadProducto":
                         cantidadProducto(request, response);
                         break;
+                    case "agregarComentario":
+                        agregarComentario(request, response);
+                        break;
                 }
             } else {
                 request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
@@ -121,6 +125,7 @@ public class ClienteController extends HttpServlet {
 
     private void publicIndexClien(HttpServletRequest request, HttpServletResponse response) {
         try {
+            request.setAttribute("ultimasOfertas", clienteModel.ultimasOfertas());
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
             request.setAttribute("ultimosProductos", ProductoModel.listaUltimosProductos());
             request.getRequestDispatcher("/cliente/index.jsp").forward(request, response);
@@ -168,6 +173,7 @@ public class ClienteController extends HttpServlet {
             int idpro = Integer.parseInt(request.getParameter("idproduct"));
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
             request.setAttribute("producto", clienteModel.verProducto(idpro));
+            request.setAttribute("comentarios", clienteModel.listaComentarios(idpro));
             request.getRequestDispatcher("/cliente/producto.jsp").forward(request, response);
         } catch (ServletException | IOException | SQLException ex) {
             Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
@@ -270,6 +276,39 @@ public class ClienteController extends HttpServlet {
                     request.getSession().setAttribute("fracaso", "Existencias limitadas de este articulo");
                     response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verCarrito");
                 }
+            }
+        } catch (SQLException | IOException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void agregarComentario(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            //Obtener fecha
+            Calendar c = Calendar.getInstance();
+            String dia, mes, annio, fecha;
+            dia = Integer.toString(c.get(Calendar.DATE));
+            mes = Integer.toString(c.get(Calendar.MONTH) + 1);
+            annio = Integer.toString(c.get(Calendar.YEAR));
+            fecha = annio + "-" + mes + "-" + dia;
+            String horas, minutos, segundos, hora;
+            horas = Integer.toString(c.get(Calendar.HOUR_OF_DAY));
+            minutos = Integer.toString(c.get(Calendar.MINUTE));
+            segundos = Integer.toString(c.get(Calendar.SECOND));
+            hora = horas + ":" + minutos + ":" + segundos;
+            //fin obtener hora
+            String comentarios = request.getParameter("comentario");
+            int idproducto = Integer.parseInt(request.getParameter("idproducto"));
+            int idusuario = (int) request.getSession().getAttribute("usuario");
+            Comentario comentario = new Comentario();
+            comentario.setComentario(comentarios);
+            comentario.setFechaComentario(fecha);
+            comentario.setHoraComentario(hora);
+            comentario.setIdUsuario(idusuario);
+            comentario.setIdProducto(idproducto);
+            if (clienteModel.agregarComentario(comentario) > 0) {
+                request.getSession().setAttribute("exito", "Comentario agregado exitosamente.");
+                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct="+idproducto);
             }
         } catch (SQLException | IOException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);

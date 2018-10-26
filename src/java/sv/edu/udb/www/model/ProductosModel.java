@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import sv.edu.udb.www.beans.Empresa;
 import sv.edu.udb.www.beans.EstadoProducto;
 import sv.edu.udb.www.beans.Imagen;
+import sv.edu.udb.www.beans.Oferta;
 import sv.edu.udb.www.beans.Producto;
 import sv.edu.udb.www.beans.SubCategoria;
 
@@ -250,6 +251,7 @@ public class ProductosModel extends Conexion {
         }
     }
 
+    
     public List<Producto> busquedaProductos(String nombre, String idCategoria) throws SQLException {
         try {
 

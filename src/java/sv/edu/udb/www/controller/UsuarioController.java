@@ -324,6 +324,7 @@ public class UsuarioController extends HttpServlet {
                         case 2:
                             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
                             request.setAttribute("ultimosProductos", ProductoModel.listaUltimosProductos());
+                            request.setAttribute("ultimasOfertas", clienteModel.ultimasOfertas());
                             request.getSession().setAttribute("estado", clienteModel.estadoPedido((int) request.getSession().getAttribute("usuario")));
                             request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
                             request.getSession().setAttribute("pedidosOfert", clienteModel.listaCarritoOfertas((int) request.getSession().getAttribute("usuario")));

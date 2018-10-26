@@ -10,20 +10,25 @@ package sv.edu.udb.www.beans;
  * @author ivanm
  */
 public class Comentario {
+
     private int idComentario;
     private String comentario;
+    private String horaComentario;
+    private String fechaComentario;
     private Producto producto;
     private int idProducto;
     private Usuario usuario;
     private int idUsuario;
-    
-    public Comentario(){
-        this.idComentario=0;
-        this.comentario="";
-        this.producto=null;
-        this.idProducto=0;
-        this.usuario=null;
-        this.idUsuario=0;
+
+    public Comentario() {
+        this.idComentario = 0;
+        this.comentario = "";
+        this.producto = null;
+        this.idProducto = 0;
+        this.usuario = null;
+        this.idUsuario = 0;
+        this.horaComentario = "";
+        this.fechaComentario = "";
     }
 
     public int getIdComentario() {
@@ -73,6 +78,22 @@ public class Comentario {
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
+
+    public String getHoraComentario() {
+        return horaComentario;
+    }
+
+    public void setHoraComentario(String horaComentario) {
+        this.horaComentario = horaComentario;
+    }
+
+    public String getFechaComentario() {
+        return fechaComentario;
+    }
+
+    public void setFechaComentario(String fechaComentario) {
+        this.fechaComentario = fechaComentario;
+    }
     
-    
+
 }

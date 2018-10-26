@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sv.edu.udb.www.beans.Comentario;
 import sv.edu.udb.www.beans.DetallePedido;
 import sv.edu.udb.www.beans.Empresa;
 import sv.edu.udb.www.beans.EstadoProducto;
@@ -12,6 +13,7 @@ import sv.edu.udb.www.beans.Oferta;
 import sv.edu.udb.www.beans.Pedido;
 import sv.edu.udb.www.beans.Producto;
 import sv.edu.udb.www.beans.SubCategoria;
+import sv.edu.udb.www.beans.Usuario;
 
 public class ClientesModel extends Conexion {
 
@@ -53,6 +55,33 @@ public class ClientesModel extends Conexion {
             Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
             this.desconectar();
             return 0;
+        }
+    }
+
+    public List<Oferta> ultimasOfertas() throws SQLException {
+        try {
+            String sql = "SELECT titulo, descripcion, total_descuento,descuento, Url_foto FROM ofertas ORDER BY id_oferta DESC LIMIT 3";
+            List<Oferta> lista = new ArrayList<>();
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Oferta oferta = new Oferta();
+                oferta.setTitulo(rs.getString("titulo"));
+                oferta.setDescripcion(rs.getString("descripcion"));
+                oferta.setTotalDescuento(rs.getDouble("total_descuento"));
+                oferta.setDescuento(rs.getInt("descuento"));
+                oferta.setUrlFoto(rs.getString("Url_foto"));
+                lista.add(oferta);
+            }
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductosModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        } finally {
+            this.desconectar();
         }
     }
 
@@ -335,7 +364,7 @@ public class ClientesModel extends Conexion {
             int cantidadact = 0;
             int cantidadpro = 0;
             int diferencia = 0;
-            int validador =0;
+            int validador = 0;
             this.conectar();
             st = conexion.prepareStatement(sql2);
             st.setInt(1, iddetalle);
@@ -351,30 +380,80 @@ public class ClientesModel extends Conexion {
             if (rs.next()) {
                 cantidadpro = rs.getInt("cantidad");
             }
-            validador= diferencia + (cantidadpro);
-            if(validador <=0){
+            validador = diferencia + (cantidadpro);
+            if (validador <= 0) {
                 return 0;
-            }else{
-            String sql4 = "UPDATE producto SET cantidad =? WHERE id_producto = ?";
-            st = conexion.prepareStatement(sql4);
-            st.setInt(1, diferencia + (cantidadpro));
-            st.setInt(2, idproduct);
-            st.executeUpdate();
-            String sql = "UPDATE detalle_pedidos SET cantidad = ? WHERE id_detalle_pedido = ?";
-            int filasAfectadas = 0;
-            st = conexion.prepareStatement(sql);
-            st.setInt(1, cantidad);
-            st.setInt(2, iddetalle);
-            filasAfectadas = st.executeUpdate();
-            this.desconectar();
-            return filasAfectadas;
+            } else {
+                String sql4 = "UPDATE producto SET cantidad =? WHERE id_producto = ?";
+                st = conexion.prepareStatement(sql4);
+                st.setInt(1, diferencia + (cantidadpro));
+                st.setInt(2, idproduct);
+                st.executeUpdate();
+                String sql = "UPDATE detalle_pedidos SET cantidad = ? WHERE id_detalle_pedido = ?";
+                int filasAfectadas = 0;
+                st = conexion.prepareStatement(sql);
+                st.setInt(1, cantidad);
+                st.setInt(2, iddetalle);
+                filasAfectadas = st.executeUpdate();
+                this.desconectar();
+                return filasAfectadas;
             }
         } catch (SQLException ex) {
             Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
             this.desconectar();
             return 0;
-        }finally{
-        this.desconectar();
+        } finally {
+            this.desconectar();
+        }
+    }
+
+    public int agregarComentario(Comentario comentario) throws SQLException {
+        try {
+            String sql = "INSERT INTO comentarios(hora_comentario, fecha_comentario, Comentario, id_producto,id_usuario) VALUES(?,?,?,?,?)";
+            int filasAfectadas = 0;
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setString(1, comentario.getHoraComentario());
+            st.setString(2, comentario.getFechaComentario());
+            st.setString(3, comentario.getComentario());
+            st.setInt(4, comentario.getIdProducto());
+            st.setInt(5, comentario.getIdUsuario());
+            filasAfectadas = st.executeUpdate();
+            this.desconectar();
+            return filasAfectadas;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        }
+    }
+    
+    public List<Comentario> listaComentarios(int idproduct) throws SQLException{
+        try {
+            String sql = "SELECT c.id_comentario,c.fecha_comentario,c.Comentario,c.id_producto,time_format(c.hora_comentario, \"%H:%i\") AS hora, CONCAT(SUBSTRING_INDEX(u.Nombre, ' ', 1),' ',SUBSTRING_INDEX(u.Apellido, ' ', 1)) as Nombre FROM comentarios c INNER JOIN usuarios u ON c.id_usuario = u.id_usuario WHERE id_producto = ?";
+            List<Comentario> lista = new ArrayList<>();
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, idproduct);
+            rs = st.executeQuery();
+            while(rs.next()){
+                Usuario usuario = new Usuario();
+                usuario.setNombre(rs.getString("Nombre"));
+                Comentario comentario = new Comentario();
+                comentario.setIdComentario(rs.getInt("id_comentario"));
+                comentario.setComentario(rs.getString("Comentario"));
+                comentario.setHoraComentario(rs.getString("hora"));
+                comentario.setFechaComentario(rs.getString("fecha_comentario"));
+                comentario.setIdProducto(rs.getInt("id_producto"));
+                comentario.setUsuario(usuario);
+                lista.add(comentario);
+            }
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
         }
     }
 }
