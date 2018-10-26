@@ -15,8 +15,8 @@
         <!-- BEGIN CART -->
         <div class="top-cart-block">
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" data-target="#" aria-haspopup="true" aria-expanded="false">
-                    Mi cuenta
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" data-target="#" aria-haspopup="true" aria-expanded="false">
+                    <span class="glyphicon glyphicon-user"></span> ${sessionScope.nombreUser}
                 </button>
                 <ul class="dropdown-menu">
                     <li><a style="padding: 10px" href="shop-product-list.html">Modo Cliente</a></li>
@@ -53,15 +53,7 @@
                         <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=listarCategorias">Ver categorías</a></li>
                     </ul>
                 </li>
-                <li class="dropdown dropdown-megamenu">
-                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
-                        Sub Categorías
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=nuevaSubCategoria">Registrar sub categoría</a></li>
-                        <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=listarSubCategorias">Ver sub categorías</a></li>
-                    </ul>
-                </li>
+                
 
                 <li class="dropdown dropdown-megamenu">
                     <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">

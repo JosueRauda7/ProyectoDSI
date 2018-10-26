@@ -58,21 +58,21 @@
                         <li>
                             <div class="header-navigation-content">
                                 <div class="row">
-                                   
+
                                     <c:forEach var="categorias" items="${requestScope.listaCategorias}">
-                                     <div class="col-md-4 header-navigation-col">
-                                         <h4 ><a style="color: #757575;" href="public.do?operacion=vercategoria&idcat=${categorias.idCategoria}">${categorias.categoria}</a></h4>
-                                        <ul>
-                                            <sql:query var="ql" dataSource="jdbc/mysql">
-                                                SELECT * FROM sub_categoria WHERE id_categoria=${categorias.idCategoria}
-                                            </sql:query>
-                                            <c:forEach var="subcat" items="${ql.rows}">
-                                            <li><a href="#" >${subcat.subcategoria}</a></li>
-                                            </c:forEach>
-                                        </ul>
-                                    </div>
+                                        <div class="col-md-4 header-navigation-col">
+                                            <h4 ><a style="color: #757575;" href="public.do?operacion=vercategoria&idcat=${categorias.idCategoria}">${categorias.categoria}</a></h4>
+                                            <ul>
+                                                <sql:query var="ql" dataSource="jdbc/mysql">
+                                                    SELECT * FROM sub_categoria WHERE id_categoria=${categorias.idCategoria}
+                                                </sql:query>
+                                                <c:forEach var="subcat" items="${ql.rows}">
+                                                    <li><a href="#" >${subcat.subcategoria}</a></li>
+                                                    </c:forEach>
+                                            </ul>
+                                        </div>
                                     </c:forEach>
-                                
+
                                 </div>
                             </div>
                         </li>
@@ -87,17 +87,31 @@
                 <li class="menu-search">
                     <span class="sep"></span>
                     <i class="fa fa-search search-btn"></i>
-                    <div class="search-box">
+                    <div class="search-box" style="width:300px;">
                         <form action="${base}/public.do">
                             <input type="hidden" name="operacion" value="buscarProductos"/>
+
+
+                            <div class="input-group" style="width: 100%;">
+                                <select name="categoria" class="form-control" style="font-size: 16px;">
+                                    <option value="0">Todas las categorias</option>
+                                    <c:forEach var="categoria" items="${requestScope.listaCategorias}">
+                                        <option value="${categoria.idCategoria}">${categoria.categoria}</option>
+                                    </c:forEach>
+                                </select>
+                            </div><br/>
+
                             <div class="input-group">
+
                                 <input type="text" placeholder="Buscar articulo" required="true" name="nombre" class="form-control" minlength="4">
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" type="submit">Buscar</button>
                                 </span>
                             </div>
-                        </form
-                    </div> 
+
+                        </form>
+
+                    </div>
                 </li>
                 <!-- END TOP SEARCH -->
             </ul>

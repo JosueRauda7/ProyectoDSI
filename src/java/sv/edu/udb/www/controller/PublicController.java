@@ -139,9 +139,12 @@ public class PublicController extends HttpServlet {
     private void buscarProductos(HttpServletRequest request, HttpServletResponse response) {
         try {
             String nombre = request.getParameter("nombre");
+            String idCategoria = request.getParameter("categoria");
+            
+            System.out.println(idCategoria);
 
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-            request.setAttribute("listarProductos", ProductoModel.busquedaProductos(nombre));
+            request.setAttribute("listarProductos", ProductoModel.busquedaProductos(nombre,idCategoria));
             request.setAttribute("datoBusqueda", nombre);
             try {
                 request.getRequestDispatcher("/resultadosBusqueda.jsp").forward(request, response);

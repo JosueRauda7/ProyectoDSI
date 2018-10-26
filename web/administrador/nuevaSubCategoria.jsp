@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Nombre empresa | Administrador</title>
+        <title>BigShop | Administrador</title>
         <jsp:include page="head.jsp"/>        
     </head>
     <body class="ecommerce">
@@ -20,7 +20,7 @@
                     <div class="margin-bottom-65"></div>
                     <div class="col-lg-3"></div>
                     <div class="content-page col-lg-6">
-                        <h1>Nueva Sub Categoria</h1><br/>
+                        <h1>Nueva Sub Categoría de ${categoria.categoria}</h1><br/>
                         <c:if test="${not empty requestScope.listaErrores}">
                             <div class="alert alert-danger">
                                 <ul>
@@ -37,26 +37,8 @@
                                 <label for="nombre">Sub Categoría:</label>
                                 <input type="text" class="form-control" name="subcategoria" value="${subCategoria.subCategoria}" id="nombre">
                             </div>
-                            <div class="form-group">
-                                <label for="categoria">Categoria:</label>
-                                <select name="categoria" id="categoria" class="form-control">
-                                    <c:forEach items="${requestScope.listaCategorias}" var="categorias">
 
-                                        <c:choose>
-                                            <c:when test="${categorias.idCategoria eq subCategoria.categoria.idCategoria}">
-                                                <option value="${categorias.idCategoria}" selected="true">${categorias.categoria}</option>
-                                            </c:when>
-
-                                            <c:otherwise>
-                                                <option value="${categorias.idCategoria}">${categorias.categoria}</option>
-                                            </c:otherwise>  
-                                        </c:choose>
-
-
-
-                                    </c:forEach>
-                                </select>
-                            </div>
+                            <input type="hidden" name="categoria" value="${categoria.idCategoria}" />
 
                             <div class="form-group">
                                 <label for="imagen">Imagen</label>
@@ -70,7 +52,7 @@
 
                             <div class="padding-top-20">                  
                                 <button type="submit" class="btn btn-primary">Registrar</button>
-                                <a style="background-color: #F3565D;color:white;" href="${pageContext.request.contextPath}/administrador.do?operacion=listarSubCategorias" class="btn btn-primary">Regresar</a>
+                                <a style="background-color: #F3565D;color:white;" href="${pageContext.request.contextPath}/administrador.do?operacion=listarSubCategorias&id=${pageContext.request.getParameter("idCategoria")}" class="btn btn-primary">Regresar</a>
                             </div>
                         </form>
                         <!-- END FORM--> 
