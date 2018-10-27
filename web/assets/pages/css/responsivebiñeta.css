@@ -1,0 +1,21 @@
+#biñeta{
+    position: absolute;
+    margin-left: 90%;
+    z-index: 9000;
+}
+@media screen and (max-width: 1024px) {
+    #biñeta{
+    margin-left: 85%;
+    }
+}
+@media screen and (max-width: 768px) {
+    #biñeta{
+    margin-left: 82%;
+    }
+}
+@media screen and (max-width: 414px) {
+    #biñeta{
+    margin-left: 65%;    
+    }
+ 
+}

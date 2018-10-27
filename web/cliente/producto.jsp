@@ -9,7 +9,7 @@
     <head>
         <title>Producto</title>     
         <jsp:include page="/head.jsp"/>     
-      
+        <link rel="stylesheet" href="${base}/assets/pages/css/responsivebiñeta.css">
         <jsp:include page="/scripts.jsp"/>
     </head>
 
@@ -90,23 +90,14 @@
                                 <c:if test="${not empty requestScope.comentarios}">
                                     <c:forEach var="comentarios" items="${requestScope.comentarios}">
                                         <div class="review-item clearfix">
-
-                                            <div class="review-item-submitted">
-                                                <strong>${comentarios.usuario.nombre}</strong>
-                                                <em>${comentarios.fechaComentario} - ${comentarios.horaComentario}</em>
-
-                                            </div>                                              
-                                            <div class="review-item-content">
-                                                <p>${comentarios.comentario}</p>
-                                            </div>
                                             <c:if test="${comentarios.usuario.idUsuario eq sessionScope.usuario}"> 
 
-                                                <div class="w3-dropdown-click" style=" margin-left: 85%; margin-top: -7%; position: absolute;">
+                                                <div class="w3-dropdown-click"  id="biñeta">
                                                     <button onclick="myFunction${comentarios.idComentario}()" class="btn btn-primary">
                                                         <span class="glyphicon glyphicon-option-vertical"></span>
                                                     </button>
-                                                    <div id="Demo${comentarios.idComentario}"  class="w3-dropdown-content w3-bar-block w3-border">
-                                                        <a href="#" class="w3-bar-item w3-button"><span class="glyphicon glyphicon-trash"></span> Eliminar</a>
+                                                    <div id="Demo${comentarios.idComentario}"   class="w3-dropdown-content w3-bar-block w3-border options">
+                                                        <a class="w3-bar-item w3-button" onclick="javascript:eliminar2('${comentarios.idComentario}')"><span class="glyphicon glyphicon-trash"></span> Eliminar</a>
                                                         <a href="#" class="w3-bar-item w3-button"><span class="glyphicon glyphicon-edit"></span> Modificar</a>
                                                     </div>
                                                 </div>
@@ -121,6 +112,15 @@
                                                     }
                                                 </script>
                                             </c:if>
+                                            <div class="review-item-submitted">
+                                                <strong>${comentarios.usuario.nombre}</strong>
+                                                <em>${comentarios.fechaComentario} - ${comentarios.horaComentario}</em>
+
+                                            </div>                                              
+                                            <div class="review-item-content">
+                                                <p>${comentarios.comentario}</p>
+                                            </div>
+
                                         </div>
                                     </c:forEach>
                                 </c:if>
@@ -194,7 +194,25 @@
             icon: "error",
         });
             <c:set var="fracaso" value="" scope="session"/>
-        </c:if></script>
+        </c:if>
+    
+    function eliminar2(id) {
+
+            swal({
+                title: '¿Seguro que quieres eliminar este comentario?',
+                text: "Una vez eliminado, no habra vuelta atras.",
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+
+                    location.href = 'clientes.do?operacion=eliminarComentario&idcomentario=' + id +'&producto=' +${requestScope.producto.idProducto};
+                }
+            });
+        }
+        ;
+    </script>
         <jsp:include page="footer.jsp" />
 
     <!-- END BODY -->

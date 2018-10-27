@@ -457,4 +457,21 @@ public class ClientesModel extends Conexion {
             return null;
         }
     }
+    
+    public int eliminarComentario(int idcomentario) throws SQLException{
+        try {
+            String sql = "DELETE FROM comentarios WHERE id_comentario = ?";
+            int filasAfectadas =0;
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, idcomentario);
+            filasAfectadas = st.executeUpdate();
+            this.desconectar();
+            return filasAfectadas;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        }
+    }
 }
