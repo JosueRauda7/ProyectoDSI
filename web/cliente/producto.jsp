@@ -8,7 +8,8 @@
     <!-- Head BEGIN -->
     <head>
         <title>Producto</title>     
-        <jsp:include page="/head.jsp"/>        
+        <jsp:include page="/head.jsp"/>     
+      
         <jsp:include page="/scripts.jsp"/>
     </head>
 
@@ -81,25 +82,51 @@
                         <div id="myTabContent" class="tab-content">
                             <div class="tab-pane fade" id="Description">
                                 <p>Lorem ipsum dolor ut sit ame dolore  adipiscing elit, sed sit nonumy nibh sed euismod laoreet dolore magna aliquarm erat sit volutpat Nostrud duis molestie at dolore. Lorem ipsum dolor ut sit ame dolore  adipiscing elit, sed sit nonumy nibh sed euismod laoreet dolore magna aliquarm erat sit volutpat Nostrud duis molestie at dolore. Lorem ipsum dolor ut sit ame dolore  adipiscing elit, sed sit nonumy nibh sed euismod laoreet dolore magna aliquarm erat sit volutpat Nostrud duis molestie at dolore. </p>
+
                             </div>
 
                             <div class="tab-pane fade in active" id="Reviews">
                                 <!--<p>There are no reviews for this product.</p>-->
-                                 <c:forEach var="comentarios" items="${requestScope.comentarios}">
-                                <div class="review-item clearfix">
-                                   
-                                    <div class="review-item-submitted">
-                                        <strong>${comentarios.usuario.nombre}</strong>
-                                        <em>${comentarios.fechaComentario} - ${comentarios.horaComentario}</em>
-                                     
-                                    </div>                                              
-                                    <div class="review-item-content">
-                                        <p>${comentarios.comentario}</p>
-                                    </div>
-                                  
-                                </div>
-                                 </c:forEach>
+                                <c:if test="${not empty requestScope.comentarios}">
+                                    <c:forEach var="comentarios" items="${requestScope.comentarios}">
+                                        <div class="review-item clearfix">
 
+                                            <div class="review-item-submitted">
+                                                <strong>${comentarios.usuario.nombre}</strong>
+                                                <em>${comentarios.fechaComentario} - ${comentarios.horaComentario}</em>
+
+                                            </div>                                              
+                                            <div class="review-item-content">
+                                                <p>${comentarios.comentario}</p>
+                                            </div>
+                                            <c:if test="${comentarios.usuario.idUsuario eq sessionScope.usuario}"> 
+
+                                                <div class="w3-dropdown-click" style=" margin-left: 85%; margin-top: -7%; position: absolute;">
+                                                    <button onclick="myFunction${comentarios.idComentario}()" class="btn btn-primary">
+                                                        <span class="glyphicon glyphicon-option-vertical"></span>
+                                                    </button>
+                                                    <div id="Demo${comentarios.idComentario}"  class="w3-dropdown-content w3-bar-block w3-border">
+                                                        <a href="#" class="w3-bar-item w3-button"><span class="glyphicon glyphicon-trash"></span> Eliminar</a>
+                                                        <a href="#" class="w3-bar-item w3-button"><span class="glyphicon glyphicon-edit"></span> Modificar</a>
+                                                    </div>
+                                                </div>
+                                                <script>
+                                                    function myFunction${comentarios.idComentario}() {
+                                                        var x = document.getElementById("Demo${comentarios.idComentario}");
+                                                        if (x.className.indexOf("w3-show") == -1) {
+                                                            x.className += " w3-show";
+                                                        } else {
+                                                            x.className = x.className.replace(" w3-show", "");
+                                                        }
+                                                    }
+                                                </script>
+                                            </c:if>
+                                        </div>
+                                    </c:forEach>
+                                </c:if>
+                                <c:if test="${empty requestScope.comentarios}">
+                                    <p>No se han agregado comentarios de este producto, se el primero en hacerlo.</p>
+                                </c:if>
                                 <!-- BEGIN FORM-->
                                 <form action="${base}/clientes.do" class="reviews-form" role="form">
                                     <h2>Escribe un comentario:</h2>
@@ -107,9 +134,9 @@
                                     <input type="hidden" name="idproducto" value="${requestScope.producto.idProducto}">
                                     <div class="form-group">
                                         <label for="review">Comentario: <span class="require">*</span></label>
-                                        <textarea class="form-control" name="comentario" rows="8" id="review"></textarea>
+                                        <textarea class="form-control" name="comentario" rows="8" placeholder="Ingresa tu comentario" id="review"></textarea>
                                     </div>
-                                    
+
                                     <div class="padding-top-20">                  
                                         <button type="submit" class="btn btn-primary">Enviar</button>
                                     </div>
@@ -169,5 +196,6 @@
             <c:set var="fracaso" value="" scope="session"/>
         </c:if></script>
         <jsp:include page="footer.jsp" />
+
     <!-- END BODY -->
 </html>

@@ -430,7 +430,7 @@ public class ClientesModel extends Conexion {
     
     public List<Comentario> listaComentarios(int idproduct) throws SQLException{
         try {
-            String sql = "SELECT c.id_comentario,c.fecha_comentario,c.Comentario,c.id_producto,time_format(c.hora_comentario, \"%H:%i\") AS hora, CONCAT(SUBSTRING_INDEX(u.Nombre, ' ', 1),' ',SUBSTRING_INDEX(u.Apellido, ' ', 1)) as Nombre FROM comentarios c INNER JOIN usuarios u ON c.id_usuario = u.id_usuario WHERE id_producto = ?";
+            String sql = "SELECT c.id_comentario,c.fecha_comentario,c.Comentario,c.id_producto,time_format(c.hora_comentario, \"%H:%i\") AS hora, CONCAT(SUBSTRING_INDEX(u.Nombre, ' ', 1),' ',SUBSTRING_INDEX(u.Apellido, ' ', 1)) as Nombre, u.id_usuario FROM comentarios c INNER JOIN usuarios u ON c.id_usuario = u.id_usuario WHERE id_producto = ?";
             List<Comentario> lista = new ArrayList<>();
             this.conectar();
             st = conexion.prepareStatement(sql);
@@ -439,6 +439,7 @@ public class ClientesModel extends Conexion {
             while(rs.next()){
                 Usuario usuario = new Usuario();
                 usuario.setNombre(rs.getString("Nombre"));
+                usuario.setIdUsuario(rs.getInt("id_usuario"));
                 Comentario comentario = new Comentario();
                 comentario.setIdComentario(rs.getInt("id_comentario"));
                 comentario.setComentario(rs.getString("Comentario"));
