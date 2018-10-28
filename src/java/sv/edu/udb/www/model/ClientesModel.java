@@ -381,7 +381,7 @@ public class ClientesModel extends Conexion {
                 cantidadpro = rs.getInt("cantidad");
             }
             validador = diferencia + (cantidadpro);
-            if (validador <= 0) {
+            if (validador < 0) {
                 return 0;
             } else {
                 String sql4 = "UPDATE producto SET cantidad =? WHERE id_producto = ?";
@@ -465,6 +465,24 @@ public class ClientesModel extends Conexion {
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setInt(1, idcomentario);
+            filasAfectadas = st.executeUpdate();
+            this.desconectar();
+            return filasAfectadas;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        }
+    }
+    
+    public int modificarComentario(int idcomentario, String comentario) throws SQLException{
+        try {
+            String sql = "UPDATE comentarios SET Comentario = ?  WHERE id_comentario = ?";
+            int filasAfectadas = 0;
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setString(1, comentario);
+            st.setInt(2, idcomentario);
             filasAfectadas = st.executeUpdate();
             this.desconectar();
             return filasAfectadas;

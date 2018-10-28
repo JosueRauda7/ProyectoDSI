@@ -101,7 +101,7 @@
                                                     <div id="Demo${comentarios.idComentario}"   class="w3-dropdown-content w3-bar-block w3-border options">
                                                         <a class="w3-bar-item w3-button" onclick="javascript:eliminar2('${comentarios.idComentario}')"><span class="glyphicon glyphicon-trash"></span> Eliminar</a>
                                                         <a id="btnmodificar${comentarios.idComentario}" class="w3-bar-item w3-button"><span class="glyphicon glyphicon-edit"></span> Modificar</a>
-                                                        <a id="btnmocanceldificar${comentarios.idComentario}" class="w3-bar-item w3-button"><span class="glyphicon glyphicon-edit"></span> Modificar</a>
+                                                        <a id="btnmocanceldificar${comentarios.idComentario}" style="display:none;" class="w3-bar-item w3-button"><span class="glyphicon glyphicon-edit"></span> Modificar</a>
                                                     </div>
                                                 </div>
                                                 <script>
@@ -122,18 +122,26 @@
                                             </div>                                              
                                             <div class="review-item-content">
                                                 <p id="texto${comentarios.idComentario}">${comentarios.comentario}</p>
-                                                <input type="text" id="textonuevo${comentarios.idComentario}" class="form-control" value="${comentarios.comentario}" style="display:none;">
+                                                <input type="text" id="textonuevo${comentarios.idComentario}"  onchange="modificarco${comentarios.idComentario}(this.value);" class="form-control" value="${comentarios.comentario}" style="display:none;">
+                                                
                                                 <script>
                                                     document.getElementById("btnmodificar${comentarios.idComentario}").addEventListener("click", function(){
                                                         document.getElementById("texto${comentarios.idComentario}").style.display="none";
                                                         document.getElementById("textonuevo${comentarios.idComentario}").style.display="block";
-                                                        
+                                                        document.getElementById("btnmodificar${comentarios.idComentario}").style.display="none";
+                                                        document.getElementById("btnmocanceldificar${comentarios.idComentario}").style.display="block";
                                                     });
                                                     document.getElementById("btnmocanceldificar${comentarios.idComentario}").addEventListener("click", function(){
                                                         document.getElementById("texto${comentarios.idComentario}").style.display="block";
                                                         document.getElementById("textonuevo${comentarios.idComentario}").style.display="none";
+                                                        document.getElementById("btnmodificar${comentarios.idComentario}").style.display="block";
+                                                        document.getElementById("btnmocanceldificar${comentarios.idComentario}").style.display="none";
                                                         
+                                                        document.getElementById("textonuevo${comentarios.idComentario}").value = "${comentarios.comentario}";
                                                     });
+                                                    function modificarco${comentarios.idComentario}(valor){
+                                                          location.href = 'clientes.do?operacion=modificarComentario&idcomentario=' + ${comentarios.idComentario} +'&producto=' +${requestScope.producto.idProducto} + "&comentario=" + valor;
+                                                    }
                                                 </script>
                                             </div>
 

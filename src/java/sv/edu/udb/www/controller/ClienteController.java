@@ -80,6 +80,9 @@ public class ClienteController extends HttpServlet {
                     case "eliminarComentario":
                         eliminarComentario(request, response);
                         break;
+                    case "modificarComentario":
+                        modificarComentario(request, response);
+                        break;
                 }
             } else {
                 request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
@@ -327,6 +330,20 @@ public class ClienteController extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct="+idproducto);
             }
         } catch (SQLException | IOException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void modificarComentario(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int idcomentario = Integer.parseInt(request.getParameter("idcomentario"));
+            int idproducto = Integer.parseInt(request.getParameter("producto"));
+            String comentario = request.getParameter("comentario");
+        if(clienteModel.modificarComentario(idcomentario,comentario)>0){
+                request.getSession().setAttribute("exito", "Comentario modificado exitosamente.");
+                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct="+idproducto);
+            }
+        } catch (IOException | SQLException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
