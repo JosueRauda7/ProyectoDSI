@@ -3,7 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <c:set var="base" value="${pageContext.request.contextPath}"/>
-<div class="header">
+<div class="header" style="margin-bottom: 0;">
     <div class="container">
         <a class="site-logo" href="public.do?operacion=publicIndex">BigShop</a>
 
@@ -51,7 +51,7 @@
                 </li>
                 <li class="dropdown dropdown-megamenu">
                     <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
-                        Categorias
+                        Categorías
 
                     </a>
                     <ul class="dropdown-menu" style="overflow-y:scroll; height:400px; overflow-x: scroll; width: 60%; overflow: scroll;">
@@ -78,7 +78,7 @@
                         </li>
                     </ul>
                 </li>
-                <li><a type="button" data-toggle="modal" style="cursor: pointer;" data-target="#exampleModal">Logueate</a></li>
+                <li><a class="dropdown-toggle" data-toggle="modal" style="cursor: pointer;" data-target="#exampleModal">Logueate</a></li>
 
 
 

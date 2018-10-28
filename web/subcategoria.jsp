@@ -24,7 +24,7 @@
 
                 <!-- BEGIN SIDEBAR & CONTENT -->
                 <!-- BEGIN SIMILAR PRODUCTS -->
-                <div class="row margin-bottom-40">
+                <div class="row" style="margin-top: 25px;">
                     <div class="col-md-12 col-sm-12">
                        
                         <div class="row product-list">

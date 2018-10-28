@@ -1,5 +1,5 @@
-
 package sv.edu.udb.www.controller;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -42,6 +42,9 @@ public class PublicController extends HttpServlet {
                         break;
                     case "buscarProductos":
                         buscarProductos(request, response);
+                        break;
+                    case "verProducto":
+                        verProducto(request, response);
                         break;
                 }
             } else {
@@ -118,6 +121,7 @@ public class PublicController extends HttpServlet {
         try {
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
             request.setAttribute("ultimosProductos", ProductoModel.listaUltimosProductos());
+            request.setAttribute("ultimasOfertas", clienteModel.ultimasOfertas());
             request.getRequestDispatcher("index.jsp").forward(request, response);
         } catch (ServletException | IOException | SQLException ex) {
             Logger.getLogger(CategoriasController.class.getName()).log(Level.SEVERE, null, ex);
@@ -140,11 +144,9 @@ public class PublicController extends HttpServlet {
         try {
             String nombre = request.getParameter("nombre");
             String idCategoria = request.getParameter("categoria");
-            
-            System.out.println(idCategoria);
 
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-            request.setAttribute("listarProductos", ProductoModel.busquedaProductos(nombre,idCategoria));
+            request.setAttribute("listarProductos", ProductoModel.busquedaProductos(nombre, idCategoria));
             request.setAttribute("datoBusqueda", nombre);
             try {
                 request.getRequestDispatcher("/resultadosBusqueda.jsp").forward(request, response);
@@ -153,6 +155,18 @@ public class PublicController extends HttpServlet {
             }
         } catch (SQLException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void verProducto(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int idpro = Integer.parseInt(request.getParameter("idproduct"));
+            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.setAttribute("producto", clienteModel.verProducto(idpro));
+            request.setAttribute("comentarios", clienteModel.listaComentarios(idpro));
+            request.getRequestDispatcher("/producto.jsp").forward(request, response);
+        } catch (ServletException | IOException | SQLException ex) {
+            Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
