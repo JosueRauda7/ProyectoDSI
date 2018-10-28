@@ -20,10 +20,9 @@
     <body class="ecommerce">
         <jsp:include page="/empresa/menuEmpresa.jsp"/>
 
-        <div class="container">
-            <div class="col-lg-2"></div>
-            <div class="content-page col-lg-8 margin-top-10">
-                <div class="panel">
+        <div class="container" >
+            <div class="col-md-7" >
+                <div class="panel panel-body text-center" >
 
                     <c:if test="${not empty requestScope.listaErrores}">
                         <div class="alert alert-danger">
@@ -59,7 +58,7 @@
                                     <textarea id="descripcion" name="descripcion" value="${producto.descripcion}"></textarea>
                                 </div>
                             </div>
-                            
+
                         </div>
 
                         <div class="row">         
@@ -94,11 +93,11 @@
                     </form>
                 </div>
             </div>
-        </div>
+        </div>        
 
-        
-        <jsp:include page="footer.jsp"/>       
+
         <ckeditor:replace replace="descripcion" basePath="${base}/ckeditor/" />
+        <jsp:include page="footer.jsp"/>   
     </body>
     <!-- END BODY -->
 </html>

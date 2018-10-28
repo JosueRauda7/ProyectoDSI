@@ -60,7 +60,7 @@ public class ProductosModel extends Conexion {
         try {
 
             List<Imagen> lista = new ArrayList<>();
-            String sql = "Select * from Imagen";
+            String sql = "Select * from Imagen Group by id_producto";
 
             this.conectar();
             st = conexion.prepareStatement(sql);
@@ -176,6 +176,27 @@ public class ProductosModel extends Conexion {
         }
     }
 
+    public int actualizarExistencias(Producto producto) throws SQLException {
+        try {
+            int filasAfectadas = 0;
+            if(Integer.parseInt(producto.getCantidad())<=0){
+                return 0;
+            }
+            String sql = "Update producto set cantidad=(cantidad + ?) where id_producto=?";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, Integer.parseInt(producto.getCantidad()));
+            st.setInt(2, producto.getIdProducto());
+            filasAfectadas = st.executeUpdate();
+            this.desconectar();
+            return filasAfectadas;
+        } catch (SQLException ex) {
+            Logger.getLogger(EmpresasModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        }
+    }
+
     public List<Producto> listarProducto(int estadoProducto) throws SQLException {
         try {
 
@@ -251,7 +272,6 @@ public class ProductosModel extends Conexion {
         }
     }
 
-    
     public List<Producto> busquedaProductos(String nombre, String idCategoria) throws SQLException {
         try {
 

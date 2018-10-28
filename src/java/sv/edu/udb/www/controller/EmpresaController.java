@@ -56,7 +56,7 @@ public class EmpresaController extends HttpServlet {
         try {
             if (request.getSession().getAttribute("usuario") != null || request.getSession().getAttribute("tipousuario") != null || request.getSession().getAttribute("nombreUser") != null) {
                 if (request.getSession().getAttribute("usuario") == null || !request.getSession().getAttribute("tipousuario").toString().equals("5")) {
-                    response.sendRedirect(request.getContextPath()+"/public.do?operacion=publicIndex");
+                    response.sendRedirect(request.getContextPath() + "/public.do?operacion=publicIndex");
                     return;
                 }
                 if (request.getParameter("operacion") != null) {
@@ -73,6 +73,9 @@ public class EmpresaController extends HttpServlet {
                             break;
                         case "obtener":
                             obtener(request, response);
+                            break;
+                        case "existencias":
+                            existencias(request, response);
                             break;
                         default:
                             request.getRequestDispatcher("/error404.jsp").forward(request, response);
@@ -145,7 +148,7 @@ public class EmpresaController extends HttpServlet {
             int usuario = Integer.parseInt(request.getSession().getAttribute("usuario").toString());
             request.setAttribute("listarProducto", modeloProducto.listarProducto(usuario, estado));
             request.setAttribute("listarImagenes", modeloProducto.listarImagenesProducto());
-            request.setAttribute("tab",estado);
+            request.setAttribute("tab", estado);
             try {
                 request.getRequestDispatcher("/empresa/listaProductos.jsp").forward(request, response);
             } catch (ServletException | IOException ex) {
@@ -210,7 +213,6 @@ public class EmpresaController extends HttpServlet {
 //                File ficheroTemp = multi.getFile("archivo");
 //                producto.setUrlImagen(ficheroTemp.getName());
 //            }
-
             if (listaErrores.isEmpty()) {
                 if (modeloProducto.insertarProducto(producto, usuario) == 1) {
                     request.getSession().setAttribute("exito", "Producto registrado existosamente.");
@@ -307,6 +309,28 @@ public class EmpresaController extends HttpServlet {
                 request.getRequestDispatcher("/empresa/modificarProducto.jsp").forward(request, response);
             }
         } catch (Exception ex) {
+            Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void existencias(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            Producto producto = new Producto();
+            producto.setIdProducto(Integer.parseInt(request.getParameter("id")));
+            producto.setCantidad(request.getParameter("existencias"));
+
+            if (modeloProducto.actualizarExistencias(producto) != 0) {
+                int usuario = Integer.parseInt(request.getSession().getAttribute("usuario").toString());
+                request.setAttribute("listarProducto", modeloProducto.listarProducto(usuario, 2));
+                request.setAttribute("listarImagenes", modeloProducto.listarImagenesProducto());
+                request.setAttribute("tab", 2);
+                request.getSession().setAttribute("exito", "Se actualizaron las existencias del producto");
+                request.getRequestDispatcher("/empresa/listaProductos.jsp").forward(request, response);
+            } else {
+                request.getSession().setAttribute("fracaso", "Ocurrio un error, no se actualizaron las existencias...");
+                response.sendRedirect(request.getContextPath() + "/empresas.do?operacion=listar&estado=1");
+            }
+        } catch (IOException | ServletException | SQLException ex) {
             Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
