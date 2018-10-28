@@ -8,6 +8,8 @@
     <!-- Head BEGIN -->
     <head>
         <title>Producto</title>     
+        <link rel="stylesheet" href="assets/pages/css/w3.css">
+
         <jsp:include page="/head.jsp"/>     
         <link rel="stylesheet" href="${base}/assets/pages/css/responsivebiñeta.css">
         <jsp:include page="/scripts.jsp"/>
@@ -98,7 +100,8 @@
                                                     </button>
                                                     <div id="Demo${comentarios.idComentario}"   class="w3-dropdown-content w3-bar-block w3-border options">
                                                         <a class="w3-bar-item w3-button" onclick="javascript:eliminar2('${comentarios.idComentario}')"><span class="glyphicon glyphicon-trash"></span> Eliminar</a>
-                                                        <a href="#" class="w3-bar-item w3-button"><span class="glyphicon glyphicon-edit"></span> Modificar</a>
+                                                        <a id="btnmodificar${comentarios.idComentario}" class="w3-bar-item w3-button"><span class="glyphicon glyphicon-edit"></span> Modificar</a>
+                                                        <a id="btnmocanceldificar${comentarios.idComentario}" class="w3-bar-item w3-button"><span class="glyphicon glyphicon-edit"></span> Modificar</a>
                                                     </div>
                                                 </div>
                                                 <script>
@@ -118,7 +121,20 @@
 
                                             </div>                                              
                                             <div class="review-item-content">
-                                                <p>${comentarios.comentario}</p>
+                                                <p id="texto${comentarios.idComentario}">${comentarios.comentario}</p>
+                                                <input type="text" id="textonuevo${comentarios.idComentario}" class="form-control" value="${comentarios.comentario}" style="display:none;">
+                                                <script>
+                                                    document.getElementById("btnmodificar${comentarios.idComentario}").addEventListener("click", function(){
+                                                        document.getElementById("texto${comentarios.idComentario}").style.display="none";
+                                                        document.getElementById("textonuevo${comentarios.idComentario}").style.display="block";
+                                                        
+                                                    });
+                                                    document.getElementById("btnmocanceldificar${comentarios.idComentario}").addEventListener("click", function(){
+                                                        document.getElementById("texto${comentarios.idComentario}").style.display="block";
+                                                        document.getElementById("textonuevo${comentarios.idComentario}").style.display="none";
+                                                        
+                                                    });
+                                                </script>
                                             </div>
 
                                         </div>

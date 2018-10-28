@@ -28,7 +28,6 @@
 <link href="assets/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet">
 <link href="assets/pages/css/estilomodallog.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link href="assets/plugins/owl.carousel/assets/owl.carousel.css" rel="stylesheet">
 <link href="assets/pages/css/slider.css" rel="stylesheet">
 <link href="assets/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css">
