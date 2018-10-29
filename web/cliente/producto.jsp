@@ -9,7 +9,6 @@
     <head>
         <title>Producto</title>     
         <link rel="stylesheet" href="assets/pages/css/w3.css">
-
         <jsp:include page="/head.jsp"/>     
         <link rel="stylesheet" href="${base}/assets/pages/css/responsivebiñeta.css">
         <jsp:include page="/scripts.jsp"/>
@@ -83,8 +82,13 @@
                         </ul>
                         <div id="myTabContent" class="tab-content">
                             <div class="tab-pane fade" id="Description">
-                                <p>Lorem ipsum dolor ut sit ame dolore  adipiscing elit, sed sit nonumy nibh sed euismod laoreet dolore magna aliquarm erat sit volutpat Nostrud duis molestie at dolore. Lorem ipsum dolor ut sit ame dolore  adipiscing elit, sed sit nonumy nibh sed euismod laoreet dolore magna aliquarm erat sit volutpat Nostrud duis molestie at dolore. Lorem ipsum dolor ut sit ame dolore  adipiscing elit, sed sit nonumy nibh sed euismod laoreet dolore magna aliquarm erat sit volutpat Nostrud duis molestie at dolore. </p>
-
+                                <div class="contenofer">
+                                    <c:forEach var="ofertas" items="${requestScope.listaOfertas}">
+                                    <div class="oferta">
+                                        <h1>${ofertas.titulo}</h1>
+                                    </div>
+                                    </c:forEach>
+                                </div>
                             </div>
 
                             <div class="tab-pane fade in active" id="Reviews">

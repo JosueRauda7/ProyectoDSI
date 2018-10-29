@@ -1,3 +1,11 @@
+.contenofer{
+    width: 100%;
+    border: solid 1px;
+}
+.oferta{
+    border:solid 1px;
+    width: 24%;
+}
 #biñeta{
     position: absolute;
     margin-left: 90%;
