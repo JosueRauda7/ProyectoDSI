@@ -1,10 +1,32 @@
 .contenofer{
     width: 100%;
-    border: solid 1px;
+    padding-left: 0.5%;
+    height: auto;
 }
 .oferta{
-    border:solid 1px;
-    width: 24%;
+    width: 23%;
+    height: 270px;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    margin-left: 1.5%;
+    float: left;
+    margin-bottom: 1.5%;
+   -webkit-box-shadow: 7px 9px 13px 2px rgba(0,0,0,0.75);
+}
+.oferinfo{
+    background-color: rgba(0,0,0,.5);
+    width: 90%;
+    margin: 5%;
+    height: 240px;
+    padding: 4%;
+}
+.oferinfo h4{
+   color: #FF9800;
+   font-weight:bold;
+}
+.oferinfo button{
+    margin-left: 25%;
 }
 #biñeta{
     position: absolute;

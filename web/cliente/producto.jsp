@@ -84,9 +84,14 @@
                             <div class="tab-pane fade" id="Description">
                                 <div class="contenofer">
                                     <c:forEach var="ofertas" items="${requestScope.listaOfertas}">
-                                    <div class="oferta">
-                                        <h1>${ofertas.titulo}</h1>
-                                    </div>
+                                        <div class="oferta" style="background-image: url('images/${ofertas.urlFoto}');">
+                                            <div class="oferinfo">
+                                                <h4 class="text-center">${ofertas.titulo}</h4>
+                                                <hr>
+                                                <p>${ofertas.descripcion}</p>
+                                                <button class="btn btn-primary">Ver oferta</button>
+                                            </div>
+                                        </div>
                                     </c:forEach>
                                 </div>
                             </div>
@@ -127,24 +132,24 @@
                                             <div class="review-item-content">
                                                 <p id="texto${comentarios.idComentario}">${comentarios.comentario}</p>
                                                 <input type="text" id="textonuevo${comentarios.idComentario}"  onchange="modificarco${comentarios.idComentario}(this.value);" class="form-control" value="${comentarios.comentario}" style="display:none;">
-                                                
+
                                                 <script>
-                                                    document.getElementById("btnmodificar${comentarios.idComentario}").addEventListener("click", function(){
-                                                        document.getElementById("texto${comentarios.idComentario}").style.display="none";
-                                                        document.getElementById("textonuevo${comentarios.idComentario}").style.display="block";
-                                                        document.getElementById("btnmodificar${comentarios.idComentario}").style.display="none";
-                                                        document.getElementById("btnmocanceldificar${comentarios.idComentario}").style.display="block";
+                                                    document.getElementById("btnmodificar${comentarios.idComentario}").addEventListener("click", function () {
+                                                        document.getElementById("texto${comentarios.idComentario}").style.display = "none";
+                                                        document.getElementById("textonuevo${comentarios.idComentario}").style.display = "block";
+                                                        document.getElementById("btnmodificar${comentarios.idComentario}").style.display = "none";
+                                                        document.getElementById("btnmocanceldificar${comentarios.idComentario}").style.display = "block";
                                                     });
-                                                    document.getElementById("btnmocanceldificar${comentarios.idComentario}").addEventListener("click", function(){
-                                                        document.getElementById("texto${comentarios.idComentario}").style.display="block";
-                                                        document.getElementById("textonuevo${comentarios.idComentario}").style.display="none";
-                                                        document.getElementById("btnmodificar${comentarios.idComentario}").style.display="block";
-                                                        document.getElementById("btnmocanceldificar${comentarios.idComentario}").style.display="none";
-                                                        
+                                                    document.getElementById("btnmocanceldificar${comentarios.idComentario}").addEventListener("click", function () {
+                                                        document.getElementById("texto${comentarios.idComentario}").style.display = "block";
+                                                        document.getElementById("textonuevo${comentarios.idComentario}").style.display = "none";
+                                                        document.getElementById("btnmodificar${comentarios.idComentario}").style.display = "block";
+                                                        document.getElementById("btnmocanceldificar${comentarios.idComentario}").style.display = "none";
+
                                                         document.getElementById("textonuevo${comentarios.idComentario}").value = "${comentarios.comentario}";
                                                     });
-                                                    function modificarco${comentarios.idComentario}(valor){
-                                                          location.href = 'clientes.do?operacion=modificarComentario&idcomentario=' + ${comentarios.idComentario} +'&producto=' +${requestScope.producto.idProducto} + "&comentario=" + valor;
+                                                    function modificarco${comentarios.idComentario}(valor) {
+                                                        location.href = 'clientes.do?operacion=modificarComentario&idcomentario=' + ${comentarios.idComentario} + '&producto=' +${requestScope.producto.idProducto} + "&comentario=" + valor;
                                                     }
                                                 </script>
                                             </div>
@@ -223,8 +228,8 @@
         });
             <c:set var="fracaso" value="" scope="session"/>
         </c:if>
-    
-    function eliminar2(id) {
+
+        function eliminar2(id) {
 
             swal({
                 title: '¿Seguro que quieres eliminar este comentario?',
@@ -235,13 +240,13 @@
             }).then((willDelete) => {
                 if (willDelete) {
 
-                    location.href = 'clientes.do?operacion=eliminarComentario&idcomentario=' + id +'&producto=' +${requestScope.producto.idProducto};
+                    location.href = 'clientes.do?operacion=eliminarComentario&idcomentario=' + id + '&producto=' +${requestScope.producto.idProducto};
                 }
             });
         }
         ;
     </script>
-        <jsp:include page="footer.jsp" />
+    <jsp:include page="footer.jsp" />
 
     <!-- END BODY -->
 </html>
