@@ -19,19 +19,12 @@
 
             <div class="top-cart-content-wrapper">
                 <div class="top-cart-content">
-                    <ul class="scroller" style="height: 250px;">
-                        <li>
-                            <!-- Objetos de carrito -->
-                            <a href="shop-item.html"><img src="assets/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
-                            <span class="cart-content-count">x 1</span>
-                            <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
-                            <em>$1230</em>
-                            <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
-                        </li>                
+                    <ul class="scroller" style="height: 50px;">
+                        Para utilizar el carrito de compras debes iniciar sesión
                     </ul>
                     <div class="text-right">
-                        <a href="shop-shopping-cart.html" class="btn btn-default">Ver Carrito</a>
-                        <a href="shop-checkout.html" class="btn btn-primary">Revisar</a>
+                        
+                        <a data-toggle="modal" style="cursor: pointer;" data-target="#exampleModal" class="btn btn-primary">Iniciar sesión</a>
                     </div>
                 </div>
             </div>            

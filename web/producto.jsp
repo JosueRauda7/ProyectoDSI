@@ -17,6 +17,8 @@
 
         <!-- BEGIN NAVIGATION -->
         <jsp:include page="menu.jsp"/>
+        
+        <jsp:include page="/modal.jsp"/>
         <!-- END NAVIGATION -->
         <div class="container">
 
@@ -49,10 +51,7 @@
                             <form class="product-page-cart" action="clientes.do">
                                 <input type="hidden" value="agregarProducto" name="operacion">
                                 <input type="hidden" value="${requestScope.producto.idProducto}" name="idproduct">
-                                <div class="product-quantity">
-                                    <input id="product-quantity" type="text" value="1" name="cantidad" readonly class="form-control input-sm">
-                                </div>
-                                <button class="btn btn-primary" type="submit">Agregar al carrito</button>
+                                Debes <a data-toggle="modal" style="cursor: pointer;" data-target="#exampleModal">Iniciar sesión</a> para agregar al carrito este producto
                             </form>
                             <div class="marca" >
                                 <label class="control-label">Empresa proveedora:</label><p>${requestScope.producto.empresa.empresa}</p>  
@@ -129,17 +128,8 @@
                                 </c:if>
                                 <!-- BEGIN FORM-->
                                 <form action="${base}/clientes.do" class="reviews-form" role="form">
-                                    <h2>Escribe un comentario:</h2>
-                                    <input type="hidden" name="operacion" value="agregarComentario">
-                                    <input type="hidden" name="idproducto" value="${requestScope.producto.idProducto}">
-                                    <div class="form-group">
-                                        <label for="review">Comentario: <span class="require">*</span></label>
-                                        <textarea class="form-control" name="comentario" rows="8" placeholder="Ingresa tu comentario" id="review"></textarea>
-                                    </div>
-
-                                    <div class="padding-top-20">                  
-                                        <button type="submit" class="btn btn-primary">Enviar</button>
-                                    </div>
+                                    <h2>Debes <a data-toggle="modal" style="cursor: pointer;" data-target="#exampleModal">Iniciar sesión</a> para comentar sobre este producto</h2>
+                                    
                                 </form>
                                 <!-- END FORM--> 
                             </div>
@@ -151,7 +141,7 @@
         </div>
 
 
-        <jsp:include page="/scripts.jsp"/>
+        
         <script type="text/javascript">
             jQuery(document).ready(function () {
                 Layout.init();
@@ -161,59 +151,36 @@
                 Layout.initTouchspin();
                 Layout.initUniform();
             });
-            var URLactual = window.location;
-            var lba = document.getElementsByClassName("social-button");
 
-            function myPopup() {
-                window.open(this.href, 'mywin',
-                        'left=20,top=20,width=500,height=500,toolbar=1,resizable=0');
-                event.preventDefault();
-                return false;
-            }
+            <c:if test="${not empty exito}">
+            swal({
+                title: "Felicidades!",
+                text: "${exito}",
+                icon: "success",
+            });
+                <c:set var="exito" value="" scope="session"/>
+            </c:if>
 
-            for (var i = 0; i < lba.length; i++) {
-                lba[i].addEventListener("click", myPopup, false);
-            }
+            <c:if test="${not empty fracaso}">
+            swal({
+                title: "Ups!",
+                text: "${fracaso}",
+                icon: "error",
+            });
+                <c:set var="fracaso" value="" scope="session"/>
+            </c:if>
         </script>
+
+
+
+
+        <script src="assets/pages/scripts/ModalLog.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL JAVASCRIPTS -->
     </body>
-    <script>
-        <c:if test="${not empty exito}">
-        swal({
-            title: "Felicidades!",
-            text: "${exito}",
-            icon: "success",
-        });
-            <c:set var="exito" value="" scope="session"/>
-        </c:if>
-
-        <c:if test="${not empty fracaso}">
-        swal({
-            title: "Ups!",
-            text: "${fracaso}",
-            icon: "error",
-        });
-            <c:set var="fracaso" value="" scope="session"/>
-        </c:if>
     
-    function eliminar2(id) {
-
-            swal({
-                title: '¿Seguro que quieres eliminar este comentario?',
-                text: "Una vez eliminado, no habra vuelta atras.",
-                icon: 'warning',
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-
-                    location.href = 'clientes.do?operacion=eliminarComentario&idcomentario=' + id +'&producto=' +${requestScope.producto.idProducto};
-                }
-            });
-        }
-        ;
-    </script>
+    
         <jsp:include page="footer.jsp" />
+
 
     <!-- END BODY -->
 </html>
