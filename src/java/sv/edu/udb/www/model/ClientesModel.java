@@ -85,6 +85,33 @@ public class ClientesModel extends Conexion {
         }
     }
 
+    public List<Oferta> ofertasProducto(int idproducto) throws SQLException {
+        try {
+            String sql = "SELECT * FROM ofertas WHERE id_producto = ? AND id_estado_oferta = 1";
+            List<Oferta> lista = new ArrayList<>();
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, idproducto);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Oferta oferta = new Oferta();
+                oferta.setIdOferta(rs.getInt("id_oferta"));
+                oferta.setTitulo(rs.getString("titulo"));
+                oferta.setDescripcion(rs.getString("descripcion"));
+                oferta.setDescuento(rs.getInt("descuento"));
+                oferta.setTotalDescuento(rs.getDouble("total_descuento"));
+                oferta.setUrlFoto(rs.getString("Url_foto"));
+                lista.add(oferta);
+            }
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+    }
+
     public Producto verProducto(int idpro) throws SQLException {
         try {
             String sql = "SELECT DISTINCT * FROM producto p INNER JOIN sub_categoria sc on p.id_sub_categoria = sc.id_sub_categoria INNER JOIN empresa em on p.id_empresa = em.id_empresa INNER JOIN estado_producto es on p.id_estado_producto = es.id_estado_producto INNER JOIN imagen i on i.id_producto = p.id_producto WHERE p.id_producto = ? GROUP by i.id_producto";
@@ -381,7 +408,7 @@ public class ClientesModel extends Conexion {
                 cantidadpro = rs.getInt("cantidad");
             }
             validador = diferencia + (cantidadpro);
-            if (validador <= 0) {
+            if (validador < 0) {
                 return 0;
             } else {
                 String sql4 = "UPDATE producto SET cantidad =? WHERE id_producto = ?";
@@ -427,8 +454,8 @@ public class ClientesModel extends Conexion {
             return 0;
         }
     }
-    
-    public List<Comentario> listaComentarios(int idproduct) throws SQLException{
+
+    public List<Comentario> listaComentarios(int idproduct) throws SQLException {
         try {
             String sql = "SELECT c.id_comentario,c.fecha_comentario,c.Comentario,c.id_producto,time_format(c.hora_comentario, \"%H:%i\") AS hora, CONCAT(SUBSTRING_INDEX(u.Nombre, ' ', 1),' ',SUBSTRING_INDEX(u.Apellido, ' ', 1)) as Nombre, u.id_usuario FROM comentarios c INNER JOIN usuarios u ON c.id_usuario = u.id_usuario WHERE id_producto = ?";
             List<Comentario> lista = new ArrayList<>();
@@ -436,7 +463,7 @@ public class ClientesModel extends Conexion {
             st = conexion.prepareStatement(sql);
             st.setInt(1, idproduct);
             rs = st.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Usuario usuario = new Usuario();
                 usuario.setNombre(rs.getString("Nombre"));
                 usuario.setIdUsuario(rs.getInt("id_usuario"));
@@ -457,14 +484,32 @@ public class ClientesModel extends Conexion {
             return null;
         }
     }
-    
-    public int eliminarComentario(int idcomentario) throws SQLException{
+
+    public int eliminarComentario(int idcomentario) throws SQLException {
         try {
             String sql = "DELETE FROM comentarios WHERE id_comentario = ?";
-            int filasAfectadas =0;
+            int filasAfectadas = 0;
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setInt(1, idcomentario);
+            filasAfectadas = st.executeUpdate();
+            this.desconectar();
+            return filasAfectadas;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        }
+    }
+
+    public int modificarComentario(int idcomentario, String comentario) throws SQLException {
+        try {
+            String sql = "UPDATE comentarios SET Comentario = ?  WHERE id_comentario = ?";
+            int filasAfectadas = 0;
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setString(1, comentario);
+            st.setInt(2, idcomentario);
             filasAfectadas = st.executeUpdate();
             this.desconectar();
             return filasAfectadas;
