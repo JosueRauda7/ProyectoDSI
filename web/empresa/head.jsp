@@ -50,4 +50,6 @@
 <script src="${pageContext.request.contextPath}/assets/js/jquery.dataTables.min.js" type="text/javascript"></script>
 <link href="${pageContext.request.contextPath}/assets/corporate/css/dataTables.bootstrap.min.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/assets/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+<link href="${pageContext.request.contextPath}/assets/coporate/css/fileinput.min.css" rel="stylesheet" type="text/css"/>
+<script src="${pageContext.request.contextPath}/assets/js/fileinput.min.js" type="text/javascript"></script>
 <!-- Theme styles END -->

@@ -6,6 +6,7 @@
 package sv.edu.udb.www.model;
 
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -82,11 +83,11 @@ public class ProductosModel extends Conexion {
         }
     }
 
-    public int insertarProducto(Producto producto, int usuario) throws SQLException {
+    public int insertarProducto(Producto producto, int usuario, Imagen imagen) throws SQLException {
         try {
             int empresa = 0;
             int filasAfectadas = 0;
-
+            int idproducto = 0;
             String sql = "Select id_empresa from empresa where id_usuario=?";
             this.conectar();
             st = conexion.prepareStatement(sql);
@@ -98,7 +99,7 @@ public class ProductosModel extends Conexion {
 
             sql = "Insert into producto VALUES(NULL,?,?,?,?,?,?,1)";
             this.conectar();
-            st = conexion.prepareStatement(sql);
+            st = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             st.setString(1, producto.getProducto());
             st.setString(2, producto.getDescripcion());
             st.setDouble(3, Double.parseDouble(producto.getPrecioRegular()));
@@ -106,6 +107,17 @@ public class ProductosModel extends Conexion {
             st.setInt(5, producto.getIdsubCategoria());
             st.setInt(6, empresa);
             filasAfectadas = st.executeUpdate();
+            if (filasAfectadas != 0) {
+                rs = st.getGeneratedKeys();
+                rs.next();
+                idproducto = rs.getInt(1);
+                sql = "Insert into imagen VALUES (NULL,?,?)";
+                st = conexion.prepareStatement(sql);
+                st.setString(1, imagen.getUrlimagen());
+                st.setInt(2, idproducto);
+                filasAfectadas = st.executeUpdate();
+            }
+
             this.desconectar();
             return filasAfectadas;
         } catch (SQLException ex) {
@@ -179,7 +191,7 @@ public class ProductosModel extends Conexion {
     public int actualizarExistencias(Producto producto) throws SQLException {
         try {
             int filasAfectadas = 0;
-            if(Integer.parseInt(producto.getCantidad())<=0){
+            if (Integer.parseInt(producto.getCantidad()) <= 0) {
                 return 0;
             }
             String sql = "Update producto set cantidad=(cantidad + ?) where id_producto=?";

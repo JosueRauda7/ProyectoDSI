@@ -87,7 +87,7 @@ public class ClientesModel extends Conexion {
 
     public List<Oferta> ofertasProducto(int idproducto) throws SQLException {
         try {
-            String sql = "SELECT * FROM ofertas WHERE id_producto = ? AND id_estado_oferta = 1";
+            String sql = "SELECT *,CONCAT(LEFT(descripcion,100), '...') AS descrip FROM ofertas WHERE id_producto = ? AND id_estado_oferta = 1";
             List<Oferta> lista = new ArrayList<>();
             this.conectar();
             st = conexion.prepareStatement(sql);
@@ -97,7 +97,7 @@ public class ClientesModel extends Conexion {
                 Oferta oferta = new Oferta();
                 oferta.setIdOferta(rs.getInt("id_oferta"));
                 oferta.setTitulo(rs.getString("titulo"));
-                oferta.setDescripcion(rs.getString("descripcion"));
+                oferta.setDescripcion(rs.getString("descrip"));
                 oferta.setDescuento(rs.getInt("descuento"));
                 oferta.setTotalDescuento(rs.getDouble("total_descuento"));
                 oferta.setUrlFoto(rs.getString("Url_foto"));

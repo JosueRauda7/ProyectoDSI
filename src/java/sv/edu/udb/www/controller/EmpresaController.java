@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -19,7 +20,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import sv.edu.udb.www.beans.Imagen;
 import sv.edu.udb.www.beans.Producto;
+import sv.edu.udb.www.beans.SubCategoria;
 import sv.edu.udb.www.model.CategoriasModel;
 import sv.edu.udb.www.model.ClientesModel;
 import sv.edu.udb.www.model.ProductosModel;
@@ -35,6 +38,7 @@ public class EmpresaController extends HttpServlet {
 
     ProductosModel modeloProducto = new ProductosModel();
     SubCategoriasModel modeloSubcategoria = new SubCategoriasModel();
+    CategoriasModel modeloCategoria = new CategoriasModel();
     ArrayList listaErrores = new ArrayList();
 
     /**
@@ -77,6 +81,14 @@ public class EmpresaController extends HttpServlet {
                         case "existencias":
                             existencias(request, response);
                             break;
+                        case "subcategorias":
+                            try{
+                            subcategorias(request, response);
+                            }catch(SQLException e){
+                                
+                            }
+                            break;
+                            
                         default:
                             request.getRequestDispatcher("/error404.jsp").forward(request, response);
                             break;
@@ -163,6 +175,7 @@ public class EmpresaController extends HttpServlet {
     private void nuevo(HttpServletRequest request, HttpServletResponse response) {
         try {
             request.setAttribute("listaSubcategoria", modeloSubcategoria.listarSubCategorias());
+            request.setAttribute("listaCategoria", modeloCategoria.listarCategorias());
             request.getRequestDispatcher("/empresa/nuevoProducto.jsp").forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
@@ -176,13 +189,16 @@ public class EmpresaController extends HttpServlet {
             listaErrores.clear();
             int usuario = Integer.parseInt(request.getSession().getAttribute("usuario").toString());
             Producto producto = new Producto();
+            Imagen imagen = new Imagen();
 
             producto.setProducto(multi.getParameter("producto"));
             producto.setDescripcion(multi.getParameter("descripcion"));
             producto.setPrecioRegular(multi.getParameter("regular"));
             producto.setCantidad(multi.getParameter("cantidad"));
             producto.setIdsubCategoria(Integer.parseInt(multi.getParameter("subcategoria")));
-
+            
+            
+            
             if (Validaciones.isEmpty(producto.getProducto())) {
                 listaErrores.add("El nombre del producto es obligatorio");
             }
@@ -207,14 +223,14 @@ public class EmpresaController extends HttpServlet {
                 listaErrores.add("La cantidad debe ser un número positivo");
             }
 
-//            if (multi.getFile("archivo") == null) {
-//                listaErrores.add("La imagen es obligatoria");
-//            } else {
-//                File ficheroTemp = multi.getFile("archivo");
-//                producto.setUrlImagen(ficheroTemp.getName());
-//            }
+            if (multi.getFile("imagen") == null) {
+                listaErrores.add("La imagen es obligatoria");
+            } else {
+                File ficheroTemp = multi.getFile("imagen");
+                imagen.setUrlimagen(ficheroTemp.getName());                
+            }
             if (listaErrores.isEmpty()) {
-                if (modeloProducto.insertarProducto(producto, usuario) == 1) {
+                if (modeloProducto.insertarProducto(producto, usuario,imagen) == 1) {
                     request.getSession().setAttribute("exito", "Producto registrado existosamente.");
                 } else {
                     request.getSession().setAttribute("fracaso", "Ocurrio un error, no se pudo registrar el producto...");
@@ -333,6 +349,18 @@ public class EmpresaController extends HttpServlet {
         } catch (IOException | ServletException | SQLException ex) {
             Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void subcategorias(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        PrintWriter out = response.getWriter();
+        int categoria = Integer.parseInt(request.getParameter("codigo"));
+
+        List<SubCategoria> subcategoria = modeloSubcategoria.listarSubCategorias(categoria);
+        StringBuilder sb = new StringBuilder("");
+        for (int i = 0; i < subcategoria.size(); i++) {
+            sb.append(subcategoria.get(i).getIdSubCategoria() + "-" + subcategoria.get(i).getSubCategoria() + ":");
+        }
+        out.write(sb.toString());
     }
 
 }
