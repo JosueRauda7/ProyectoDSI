@@ -11,23 +11,8 @@
 
         <!-- BEGIN CART -->
         <div class="top-cart-block">
-            <div class="top-cart-info">
-                <a href="javascript:void(0);" class="top-cart-info-count">0 artículos</a>
-                <a href="javascript:void(0);" class="top-cart-info-value">$0</a>
-            </div>
-            <i style="background-color:#9E9E9E;" class="fa fa-shopping-cart"></i>
-
-            <div class="top-cart-content-wrapper">
-                <div class="top-cart-content">
-                    <ul class="scroller" style="height: 50px;">
-                        Para utilizar el carrito de compras debes iniciar sesión
-                    </ul>
-                    <div class="text-right">
-                        
-                        <a data-toggle="modal" style="cursor: pointer;" data-target="#exampleModal" class="btn btn-primary">Iniciar sesión</a>
-                    </div>
-                </div>
-            </div>            
+            <a href="#">Términos y condiciones</a>
+            
         </div>
         <!--END CART -->
 
@@ -71,6 +56,7 @@
                         </li>
                     </ul>
                 </li>
+                <li><a class="dropdown-toggle" style="cursor: pointer;" href="public.do?operacion=verEmpresas">Empresas</a></li>
                 <li><a class="dropdown-toggle" data-toggle="modal" style="cursor: pointer;" data-target="#exampleModal">Logueate</a></li>
 
 

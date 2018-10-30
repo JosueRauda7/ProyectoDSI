@@ -86,7 +86,7 @@
                                 <div class="row" id="ultimos">
 
                                     <div class="row product-list">
-                                        <center><h1>Ultimos Productos</h1></center>
+                                        <center><h1>Últimos Productos</h1></center>
                                         <hr>
                                         <c:forEach var="ultpro" items="${requestScope.ultimosProductos}">
                                             <div class="col-md-4 col-sm-6 col-xs-12" >

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import sv.edu.udb.www.model.CategoriasModel;
 import sv.edu.udb.www.model.ClientesModel;
+import sv.edu.udb.www.model.EmpresasModel;
 import sv.edu.udb.www.model.ProductosModel;
 import sv.edu.udb.www.model.SubCategoriasModel;
 
@@ -26,6 +27,7 @@ public class PublicController extends HttpServlet {
     ProductosModel ProductoModel = new ProductosModel();
     SubCategoriasModel subcategoriaModel = new SubCategoriasModel();
     ClientesModel clienteModel = new ClientesModel();
+    EmpresasModel empresasModel = new EmpresasModel();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -45,6 +47,9 @@ public class PublicController extends HttpServlet {
                         break;
                     case "verProducto":
                         verProducto(request, response);
+                        break;
+                    case "verEmpresas":
+                        listaEmpresas(request, response);
                         break;
                 }
             } else {
@@ -169,5 +174,19 @@ public class PublicController extends HttpServlet {
             Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    private void listaEmpresas(HttpServletRequest request, HttpServletResponse response) {
+        try {
+           
+            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.setAttribute("listaEmpresas", empresasModel.listarEmpresas());
+            
+            request.getRequestDispatcher("empresas.jsp").forward(request, response);
+        } catch (ServletException | IOException | SQLException ex) {
+            Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
 
 }
