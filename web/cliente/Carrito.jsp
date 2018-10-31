@@ -232,7 +232,7 @@
                     }).then((willDelete) => {
                         if (willDelete) {
 
-                            location.href = 'clientes.do?operacion=eliminarArticulo&iddetalle=' + id + '&url=' + url;
+                            location.href = 'clientes.do?operacion=eliminarOferta&iddetalle=' + id + '&url=' + url;
                         }
                     });
                 }

@@ -23,59 +23,61 @@
 
             <div class="product-page">
                 <div class="row">
-                            <div class="col-md-6 col-sm-6">
-                                <div class="product-main-image">
-                                    <img src="images/${requestScope.producto.urlImagen}" alt="Cool green dress with red bell" class="img-responsive" data-BigImgsrc="images/${requestScope.producto.urlImagen}">
+
+                    <div class="col-md-6 col-sm-6">
+                        <div class="product-main-image">
+                            <img src="images/${requestScope.oferta.producto.urlImagen}" alt="Cool green dress with red bell" class="img-responsive" data-BigImgsrc="images/${requestScope.oferta.producto.urlImagen}">
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <h1>${requestScope.oferta.producto.producto}</h1>
+                        <div class="price-availability-block clearfix">
+                            <div class="price">
+                                <em>Precio: </em> <strong><span>$</span>${requestScope.oferta.totalDescuento}</strong>
+                                <em>$<span>${requestScope.oferta.producto.precioRegular}</span></em>
+                            </div>
+                            <div class="availability">
+                                Descuento: <strong>${requestScope.oferta.descuento}%</strong>
+                            </div>
+                        </div>
+                        <div class="description">
+                            <p>${requestScope.oferta.producto.descripcion}</p>
+                        </div>
+                        <div class="product-page-options">
+                            <div class="pull-left"  style="display: flex;">
+                                <label class="control-label">Cantidad disponible:</label><p>${requestScope.oferta.producto.cantidad}</p>  
+                            </div>
+                            <form class="product-page-cart" action="clientes.do">
+                                <input type="hidden" value="agregarOferta" name="operacion">
+                                <input type="hidden" value="${requestScope.oferta.idOferta}" name="idoferta">
+                                <input type="hidden" value="${requestScope.oferta.producto.idProducto}" name="idproducto">
+                                <div class="product-quantity">
+                                    <input id="product-quantity" type="text" value="1" name="cantidad" readonly class="form-control input-sm">
                                 </div>
+                                <button class="btn btn-primary" type="submit">Agregar al carrito</button>
+                            </form>
+                            <div class="marca" >
+                                <label class="control-label">Empresa proveedora:</label><p>${requestScope.oferta.producto.empresa.empresa}</p>  
+                                <a href="images/${requestScope.oferta.producto.empresa.urlEmpresa}" class="fancybox-button" rel="photos-lib"><img alt="Berry Lace Dress" src="images/${requestScope.oferta.producto.empresa.urlEmpresa}" style="width: 35%;"></a>
+                            </div>
+                            <div class="review" style="display: flex;">
+                                <p>Subcategoria: </p><a href=""> ${requestScope.oferta.producto.subCategoria.subCategoria}</a> 
 
                             </div>
-                            <div class="col-md-6 col-sm-6">
-                                <h1>${requestScope.producto.producto}</h1>
-                                <div class="price-availability-block clearfix">
-                                    <div class="price">
-                                        <em>Precio: </em> <strong><span>$</span>${requestScope.producto.precioRegular}</strong>
 
-                                    </div>
-                                    <div class="availability">
-                                        Estado: <strong>${requestScope.producto.estadoProducto.estado}</strong>
-                                    </div>
-                                </div>
-                                <div class="description">
-                                    <p>${requestScope.producto.descripcion}</p>
-                                </div>
-                                <div class="product-page-options">
-                                    <div class="pull-left"  style="display: flex;">
-                                        <label class="control-label">Cantidad disponible:</label><p>${requestScope.producto.cantidad}</p>  
-                                    </div>
-                                    <form class="product-page-cart" action="clientes.do">
-                                        <input type="hidden" value="agregarProducto" name="operacion">
-                                        <input type="hidden" value="${requestScope.producto.idProducto}" name="idproduct">
-                                        <div class="product-quantity">
-                                            <input id="product-quantity" type="text" value="1" name="cantidad" readonly class="form-control input-sm">
-                                        </div>
-                                        <button class="btn btn-primary" type="submit">Agregar al carrito</button>
-                                    </form>
-                                    <div class="marca" >
-                                        <label class="control-label">Empresa proveedora:</label><p>${requestScope.producto.empresa.empresa}</p>  
-                                        <a href="images/${requestScope.producto.empresa.urlEmpresa}" class="fancybox-button" rel="photos-lib"><img alt="Berry Lace Dress" src="images/${requestScope.producto.empresa.urlEmpresa}" style="width: 35%;"></a>
-                                    </div>
-                                    <div class="review" style="display: flex;">
-                                        <p>Subcategoria: </p><a href=""> ${requestScope.producto.subCategoria.subCategoria}</a> 
+                            <ul class="social-icons">
+                                <li><a class="facebook social-button" data-original-title="facebook"  href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:8080/ProyectoDSI/clientes.do?operacion=verProducto&idproduct=8"  target="_blank" rel="nofollow"></a></li>
+                                <li><a class="twitter social-button"  data-original-title="twitter" href="https://twitter.com/share?url=http://localhost:8080/ProyectoDSI/clientes.do?operacion=verProducto&idproduct=8&text=Hola" target="_blank" rel="nofollow"></a></li>
+                                <li><a class="googleplus social-button"  data-original-title="googleplus" href="https://plus.google.com/share?text=localhost:8080/ProyectoDSI/clientes.do?operacion=verProducto&idproduct=7"  target="_blan" rel="nofollow"></a></li>
+                                <li><a class="evernote social-button" data-original-title="evernote" href="javascript:;"></a></li>
+                                <li><a class="tumblr social-button"  data-original-title="tumblr" href="javascript:;"></a></li>
+                            </ul>
 
-                                    </div>
+                        </div>
 
-                                    <ul class="social-icons">
-                                        <li><a class="facebook social-button" data-original-title="facebook"  href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:8080/ProyectoDSI/clientes.do?operacion=verProducto&idproduct=8"  target="_blank" rel="nofollow"></a></li>
-                                        <li><a class="twitter social-button"  data-original-title="twitter" href="https://twitter.com/share?url=http://localhost:8080/ProyectoDSI/clientes.do?operacion=verProducto&idproduct=8&text=Hola" target="_blank" rel="nofollow"></a></li>
-                                        <li><a class="googleplus social-button"  data-original-title="googleplus" href="https://plus.google.com/share?text=localhost:8080/ProyectoDSI/clientes.do?operacion=verProducto&idproduct=7"  target="_blan" rel="nofollow"></a></li>
-                                        <li><a class="evernote social-button" data-original-title="evernote" href="javascript:;"></a></li>
-                                        <li><a class="tumblr social-button"  data-original-title="tumblr" href="javascript:;"></a></li>
-                                    </ul>
-
-                                </div>
-
-                            </div>
-                    
+                    </div>
+                    <div class="sticker sticker-sale"></div>
                     <div class="product-page-content">
                         <ul id="myTab" class="nav nav-tabs">
                             <li><a href="#Description" data-toggle="tab">Ofertas relacionadas</a></li>                           
@@ -150,7 +152,7 @@
                                                         document.getElementById("textonuevo${comentarios.idComentario}").value = "${comentarios.comentario}";
                                                     });
                                                     function modificarco${comentarios.idComentario}(valor) {
-                                                        location.href = 'clientes.do?operacion=modificarComentario&idcomentario=' + ${comentarios.idComentario} + '&producto=' +${requestScope.producto.idProducto} + "&comentario=" + valor;
+                                                        location.href = 'clientes.do?operacion=modificarComentario&idcomentario=' + ${comentarios.idComentario} + '&producto=' +${requestScope.oferta.producto.idProducto} + "&comentario=" + valor;
                                                     }
                                                 </script>
                                             </div>
@@ -165,7 +167,7 @@
                                 <form action="${base}/clientes.do" class="reviews-form" role="form">
                                     <h2>Escribe un comentario:</h2>
                                     <input type="hidden" name="operacion" value="agregarComentario">
-                                    <input type="hidden" name="idproducto" value="${requestScope.producto.idProducto}">
+                                    <input type="hidden" name="idproducto" value="${requestScope.oferta.producto.idProducto}">
                                     <div class="form-group">
                                         <label for="review">Comentario: <span class="require">*</span></label>
                                         <textarea class="form-control" name="comentario" rows="8" placeholder="Ingresa tu comentario" id="review"></textarea>
@@ -179,7 +181,7 @@
                             </div>
                         </div>
                     </div>
-                  
+
                 </div>
 
             </div>
@@ -212,7 +214,7 @@
         </script>
         <!-- END PAGE LEVEL JAVASCRIPTS -->
     </body>
-    
+
     <script>
         <c:if test="${not empty  exito}">
         swal({
@@ -243,7 +245,7 @@
             }).then((willDelete) => {
                 if (willDelete) {
 
-                    location.href = 'clientes.do?operacion=eliminarComentario&idcomentario=' + id + '&producto=' +${requestScope.producto.idProducto};
+                    location.href = 'clientes.do?operacion=eliminarComentario&idcomentario=' + id + '&producto=' +${requestScope.oferta.producto.idProducto};
                 }
             });
         }

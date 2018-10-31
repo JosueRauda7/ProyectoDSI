@@ -60,18 +60,21 @@ public class ClientesModel extends Conexion {
 
     public List<Oferta> ultimasOfertas() throws SQLException {
         try {
-            String sql = "SELECT titulo, descripcion, total_descuento,descuento, Url_foto FROM ofertas ORDER BY id_oferta DESC LIMIT 3";
+            String sql = "SELECT titulo,id_producto, descripcion, total_descuento,descuento, Url_foto FROM ofertas WHERE id_estado_oferta = 1 ORDER BY id_oferta DESC LIMIT 3";
             List<Oferta> lista = new ArrayList<>();
             this.conectar();
             st = conexion.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 Oferta oferta = new Oferta();
+                Producto producto = new Producto();
                 oferta.setTitulo(rs.getString("titulo"));
                 oferta.setDescripcion(rs.getString("descripcion"));
                 oferta.setTotalDescuento(rs.getDouble("total_descuento"));
                 oferta.setDescuento(rs.getInt("descuento"));
                 oferta.setUrlFoto(rs.getString("Url_foto"));
+                producto.setIdProducto(rs.getInt("id_producto"));
+                oferta.setProducto(producto);
                 lista.add(oferta);
             }
             this.desconectar();
@@ -289,9 +292,9 @@ public class ClientesModel extends Conexion {
                     st.setInt(1, existencias - cantidad);
                     st.setInt(2, producto);
                     filasAfectadas = st.executeUpdate();
-                    return filasAfectadas;                
-                }else{
-                 String sql3 = "UPDATE detalle_pedidos SET cantidad = ? WHERE id_pedido = ? AND id_oferta = ?";
+                    return filasAfectadas;
+                } else {
+                    String sql3 = "UPDATE detalle_pedidos SET cantidad = ? WHERE id_pedido = ? AND id_oferta = ?";
                     st = conexion.prepareStatement(sql3);
                     st.setInt(1, dpcantidad + cantidad);
                     st.setInt(2, pedido);
@@ -448,6 +451,40 @@ public class ClientesModel extends Conexion {
             String sql = "DELETE FROM detalle_pedidos WHERE id_detalle_pedido = ?";
             int filasAfectadas = 0;
             st = conexion.prepareStatement(sql);
+            st.setInt(1, iddetalle);
+            filasAfectadas = st.executeUpdate();
+            this.desconectar();
+            return filasAfectadas;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        }
+    }
+
+    public int eliminarOferta(int iddetalle) throws SQLException {
+        try {
+            String sql = "SELECT p.id_producto, dp.cantidad, p.cantidad AS cantidadpro FROM detalle_pedidos dp INNER JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN producto p ON o.id_producto= p.id_producto WHERE dp.id_detalle_pedido = ?";
+            int cantidad = 0;
+            int producto = 0;
+            int cantidadpro = 0;
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, iddetalle);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                cantidad = rs.getInt("cantidad");
+                producto = rs.getInt("id_producto");
+                cantidadpro = rs.getInt("cantidadpro");
+            }
+            String sql3 = "UPDATE producto SET cantidad =? WHERE id_producto = ?";
+            st = conexion.prepareStatement(sql3);
+            st.setInt(1, cantidadpro + cantidad);
+            st.setInt(2, producto);
+            st.executeUpdate();
+            String sql4 = "DELETE FROM detalle_pedidos WHERE id_detalle_pedido = ?";
+            int filasAfectadas = 0;
+            st = conexion.prepareStatement(sql4);
             st.setInt(1, iddetalle);
             filasAfectadas = st.executeUpdate();
             this.desconectar();

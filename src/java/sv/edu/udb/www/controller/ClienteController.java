@@ -68,6 +68,9 @@ public class ClienteController extends HttpServlet {
                     case "eliminarArticulo":
                         eliminarArticulo(request, response);
                         break;
+                    case "eliminarOferta":
+                        eliminarOferta(request, response);
+                        break;
                     case "verCarrito":
                         verCarrito(request, response);
                         break;
@@ -189,7 +192,7 @@ public class ClienteController extends HttpServlet {
             } else {
                 request.setAttribute("oferta", clienteModel.ofertaProducto(idpro));
                 request.setAttribute("comentarios", clienteModel.listaComentarios(idpro));
-                request.getRequestDispatcher("/cliente/producto.jsp").forward(request, response);
+                request.getRequestDispatcher("/cliente/oferta.jsp").forward(request, response);
             }
         } catch (ServletException | IOException | SQLException ex) {
             Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
@@ -366,20 +369,42 @@ public class ClienteController extends HttpServlet {
             int user = (int) request.getSession().getAttribute("usuario");
             if (clienteModel.agregarOferta(user, idoferta, cantidad) > 0) {
                 request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-                request.setAttribute("producto", clienteModel.verProducto(idproduct));
-                request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
+                request.getSession().setAttribute("pedidosOfert", clienteModel.listaCarritoOfertas((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("exito", "Has añadido este articulo a tu carrito.");
                 response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct=" + idproduct);
             } else {
                 request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-                request.setAttribute("producto", clienteModel.verProducto(idproduct));
-                request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
+                request.getSession().setAttribute("pedidosOfert", clienteModel.listaCarritoOfertas((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("fracaso", "Ya no hay existencias de este producto");
                 response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct=" + idproduct);
+            }
+        } catch (SQLException | IOException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void eliminarOferta(HttpServletRequest request, HttpServletResponse response) {
+        try (PrintWriter out = response.getWriter()) {
+
+            int iddetallepedido = Integer.parseInt(request.getParameter("iddetalle"));
+            String urlactual = "/" + request.getParameter("url");
+            if (clienteModel.eliminarOferta(iddetallepedido) > 0) {
+                if (urlactual.equals("/usuarios.do")) {
+                    request.getSession().setAttribute("exito", "El item se ha eliminado exitosamente");
+                    request.getSession().setAttribute("pedidosOfert", clienteModel.listaCarritoOfertas((int) request.getSession().getAttribute("usuario")));
+                    request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
+                    request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
+                    response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=publicIndex");
+                }
+                request.getSession().setAttribute("exito", "El item se ha eliminado exitosamente");
+                request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
+                request.getSession().setAttribute("pedidosOfert", clienteModel.listaCarritoOfertas((int) request.getSession().getAttribute("usuario")));
+                request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
+                out.println("<script>window.location = document.referrer;</script>");
             }
         } catch (SQLException | IOException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
