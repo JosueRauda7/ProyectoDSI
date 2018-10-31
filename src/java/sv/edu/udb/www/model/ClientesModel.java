@@ -114,8 +114,8 @@ public class ClientesModel extends Conexion {
 
     public Producto verProducto(int idpro) throws SQLException {
         try {
-            String sql = "SELECT DISTINCT * FROM producto p INNER JOIN sub_categoria sc on p.id_sub_categoria = sc.id_sub_categoria INNER JOIN empresa em on p.id_empresa = em.id_empresa INNER JOIN estado_producto es on p.id_estado_producto = es.id_estado_producto INNER JOIN imagen i on i.id_producto = p.id_producto WHERE p.id_producto = ? GROUP by i.id_producto";
             this.conectar();
+            String sql = "SELECT DISTINCT * FROM producto p INNER JOIN sub_categoria sc on p.id_sub_categoria = sc.id_sub_categoria INNER JOIN empresa em on p.id_empresa = em.id_empresa INNER JOIN estado_producto es on p.id_estado_producto = es.id_estado_producto INNER JOIN imagen i on i.id_producto = p.id_producto WHERE p.id_producto = ? GROUP by i.id_producto";
             st = conexion.prepareStatement(sql);
             st.setInt(1, idpro);
             rs = st.executeQuery();
@@ -135,6 +135,43 @@ public class ClientesModel extends Conexion {
                 producto.setEstadoProducto(new EstadoProducto(rs.getString("estado")));
                 this.desconectar();
                 return producto;
+            }
+            this.desconectar();
+            return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+    }
+
+    public Oferta ofertaProducto(int idpro) throws SQLException {
+        try {
+            String sql2 = "SELECT DISTINCT o.id_oferta,o.total_descuento,o.descuento,p.id_producto,p.producto,p.descripcion,p.precio_regular,p.cantidad,sc.subcategoria,i.Url_imagen,em.Urlempresa,em.empresa FROM ofertas o INNER JOIN producto p ON o.id_producto = p.id_producto INNER JOIN sub_categoria sc ON p.id_sub_categoria = sc.id_sub_categoria INNER JOIN empresa em ON p.id_empresa = em.id_empresa INNER JOIN imagen i on i.id_producto = p.id_producto WHERE p.id_producto = ? AND o.id_estado_oferta =1 GROUP by i.id_producto";
+            this.conectar();
+            st = conexion.prepareStatement(sql2);
+            st.setInt(1, idpro);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Oferta oferta = new Oferta();
+                Producto producto = new Producto();
+                Empresa empresa = new Empresa();
+                producto.setIdProducto(rs.getInt("id_producto"));
+                producto.setProducto(rs.getString("producto"));
+                producto.setDescripcion(rs.getString("descripcion"));
+                producto.setPrecioRegular(rs.getString("precio_regular"));
+                producto.setCantidad(rs.getString("cantidad"));
+                producto.setUrlImagen(rs.getString("Url_imagen"));
+                empresa.setEmpresa(rs.getString("empresa"));
+                empresa.setUrlEmpresa(rs.getString("Urlempresa"));
+                producto.setEmpresa(empresa);
+                producto.setSubCategoria(new SubCategoria(rs.getString("subcategoria")));
+                oferta.setIdOferta(rs.getInt("id_oferta"));
+                oferta.setTotalDescuento(rs.getDouble("total_descuento"));
+                oferta.setDescuento(rs.getInt("descuento"));
+                oferta.setProducto(producto);
+                this.desconectar();
+                return oferta;
             }
             this.desconectar();
             return null;
@@ -207,6 +244,70 @@ public class ClientesModel extends Conexion {
             return 0;
         } finally {
             this.desconectar();
+        }
+    }
+
+    public int agregarOferta(int iduser, int idoferta, int cantidad) throws SQLException {
+        try {
+            String sql = "SELECT MAX(id_pedido) AS pedido FROM pedidos WHERE id_usuario = ?";
+            int pedido = 0;
+            int filasAfectadas = 0;
+            int countofert = 0;
+            int existencias = 0;
+            int dpcantidad = 0;
+            int producto = 0;
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, iduser);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                pedido = rs.getInt("pedido");
+            }
+            String sql2 = "SELECT p.cantidad, COUNT(dp.id_oferta) AS countofert, dp.cantidad as dpcantidad, p.id_producto FROM detalle_pedidos dp INNER JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN producto p ON o.id_producto = p.id_producto WHERE id_pedido =? AND dp.id_oferta = ?";
+            st = conexion.prepareStatement(sql2);
+            st.setInt(1, pedido);
+            st.setInt(2, idoferta);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                countofert = rs.getInt("countofert");
+                existencias = rs.getInt("cantidad");
+                dpcantidad = rs.getInt("dpcantidad");
+                producto = rs.getInt("id_producto");
+            }
+            if (existencias <= 0 || existencias < cantidad) {
+                return 0;
+            } else {
+                if (countofert == 0) {
+                    String sql3 = "INSERT INTO detalle_pedidos(id_pedido, id_oferta,cantidad) VALUES(?,?,?)";
+                    st = conexion.prepareStatement(sql3);
+                    st.setInt(1, pedido);
+                    st.setInt(2, idoferta);
+                    st.setInt(3, cantidad);
+                    st.executeUpdate();
+                    String sql4 = "UPDATE producto SET cantidad = ? WHERE id_producto =?";
+                    st = conexion.prepareStatement(sql4);
+                    st.setInt(1, existencias - cantidad);
+                    st.setInt(2, producto);
+                    filasAfectadas = st.executeUpdate();
+                    return filasAfectadas;                
+                }else{
+                 String sql3 = "UPDATE detalle_pedidos SET cantidad = ? WHERE id_pedido = ? AND id_oferta = ?";
+                    st = conexion.prepareStatement(sql3);
+                    st.setInt(1, dpcantidad + cantidad);
+                    st.setInt(2, pedido);
+                    st.setInt(3, idoferta);
+                    st.executeUpdate();
+                    String sql4 = "UPDATE producto SET cantidad = ? WHERE id_producto =?";
+                    st = conexion.prepareStatement(sql4);
+                    st.setInt(1, existencias - cantidad);
+                    st.setInt(2, producto);
+                    return filasAfectadas = st.executeUpdate();
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
         }
     }
 
