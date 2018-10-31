@@ -45,7 +45,7 @@
                                     <span class="cart-content-count">x ${ofertas.cantidad}</span>
                                     <strong class="textos"><a href="${base}/clientes.do?operacion=verProducto&idproduct=${ofertas.oferta.idOferta}">${ofertas.oferta.titulo}</a></strong>
                                     <em>$${ofertas.oferta.totalDescuento}</em>
-                                    <a  style="margin-left: 90%;margin-top: -8%;"  class="del-goods">&nbsp;</a>
+                                    <a  style="margin-left: 90%;margin-top: -8%; cursor: pointer;" onclick="javascript:eliminar3('${ofertas.idDetallePedido}')" class="del-goods">&nbsp;</a>
                                 </li>
                             </c:forEach>
                              </c:if>
@@ -162,6 +162,25 @@
                 if (willDelete) {
 
                     location.href = 'clientes.do?operacion=eliminarArticulo&iddetalle=' + id + '&url=' + url;
+                }
+            });
+        }
+        ;
+        
+                function eliminar3(id) {
+
+            var URLactual = window.location;
+            var url = URLactual.toString().substring(34);
+            swal({
+                title: '¿Seguro que quieres eliminar este articulo del carrito?',
+                text: "Una vez eliminado, no habra vuelta atras.",
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+
+                    location.href = 'clientes.do?operacion=eliminarOferta&iddetalle=' + id + '&url=' + url;
                 }
             });
         }

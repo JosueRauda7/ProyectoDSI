@@ -45,7 +45,7 @@
                         <div class="carousel-caption d-none d-md-block" style="background-color: rgba(0,0,0,.5)">
                             <h1 style="color: orangered;">${ofertas.titulo}</h1>
                             <p>${ofertas.descripcion}</p>
-                            <a href="#ultimos"><button class="btn btn-primary">Ir a la oferta</button></a>
+                            <a href="${base}/clientes.do?operacion=verProducto&idproduct=${ofertas.producto.idProducto}"><button class="btn btn-primary">Ir a la oferta</button></a>
                         </div>
                     </div>
                 </c:forEach>
