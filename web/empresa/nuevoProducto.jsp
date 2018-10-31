@@ -108,13 +108,86 @@
                     </div>
                 </div>
 
-                <div class="panel panel-body col-md-4" style="margin-left: 5%;" >
+                <div class="panel panel-body col-md-4" style="margin-left: 5%; float: left;" >
                     <p style="text-align: center;">Galería del producto</p>
+                    <div id="imgbox1">
+                        <div class="text-center">
+                            <img id="img1" height="30%" width="45%" />
+                        </div>                        
+                    </div>
+                    <div class="hidden" id="imgbox2">
+                        <div class="text-center">
+                            <img id="img2" height="30%" width="45%" />
+                        </div>                        
+                    </div>
+                    <div class="hidden" id="imgbox3">
+                        <div class="text-center">
+                            <img id="img3" height="30%" width="45%" />
+                        </div>                        
+                    </div>
+                    <div class="hidden" id="imgbox4">
+                        <div class="text-center">
+                            <img id="img4" height="30%" width="45%" />
+                        </div>                        
+                    </div>
                     <hr>
+                    <a class="glyphicon glyphicon-plus-sign" title="Añadir fotos a galería" data-toggle="modal" href="#exampleModal"> Añadir fotos a galería</a>
                 </div>
 
+                <div class="modal fade" id="exampleModal" >
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h5 class="modal-title" id="exampleModalLabel">Galería de imágenes</h5>                                                                            
+                            </div>
+                            <div style="display: inline-block;">
+                                <div id="imgboxM1">
+                                    <div>
+                                        <label for="imagen1">
+                                            <img id="imgM1" style="cursor: pointer; max-width: 80%; max-height: 80%;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
+                                        </label>
+                                    </div>
+
+                                    <input type="file" style="display: none;" name="imagen1" id="imagen1" class="form-control" data-allowed-file-extensions='["jpg", "png"]'
+                                           value="${base}/images/${imagenes.urlimagen}"/>
+                                </div>
+                                <div class="hidden" id="imgboxM2">
+                                    <div>
+                                        <label for="imagen2">
+                                            <img id="imgM2" style="cursor: pointer; max-width: 80%; max-height: 80%;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
+                                        </label>
+                                    </div>
+                                    <input type="file" style="display: none;" name="imagen2" id="imagen2" class="form-control" data-allowed-file-extensions='["jpg", "png"]'
+                                           value="${base}/images/${imagenes.urlimagen}"/>
+                                </div>
+                                <div class="hidden" id="imgboxM3">
+                                    <div>
+                                        <label for="imagen3">
+                                            <img id="imgM3" style="cursor: pointer; max-width: 80%; max-height: 80%;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
+                                        </label>
+                                    </div>
+                                    <input style="display: none;" type="file" name="imagen3" id="imagen3" class="form-control" data-allowed-file-extensions='["jpg", "png"]'
+                                           value="${base}/images/${imagenes.urlimagen}"/>
+                                </div>
+                                <div class="hidden" id="imgboxM4">
+                                    <div>
+                                        <label for="imagen4">
+                                            <img id="imgM4" style="cursor: pointer; max-width: 80%; max-height: 80%;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
+                                        </label>
+                                    </div>
+                                    <input style="display: none;" type="file" name="imagen4" id="imagen4" class="form-control" data-allowed-file-extensions='["jpg", "png"]'
+                                           value="${base}/images/${imagenes.urlimagen}"/>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>        
+
 
 
         <ckeditor:replace replace="descripcion" basePath="${base}/ckeditor/" />
@@ -137,7 +210,15 @@
 
             function init() {
                 var inputFile = document.getElementById('imagen');
+                var inputFile1 = document.getElementById('imagen1');
+                var inputFile2 = document.getElementById('imagen2');
+                var inputFile3 = document.getElementById('imagen3');
+                var inputFile4 = document.getElementById('imagen4');
                 inputFile.addEventListener('change', mostrarImagen, false);
+                inputFile1.addEventListener('change', mostrarImagen1, false);
+                inputFile2.addEventListener('change', mostrarImagen2, false);
+                inputFile3.addEventListener('change', mostrarImagen3, false);
+                inputFile4.addEventListener('change', mostrarImagen4, false);
             }
 
             function mostrarImagen(event) {
@@ -145,6 +226,48 @@
                 var reader = new FileReader();
                 reader.onload = function (event) {
                     var img = document.getElementById('img');
+                    img.src = event.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+            function mostrarImagen1(event) {
+                var file = event.target.files[0];
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var img = document.getElementById('imgM1');
+                    img.src = event.target.result;
+                    $('#imgboxM2').removeClass("hidden");
+                }
+                reader.readAsDataURL(file);
+
+            }
+            function mostrarImagen2(event) {
+                var file = event.target.files[0];
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var img = document.getElementById('imgM2');
+                    img.src = event.target.result;
+                    $('#imgboxM3').removeClass("hidden");
+                }
+                reader.readAsDataURL(file);
+
+            }
+            function mostrarImagen3(event) {
+                var file = event.target.files[0];
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var img = document.getElementById('imgM3');
+                    img.src = event.target.result;
+                    $('#imgboxM4').removeClass("hidden");
+                }
+                reader.readAsDataURL(file);
+
+            }
+            function mostrarImagen4(event) {
+                var file = event.target.files[0];
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var img = document.getElementById('imgM4');
                     img.src = event.target.result;
                 }
                 reader.readAsDataURL(file);
