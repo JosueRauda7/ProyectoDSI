@@ -14,6 +14,19 @@
         <title>Empresa</title>
 
         <jsp:include page="head.jsp"/>
+        <style>
+            .remove{
+                position:absolute;
+                top:0px;
+                opacity:1;
+                transition:opacity 0.5s linear;
+                -webkit-transition:opacity 0.5s linear;
+                cursor:pointer;
+                border:0px;
+                width:32px;
+                height:32px
+            }
+        </style>
     </head>
     <!-- Head END -->
 
@@ -112,24 +125,24 @@
                     <p style="text-align: center;">Galería del producto</p>
 
 
-                    <div id="imgbox1" class="col-md-3">
+                    <div id="imgbox1" class="hidden col-md-3">
                         <div class="text-center">
-                            <img id="img1" height="30%" width="45%" />
+                            <img id="img1" height="30%" width="100%"  />
                         </div>                        
                     </div>
                     <div class="hidden col-md-3" id="imgbox2">
                         <div class="text-center">
-                            <img id="img2" height="30%" width="45%" />
+                            <img id="img2" height="30%" width="100%" />
                         </div>                        
                     </div>
                     <div class="hidden col-md-3" id="imgbox3">
                         <div class="text-center">
-                            <img id="img3" height="30%" width="45%" />
+                            <img id="img3" height="30%" width="100%" />
                         </div>                        
                     </div>
                     <div class="hidden col-md-3" id="imgbox4">
                         <div class="text-center">
-                            <img id="img4" height="30%" width="45%" />
+                            <img id="img4" height="30%" width="100%" />
                         </div>                        
                     </div>
 
@@ -141,52 +154,60 @@
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="cancelar();">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                                 <h5 class="modal-title" id="exampleModalLabel">Galería de imágenes</h5>                                                                            
                             </div>
-                            <div style="">
-
+                            <div>
                                 <div class="row" style="padding: 20px;">
-                                    <div id="imgboxM1" class="col">
-                                        <div>
+                                    <div id="imgboxM1" class="col-md-3">
+                                        <div>                                           
                                             <label for="imagen1">
-                                                <img id="imgM1" style="cursor: pointer; overflow: hidden; width: 50%;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
+                                                <img id="imgM1" style="cursor: pointer; overflow: hidden; width: 80%;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
+
                                             </label>
+                                            <img id="imgM1r" src="${base}/images/remove.png" title="eliminar" class="remove hidden" onclick="quitarimagen('imagen1', 'imgM1', 'imgbox1', 'img1', 'imgM1r');">
                                         </div>
 
                                         <input type="file" style="display: none;" name="imagen1" id="imagen1" class="form-control" data-allowed-file-extensions='["jpg", "png"]'
                                                value="${base}/images/${imagenes.urlimagen}"/>
                                     </div>
-                                    <div class="hidden col" id="imgboxM2">
+                                    <div class="hidden col-md-3" id="imgboxM2">
                                         <div>
                                             <label for="imagen2">
-                                                <img id="imgM2" style="cursor: pointer; overflow: hidden; width: 50%;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
+                                                <img id="imgM2" style="cursor: pointer; overflow: hidden; width: 80%;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
                                             </label>
+                                            <img id="imgM2r" src="${base}/images/remove.png" title="eliminar" class="remove hidden" onclick="quitarimagen('imagen2', 'imgM2', 'imgbox2', 'img2', 'imgM2r');">
                                         </div>
                                         <input type="file" style="display: none;" name="imagen2" id="imagen2" class="form-control" data-allowed-file-extensions='["jpg", "png"]'
                                                value="${base}/images/${imagenes.urlimagen}"/>
                                     </div>
-                                    <div class="hidden col" id="imgboxM3">
+                                    <div class="hidden col-md-3" id="imgboxM3">
                                         <div>
                                             <label for="imagen3">
-                                                <img id="imgM3" style="cursor: pointer; overflow: hidden; width: 50%;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
+                                                <img id="imgM3" style="cursor: pointer; overflow: hidden; width: 80%;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
                                             </label>
+                                            <img id="imgM3r" src="${base}/images/remove.png" title="eliminar" class="remove hidden" onclick="quitarimagen('imagen3', 'imgM3', 'imgbox3', 'img3', 'imgM3r');">
                                         </div>
                                         <input style="display: none;" type="file" name="imagen3" id="imagen3" class="form-control" data-allowed-file-extensions='["jpg", "png"]'
                                                value="${base}/images/${imagenes.urlimagen}"/>
                                     </div>
-                                    <div class="hidden col" id="imgboxM4">
+                                    <div class="hidden col-md-3" id="imgboxM4">
                                         <div>
                                             <label for="imagen4">
-                                                <img id="imgM4" style="cursor: pointer; overflow: hidden; width: 50%;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
+                                                <img id="imgM4" style="cursor: pointer; overflow: hidden; width: 80%;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
                                             </label>
+                                            <img id="imgM4r" src="${base}/images/remove.png" title="eliminar" class="remove hidden" onclick="quitarimagen('imagen4', 'imgM4', 'imgbox4', 'img4', 'imgM4r');">
                                         </div>
                                         <input style="display: none;" type="file" name="imagen4" id="imagen4" class="form-control" data-allowed-file-extensions='["jpg", "png"]'
                                                value="${base}/images/${imagenes.urlimagen}"/>
                                     </div> 
                                 </div>
+                            </div>
+                            <div class="modal-footer" style="display: inline-block">
+                                <button type="button" class="btn btn-secondary " data-dismiss="modal" onclick="cancelar();">Cancelar</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="mostrar();">Añadir</button>
                             </div>
                         </div>
                     </div>
@@ -243,7 +264,9 @@
         reader.onload = function (event) {
             var img = document.getElementById('imgM1');
             img.src = event.target.result;
+            document.getElementById('img1').src = event.target.result;
             $('#imgboxM2').removeClass("hidden");
+            $('#imgM1r').removeClass("hidden");
         }
         reader.readAsDataURL(file);
 
@@ -254,7 +277,9 @@
         reader.onload = function (event) {
             var img = document.getElementById('imgM2');
             img.src = event.target.result;
+            document.getElementById('img2').src = event.target.result;
             $('#imgboxM3').removeClass("hidden");
+            $('#imgM2r').removeClass("hidden");
         }
         reader.readAsDataURL(file);
 
@@ -265,7 +290,9 @@
         reader.onload = function (event) {
             var img = document.getElementById('imgM3');
             img.src = event.target.result;
+            document.getElementById('img3').src = event.target.result;
             $('#imgboxM4').removeClass("hidden");
+            $('#imgM3r').removeClass("hidden");
         }
         reader.readAsDataURL(file);
 
@@ -276,10 +303,43 @@
         reader.onload = function (event) {
             var img = document.getElementById('imgM4');
             img.src = event.target.result;
+            document.getElementById('img4').src = event.target.result;
+            $('#imgM4r').removeClass("hidden");
         }
         reader.readAsDataURL(file);
     }
 
+    function quitarimagen(input, img, imgbox, img2, remove) {
+        var inputs = document.getElementById(input);
+        var imgs = document.getElementById(img);
+        inputs.value = '';
+        imgs.src = '${base}/images/add-image.png';
+        document.getElementById(img2).src = '';
+        $('#' + imgbox).addClass("hidden");        
+        $('#' + remove).addClass("hidden");
+    }
+
+    function cancelar() {
+        var i;
+        for (i = 1; i <= 4; i++) {
+            document.getElementById('imgM' + i).src = '${base}/images/add-image.png';
+            document.getElementById('imagen' + i).values = '';
+            
+            $('#imgM' + i + 'r').addClass("hidden");
+            if (i > 1) {
+                $('#imgboxM' + i).addClass("hidden");
+            }
+        }
+    }
+
+    function mostrar() {
+        var i;
+        for (i = 1; i <= 4; i++) {
+
+                $('#imgbox' + i).removeClass("hidden");
+            
+        }
+    }
     $(document).ready(function () {
         $('select[name=categoria]').on('change', function () {
             $.ajax({
