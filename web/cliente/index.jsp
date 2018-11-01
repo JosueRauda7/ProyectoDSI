@@ -93,8 +93,9 @@
                                                     </div>
                                                     <h3 class="text-center"><a href="${base}/clientes.do?operacion=verProducto&idproduct=${ultpro.idProducto}">${ultpro.producto}</a></h3>
                                                     <div class="pi-price">Precio: $${ultpro.precioRegular}</div>
-
+                                                    <a href="${base}/clientes.do?operacion=agregarProducto&idproduct=${ultpro.idProducto}&cantidad=1" class="btn btn-default add2cart">Agregar al carrito</a>
                                                 </div>
+                                                <div class="sticker sticker-new"></div>
                                             </div>
                                         </c:forEach>
                                     </div>

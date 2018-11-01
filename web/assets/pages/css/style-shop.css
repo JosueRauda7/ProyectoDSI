@@ -359,8 +359,9 @@ Header and header elements
 	background: url(../../pages/img/sale2.png) no-repeat;
 }
 .sticker-new {
-	background: url(../../pages/img/new.png) no-repeat;
+	background: url(../../pages/img/new2.png) no-repeat;
 	left: auto;
+        margin-right: 4%;
 	right: 0;
 }
 .pi-img-wrapper {
