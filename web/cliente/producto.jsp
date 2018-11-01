@@ -84,13 +84,13 @@
                         <div id="myTabContent" class="tab-content">
                             <div class="tab-pane fade" id="Description">
                                 <div class="contenofer">
-                                    <c:forEach var="ofertas" items="${requestScope.listaOfertas}">
-                                        <div class="oferta" style="background-image: url('images/${ofertas.urlFoto}');">
+                                    <c:forEach var="productos" items="${requestScope.productosRelacionados}">
+                                        <div class="oferta" style="background-image: url('images/${productos.urlImagen}');">
                                             <div class="oferinfo">
-                                                <h4 class="text-center">${ofertas.titulo}</h4>
+                                                <h4 class="text-center">${productos.producto}</h4>
                                                 <hr>
-                                                <p>${ofertas.descripcion}</p>
-                                                <button class="btn btn-primary">Ver oferta</button>
+                                                <p>${productos.descripcion}</p>
+                                                <a href="${base}/clientes.do?operacion=verProducto&idproduct=${productos.idProducto}"><button class="btn btn-primary">Ver producto</button></a>
                                             </div>
                                         </div>
                                     </c:forEach>

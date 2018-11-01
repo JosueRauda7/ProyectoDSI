@@ -90,14 +90,27 @@ public class ClientesModel extends Conexion {
 
     public List<Producto> productosRelacionados(int idproducto) throws SQLException {
         try {
-            String sql = "SELECT *,CONCAT(LEFT(descripcion,100), '...') AS descrip FROM ofertas WHERE id_producto = ? AND id_estado_oferta = 1";
-            List<Producto> lista = new ArrayList<>();
+            String sql = "SELECT id_sub_categoria FROM producto WHERE id_producto = ?";
             this.conectar();
+            int idsubcat = 0;
             st = conexion.prepareStatement(sql);
             st.setInt(1, idproducto);
             rs = st.executeQuery();
+            if(rs.next()){
+            idsubcat = rs.getInt("id_sub_categoria");
+            }
+            String sql2 = "SELECT DISTINCT p.id_producto ,p.producto, CONCAT(LEFT(p.descripcion,100), '...') AS descripcion, i.Url_imagen FROM producto p INNER JOIN imagen i ON p.id_producto = i.id_producto WHERE id_sub_categoria = ? AND p.id_producto <> ? GROUP by i.id_producto";
+            List<Producto> lista = new ArrayList<>();         
+            st = conexion.prepareStatement(sql2);
+            st.setInt(1, idsubcat);
+            st.setInt(2, idproducto);
+            rs = st.executeQuery();
             while (rs.next()) {
                 Producto producto = new Producto();
+                producto.setProducto(rs.getString("producto"));
+                producto.setDescripcion(rs.getString("descripcion"));
+                producto.setIdProducto(rs.getInt("id_producto"));
+                producto.setUrlImagen(rs.getString("Url_imagen"));
                 lista.add(producto);
             }
             this.desconectar();
