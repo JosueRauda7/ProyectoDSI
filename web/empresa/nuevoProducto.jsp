@@ -149,38 +149,38 @@
                             <div style="">
 
                                 <div class="row" style="padding: 20px;">
-                                    <div id="imgboxM1" class="col-md-3">
+                                    <div id="imgboxM1" class="col">
                                         <div>
                                             <label for="imagen1">
-                                                <img id="imgM1" style="cursor: pointer; overflow: hidden; width: 200px;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
+                                                <img id="imgM1" style="cursor: pointer; overflow: hidden; width: 50%;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
                                             </label>
                                         </div>
 
                                         <input type="file" style="display: none;" name="imagen1" id="imagen1" class="form-control" data-allowed-file-extensions='["jpg", "png"]'
                                                value="${base}/images/${imagenes.urlimagen}"/>
                                     </div>
-                                    <div class="hidden col-md-3" id="imgboxM2">
+                                    <div class="hidden col" id="imgboxM2">
                                         <div>
                                             <label for="imagen2">
-                                                <img id="imgM2" style="cursor: pointer; overflow: hidden; width: 200px;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
+                                                <img id="imgM2" style="cursor: pointer; overflow: hidden; width: 50%;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
                                             </label>
                                         </div>
                                         <input type="file" style="display: none;" name="imagen2" id="imagen2" class="form-control" data-allowed-file-extensions='["jpg", "png"]'
                                                value="${base}/images/${imagenes.urlimagen}"/>
                                     </div>
-                                    <div class="hidden col-md-3" id="imgboxM3">
+                                    <div class="hidden col" id="imgboxM3">
                                         <div>
                                             <label for="imagen3">
-                                                <img id="imgM3" style="cursor: pointer; overflow: hidden; width: 200px;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
+                                                <img id="imgM3" style="cursor: pointer; overflow: hidden; width: 50%;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
                                             </label>
                                         </div>
                                         <input style="display: none;" type="file" name="imagen3" id="imagen3" class="form-control" data-allowed-file-extensions='["jpg", "png"]'
                                                value="${base}/images/${imagenes.urlimagen}"/>
                                     </div>
-                                    <div class="hidden col-md-3" id="imgboxM4">
+                                    <div class="hidden col" id="imgboxM4">
                                         <div>
                                             <label for="imagen4">
-                                                <img id="imgM4" style="cursor: pointer; overflow: hidden; width: 200px;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
+                                                <img id="imgM4" style="cursor: pointer; overflow: hidden; width: 50%;" src="${base}/images/add-image.png" alt ="Click aquí para subir tu foto" title ="Click aquí para subir tu foto" />
                                             </label>
                                         </div>
                                         <input style="display: none;" type="file" name="imagen4" id="imagen4" class="form-control" data-allowed-file-extensions='["jpg", "png"]'

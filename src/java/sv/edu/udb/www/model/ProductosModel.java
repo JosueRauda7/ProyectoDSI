@@ -292,7 +292,7 @@ public class ProductosModel extends Conexion {
                 String sql = "Select DISTINCT * from producto p inner join estado_producto es on p.id_estado_producto= es.id_estado_producto "
                         + "inner join sub_categoria sc on p.id_sub_categoria=sc.id_sub_categoria inner join categoria c ON c.id_categoria = sc.id_categoria "
                         + "inner JOIN empresa e on p.id_empresa=e.id_empresa INNER JOIN imagen i ON i.id_producto= p.id_producto "
-                        + " where es.id_estado_producto=2 and (p.producto LIKE '" + nombre + "%' OR sc.subcategoria LIKE '" + nombre + "%' OR c.categoria LIKE '" + nombre + "%')";
+                        + " where es.id_estado_producto=2 and (p.producto LIKE '" + nombre + "%' OR sc.subcategoria LIKE '" + nombre + "%' OR c.categoria LIKE '" + nombre + "%') GROUP BY p.id_producto";
                 this.conectar();
                 st = conexion.prepareStatement(sql);
 
@@ -300,7 +300,7 @@ public class ProductosModel extends Conexion {
                 String sql = "Select DISTINCT * from producto p inner join estado_producto es on p.id_estado_producto= es.id_estado_producto "
                         + "inner join sub_categoria sc on p.id_sub_categoria=sc.id_sub_categoria inner join categoria c ON c.id_categoria = sc.id_categoria "
                         + "inner JOIN empresa e on p.id_empresa=e.id_empresa INNER JOIN imagen i ON i.id_producto= p.id_producto"
-                        + " where es.id_estado_producto=2 and (p.producto LIKE '" + nombre + "%' OR sc.subcategoria LIKE '" + nombre + "%' OR c.categoria LIKE '" + nombre + "%') and c.id_categoria = ?";
+                        + " where es.id_estado_producto=2 and (p.producto LIKE '" + nombre + "%' OR sc.subcategoria LIKE '" + nombre + "%' OR c.categoria LIKE '" + nombre + "%') and c.id_categoria = ? GROUP BY p.id_producto";
                 this.conectar();
                 st = conexion.prepareStatement(sql);
                 st.setString(1, idCategoria);
