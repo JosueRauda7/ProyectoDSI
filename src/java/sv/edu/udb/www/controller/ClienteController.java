@@ -183,7 +183,7 @@ public class ClienteController extends HttpServlet {
     private void verProducto(HttpServletRequest request, HttpServletResponse response) {
         try {
             int idpro = Integer.parseInt(request.getParameter("idproduct"));
-            request.setAttribute("listaOfertas", clienteModel.ofertasProducto(idpro));
+            request.setAttribute("listaOfertas", clienteModel.productosRelacionados(idpro));
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
             if (clienteModel.ofertaProducto(idpro) == null) {
                 request.setAttribute("producto", clienteModel.verProducto(idpro));

@@ -78,7 +78,7 @@
                     
                     <div class="product-page-content">
                         <ul id="myTab" class="nav nav-tabs">
-                            <li><a href="#Description" data-toggle="tab">Ofertas relacionadas</a></li>                           
+                            <li><a href="#Description" data-toggle="tab">Productos relacionados</a></li>                           
                             <li class="active"><a href="#Reviews" data-toggle="tab">Comentarios</a></li>
                         </ul>
                         <div id="myTabContent" class="tab-content">
