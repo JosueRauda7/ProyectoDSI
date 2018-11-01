@@ -76,9 +76,9 @@
                                             <td class="goods-page text-center">
                                                 <c:choose>
                                                     <c:when test="${productos.estadoProducto.estado eq 'Activo'}">
-                                                        <a class="btn btn-secondary glyphicon glyphicon-plus" title="agregar" style="padding: 5%;" data-toggle="modal" href="#exampleModal"></a>
+                                                        <a class="btn btn-secondary glyphicon glyphicon-plus" title="agregar" style="padding: 5%;" data-toggle="modal" href="#exampleModal${productos.idProducto}"></a>
 
-                                                        <div class="modal fade" id="exampleModal">
+                                                        <div class="modal fade" id="exampleModal${productos.idProducto}">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">

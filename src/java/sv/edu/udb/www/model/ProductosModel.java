@@ -83,7 +83,7 @@ public class ProductosModel extends Conexion {
         }
     }
 
-    public int insertarProducto(Producto producto, int usuario, Imagen imagen) throws SQLException {
+    public int insertarProducto(Producto producto, int usuario, Imagen imagen, List imagenes) throws SQLException {
         try {
             int empresa = 0;
             int filasAfectadas = 0;
@@ -116,6 +116,16 @@ public class ProductosModel extends Conexion {
                 st.setString(1, imagen.getUrlimagen());
                 st.setInt(2, idproducto);
                 filasAfectadas = st.executeUpdate();
+
+                if (!imagenes.isEmpty()) {
+                    sql = "Insert into imagen VALUES (NULL,?,?)";
+                    st = conexion.prepareStatement(sql);
+                    for (int i = 0; i < imagenes.size(); i++) {
+                        st.setString(1, imagenes.get(i).toString());
+                        st.setInt(2, idproducto);
+                        filasAfectadas = st.executeUpdate();
+                    }
+                }
             }
 
             this.desconectar();

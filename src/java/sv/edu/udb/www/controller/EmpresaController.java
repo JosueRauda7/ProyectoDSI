@@ -190,6 +190,7 @@ public class EmpresaController extends HttpServlet {
             int usuario = Integer.parseInt(request.getSession().getAttribute("usuario").toString());
             Producto producto = new Producto();
             Imagen imagen = new Imagen();
+            List<String> imagenes = new ArrayList();
 
             producto.setProducto(multi.getParameter("producto"));
             producto.setDescripcion(multi.getParameter("descripcion"));
@@ -229,8 +230,29 @@ public class EmpresaController extends HttpServlet {
                 File ficheroTemp = multi.getFile("imagen");
                 imagen.setUrlimagen(ficheroTemp.getName());                
             }
+            
+            if(multi.getFile("imagen1")!=null){
+                File ficheroTemp = multi.getFile("imagen1");
+                imagenes.add(ficheroTemp.getName());
+            }
+            
+            if(multi.getFile("imagen2")!=null){
+                File ficheroTemp = multi.getFile("imagen2");
+                imagenes.add(ficheroTemp.getName());
+            }
+            
+            if(multi.getFile("imagen3")!=null){
+                File ficheroTemp = multi.getFile("imagen3");
+                imagenes.add(ficheroTemp.getName());
+            }
+            
+            if(multi.getFile("imagen4")!=null){
+                File ficheroTemp = multi.getFile("imagen4");
+                imagenes.add(ficheroTemp.getName());
+            }
+            
             if (listaErrores.isEmpty()) {
-                if (modeloProducto.insertarProducto(producto, usuario,imagen) == 1) {
+                if (modeloProducto.insertarProducto(producto, usuario,imagen,imagenes) == 1) {
                     request.getSession().setAttribute("exito", "Producto registrado existosamente.");
                 } else {
                     request.getSession().setAttribute("fracaso", "Ocurrio un error, no se pudo registrar el producto...");

@@ -41,11 +41,14 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
                     <!-- PRODUCT ITEM START -->
                     <div class="col-lg-4">
                         <div class="product-item">
-                            <div class="pi-img-wrapper">
-                                <img src="${base}/assets/pages/img/administrador/productosicon.png" style="min-height: 160px;" class="col-lg-7" alt="Berry Lace Dress">
+                            <div class="text-center">
+                                <img src="${base}/assets/pages/img/administrador/productosicon.png" style="min-height: 160px; border-radius: 150px;" class="col-lg-11" alt="Berry Lace Dress">
+                            </div><br>
+                            <h3 class="text-center"><a href="shop-item.html">Productos</a></h3>
+                            <div class="text-center">
+                                <a href="${base}/empresas.do?operacion=listar&estado=1" class="btn btn-default" 
+                                   style="color: #a8aeb3;border: 1px #ededed solid; padding: 3px 6px;">Administrar</a>
                             </div>
-                            <h3><a href="shop-item.html">Productos</a></h3>
-                            <a href="${base}/empresas.do?operacion=listar&estado=1" class="btn btn-default add2cart">Administrar</a>
                         </div>
                     </div>
                 </div>
