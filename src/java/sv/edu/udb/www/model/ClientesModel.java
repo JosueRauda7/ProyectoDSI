@@ -60,7 +60,7 @@ public class ClientesModel extends Conexion {
 
     public List<Oferta> ultimasOfertas() throws SQLException {
         try {
-            String sql = "SELECT titulo,id_producto, descripcion, total_descuento,descuento, Url_foto FROM ofertas WHERE id_estado_oferta = 1 ORDER BY id_oferta DESC LIMIT 3";
+            String sql = "SELECT id_oferta,titulo,id_producto, descripcion, total_descuento,descuento, Url_foto FROM ofertas WHERE id_estado_oferta = 1 ORDER BY id_oferta DESC LIMIT 6";
             List<Oferta> lista = new ArrayList<>();
             this.conectar();
             st = conexion.prepareStatement(sql);
@@ -68,6 +68,7 @@ public class ClientesModel extends Conexion {
             while (rs.next()) {
                 Oferta oferta = new Oferta();
                 Producto producto = new Producto();
+                oferta.setIdOferta(rs.getInt("id_oferta"));
                 oferta.setTitulo(rs.getString("titulo"));
                 oferta.setDescripcion(rs.getString("descripcion"));
                 oferta.setTotalDescuento(rs.getDouble("total_descuento"));

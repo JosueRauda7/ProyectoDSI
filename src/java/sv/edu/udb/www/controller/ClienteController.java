@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import sv.edu.udb.www.beans.Comentario;
+import sv.edu.udb.www.beans.Oferta;
 import sv.edu.udb.www.beans.Pedido;
+import sv.edu.udb.www.beans.Producto;
 import sv.edu.udb.www.model.CategoriasModel;
 import sv.edu.udb.www.model.ClientesModel;
 import sv.edu.udb.www.model.ProductosModel;
@@ -186,10 +188,18 @@ public class ClienteController extends HttpServlet {
             request.setAttribute("productosRelacionados", clienteModel.productosRelacionados(idpro));
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
             if (clienteModel.ofertaProducto(idpro) == null) {
+                Producto producto = new Producto();
+                producto = clienteModel.verProducto(idpro);
+                request.setAttribute("otrasImagenes", ProductoModel.otrasImagenesProducto(idpro, producto.getUrlImagen()));
                 request.setAttribute("producto", clienteModel.verProducto(idpro));
                 request.setAttribute("comentarios", clienteModel.listaComentarios(idpro));
                 request.getRequestDispatcher("/cliente/producto.jsp").forward(request, response);
             } else {
+                Producto producto = new Producto();
+                Oferta oferta = new Oferta();
+                oferta = clienteModel.ofertaProducto(idpro);
+                producto = oferta.getProducto();
+                request.setAttribute("otrasImagenes", ProductoModel.otrasImagenesProducto(idpro, producto.getUrlImagen()));
                 request.setAttribute("oferta", clienteModel.ofertaProducto(idpro));
                 request.setAttribute("comentarios", clienteModel.listaComentarios(idpro));
                 request.getRequestDispatcher("/cliente/oferta.jsp").forward(request, response);

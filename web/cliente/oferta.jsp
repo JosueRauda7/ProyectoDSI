@@ -28,7 +28,11 @@
                         <div class="product-main-image">
                             <img src="images/${requestScope.oferta.producto.urlImagen}" alt="Cool green dress with red bell" class="img-responsive" data-BigImgsrc="images/${requestScope.oferta.producto.urlImagen}">
                         </div>
-
+                        <div class="product-other-images">
+                            <c:forEach var="otrasimg" items="${requestScope.otrasImagenes}">
+                                <a href="images/${otrasimg.urlimagen}" class="fancybox-button" rel="photos-lib"><img alt="Berry Lace Dress" src="images/${otrasimg.urlimagen}"></a>
+                                </c:forEach>
+                        </div>
                     </div>
                     <div class="col-md-6 col-sm-6">
                         <h1>${requestScope.oferta.producto.producto}</h1>
@@ -80,19 +84,19 @@
                     <div class="sticker sticker-sale"></div>
                     <div class="product-page-content">
                         <ul id="myTab" class="nav nav-tabs">
-                            <li><a href="#Description" data-toggle="tab">Ofertas relacionadas</a></li>                           
+                            <li><a href="#Description" data-toggle="tab">Productos relacionados</a></li>                           
                             <li class="active"><a href="#Reviews" data-toggle="tab">Comentarios</a></li>
                         </ul>
                         <div id="myTabContent" class="tab-content">
                             <div class="tab-pane fade" id="Description">
                                 <div class="contenofer">
-                                   <c:forEach var="productos" items="${requestScope.productosRelacionados}">
+                                    <c:forEach var="productos" items="${requestScope.productosRelacionados}">
                                         <div class="oferta" style="background-image: url('images/${productos.urlImagen}');">
                                             <div class="oferinfo">
                                                 <h4 class="text-center">${productos.producto}</h4>
                                                 <hr>
                                                 <p>${productos.descripcion}</p>
-                                                  <a href="${base}/clientes.do?operacion=verProducto&idproduct=${productos.idProducto}"><button class="btn btn-primary">Ver producto</button></a>
+                                                <a href="${base}/clientes.do?operacion=verProducto&idproduct=${productos.idProducto}"><button class="btn btn-primary">Ver producto</button></a>
                                             </div>
                                         </div>
                                     </c:forEach>

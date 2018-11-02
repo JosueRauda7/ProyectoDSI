@@ -270,7 +270,7 @@ public class ProductosModel extends Conexion {
 
     public List<Producto> listaUltimosProductos() throws SQLException {
         try {
-            String sql = "SELECT DISTINCT i.id_producto, p.producto,p.descripcion, p.precio_regular, p.cantidad, i.Url_imagen FROM producto p INNER JOIN empresa e on p.id_empresa = e.id_empresa INNER JOIN sub_categoria s on p.id_sub_categoria = s.id_sub_categoria INNER JOIN imagen i ON i.id_producto= p.id_producto WHERE id_estado_producto=2 GROUP by i.id_producto ORDER by p.id_producto DESC LIMIT 6";
+            String sql = "SELECT DISTINCT i.id_producto, p.producto,p.descripcion, p.precio_regular, p.cantidad, i.Url_imagen, o.id_oferta FROM producto p INNER JOIN empresa e on p.id_empresa = e.id_empresa INNER JOIN sub_categoria s on p.id_sub_categoria = s.id_sub_categoria INNER JOIN imagen i ON i.id_producto= p.id_producto LEFT JOIN ofertas o ON p.id_producto = o.id_producto WHERE id_estado_producto=2 AND o.id_estado_oferta is null GROUP by i.id_producto ORDER by p.id_producto DESC LIMIT 6";
             List<Producto> lista = new ArrayList<>();
             this.conectar();
             st = conexion.prepareStatement(sql);
@@ -284,6 +284,31 @@ public class ProductosModel extends Conexion {
                 producto.setCantidad(rs.getString("cantidad"));
                 producto.setUrlImagen(rs.getString("Url_imagen"));
                 lista.add(producto);
+            }
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductosModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+    }
+
+    public List<Imagen> otrasImagenesProducto(int idproducto, String urlimg) throws SQLException{
+        try {
+            String sql = "SELECT * FROM imagen WHERE id_producto = ? AND Url_imagen <> ? ORDER BY id_imagen_producto";
+            List<Imagen> lista = new ArrayList<>();
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, idproducto);
+            st.setString(2, urlimg);
+            rs = st.executeQuery();
+            while(rs.next()){
+                Imagen imagen = new Imagen();
+                imagen.setIdImagenProducto(rs.getInt("id_imagen_producto"));
+                imagen.setUrlimagen(rs.getString("Url_imagen"));
+                imagen.setIdProducto(rs.getInt("id_producto"));
+                lista.add(imagen);
             }
             this.desconectar();
             return lista;

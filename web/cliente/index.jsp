@@ -103,57 +103,27 @@
                                 <!-- PRODUCT ITEM END -->
                                 <div class="row">
 
-                                    <div style="float:right;" class="row product-list">
-                                        <center><h1 style="text-align: center;">Tendencias</h1></center>
-                                        <!-- PRODUCT ITEM START -->
-
-                                        <div class="col-md-4 col-sm-6 col-xs-12">
-                                            <div class="product-item">
-                                                <div class="pi-img-wrapper">
-                                                    <img src="assets/pages/img/products/model1.jpg" class="img-responsive" alt="Berry Lace Dress">
-                                                    <div>
-                                                        <a href="assets/pages/img/products/model1.jpg" class="btn btn-default fancybox-button">Zoom</a>
-                                                        <a href="#" class="btn btn-default fancybox-fast-view">View</a>
+                                    <div  class="row product-list">
+                                      <center><h1>Ultimas ofertas</h1></center>
+                                        <hr>
+                                        <c:forEach var="ultofer" items="${requestScope.ultimasOfertas}">
+                                            <div class="col-md-4 col-sm-6 col-xs-12" >
+                                                <div class="product-item" style="height: 450px;">
+                                                    <div class="pi-img-wrapper">
+                                                        <img src="images/${ultofer.urlFoto}"  style="height: 350px;" class="img-responsive" alt="Berry Lace Dress">
+                                                        <div>
+                                                            <a href="images/${ultofer.urlFoto}" class="btn btn-default fancybox-button">Ver imagen</a>                               
+                                                        </div>
                                                     </div>
+                                                    <h3 class="text-center"><a href="${base}/clientes.do?operacion=verProducto&idproduct=${ultofer.producto.idProducto}">${ultofer.titulo}</a></h3>
+                                                    <div class="pi-price">Precio: $${ultofer.totalDescuento}</div>
+                                                    <a href="${base}/clientes.do?operacion=agregarOferta&idproducto=${ultofer.producto.idProducto}&cantidad=1&idoferta=${ultofer.idOferta}" class="btn btn-default add2cart">Agregar al carrito</a>
                                                 </div>
-                                                <h3><a href="shop-item.html">Berry Lace Dress Berry Lace Dress</a></h3>
-                                                <div class="pi-price">$29.00</div>
-                                                <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                                               <div class="sticker sticker-sale"></div>
                                             </div>
+                                        </c:forEach>
                                         </div>
-
-
-                                        <div class="col-md-4 col-sm-6 col-xs-12">
-                                            <div class="product-item">
-                                                <div class="pi-img-wrapper">
-                                                    <img src="assets/pages/img/products/model2.jpg" class="img-responsive" alt="Berry Lace Dress">
-                                                    <div>
-                                                        <a href="assets/pages/img/products/model2.jpg" class="btn btn-default fancybox-button">Zoom</a>
-                                                        <a href="#" class="btn btn-default fancybox-fast-view">View</a>
-                                                    </div>
-                                                </div>
-                                                <h3><a href="shop-item.html">Berry Lace Dress Berry Lace Dress</a></h3>
-                                                <div class="pi-price">$29.00</div>
-                                                <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-md-4 col-sm-6 col-xs-12">
-                                            <div class="product-item">
-                                                <div class="pi-img-wrapper">
-                                                    <img src="assets/pages/img/products/model3.jpg" class="img-responsive" alt="Berry Lace Dress">
-                                                    <div>
-                                                        <a href="assets/pages/img/products/model3.jpg" class="btn btn-default fancybox-button">Zoom</a>
-                                                        <a href="#" class="btn btn-default fancybox-fast-view">View</a>
-                                                    </div>
-                                                </div>
-                                                <h3><a href="shop-item.html">Berry Lace Dress Berry Lace Dress</a></h3>
-                                                <div class="pi-price">$29.00</div>
-                                                <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                      
                                 </div>
                                 <!-- PRODUCT ITEM END -->
                             </div>
