@@ -12,6 +12,7 @@
 <script src="assets/plugins/bootstrap-touchspin/bootstrap.touchspin.js" type="text/javascript"></script><!-- Quantity -->
 <script src="assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
 <script src="assets/plugins/rateit/src/jquery.rateit.js" type="text/javascript"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script><!-- for slider-range -->
 
 <script src="assets/plugins/sweetalert.min.js"></script>
 <script type="text/javascript" src="assets/plugins/bootstrap-show-password.min.js"></script>

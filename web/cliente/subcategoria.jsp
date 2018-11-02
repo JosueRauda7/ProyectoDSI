@@ -1,6 +1,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="base" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -9,6 +10,7 @@
     <!-- Head BEGIN -->
     <head>
         <title>Subcategoria</title>   
+        
         <jsp:include page="/head.jsp"/>        
         <jsp:include page="/scripts.jsp"/>
     </head>
@@ -39,7 +41,7 @@
                                                 <a href="images/${subcat.urlSubcategoria}" class="btn btn-default fancybox-button">Ver imagen</a>                               
                                             </div>
                                         </div>
-                                        <h3 style="margin-top: 7%;" class="text-center"><a href="shop-item.html">${subcat.subCategoria}</a></h3>
+                                        <h3 style="margin-top: 7%;" class="text-center"><a href="${base}/clientes.do?operacion=listaProductos&idsubcat=${subcat.idSubCategoria}">${subcat.subCategoria}</a></h3>
 
                                     </div>
                                 </div>

@@ -665,4 +665,23 @@ public class ClientesModel extends Conexion {
             return 0;
         }
     }
+    
+    public int countProducto(int idsucat) throws SQLException{
+        try {
+            String sql = "SELECT COUNT(id_producto) as filas FROM producto WHERE id_sub_categoria = ?";
+            int filas =0;
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(2, idsucat);
+            rs = st.executeQuery();
+            if(rs.next()){
+                filas = rs.getInt("filas");
+            }
+            return filas;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        }
+    }
 }

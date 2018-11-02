@@ -91,6 +91,9 @@ public class ClienteController extends HttpServlet {
                     case "agregarOferta":
                         agregarOferta(request, response);
                         break;
+                    case "listaProductos":
+                        listaProductos(request, response);
+                        break;
                 }
             } else {
                 request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
@@ -417,6 +420,18 @@ public class ClienteController extends HttpServlet {
                 out.println("<script>window.location = document.referrer;</script>");
             }
         } catch (SQLException | IOException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void listaProductos(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int idsubcat = Integer.parseInt(request.getParameter("idsubcat"));
+            int filas = clienteModel.countProducto(idsubcat);
+            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.setAttribute("paginas", (int) filas / 10);
+            request.getRequestDispatcher("/cliente/listaProductos.jsp").forward(request, response);
+        } catch (ServletException | IOException | SQLException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
