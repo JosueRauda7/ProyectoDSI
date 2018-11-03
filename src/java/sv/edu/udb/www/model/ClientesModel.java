@@ -668,7 +668,7 @@ public class ClientesModel extends Conexion {
 
     public int countProducto(int idsucat) throws SQLException {
         try {
-            String sql = "SELECT COUNT(id_producto) as filas FROM producto WHERE id_sub_categoria = ?";
+            String sql = "SELECT COUNT(p.id_producto) as filas FROM producto p LEFT JOIN ofertas o on o.id_producto = p.id_producto WHERE id_sub_categoria = ? AND o.id_oferta is null";
             int filas = 0;
             this.conectar();
             st = conexion.prepareStatement(sql);
@@ -685,24 +685,49 @@ public class ClientesModel extends Conexion {
         }
     }
 
-    public List<Oferta> listaProductosSubCat(int filter, int idsubcat) throws SQLException {
+    public List<Producto> listaProductosSubCat(int filter, int idsubcat) throws SQLException {
         try {
-            String sql = "SELECT DISTINCT i.id_producto, p.producto,p.descripcion, p.precio_regular, p.cantidad, i.Url_imagen, o.id_oferta,o.total_descuento FROM producto p INNER JOIN empresa e on p.id_empresa = e.id_empresa INNER JOIN sub_categoria s on p.id_sub_categoria = s.id_sub_categoria INNER JOIN imagen i ON i.id_producto= p.id_producto LEFT JOIN ofertas o ON p.id_producto = o.id_producto WHERE id_estado_producto=2 AND o.id_estado_oferta is null or o.id_estado_oferta is not null and o.id_estado_oferta=1 AND p.id_sub_categoria=? GROUP by i.id_producto ORDER by p.id_producto LIMIT ?,9";
+            String sql = "SELECT DISTINCT i.id_producto, p.producto, p.precio_regular, p.cantidad, i.Url_imagen, o.id_oferta FROM producto p INNER JOIN imagen i ON i.id_producto= p.id_producto LEFT JOIN ofertas o ON p.id_producto = o.id_producto WHERE id_estado_producto=2 AND o.id_estado_oferta is null AND p.id_sub_categoria = ? GROUP by i.id_producto ORDER by p.id_producto LIMIT ?,9";
+            List<Producto> lista = new ArrayList<>();
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, idsubcat);
+            st.setInt(2, filter);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Producto producto = new Producto();
+                producto.setIdProducto(rs.getInt("id_producto"));
+                producto.setProducto(rs.getString("producto"));
+                producto.setPrecioRegular(rs.getString("precio_regular"));
+                producto.setUrlImagen(rs.getString("Url_imagen"));
+                lista.add(producto);
+            }
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+    }
+
+    public List<Oferta> listaOfertasSubCat(int filter, int idsubcat) throws SQLException {
+        try {
+            String sql = "SELECT o.id_oferta, o.id_producto, o.titulo, o.Url_foto, o.total_descuento FROM ofertas o INNER JOIN producto p on o.id_producto = p.id_producto WHERE o.id_estado_oferta= 1 AND p.id_sub_categoria = ? LIMIT ?,9";
             List<Oferta> lista = new ArrayList<>();
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setInt(1, idsubcat);
             st.setInt(2, filter);
             rs = st.executeQuery();
-            while(rs.next()){
-                Producto producto = new Producto();
+            while (rs.next()) {
                 Oferta oferta = new Oferta();
+                Producto producto = new Producto();
                 oferta.setIdOferta(rs.getInt("id_oferta"));
+                oferta.setTitulo(rs.getString("titulo"));
                 oferta.setTotalDescuento(rs.getDouble("total_descuento"));
+                oferta.setUrlFoto(rs.getString("Url_foto"));
                 producto.setIdProducto(rs.getInt("id_producto"));
-                producto.setProducto(rs.getString("producto"));
-                producto.setPrecioRegular(rs.getString("precio_regular"));
-                producto.setUrlImagen(rs.getString("Url_imagen"));
                 oferta.setProducto(producto);
                 lista.add(oferta);
             }

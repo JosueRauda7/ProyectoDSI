@@ -94,9 +94,7 @@ public class ClienteController extends HttpServlet {
                     case "listaProductos":
                         listaProductos(request, response);
                         break;
-                    case "verificarCompra":
-                        verificarCompra(request, response);
-                        break;
+                    
                     case "otraPagina":
                         otraPagina(request, response);
                         break;
@@ -436,6 +434,8 @@ public class ClienteController extends HttpServlet {
             int filas = clienteModel.countProducto(idsubcat);
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
             request.setAttribute("listaProductos", clienteModel.listaProductosSubCat(0, idsubcat));
+            request.setAttribute("listaOfertas", clienteModel.listaOfertasSubCat(0, idsubcat));
+            request.setAttribute("pagina", 0);
             request.setAttribute("idsubcat", idsubcat);
             request.setAttribute("paginas", (int) filas / 10);
             request.getRequestDispatcher("/cliente/listaProductos.jsp").forward(request, response);
@@ -444,20 +444,6 @@ public class ClienteController extends HttpServlet {
         }
     }
 
-    private void verificarCompra(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            int idoferta = Integer.parseInt(request.getParameter("idoferta"));
-            int cantidad = Integer.parseInt(request.getParameter("cantidad"));
-            int idproduct = Integer.parseInt(request.getParameter("idproducto"));
-            if (idoferta != 0) {
-                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=agregarOferta&idproducto=" + idproduct + "&cantidad=1&idoferta=" + idoferta);
-            } else {
-                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=agregarProducto&idproduct=" + idproduct + "&cantidad=" + cantidad);
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     private void otraPagina(HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -466,7 +452,9 @@ public class ClienteController extends HttpServlet {
             int filas = clienteModel.countProducto(idsubcat);
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
             request.setAttribute("listaProductos", clienteModel.listaProductosSubCat(pagina*9, idsubcat));
+            request.setAttribute("listaOfertas", clienteModel.listaOfertasSubCat(0, idsubcat));
             request.setAttribute("idsubcat", idsubcat);
+            request.setAttribute("pagina", pagina);
             request.setAttribute("paginas", (int) filas / 9);
             request.getRequestDispatcher("/cliente/listaProductos.jsp").forward(request, response);
         } catch (ServletException | IOException | SQLException ex) {

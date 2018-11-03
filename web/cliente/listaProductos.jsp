@@ -5,6 +5,7 @@
 --%>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <c:set var="base" value="${pageContext.request.contextPath}"/> 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -33,46 +34,22 @@
                 <!-- BEGIN SIDEBAR -->
                 <div class="sidebar col-md-3 col-sm-5">
                     <ul class="list-group margin-bottom-25 sidebar-menu">
-                        <li class="list-group-item clearfix"><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Ladies</a></li>
-                        <li class="list-group-item clearfix dropdown active">
-                            <a href="javascript:void(0);" class="collapsed">
-                                <i class="fa fa-angle-right"></i>
-                                Mens
-
-                            </a>
-                            <ul class="dropdown-menu" style="display:block;">
-                                <li class="list-group-item dropdown clearfix active">
-                                    <a href="javascript:void(0);" class="collapsed"><i class="fa fa-angle-right"></i> Shoes </a>
-                                    <ul class="dropdown-menu" style="display:block;">
-                                        <li class="list-group-item dropdown clearfix">
-                                            <a href="javascript:void(0);"><i class="fa fa-angle-right"></i> Classic </a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Classic 1</a></li>
-                                                <li><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Classic 2</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="list-group-item dropdown clearfix active">
-                                            <a href="javascript:void(0);" class="collapsed"><i class="fa fa-angle-right"></i> Sport  </a>
-                                            <ul class="dropdown-menu" style="display:block;">
-                                                <li class="active"><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Sport 1</a></li>
-                                                <li><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Sport 2</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Trainers</a></li>
-                                <li><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Jeans</a></li>
-                                <li><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Chinos</a></li>
-                                <li><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> T-Shirts</a></li>
+                        <c:forEach var="categorias" items="${requestScope.listaCategorias}">
+                            <li class="list-group-item clearfix dropdown">
+                                <a href="javascript:void(0);" class="collapsed"><i class="fa fa-angle-right"></i>${categorias.categoria}</a>
+                            <sql:query var="ql" dataSource="jdbc/mysql">
+                                SELECT * FROM sub_categoria WHERE id_categoria=${categorias.idCategoria}
+                            </sql:query>
+                            <c:forEach var="subcat" items="${ql.rows}">
+                            <ul class="dropdown-menu" >
+                                <li class="list-group-item dropdown clearfix">
+                                    <a href="${base}/clientes.do?operacion=listaProductos&idsubcat=${subcat.id_sub_categoria}" class="collapsed"><i class="fa fa-minus"></i> ${subcat.subcategoria}</a>
+                                </li>                      
                             </ul>
-                        </li>
-                        <li class="list-group-item clearfix"><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Kids</a></li>
-                        <li class="list-group-item clearfix"><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Accessories</a></li>
-                        <li class="list-group-item clearfix"><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Sports</a></li>
-                        <li class="list-group-item clearfix"><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Brands</a></li>
-                        <li class="list-group-item clearfix"><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Electronics</a></li>
-                        <li class="list-group-item clearfix"><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Home & Garden</a></li>
-                        <li class="list-group-item clearfix"><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Custom Link</a></li>
+                            </c:forEach>
+                            </li>
+                        </c:forEach>
+
                     </ul>
 
                     <div class="sidebar-filter margin-bottom-25">
@@ -91,24 +68,6 @@
                         <div id="slider-range"></div>
                     </div>
 
-                    <div class="sidebar-products clearfix">
-                        <h2>Bestsellers</h2>
-                        <div class="item">
-                            <a href="shop-item.html"><img src="assets/pages/img/products/k1.jpg" alt="Some Shoes in Animal with Cut Out"></a>
-                            <h3><a href="shop-item.html">Some Shoes in Animal with Cut Out</a></h3>
-                            <div class="price">$31.00</div>
-                        </div>
-                        <div class="item">
-                            <a href="shop-item.html"><img src="assets/pages/img/products/k4.jpg" alt="Some Shoes in Animal with Cut Out"></a>
-                            <h3><a href="shop-item.html">Some Shoes in Animal with Cut Out</a></h3>
-                            <div class="price">$23.00</div>
-                        </div>
-                        <div class="item">
-                            <a href="shop-item.html"><img src="assets/pages/img/products/k3.jpg" alt="Some Shoes in Animal with Cut Out"></a>
-                            <h3><a href="shop-item.html">Some Shoes in Animal with Cut Out</a></h3>
-                            <div class="price">$86.00</div>
-                        </div>
-                    </div>
                 </div>
                 <!-- END SIDEBAR -->
                 <!-- BEGIN CONTENT -->
@@ -147,32 +106,65 @@
                     </div>
                     <!-- BEGIN PRODUCT LIST -->
                     <div class="row product-list">
-                        <!-- PRODUCT ITEM START -->
-                        <c:forEach var="productos" items="${requestScope.listaProductos}">
-                            <div class="col-md-4 col-sm-6 col-xs-12">
-                                <div class="product-item">
-                                    <div class="pi-img-wrapper">
-                                        <img src="images/${productos.producto.urlImagen}" class="img-responsive" alt="Berry Lace Dress" style="height: 250px;">
-                                        <div>
-                                            <a href="images/${productos.producto.urlImagen}" class="btn btn-default fancybox-button">Ver producto</a>
+                        <ul id="myTab" class="nav nav-tabs">
+                            <li class="active"><a href="#Description" data-toggle="tab">Productos</a></li>                           
+                            <li><a href="#Reviews" data-toggle="tab">ofertas</a></li>
+                        </ul>
+                        <div id="myTabContent" class="tab-content">
+                            <div class="tab-pane fade in active" id="Description">
+                                <!-- PRODUCT ITEM START -->
+                                <c:forEach var="productos" items="${requestScope.listaProductos}">
+                                    <div class="col-md-4 col-sm-6 col-xs-12">
+                                        <div class="product-item" style="height: 375px;">
+                                            <div class="pi-img-wrapper">
+                                                <img src="images/${productos.urlImagen}" class="img-responsive" alt="Berry Lace Dress" style="height: 250px;">
+                                                <div>
+                                                    <a href="images/${productos.urlImagen}" class="btn btn-default fancybox-button">Ver producto</a>
 
+                                                </div>
+                                            </div>
+                                            <h3><a href="${base}/clientes.do?operacion=verProducto&idproduct=${productos.idProducto}">${productos.producto}</a></h3>
+                                            <div class="pi-price">$${productos.precioRegular}</div>
+                                            <a href="${base}/clientes.do?operacion=agregarProducto&idproduct=${productos.idProducto}&cantidad=1" class="btn btn-default add2cart">Agregar al carrito</a>
                                         </div>
-                                    </div>
-                                    <h3><a href="${base}/clientes.do?operacion=verProducto&idproduct=${productos.producto.idProducto}">${productos.producto.producto}</a></h3>
-                                        <c:if test="${productos.idOferta != 0}">
-                                        <div class="pi-price">$${productos.totalDescuento}</div>
-                                    </c:if>
-                                    <c:if test="${productos.idOferta == 0}">
-                                        <div class="pi-price">$${productos.producto.precioRegular}</div>
-                                    </c:if>
-                                    <a href="${base}/clientes.do?operacion=verificarCompra&idproducto=${productos.producto.idProducto}&idoferta=${productos.idOferta}&cantidad=1" class="btn btn-default add2cart">Agregar al carrito</a>
-                                </div>
-                                <c:if test="${productos.idOferta != 0}">
-                                    <div class="sticker sticker-sale"></div>
-                                </c:if>
-                            </div>
 
-                        </c:forEach>
+                                    </div>
+
+                                </c:forEach>
+                                   <div class="row">
+                    <div class="col-md-4 col-sm-4 items-info">Items ${requestScope.pagina+1} to 9 of 10 total</div>
+                    <div class="col-md-8 col-sm-8">
+                        <ul class="pagination pull-right">
+                            <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${requestScope.pagina-1}&idsubcat=${requestScope.idsubcat}">&laquo;</a></li>
+                                <c:forEach var = "i" begin = "0" end = "${requestScope.paginas}">
+                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${i}&idsubcat=${requestScope.idsubcat}">${i+1}</a></li>
+                                </c:forEach>
+                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${requestScope.pagina+1}&idsubcat=${requestScope.idsubcat}">&raquo;</a></li>
+                        </ul>
+                    </div>
+                </div>
+                            </div>
+                            <div class="tab-pane fade" id="Reviews">
+                                   <c:forEach var="ofertas" items="${requestScope.listaOfertas}">
+                                    <div class="col-md-4 col-sm-6 col-xs-12">
+                                        <div class="product-item" style="height: 375px;">
+                                            <div class="pi-img-wrapper">
+                                                <img src="images/${ofertas.urlFoto}" class="img-responsive" alt="Berry Lace Dress" style="height: 250px;">
+                                                <div>
+                                                    <a href="images/${ofertas.urlFoto}" class="btn btn-default fancybox-button">Ver oferta</a>
+
+                                                </div>
+                                            </div>
+                                            <h3><a href="${base}/clientes.do?operacion=verProducto&idproduct=${ofertas.producto.idProducto}">${ofertas.titulo}</a></h3>
+                                            <div class="pi-price">$${ofertas.totalDescuento}</div>
+                                            <a href="${base}/clientes.do?operacion=agregarOferta&idproducto=${ofertas.producto.idProducto}&cantidad=1&idoferta=${ofertas.idOferta}" class="btn btn-default add2cart">Agregar al carrito</a>
+                                        </div>
+
+                                    </div>
+
+                                </c:forEach>
+                            </div>
+                        </div>
                         <!-- PRODUCT ITEM END -->
                     </div>
 
@@ -183,18 +175,7 @@
                 </div>
                 <!-- END PRODUCT LIST -->
                 <!-- BEGIN PAGINATOR -->
-                <div class="row">
-                    <div class="col-md-4 col-sm-4 items-info">Items 1 to 9 of 10 total</div>
-                    <div class="col-md-8 col-sm-8">
-                        <ul class="pagination pull-right">
-                            <li><a href="javascript:;">&laquo;</a></li>
-                                <c:forEach var = "i" begin = "0" end = "${requestScope.paginas}">
-                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${i}&idsubcat=${requestScope.idsubcat}">${i+1}</a></li>
-                                </c:forEach>
-                            <li><a href="javascript:;">&raquo;</a></li>
-                        </ul>
-                    </div>
-                </div>
+             
                 <!-- END PAGINATOR -->
             </div>
             <!-- END CONTENT -->

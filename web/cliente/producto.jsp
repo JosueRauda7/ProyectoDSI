@@ -87,6 +87,7 @@
                         </ul>
                         <div id="myTabContent" class="tab-content">
                             <div class="tab-pane fade" id="Description">
+                           
                                 <div class="contenofer">
                                     <c:forEach var="productos" items="${requestScope.productosRelacionados}">
                                         <div class="oferta" style="background-image: url('images/${productos.urlImagen}');">

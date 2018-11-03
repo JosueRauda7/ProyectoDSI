@@ -119,7 +119,7 @@
                                                     <div class="pi-price">Precio: $${ultofer.totalDescuento}</div>
                                                     <a href="${base}/clientes.do?operacion=agregarOferta&idproducto=${ultofer.producto.idProducto}&cantidad=1&idoferta=${ultofer.idOferta}" class="btn btn-default add2cart">Agregar al carrito</a>
                                                 </div>
-                                               <div class="sticker sticker-sale"></div>
+                                                <div class="sticker sticker-sale" style="margin-left: 4%;"></div>
                                             </div>
                                         </c:forEach>
                                         </div>
