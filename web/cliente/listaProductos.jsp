@@ -37,16 +37,16 @@
                         <c:forEach var="categorias" items="${requestScope.listaCategorias}">
                             <li class="list-group-item clearfix dropdown">
                                 <a href="javascript:void(0);" class="collapsed"><i class="fa fa-angle-right"></i>${categorias.categoria}</a>
-                            <sql:query var="ql" dataSource="jdbc/mysql">
-                                SELECT * FROM sub_categoria WHERE id_categoria=${categorias.idCategoria}
-                            </sql:query>
-                            <c:forEach var="subcat" items="${ql.rows}">
-                            <ul class="dropdown-menu" >
-                                <li class="list-group-item dropdown clearfix">
-                                    <a href="${base}/clientes.do?operacion=listaProductos&idsubcat=${subcat.id_sub_categoria}" class="collapsed"><i class="fa fa-minus"></i> ${subcat.subcategoria}</a>
-                                </li>                      
-                            </ul>
-                            </c:forEach>
+                                    <sql:query var="ql" dataSource="jdbc/mysql">
+                                    SELECT * FROM sub_categoria WHERE id_categoria=${categorias.idCategoria}
+                                </sql:query>
+                                <c:forEach var="subcat" items="${ql.rows}">
+                                    <ul class="dropdown-menu" >
+                                        <li class="list-group-item dropdown clearfix">
+                                            <a href="${base}/clientes.do?operacion=listaProductos&idsubcat=${subcat.id_sub_categoria}" class="collapsed"><i class="fa fa-minus"></i> ${subcat.subcategoria}</a>
+                                        </li>                      
+                                    </ul>
+                                </c:forEach>
                             </li>
                         </c:forEach>
 
@@ -131,21 +131,32 @@
                                     </div>
 
                                 </c:forEach>
-                                   <div class="row">
-                    <div class="col-md-4 col-sm-4 items-info">Items ${requestScope.pagina+1} to 9 of 10 total</div>
-                    <div class="col-md-8 col-sm-8">
-                        <ul class="pagination pull-right">
-                            <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${requestScope.pagina-1}&idsubcat=${requestScope.idsubcat}">&laquo;</a></li>
-                                <c:forEach var = "i" begin = "0" end = "${requestScope.paginas}">
-                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${i}&idsubcat=${requestScope.idsubcat}">${i+1}</a></li>
-                                </c:forEach>
-                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${requestScope.pagina+1}&idsubcat=${requestScope.idsubcat}">&raquo;</a></li>
-                        </ul>
-                    </div>
-                </div>
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-4 items-info">Items ${requestScope.pagina+1} to 9 of 10 total</div>
+                                    <div class="col-md-8 col-sm-8">
+                                        <ul class="pagination pull-right">
+                                            <c:if test="${requestScope.pagina <=0}"> 
+                                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${requestScope.pagina}&idsubcat=${requestScope.idsubcat}">&laquo;</a></li>
+                                                </c:if>
+                                                <c:if test="${requestScope.pagina >0 }">
+                                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${requestScope.pagina-1}&idsubcat=${requestScope.idsubcat}">&laquo;</a></li>
+                                                </c:if>
+
+                                            <c:forEach var = "i" begin = "0" end = "${requestScope.paginas}">
+                                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${i}&idsubcat=${requestScope.idsubcat}">${i+1}</a></li>
+                                                </c:forEach>
+                                                <c:if test="${requestScope.pagina >= requestScope.paginas}"> 
+                                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${requestScope.pagina}&idsubcat=${requestScope.idsubcat}">&raquo;</a></li>
+                                                </c:if>
+                                                <c:if test="${requestScope.pagina < requestScope.paginas}">
+                                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${requestScope.pagina+1}&idsubcat=${requestScope.idsubcat}">&raquo;</a></li>
+                                                </c:if>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="Reviews">
-                                   <c:forEach var="ofertas" items="${requestScope.listaOfertas}">
+                                <c:forEach var="ofertas" items="${requestScope.listaOfertas}">
                                     <div class="col-md-4 col-sm-6 col-xs-12">
                                         <div class="product-item" style="height: 375px;">
                                             <div class="pi-img-wrapper">
@@ -175,7 +186,7 @@
                 </div>
                 <!-- END PRODUCT LIST -->
                 <!-- BEGIN PAGINATOR -->
-             
+
                 <!-- END PAGINATOR -->
             </div>
             <!-- END CONTENT -->
