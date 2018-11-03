@@ -97,11 +97,11 @@ public class ClientesModel extends Conexion {
             st = conexion.prepareStatement(sql);
             st.setInt(1, idproducto);
             rs = st.executeQuery();
-            if(rs.next()){
-            idsubcat = rs.getInt("id_sub_categoria");
+            if (rs.next()) {
+                idsubcat = rs.getInt("id_sub_categoria");
             }
             String sql2 = "SELECT DISTINCT p.id_producto ,p.producto, CONCAT(LEFT(p.descripcion,100), '...') AS descripcion, i.Url_imagen FROM producto p INNER JOIN imagen i ON p.id_producto = i.id_producto WHERE id_sub_categoria = ? AND p.id_producto <> ? GROUP by i.id_producto";
-            List<Producto> lista = new ArrayList<>();         
+            List<Producto> lista = new ArrayList<>();
             st = conexion.prepareStatement(sql2);
             st.setInt(1, idsubcat);
             st.setInt(2, idproducto);
@@ -665,16 +665,16 @@ public class ClientesModel extends Conexion {
             return 0;
         }
     }
-    
-    public int countProducto(int idsucat) throws SQLException{
+
+    public int countProducto(int idsucat) throws SQLException {
         try {
             String sql = "SELECT COUNT(id_producto) as filas FROM producto WHERE id_sub_categoria = ?";
-            int filas =0;
+            int filas = 0;
             this.conectar();
             st = conexion.prepareStatement(sql);
-            st.setInt(2, idsucat);
+            st.setInt(1, idsucat);
             rs = st.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 filas = rs.getInt("filas");
             }
             return filas;
@@ -682,6 +682,36 @@ public class ClientesModel extends Conexion {
             Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
             this.desconectar();
             return 0;
+        }
+    }
+
+    public List<Oferta> listaProductosSubCat(int filter, int idsubcat) throws SQLException {
+        try {
+            String sql = "SELECT DISTINCT i.id_producto, p.producto,p.descripcion, p.precio_regular, p.cantidad, i.Url_imagen, o.id_oferta,o.total_descuento FROM producto p INNER JOIN empresa e on p.id_empresa = e.id_empresa INNER JOIN sub_categoria s on p.id_sub_categoria = s.id_sub_categoria INNER JOIN imagen i ON i.id_producto= p.id_producto LEFT JOIN ofertas o ON p.id_producto = o.id_producto WHERE id_estado_producto=2 AND o.id_estado_oferta is null or o.id_estado_oferta is not null and o.id_estado_oferta=1 AND p.id_sub_categoria=? GROUP by i.id_producto ORDER by p.id_producto LIMIT ?,9";
+            List<Oferta> lista = new ArrayList<>();
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, idsubcat);
+            st.setInt(2, filter);
+            rs = st.executeQuery();
+            while(rs.next()){
+                Producto producto = new Producto();
+                Oferta oferta = new Oferta();
+                oferta.setIdOferta(rs.getInt("id_oferta"));
+                oferta.setTotalDescuento(rs.getDouble("total_descuento"));
+                producto.setIdProducto(rs.getInt("id_producto"));
+                producto.setProducto(rs.getString("producto"));
+                producto.setPrecioRegular(rs.getString("precio_regular"));
+                producto.setUrlImagen(rs.getString("Url_imagen"));
+                oferta.setProducto(producto);
+                lista.add(oferta);
+            }
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
         }
     }
 }

@@ -92,7 +92,7 @@
                                                         SELECT * FROM sub_categoria WHERE id_categoria=${categorias.idCategoria}
                                                     </sql:query>
                                                     <c:forEach var="subcat" items="${ql.rows}">
-                                                        <li><a href="#" >${subcat.subcategoria}</a></li>
+                                                        <li><a  href="${base}/clientes.do?operacion=listaProductos&idsubcat=${subcat.id_sub_categoria}" >${subcat.subcategoria}</a></li>
                                                         </c:forEach>
                                                 </ul>
                                             </div>
