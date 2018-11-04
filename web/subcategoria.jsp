@@ -1,6 +1,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="base" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -26,7 +27,7 @@
                 <!-- BEGIN SIMILAR PRODUCTS -->
                 <div class="row" style="margin-top: 25px;">
                     <div class="col-md-12 col-sm-12">
-                       
+
                         <div class="row product-list">
                             <center><h1>${requestScope.nombreCategoria}</h1></center>
                             <hr>
@@ -39,8 +40,8 @@
                                                 <a href="images/${subcat.urlSubcategoria}" class="btn btn-default fancybox-button">Ver imagen</a>                               
                                             </div>
                                         </div>
-                                                <h3 style="margin-top: 7%;" class="text-center"><a href="shop-item.html">${subcat.subCategoria}</a></h3>
-                                      
+                                        <h3 style="margin-top: 7%;" class="text-center"><a href="${base}/public.do?operacion=listaProductos&idsubcat=${subcat.idSubCategoria}">${subcat.subCategoria}</a></h3>
+
                                     </div>
                                 </div>
                             </c:forEach>
@@ -55,7 +56,7 @@
     <!-- END CONTENT -->
     <!-- END SIDEBAR & CONTENT -->
 
-   
+
 
     <script src="assets/pages/scripts/ModalLog.js" type="text/javascript"></script>
 
@@ -71,6 +72,6 @@
     </script>
     <!-- END PAGE LEVEL JAVASCRIPTS -->
 </body>
-    <jsp:include page="footer.jsp" />
+<jsp:include page="footer.jsp" />
 <!-- END BODY -->
 </html>

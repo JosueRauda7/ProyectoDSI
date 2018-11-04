@@ -12,7 +12,7 @@
         <!-- BEGIN CART -->
         <div class="top-cart-block">
             <a href="#">Términos y condiciones</a>
-            
+
         </div>
         <!--END CART -->
 
@@ -45,7 +45,7 @@
                                                     SELECT * FROM sub_categoria WHERE id_categoria=${categorias.idCategoria}
                                                 </sql:query>
                                                 <c:forEach var="subcat" items="${ql.rows}">
-                                                    <li><a href="#" >${subcat.subcategoria}</a></li>
+                                                    <li><a href="${base}/public.do?operacion=listaProductos&idsubcat=${subcat.id_sub_categoria}" >${subcat.subcategoria}</a></li>
                                                     </c:forEach>
                                             </ul>
                                         </div>
