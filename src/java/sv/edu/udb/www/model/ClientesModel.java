@@ -387,7 +387,11 @@ public class ClientesModel extends Conexion {
             while (rs.next()) {
                 Oferta oferta = new Oferta();
                 DetallePedido detalle = new DetallePedido();
+                Producto producto = new Producto();
+                oferta.setIdOferta(rs.getInt("id_oferta"));
                 oferta.setTitulo(rs.getString("titulo"));
+                producto.setIdProducto(rs.getInt("id_producto"));
+                oferta.setProducto(producto);
                 oferta.setDescripcion(rs.getString("descripcion"));
                 oferta.setFechaInicio(rs.getString("fecha_inicio"));
                 oferta.setFechaFin(rs.getString("fecha_fin"));
@@ -533,6 +537,55 @@ public class ClientesModel extends Conexion {
 
     public int cantidadProducto(int cantidad, int iddetalle, int idproduct) throws SQLException {
         try {
+            String sql2 = "SELECT cantidad FROM detalle_pedidos WHERE id_detalle_pedido = ?";
+            int cantidadact = 0;
+            int cantidadpro = 0;
+            int diferencia = 0;
+            int validador = 0;
+            this.conectar();
+            st = conexion.prepareStatement(sql2);
+            st.setInt(1, iddetalle);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                cantidadact = rs.getInt("cantidad");
+            }
+            diferencia = cantidadact - cantidad;
+            String sql3 = "SELECT cantidad FROM producto WHERE id_producto =?";
+            st = conexion.prepareStatement(sql3);
+            st.setInt(1, idproduct);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                cantidadpro = rs.getInt("cantidad");
+            }
+            validador = diferencia + (cantidadpro);
+            if (validador < 0) {
+                return 0;
+            } else {
+                String sql4 = "UPDATE producto SET cantidad =? WHERE id_producto = ?";
+                st = conexion.prepareStatement(sql4);
+                st.setInt(1, diferencia + (cantidadpro));
+                st.setInt(2, idproduct);
+                st.executeUpdate();
+                String sql = "UPDATE detalle_pedidos SET cantidad = ? WHERE id_detalle_pedido = ?";
+                int filasAfectadas = 0;
+                st = conexion.prepareStatement(sql);
+                st.setInt(1, cantidad);
+                st.setInt(2, iddetalle);
+                filasAfectadas = st.executeUpdate();
+                this.desconectar();
+                return filasAfectadas;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        } finally {
+            this.desconectar();
+        }
+    }
+
+    public int cantidadOferta(int cantidad, int iddetalle, int idproduct) throws SQLException {
+           try {
             String sql2 = "SELECT cantidad FROM detalle_pedidos WHERE id_detalle_pedido = ?";
             int cantidadact = 0;
             int cantidadpro = 0;

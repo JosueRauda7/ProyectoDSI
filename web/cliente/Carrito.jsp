@@ -115,7 +115,7 @@
                                                         <a href="javascript:;"><img src="images/${ofertas.oferta.urlFoto}" alt="${ofertas.oferta.titulo}"></a>
                                                     </td>
                                                     <td class="goods-page-description" style="width: 35%;">
-                                                        <h3><a href="#">${ofertas.oferta.titulo}</a></h3>
+                                                        <h3><a href="${base}/clientes.do?operacion=verProducto&idproduct=${ofertas.oferta.producto.idProducto}">${ofertas.oferta.titulo}</a></h3>
                                                         <p><strong>Item ${loop.index +1}</strong> -${ofertas.oferta.descripcion}</p>
 
                                                     </td>
@@ -124,17 +124,24 @@
                                                     </td>
                                                     <td class="goods-page-quantity">
                                                         <div class="product-quantity">
-                                                            <input id="product-quantity" type="text" value="${ofertas.cantidad}" readonly class="form-control input-sm">
+                                                            <input id="campoofert${loop.index +1}" type="text"  value="${ofertas.cantidad}" onchange="funcionaofer${loop.index +1}(${ofertas.idDetallePedido},${ofertas.oferta.idOferta},${ofertas.oferta.producto.idProducto});"  class="form-control input-sm">
+                                                            <script>
+                                                                function funcionaofer${loop.index +1}(valor,oferta, producto) {
+                                                                    var cantidad = document.getElementById("campoofert${loop.index +1}").value;
+
+                                                                    location.href = 'clientes.do?operacion=cantidadOfertas&cantidad=' + cantidad + '&iddetalle=' + valor + '&idoferta=' + oferta +'&idproduc='+producto;
+                                                                }
+                                                            </script>
                                                         </div>
                                                     </td>
                                                     <td class="goods-page-price">
                                                         <strong><span>$</span>${ofertas.oferta.totalDescuento}</strong>
                                                     </td>
                                                     <td class="goods-page-total">
-                                                        <strong><span>$</span>$${ofertas.oferta.totalDescuento * ofertas.cantidad}</strong>
+                                                        <strong><span>$</span>${ofertas.oferta.totalDescuento * ofertas.cantidad}</strong>
                                                     </td>
                                                     <td >
-                                                        <a style="cursor: pointer;" class="del-goods" onclick="javascript:eliminar('${productos.idDetallePedido}')" >&nbsp;</a>
+                                                        <a style="cursor: pointer;" class="del-goods" onclick="javascript:eliminar('${ofertas.idDetallePedido}')" >&nbsp;</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach> 
@@ -202,41 +209,41 @@
         <script>
             <c:if test="${not empty exito}">
 
-                swal({
-                    title: "Felicidades!",
-                    text: "${exito}",
-                    icon: "success",
-                });
+            swal({
+                title: "Felicidades!",
+                text: "${exito}",
+                icon: "success",
+            });
                 <c:set var="exito" value="" scope="session"/>
             </c:if>
 
             <c:if test="${not empty fracaso}">
-                swal({
-                    title: "Ups!",
-                    text: "${fracaso}",
-                    icon: "error",
-                });
+            swal({
+                title: "Ups!",
+                text: "${fracaso}",
+                icon: "error",
+            });
                 <c:set var="fracaso" value="" scope="session"/>
             </c:if>
 
-                function eliminar(id) {
+            function eliminar(id) {
 
-                    var URLactual = window.location;
-                    var url = URLactual.toString().substring(34);
-                    swal({
-                        title: '¿Seguro que quieres eliminar este articulo del carrito?',
-                        text: "Una vez eliminado, no habra vuelta atras.",
-                        icon: 'warning',
-                        buttons: true,
-                        dangerMode: true,
-                    }).then((willDelete) => {
-                        if (willDelete) {
+                var URLactual = window.location;
+                var url = URLactual.toString().substring(34);
+                swal({
+                    title: '¿Seguro que quieres eliminar este articulo del carrito?',
+                    text: "Una vez eliminado, no habra vuelta atras.",
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
 
-                            location.href = 'clientes.do?operacion=eliminarOferta&iddetalle=' + id + '&url=' + url;
-                        }
-                    });
-                }
-                ;
+                        location.href = 'clientes.do?operacion=eliminarOferta&iddetalle=' + id + '&url=' + url;
+                    }
+                });
+            }
+            ;
 
         </script>
 

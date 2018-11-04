@@ -79,6 +79,9 @@ public class ClienteController extends HttpServlet {
                     case "cantidadProducto":
                         cantidadProducto(request, response);
                         break;
+                    case "cantidadOfertas":
+                        cantidadOferta(request, response);
+                        break;
                     case "agregarComentario":
                         agregarComentario(request, response);
                         break;
@@ -94,7 +97,6 @@ public class ClienteController extends HttpServlet {
                     case "listaProductos":
                         listaProductos(request, response);
                         break;
-                    
                     case "otraPagina":
                         otraPagina(request, response);
                         break;
@@ -444,20 +446,44 @@ public class ClienteController extends HttpServlet {
         }
     }
 
-
     private void otraPagina(HttpServletRequest request, HttpServletResponse response) {
         try {
             int idsubcat = Integer.parseInt(request.getParameter("idsubcat"));
             int pagina = Integer.parseInt(request.getParameter("pagina"));
             int filas = clienteModel.countProducto(idsubcat);
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-            request.setAttribute("listaProductos", clienteModel.listaProductosSubCat(pagina*9, idsubcat));
+            request.setAttribute("listaProductos", clienteModel.listaProductosSubCat(pagina * 9, idsubcat));
             request.setAttribute("listaOfertas", clienteModel.listaOfertasSubCat(0, idsubcat));
             request.setAttribute("idsubcat", idsubcat);
             request.setAttribute("pagina", pagina);
             request.setAttribute("paginas", (int) filas / 9);
             request.getRequestDispatcher("/cliente/listaProductos.jsp").forward(request, response);
         } catch (ServletException | IOException | SQLException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void cantidadOferta(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int cantidad = Integer.parseInt(request.getParameter("cantidad"));
+            int iddetalle = Integer.parseInt(request.getParameter("iddetalle"));
+            int idproduct = Integer.parseInt(request.getParameter("idproduc"));
+            if (cantidad <= 0) {
+                request.getSession().setAttribute("fracaso", "La cantidad debe ser mayor a 1");
+                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verCarrito");
+            } else {
+
+                if (clienteModel.cantidadOferta(cantidad, iddetalle, idproduct) > 0) {
+                    request.getSession().setAttribute("exito", "Item modificado exitosamente.");
+                    request.getSession().setAttribute("pedidosOfert", clienteModel.listaCarritoOfertas((int) request.getSession().getAttribute("usuario")));
+                    request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
+                    response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verCarrito");
+                } else {
+                    request.getSession().setAttribute("fracaso", "Existencias limitadas de este articulo");
+                    response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verCarrito");
+                }
+            }
+        } catch (SQLException | IOException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
