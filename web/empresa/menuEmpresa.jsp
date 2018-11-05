@@ -44,6 +44,14 @@
                         <li><a href="${base}/empresas.do?operacion=listar&estado=1">Ver productos</a></li>
                     </ul>
                 </li>                
+                <li class="dropdown dropdown-megamenu">
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+                        Estadisticas
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="${base}/empresas.do?operacion=grafica">Ventas diarias</a></li>                        
+                    </ul>
+                </li>
 
 
                 <!-- END TOP SEARCH -->

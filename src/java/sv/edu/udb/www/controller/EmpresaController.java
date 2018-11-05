@@ -21,10 +21,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import sv.edu.udb.www.beans.Imagen;
+import sv.edu.udb.www.beans.Pedido;
 import sv.edu.udb.www.beans.Producto;
 import sv.edu.udb.www.beans.SubCategoria;
 import sv.edu.udb.www.model.CategoriasModel;
 import sv.edu.udb.www.model.ClientesModel;
+import sv.edu.udb.www.model.PedidosModel;
 import sv.edu.udb.www.model.ProductosModel;
 import sv.edu.udb.www.model.SubCategoriasModel;
 import sv.edu.udb.www.utils.Validaciones;
@@ -39,6 +41,7 @@ public class EmpresaController extends HttpServlet {
     ProductosModel modeloProducto = new ProductosModel();
     SubCategoriasModel modeloSubcategoria = new SubCategoriasModel();
     CategoriasModel modeloCategoria = new CategoriasModel();
+    PedidosModel modeloPedido = new PedidosModel();
     ArrayList listaErrores = new ArrayList();
 
     /**
@@ -56,7 +59,7 @@ public class EmpresaController extends HttpServlet {
         PrintWriter out = response.getWriter();
         CategoriasModel CategoriaModel = new CategoriasModel();
         ProductosModel ProductoModel = new ProductosModel();
-        ClientesModel clienteModel = new ClientesModel();
+        ClientesModel clienteModel = new ClientesModel();        
         try {
             if (request.getSession().getAttribute("usuario") != null || request.getSession().getAttribute("tipousuario") != null || request.getSession().getAttribute("nombreUser") != null) {
                 if (request.getSession().getAttribute("usuario") == null || !request.getSession().getAttribute("tipousuario").toString().equals("5")) {
@@ -81,14 +84,26 @@ public class EmpresaController extends HttpServlet {
                         case "existencias":
                             existencias(request, response);
                             break;
-                        case "subcategorias":
+
+                        case "grafica":
+                            grafica(request,response);
+                            break;
+                            
+                        case "ventadiaria":
                             try{
-                            subcategorias(request, response);
+                            ventadiaria(request,response);
                             }catch(SQLException e){
                                 
                             }
                             break;
-                            
+                        case "subcategorias":
+                            try {
+                                subcategorias(request, response);
+                            } catch (SQLException e) {
+
+                            }
+                            break;
+
                         default:
                             request.getRequestDispatcher("/error404.jsp").forward(request, response);
                             break;
@@ -197,9 +212,7 @@ public class EmpresaController extends HttpServlet {
             producto.setPrecioRegular(multi.getParameter("regular"));
             producto.setCantidad(multi.getParameter("cantidad"));
             producto.setIdsubCategoria(Integer.parseInt(multi.getParameter("subcategoria")));
-            
-            
-            
+
             if (Validaciones.isEmpty(producto.getProducto())) {
                 listaErrores.add("El nombre del producto es obligatorio");
             }
@@ -228,31 +241,31 @@ public class EmpresaController extends HttpServlet {
                 listaErrores.add("La imagen es obligatoria");
             } else {
                 File ficheroTemp = multi.getFile("imagen");
-                imagen.setUrlimagen(ficheroTemp.getName());                
+                imagen.setUrlimagen(ficheroTemp.getName());
             }
-            
-            if(multi.getFile("imagen1")!=null){
+
+            if (multi.getFile("imagen1") != null) {
                 File ficheroTemp = multi.getFile("imagen1");
                 imagenes.add(ficheroTemp.getName());
             }
-            
-            if(multi.getFile("imagen2")!=null){
+
+            if (multi.getFile("imagen2") != null) {
                 File ficheroTemp = multi.getFile("imagen2");
                 imagenes.add(ficheroTemp.getName());
             }
-            
-            if(multi.getFile("imagen3")!=null){
+
+            if (multi.getFile("imagen3") != null) {
                 File ficheroTemp = multi.getFile("imagen3");
                 imagenes.add(ficheroTemp.getName());
             }
-            
-            if(multi.getFile("imagen4")!=null){
+
+            if (multi.getFile("imagen4") != null) {
                 File ficheroTemp = multi.getFile("imagen4");
                 imagenes.add(ficheroTemp.getName());
             }
-            
+
             if (listaErrores.isEmpty()) {
-                if (modeloProducto.insertarProducto(producto, usuario,imagen,imagenes) == 1) {
+                if (modeloProducto.insertarProducto(producto, usuario, imagen, imagenes) == 1) {
                     request.getSession().setAttribute("exito", "Producto registrado existosamente.");
                 } else {
                     request.getSession().setAttribute("fracaso", "Ocurrio un error, no se pudo registrar el producto...");
@@ -381,6 +394,33 @@ public class EmpresaController extends HttpServlet {
         StringBuilder sb = new StringBuilder("");
         for (int i = 0; i < subcategoria.size(); i++) {
             sb.append(subcategoria.get(i).getIdSubCategoria() + "-" + subcategoria.get(i).getSubCategoria() + ":");
+        }
+        out.write(sb.toString());
+    }
+
+    private void grafica(HttpServletRequest request, HttpServletResponse response) {
+        try {            
+            request.setAttribute("ventas", modeloPedido.ventasDiarias().size());
+            request.getRequestDispatcher("/empresa/estadisticaEmpresa.jsp").forward(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void ventadiaria(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+        
+        PrintWriter out = response.getWriter();
+        //Necesito la cantidad de datos que devuelve la consulta
+        request.setAttribute("ventas", modeloPedido.ventasDiarias().size());
+        //Arreglo con los datos que solicito en la consulta (AUN DEBO REVISAR BIEN LA CONSULTA)
+        List<Pedido> pedidos = modeloPedido.ventasDiarias();
+        
+        //Como solo obtengo 2 datos, la fecha y monto, esta variable me servirá para mandar ambos como respuesta Json del Arreglo anterior
+        StringBuilder sb = new StringBuilder("");
+        for (int i = 0; i < pedidos.size(); i++) {
+            sb.append(pedidos.get(i).getFechaCompra()+ "," + pedidos.get(i).getMontoTotal() + ":");
         }
         out.write(sb.toString());
     }
