@@ -46,9 +46,14 @@
                                 </div>
                             </div>
                             <h3 class="text-center"><a href="${base}/public.do?operacion=verProducto&idproduct=${ultpro.idProducto}">${ultpro.producto}</a></h3>
-                            <div class="pi-price">Precio: $${ultpro.precioRegular}</div>
+                            <div class="pi-price text-center" style="float:none;">Precio: $${ultpro.precioRegular}</div>
 
                         </div>
+                            <c:forEach var="productoOferta" items="${requestScope.listarProductosOfertados}">
+                                <c:if test="${productoOferta.idProducto eq ultpro.idProducto}">
+                                    <div class="sticker sticker-sale" style="margin-left: 4%;"></div>
+                                </c:if>
+                            </c:forEach>
                     </div>
                 </c:forEach>
             </c:if>

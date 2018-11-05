@@ -8,7 +8,9 @@ package sv.edu.udb.www.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -222,9 +224,22 @@ public class ClienteController extends HttpServlet {
         try {
             String nombre = request.getParameter("nombre");
 
+            String idCategoria = request.getParameter("categoria");
+            List<Producto> producto = new ArrayList<>();
+            List<Producto> productoOferta = new ArrayList<>();
+            producto = ProductoModel.busquedaProductos(nombre, idCategoria);
+
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-            //request.setAttribute("listarProductos", ProductoModel.busquedaProductos(nombre));
+            request.setAttribute("listarProductos", producto);
             request.setAttribute("datoBusqueda", nombre);
+            
+            for(Producto p : producto){
+                if (clienteModel.ofertaProducto(p.getIdProducto()) != null) {
+                    productoOferta.add(p);
+                }
+            }
+            
+            request.setAttribute("listarProductosOfertados", productoOferta);
             try {
                 request.getRequestDispatcher("/cliente/resultadosBusqueda.jsp").forward(request, response);
             } catch (ServletException | IOException ex) {

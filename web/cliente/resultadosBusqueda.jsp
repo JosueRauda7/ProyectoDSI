@@ -44,10 +44,15 @@
                                     <a href="images/${ultpro.urlImagen}" class="btn btn-default fancybox-button">Ver producto</a>                               
                                 </div>
                             </div>
-                            <h3 class="text-center"><a href="shop-item.html">${ultpro.producto}</a></h3>
-                            <div class="pi-price">Precio: $${ultpro.precioRegular}</div>
+                            <h3 class="text-center"><a href="${base}/clientes.do?operacion=verProducto&idproduct=${ultpro.idProducto}">${ultpro.producto}</a></h3>
+                            <div class="pi-price text-center" style="float:none;">Precio: $${ultpro.precioRegular}</div>
 
                         </div>
+                            <c:forEach var="productoOferta" items="${requestScope.listarProductosOfertados}">
+                                <c:if test="${productoOferta.idProducto eq ultpro.idProducto}">
+                                    <div class="sticker sticker-sale" style="margin-left: 4%;"></div>
+                                </c:if>
+                            </c:forEach>
                     </div>
                 </c:forEach>
             </c:if>
@@ -55,8 +60,21 @@
 
 
         <br/><br/><br/>
-
+        
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                Layout.init();
+                Layout.initOWL();
+                Layout.initTwitter();
+                Layout.initImageZoom();
+                Layout.initTouchspin();
+                Layout.initUniform();
+            });
+        </script>
+        
         <jsp:include page="footer.jsp"/>
+        
+        <script src="assets/pages/scripts/ModalLog.js" type="text/javascript"></script>
 
         <!-- END PAGE LEVEL JAVASCRIPTS -->
     </body>
