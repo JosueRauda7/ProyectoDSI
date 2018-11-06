@@ -41,17 +41,34 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
                     <!-- PRODUCT ITEM START -->
                     <div class="col-lg-4">
                         <div class="product-item">
-                            <div class="pi-img-wrapper">
-                                <img src="${base}/assets/pages/img/administrador/productosicon.png" style="min-height: 160px;" class="col-lg-7" alt="Berry Lace Dress">
+                            <div class="text-center">
+                                <img src="${base}/assets/pages/img/administrador/productosicon.png" style="min-height: 160px;  border-radius: 150px;" class="col-lg-11" alt="Berry Lace Dress">
+                            </div><br>
+                            <h3 class="text-center"><a href="shop-item.html">Productos</a></h3>
+                            <div class="text-center">
+                                <a href="${base}/empleados.do?operacion=listar&estado=1" class="btn btn-default"
+                                   style="color: #a8aeb3;border: 1px #ededed solid; padding: 3px 6px;">Ver</a>
                             </div>
-                            <h3><a href="shop-item.html">Productos</a></h3>
-                            <a href="${base}/empleados.do?operacion=listar&estado=1" class="btn btn-default add2cart">Ver</a>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="margin-bottom-40"></div>
-            <jsp:include page="footer.jsp"/>
+
+
+            <div class="footer"  style="width: 100%;-webkit-box-sizing:border-box;
+                 -moz-box-sizing:border-box;
+                 box-sizing:border-box; position: absolute; bottom: 0;" >
+                <div class="container">
+                    <div class="row">
+                        <!-- BEGIN COPYRIGHT -->
+                        <div class="col-md-12 text-center">
+                            2018 © Universidad Don Bosco. Derechos reservados. 
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <jsp:include page="/scripts.jsp"/>
         <script type="text/javascript">

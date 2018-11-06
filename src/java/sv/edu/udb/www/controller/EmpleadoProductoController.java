@@ -46,10 +46,6 @@ public class EmpleadoProductoController extends HttpServlet {
 
         ClientesModel clienteModel = new ClientesModel();
         try {
-            if (request.getParameter("operacion") == null) {
-                listar(request, response);
-                return;
-            }
 
             String operacion = request.getParameter("operacion");
             if (request.getSession().getAttribute("usuario") != null || request.getSession().getAttribute("tipousuario") != null || request.getSession().getAttribute("nombreUser") != null) {
@@ -123,6 +119,8 @@ public class EmpleadoProductoController extends HttpServlet {
         try {
             int estado = Integer.parseInt(request.getParameter("estado"));
             request.setAttribute("listarProducto", modeloProducto.listarProducto(estado));
+            request.setAttribute("listarImagenes", modeloProducto.listarImagenesProducto());
+            request.setAttribute("tab", estado);
             try {
                 request.getRequestDispatcher("/empleadoProducto/listaProductos.jsp").forward(request, response);
             } catch (ServletException | IOException ex) {

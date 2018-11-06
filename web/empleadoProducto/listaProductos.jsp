@@ -18,7 +18,7 @@
     </head>
     <!-- Head END -->
 
-    <body class="ecommerce">
+    <body class="ecommerce" >
 
 
         <jsp:include page="menuEmpleado.jsp"/>
@@ -28,16 +28,20 @@
             <div class="product-page-content">
 
                 <ul id="myTab" class="nav nav-tabs" style="margin-bottom: 2%;">
-                    <li><a href="${base}/empleados.do?operacion=listar&estado=1" data-toggle="tab">Listar en espera</a></li>
-                    <li><a href="${base}/empleados.do?operacion=listar&estado=2" data-toggle="tab">Listar activos</a></li>
-                    <li><a href="${base}/empleados.do?operacion=listar&estado=3" data-toggle="tab">Listar rechazados</a></li>                    
-                </ul>
+                    <li <c:if test="${requestScope.tab eq 1}"> class="active"</c:if> ><a href="${base}/empleados.do?operacion=listar&estado=1" data-toggle="tab">Listar en espera</a></li>
+                    <li <c:if test="${requestScope.tab eq 2}"> class="active"</c:if> ><a href="${base}/empleados.do?operacion=listar&estado=2" data-toggle="tab">Listar activos</a></li>
+                    <li <c:if test="${requestScope.tab eq 3}"> class="active"</c:if> ><a href="${base}/empleados.do?operacion=listar&estado=3" data-toggle="tab">Listar rechazados</a></li>                    
+                    </ul>
 
                 <c:forEach var="producto" items="${requestScope.listarProducto}">
-                    <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="col-md-4 col-sm-6 col-xs-12" style="margin-top: 3%;">
                         <div class="product-item">
-                            <div class="pi-img-wrapper">
-                                <img src="${base}/images/${producto.urlImagen}" class="img-responsive" alt="Imagen">                            
+                            <div class="pi-img-wrapper" style="text-align: center;">
+                                <c:forEach items="${requestScope.listarImagenes}" var="imagenes">
+                                    <c:if test="${producto.idProducto eq imagenes.idProducto}">
+                                        <img height="100px" src="${base}/images/${imagenes.urlimagen}"/>
+                                    </c:if>
+                                </c:forEach>
                             </div>
                             <div class="text-center">
                                 <h3>Producto</h3>
@@ -47,10 +51,10 @@
                                 <h3>Existencias</h3>
                                 <p>${producto.cantidad}</p>
                             </div>
-                            <div class="pi-price">Precio: $${producto.precioRegular}</div>
+                            <div class="pi-price" >Precio: $${producto.precioRegular}</div>
                             <c:if test="${producto.estadoProducto.estado eq 'En espera'}">
-                            <a href="${base}/empleados.do?operacion=aceptarRechazar&estado=2&id=${producto.idProducto}" class="btn btn-default add2cart">Aceptar</a>
-                            <a href="${base}/empleados.do?operacion=aceptarRechazar&estado=3&id=${producto.idProducto}" class="btn btn-default add2cart">Rechazar</a>
+                                <a href="${base}/empleados.do?operacion=aceptarRechazar&estado=2&id=${producto.idProducto}" class="btn btn-default add2cart">Aceptar</a>
+                                <a href="${base}/empleados.do?operacion=aceptarRechazar&estado=3&id=${producto.idProducto}" class="btn btn-default add2cart">Rechazar</a>
                             </c:if>
                         </div>
                     </div>
@@ -58,11 +62,23 @@
             </div>
 
 
-            <br/><br/><br/>
 
-            <jsp:include page="footer.jsp"/>
+        </div>
+        <div class="footer"  style="width: 100%; -webkit-box-sizing:border-box;
+             -moz-box-sizing:border-box;
+             box-sizing:border-box; position: absolute; bottom: auto;" >
+            <div class="container">
+                <div class="row">
+                    <!-- BEGIN COPYRIGHT -->
+                    <div class="col-md-12 text-center">
+                        2018 © Universidad Don Bosco. Derechos reservados. 
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <!-- END PAGE LEVEL JAVASCRIPTS -->
+
+        <!-- END PAGE LEVEL JAVASCRIPTS -->
     </body>
     <script>
         <c:if test="${not empty exito}">

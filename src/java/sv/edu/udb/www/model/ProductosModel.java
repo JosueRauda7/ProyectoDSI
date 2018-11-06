@@ -237,8 +237,7 @@ public class ProductosModel extends Conexion {
                 producto.setProducto(rs.getString("producto"));
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecioRegular(rs.getString("precio_regular"));
-                producto.setCantidad(rs.getString("cantidad"));
-                producto.setUrlImagen(rs.getString("url_imagen"));
+                producto.setCantidad(rs.getString("cantidad"));                
                 producto.setEmpresa(new Empresa(rs.getString("empresa")));
                 producto.setSubCategoria(new SubCategoria(rs.getString("subcategoria")));
                 producto.setEstadoProducto(new EstadoProducto(rs.getString("estado")));

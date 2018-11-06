@@ -9,14 +9,14 @@
 <c:set var="base" value="${pageContext.request.contextPath}"/> 
 <div class="header">
     <div class="container">
-        <a class="site-logo" href="${base}/empresas.do?operacion=inicio">BigShop</a>       
+        <a class="site-logo" href="${base}/empleados.do?operacion=inicio">BigShop</a>       
         <!-- BEGIN CART -->
         <div class="top-cart-block">
             <div class="header-navigation">
                 <ul>
                     <li class="btn dropdown dropdown-megamenu" >
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" data-target="#" aria-haspopup="true" aria-expanded="false">
-                            Mi cuenta
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" data-target="#" aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-user"></span> ${sessionScope.nombreUser}
                         </button>
                         <ul class="dropdown-menu">                                                        
                             <li><a style="padding: 10px" href="#">Cambiar contraseña</a></li>
