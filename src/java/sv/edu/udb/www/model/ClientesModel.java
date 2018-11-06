@@ -739,6 +739,27 @@ public class ClientesModel extends Conexion {
             return 0;
         }
     }
+    
+      public int countOferta(int idsucat,double precio1, double precio2) throws SQLException {
+        try {
+            String sql = "SELECT COUNT(o.id_oferta) AS filas FROM ofertas o INNER JOIN producto p on o.id_producto = p.id_producto WHERE o.id_estado_oferta= 1 AND p.id_sub_categoria = ? AND o.total_descuento BETWEEN ? AND ?";
+            int filas = 0;
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, idsucat);
+            st.setDouble(2, precio1);
+            st.setDouble(3, precio2);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                filas = rs.getInt("filas");
+            }
+            return filas;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        }
+    }
 
     public List<Producto> listaProductosSubCat(int filter, int idsubcat,double precio1, double precio2) throws SQLException {
         try {
@@ -768,14 +789,16 @@ public class ClientesModel extends Conexion {
         }
     }
 
-    public List<Oferta> listaOfertasSubCat(int filter, int idsubcat) throws SQLException {
+    public List<Oferta> listaOfertasSubCat(int filter, int idsubcat,double precio1, double precio2) throws SQLException {
         try {
-            String sql = "SELECT o.id_oferta, o.id_producto, o.titulo, o.Url_foto, o.total_descuento FROM ofertas o INNER JOIN producto p on o.id_producto = p.id_producto WHERE o.id_estado_oferta= 1 AND p.id_sub_categoria = ? LIMIT ?,9";
+            String sql = "SELECT o.id_oferta, o.id_producto, o.titulo, o.Url_foto, o.total_descuento FROM ofertas o INNER JOIN producto p on o.id_producto = p.id_producto WHERE o.id_estado_oferta= 1 AND p.id_sub_categoria = ? AND o.total_descuento BETWEEN ? AND ? LIMIT ?,9";
             List<Oferta> lista = new ArrayList<>();
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setInt(1, idsubcat);
-            st.setInt(2, filter);
+             st.setDouble(2, precio1);
+            st.setDouble(3, precio2);
+            st.setInt(4, filter);
             rs = st.executeQuery();
             while (rs.next()) {
                 Oferta oferta = new Oferta();
