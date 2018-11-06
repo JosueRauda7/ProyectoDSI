@@ -182,8 +182,14 @@ public class ClienteController extends HttpServlet {
             mes = Integer.toString(c.get(Calendar.MONTH) + 1);
             annio = Integer.toString(c.get(Calendar.YEAR));
             fecha = annio + "-" + mes + "-" + dia;
+            String horas, minutos, segundos, hora;
+            horas = Integer.toString(c.get(Calendar.HOUR_OF_DAY));
+            minutos = Integer.toString(c.get(Calendar.MINUTE));
+            segundos = Integer.toString(c.get(Calendar.SECOND));
+            hora = horas + ":" + minutos + ":" + segundos;
             Pedido pedido = new Pedido();
             pedido.setFechaCompra(fecha);
+            pedido.setHoraCompra(hora);
             pedido.setIdEstadoCompra(1);
             pedido.setIdUsuario((int) request.getSession().getAttribute("usuario"));
             if (clienteModel.crearCarrito(pedido) > 0) {
@@ -258,22 +264,35 @@ public class ClienteController extends HttpServlet {
             int idproduct = Integer.parseInt(request.getParameter("idproduct"));
             int cantidad = Integer.parseInt(request.getParameter("cantidad"));
             int user = (int) request.getSession().getAttribute("usuario");
-            if (clienteModel.agregarProducto(user, idproduct, cantidad) > 0) {
+            int estado = (int) request.getSession().getAttribute("estado");
+
+            if (estado != 1) {
                 request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
                 request.setAttribute("producto", clienteModel.verProducto(idproduct));
                 request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
-                request.getSession().setAttribute("exito", "Has añadido este articulo a tu carrito.");
+                request.getSession().setAttribute("fracaso", "Para adquirir este producto, debes crear tu carretilla.");
                 response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct=" + idproduct);
             } else {
-                request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-                request.setAttribute("producto", clienteModel.verProducto(idproduct));
-                request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
-                request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
-                request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
-                request.getSession().setAttribute("fracaso", "Ya no hay existencias de este producto");
-                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct=" + idproduct);
+
+                if (clienteModel.agregarProducto(user, idproduct, cantidad) > 0) {
+                    request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+                    request.setAttribute("producto", clienteModel.verProducto(idproduct));
+                    request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
+                    request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
+                    request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
+                    request.getSession().setAttribute("exito", "Has añadido este articulo a tu carrito.");
+                    response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct=" + idproduct);
+                } else {
+                    request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+                    request.setAttribute("producto", clienteModel.verProducto(idproduct));
+                    request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
+                    request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
+                    request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
+                    request.getSession().setAttribute("fracaso", "Ya no hay existencias de este producto");
+                    response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct=" + idproduct);
+                }
             }
         } catch (SQLException | IOException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
@@ -404,20 +423,32 @@ public class ClienteController extends HttpServlet {
             int cantidad = Integer.parseInt(request.getParameter("cantidad"));
             int idproduct = Integer.parseInt(request.getParameter("idproducto"));
             int user = (int) request.getSession().getAttribute("usuario");
-            if (clienteModel.agregarOferta(user, idoferta, cantidad) > 0) {
+            int estado = (int) request.getSession().getAttribute("estado");
+
+            if (estado != 1) {
                 request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
                 request.getSession().setAttribute("pedidosOfert", clienteModel.listaCarritoOfertas((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
-                request.getSession().setAttribute("exito", "Has añadido este articulo a tu carrito.");
+                request.getSession().setAttribute("fracaso", "Para adquirir esta oferta, debes crear tu carretilla.");
                 response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct=" + idproduct);
+
             } else {
-                request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-                request.getSession().setAttribute("pedidosOfert", clienteModel.listaCarritoOfertas((int) request.getSession().getAttribute("usuario")));
-                request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
-                request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
-                request.getSession().setAttribute("fracaso", "Ya no hay existencias de este producto");
-                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct=" + idproduct);
+                if (clienteModel.agregarOferta(user, idoferta, cantidad) > 0) {
+                    request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+                    request.getSession().setAttribute("pedidosOfert", clienteModel.listaCarritoOfertas((int) request.getSession().getAttribute("usuario")));
+                    request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
+                    request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
+                    request.getSession().setAttribute("exito", "Has añadido este articulo a tu carrito.");
+                    response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct=" + idproduct);
+                } else {
+                    request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+                    request.getSession().setAttribute("pedidosOfert", clienteModel.listaCarritoOfertas((int) request.getSession().getAttribute("usuario")));
+                    request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
+                    request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
+                    request.getSession().setAttribute("fracaso", "Ya no hay existencias de este producto");
+                    response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct=" + idproduct);
+                }
             }
         } catch (SQLException | IOException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);

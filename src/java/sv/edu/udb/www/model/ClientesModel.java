@@ -20,12 +20,13 @@ public class ClientesModel extends Conexion {
     public int crearCarrito(Pedido pedido) throws SQLException {
         try {
             int filasAfectadas = 0;
-            String sql = "INSERT INTO pedidos (fecha_compra, id_usuario,id_estado_compra) VALUES(?,?,?)";
+            String sql = "INSERT INTO pedidos (fecha_compra,hora_compra, id_usuario,id_estado_compra) VALUES(?,?,?,?)";
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setString(1, pedido.getFechaCompra());
-            st.setInt(2, pedido.getIdUsuario());
-            st.setInt(3, pedido.getIdEstadoCompra());
+            st.setString(2, pedido.getHoraCompra());
+            st.setInt(3, pedido.getIdUsuario());
+            st.setInt(4, pedido.getIdEstadoCompra());
             filasAfectadas = st.executeUpdate();
             this.desconectar();
             return filasAfectadas;

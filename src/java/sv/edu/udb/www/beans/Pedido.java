@@ -14,6 +14,7 @@ import java.util.Date;
 public class Pedido {
     private int idPedido;
     private String fechaCompra;
+    private String horaCompra;
     private String montoTotal;
     private Usuario usuario;
     private int idUsuario;
@@ -27,6 +28,7 @@ public class Pedido {
         this.usuario=null;
         this.idUsuario=0;
         this.idEstadoCompra=0;
+        this.horaCompra = "";
     }
 
     public int getIdPedido() {
@@ -83,6 +85,14 @@ public class Pedido {
 
     public void setIdEstadoCompra(int idEstadoCompra) {
         this.idEstadoCompra = idEstadoCompra;
+    }
+
+    public String getHoraCompra() {
+        return horaCompra;
+    }
+
+    public void setHoraCompra(String horaCompra) {
+        this.horaCompra = horaCompra;
     }
     
 }
