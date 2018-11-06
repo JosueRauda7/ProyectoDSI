@@ -719,13 +719,15 @@ public class ClientesModel extends Conexion {
         }
     }
 
-    public int countProducto(int idsucat) throws SQLException {
+    public int countProducto(int idsucat,double precio1, double precio2) throws SQLException {
         try {
-            String sql = "SELECT COUNT(p.id_producto) as filas FROM producto p LEFT JOIN ofertas o on o.id_producto = p.id_producto WHERE id_sub_categoria = ? AND o.id_oferta is null";
+            String sql = "SELECT COUNT(p.id_producto) as filas FROM producto p LEFT JOIN ofertas o on o.id_producto = p.id_producto WHERE id_sub_categoria = ? AND o.id_oferta is null AND p.precio_regular BETWEEN ? AND ?";
             int filas = 0;
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setInt(1, idsucat);
+            st.setDouble(2, precio1);
+            st.setDouble(3, precio2);
             rs = st.executeQuery();
             if (rs.next()) {
                 filas = rs.getInt("filas");
@@ -738,14 +740,16 @@ public class ClientesModel extends Conexion {
         }
     }
 
-    public List<Producto> listaProductosSubCat(int filter, int idsubcat) throws SQLException {
+    public List<Producto> listaProductosSubCat(int filter, int idsubcat,double precio1, double precio2) throws SQLException {
         try {
-            String sql = "SELECT DISTINCT i.id_producto, p.producto, p.precio_regular, p.cantidad, i.Url_imagen, o.id_oferta FROM producto p INNER JOIN imagen i ON i.id_producto= p.id_producto LEFT JOIN ofertas o ON p.id_producto = o.id_producto WHERE id_estado_producto=2 AND o.id_estado_oferta is null AND p.id_sub_categoria = ? GROUP by i.id_producto ORDER by p.id_producto LIMIT ?,9";
+            String sql = "SELECT DISTINCT i.id_producto, p.producto, p.precio_regular, p.cantidad, i.Url_imagen, o.id_oferta FROM producto p INNER JOIN imagen i ON i.id_producto= p.id_producto LEFT JOIN ofertas o ON p.id_producto = o.id_producto WHERE id_estado_producto=2 AND o.id_estado_oferta is null AND p.id_sub_categoria = ? AND p.precio_regular BETWEEN ? AND ? GROUP by i.id_producto ORDER by p.id_producto LIMIT ?,9";
             List<Producto> lista = new ArrayList<>();
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setInt(1, idsubcat);
-            st.setInt(2, filter);
+            st.setDouble(2, precio1);
+            st.setDouble(3, precio2);
+            st.setInt(4, filter);
             rs = st.executeQuery();
             while (rs.next()) {
                 Producto producto = new Producto();

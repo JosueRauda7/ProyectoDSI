@@ -126,10 +126,10 @@
                                                         <div class="product-quantity">
                                                             <input id="campoofert${loop.index +1}" type="text"  value="${ofertas.cantidad}" onchange="funcionaofer${loop.index +1}(${ofertas.idDetallePedido},${ofertas.oferta.idOferta},${ofertas.oferta.producto.idProducto});"  class="form-control input-sm">
                                                             <script>
-                                                                function funcionaofer${loop.index +1}(valor,oferta, producto) {
+                                                                function funcionaofer${loop.index +1}(valor, oferta, producto) {
                                                                     var cantidad = document.getElementById("campoofert${loop.index +1}").value;
 
-                                                                    location.href = 'clientes.do?operacion=cantidadOfertas&cantidad=' + cantidad + '&iddetalle=' + valor + '&idoferta=' + oferta +'&idproduc='+producto;
+                                                                    location.href = 'clientes.do?operacion=cantidadOfertas&cantidad=' + cantidad + '&iddetalle=' + valor + '&idoferta=' + oferta + '&idproduc=' + producto;
                                                                 }
                                                             </script>
                                                         </div>
@@ -141,7 +141,7 @@
                                                         <strong><span>$</span>${ofertas.oferta.totalDescuento * ofertas.cantidad}</strong>
                                                     </td>
                                                     <td >
-                                                        <a style="cursor: pointer;" class="del-goods" onclick="javascript:eliminar('${ofertas.idDetallePedido}')" >&nbsp;</a>
+                                                        <a style="cursor: pointer;" class="del-goods" onclick="javascript:eliminarOfer('${ofertas.idDetallePedido}')" >&nbsp;</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach> 
@@ -227,6 +227,25 @@
             </c:if>
 
             function eliminar(id) {
+
+                var URLactual = window.location;
+                var url = URLactual.toString().substring(34);
+                swal({
+                    title: '¿Seguro que quieres eliminar este articulo del carrito?',
+                    text: "Una vez eliminado, no habra vuelta atras.",
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+
+                        location.href = 'clientes.do?operacion=eliminarArticulo&iddetalle=' + id + '&url=' + url;
+                    }
+                });
+            }
+            ;
+
+            function eliminarOfer(id) {
 
                 var URLactual = window.location;
                 var url = URLactual.toString().substring(34);

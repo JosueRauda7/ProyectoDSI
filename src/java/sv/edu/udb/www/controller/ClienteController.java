@@ -102,6 +102,9 @@ public class ClienteController extends HttpServlet {
                     case "otraPagina":
                         otraPagina(request, response);
                         break;
+                    case "filtrarProductos":
+                        filtrarProductos(request, response);
+                        break;
                 }
             } else {
                 request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
@@ -232,13 +235,13 @@ public class ClienteController extends HttpServlet {
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
             request.setAttribute("listarProductos", producto);
             request.setAttribute("datoBusqueda", nombre);
-            
-            for(Producto p : producto){
+
+            for (Producto p : producto) {
                 if (clienteModel.ofertaProducto(p.getIdProducto()) != null) {
                     productoOferta.add(p);
                 }
             }
-            
+
             request.setAttribute("listarProductosOfertados", productoOferta);
             try {
                 request.getRequestDispatcher("/cliente/resultadosBusqueda.jsp").forward(request, response);
@@ -448,10 +451,18 @@ public class ClienteController extends HttpServlet {
     private void listaProductos(HttpServletRequest request, HttpServletResponse response) {
         try {
             int idsubcat = Integer.parseInt(request.getParameter("idsubcat"));
-            int filas = clienteModel.countProducto(idsubcat);
+            String precio1 = request.getParameter("precio1");            
+            String precio2 = request.getParameter("precio2");
+            if(precio1 ==null && precio2 ==null){
+                precio1 ="0";
+                precio2 = "1000";
+            }
+            int filas = clienteModel.countProducto(idsubcat,Double.parseDouble(precio1), Double.parseDouble(precio2));
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-            request.setAttribute("listaProductos", clienteModel.listaProductosSubCat(0, idsubcat));
+            request.setAttribute("listaProductos", clienteModel.listaProductosSubCat(0, idsubcat,Double.parseDouble(precio1), Double.parseDouble(precio2)));
             request.setAttribute("listaOfertas", clienteModel.listaOfertasSubCat(0, idsubcat));
+            request.setAttribute("precio1", precio1);
+            request.setAttribute("precio2", precio2);
             request.setAttribute("pagina", 0);
             request.setAttribute("idsubcat", idsubcat);
             request.setAttribute("paginas", (int) filas / 10);
@@ -464,13 +475,21 @@ public class ClienteController extends HttpServlet {
     private void otraPagina(HttpServletRequest request, HttpServletResponse response) {
         try {
             int idsubcat = Integer.parseInt(request.getParameter("idsubcat"));
-            int pagina = Integer.parseInt(request.getParameter("pagina"));
-            int filas = clienteModel.countProducto(idsubcat);
+            int pagina = Integer.parseInt(request.getParameter("pagina")); 
+            String precio1 = request.getParameter("precio1");            
+            String precio2 = request.getParameter("precio2");
+            if(precio1 ==null && precio2 ==null){
+                precio1 ="0";
+                precio2 = "1000";
+            }
+            int filas = clienteModel.countProducto(idsubcat,Double.parseDouble(precio1), Double.parseDouble(precio2));
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-            request.setAttribute("listaProductos", clienteModel.listaProductosSubCat(pagina * 9, idsubcat));
+            request.setAttribute("listaProductos", clienteModel.listaProductosSubCat(pagina * 9, idsubcat,Double.parseDouble(precio1), Double.parseDouble(precio2)));
             request.setAttribute("listaOfertas", clienteModel.listaOfertasSubCat(0, idsubcat));
             request.setAttribute("idsubcat", idsubcat);
             request.setAttribute("pagina", pagina);
+            request.setAttribute("precio1", precio1);
+            request.setAttribute("precio2", precio2);
             request.setAttribute("paginas", (int) filas / 9);
             request.getRequestDispatcher("/cliente/listaProductos.jsp").forward(request, response);
         } catch (ServletException | IOException | SQLException ex) {
@@ -501,5 +520,9 @@ public class ClienteController extends HttpServlet {
         } catch (SQLException | IOException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void filtrarProductos(HttpServletRequest request, HttpServletResponse response) {
+        
     }
 }

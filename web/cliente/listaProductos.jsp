@@ -53,19 +53,16 @@
                     </ul>
 
                     <div class="sidebar-filter margin-bottom-25">
-                        <h2>Filter</h2>
-                        <h3>Availability</h3>
-                        <div class="checkbox-list">
-                            <label><input type="checkbox"> Not Available (3)</label>
-                            <label><input type="checkbox"> In Stock (26)</label>
-                        </div>
+                        <h2>Filtra</h2>
 
-                        <h3>Price</h3>
+                        <h3>Precio</h3>
                         <p>
-                            <label for="amount">Range:</label>
-                            <input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;">
+                            <label for="amount">Rango:</label>
+                            <input type="text" id="amount"  oncuechange="verprecio();"  style="border:0; color:#f6931f; font-weight:bold;">
                         </p>
-                        <div id="slider-range"></div>
+                        <div id="slider-range" ></div>
+                        <br>
+                        <button class="btn btn-primary" id="btnfiltrar" style="margin-left: 35%;"><span class="glyphicon glyphicon-search"></span> Buscar</button>
                     </div>
 
                 </div>
@@ -136,20 +133,20 @@
                                     <div class="col-md-8 col-sm-8">
                                         <ul class="pagination pull-right">
                                             <c:if test="${requestScope.pagina <=0}"> 
-                                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${requestScope.pagina}&idsubcat=${requestScope.idsubcat}">&laquo;</a></li>
+                                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${requestScope.pagina}&idsubcat=${requestScope.idsubcat}&precio1=${requestScope.precio1}&precio2=${requestScope.precio2}">&laquo;</a></li>
                                                 </c:if>
                                                 <c:if test="${requestScope.pagina >0 }">
-                                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${requestScope.pagina-1}&idsubcat=${requestScope.idsubcat}">&laquo;</a></li>
+                                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${requestScope.pagina-1}&idsubcat=${requestScope.idsubcat}&precio1=${requestScope.precio1}&precio2=${requestScope.precio2}">&laquo;</a></li>
                                                 </c:if>
 
                                             <c:forEach var = "i" begin = "0" end = "${requestScope.paginas}">
-                                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${i}&idsubcat=${requestScope.idsubcat}">${i+1}</a></li>
+                                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${i}&idsubcat=${requestScope.idsubcat}&precio1=${requestScope.precio1}&precio2=${requestScope.precio2}">${i+1}</a></li>
                                                 </c:forEach>
                                                 <c:if test="${requestScope.pagina >= requestScope.paginas}"> 
-                                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${requestScope.pagina}&idsubcat=${requestScope.idsubcat}">&raquo;</a></li>
+                                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${requestScope.pagina}&idsubcat=${requestScope.idsubcat}&precio1=${requestScope.precio1}&precio2=${requestScope.precio2}">&raquo;</a></li>
                                                 </c:if>
                                                 <c:if test="${requestScope.pagina < requestScope.paginas}">
-                                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${requestScope.pagina+1}&idsubcat=${requestScope.idsubcat}">&raquo;</a></li>
+                                                <li><a href="${base}/clientes.do?operacion=otraPagina&pagina=${requestScope.pagina+1}&idsubcat=${requestScope.idsubcat}&precio1=${requestScope.precio1}&precio2=${requestScope.precio2}">&raquo;</a></li>
                                                 </c:if>
                                         </ul>
                                     </div>
@@ -170,7 +167,7 @@
                                             <div class="pi-price">$${ofertas.totalDescuento}</div>
                                             <a href="${base}/clientes.do?operacion=agregarOferta&idproducto=${ofertas.producto.idProducto}&cantidad=1&idoferta=${ofertas.idOferta}" class="btn btn-default add2cart">Agregar al carrito</a>
                                         </div>
-
+                                        <div class="sticker sticker-sale" style="margin-left: 5%;"></div>
                                     </div>
 
                                 </c:forEach>
@@ -212,6 +209,17 @@
         });
     </script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script><!-- for slider-range -->
+    <script>
+    
+        document.getElementById("btnfiltrar").addEventListener("click", function () {
+            var valor = document.getElementById("amount").value;
+            var count = valor.indexOf("-");
+            var precio1 = valor.substring(1, count - 1);
+            var precio2 = valor.substring(count + 3, 11);
+            location.href = 'clientes.do?operacion=listaProductos&idsubcat='+${requestScope.idsubcat}+'&precio1='+ precio1+ '&precio2='+precio2;
 
+        });
+
+    </script>
 </body>
 </html>
