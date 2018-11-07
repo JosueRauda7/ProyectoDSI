@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import sv.edu.udb.www.beans.Comentario;
 import sv.edu.udb.www.beans.DetallePedido;
 import sv.edu.udb.www.beans.Empresa;
+import sv.edu.udb.www.beans.EstadoCompra;
 import sv.edu.udb.www.beans.EstadoProducto;
 import sv.edu.udb.www.beans.Oferta;
 import sv.edu.udb.www.beans.Pedido;
@@ -536,6 +537,35 @@ public class ClientesModel extends Conexion {
         }
     }
 
+    public List<Pedido> listaPedidos(int iduser) throws SQLException {
+        try {
+            String sql = "SELECT ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total, pd.id_pedido, pd.fecha_compra, time_format(pd.hora_compra, \"%H:%i\") as hora_compra, ec.estado,ec.id_estado_compra FROM detalle_pedidos dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on dp.id_pedido = pd.id_pedido INNER JOIN estado_compra ec on pd.id_estado_compra = ec.id_estado_compra WHERE pd.id_usuario = ? GROUP by pd.id_pedido";
+            List<Pedido> lista = new ArrayList<>();
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, iduser);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Pedido pedido = new Pedido();
+                EstadoCompra estado = new EstadoCompra();
+                pedido.setIdPedido(rs.getInt("id_pedido"));
+                pedido.setFechaCompra(rs.getString("fecha_compra"));
+                pedido.setHoraCompra(rs.getString("hora_compra"));
+                pedido.setMontoTotal(rs.getString("total"));
+                estado.setIdEstadoCompra(rs.getInt("id_estado_compra"));
+                estado.setEstado(rs.getString("estado"));
+                pedido.setEstadoCompra(estado);
+                lista.add(pedido);
+            }
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+    }
+
     public int cantidadProducto(int cantidad, int iddetalle, int idproduct) throws SQLException {
         try {
             String sql2 = "SELECT cantidad FROM detalle_pedidos WHERE id_detalle_pedido = ?";
@@ -586,7 +616,7 @@ public class ClientesModel extends Conexion {
     }
 
     public int cantidadOferta(int cantidad, int iddetalle, int idproduct) throws SQLException {
-           try {
+        try {
             String sql2 = "SELECT cantidad FROM detalle_pedidos WHERE id_detalle_pedido = ?";
             int cantidadact = 0;
             int cantidadpro = 0;
@@ -720,7 +750,7 @@ public class ClientesModel extends Conexion {
         }
     }
 
-    public int countProducto(int idsucat,double precio1, double precio2) throws SQLException {
+    public int countProducto(int idsucat, double precio1, double precio2) throws SQLException {
         try {
             String sql = "SELECT COUNT(p.id_producto) as filas FROM producto p LEFT JOIN ofertas o on o.id_producto = p.id_producto WHERE id_sub_categoria = ? AND o.id_oferta is null AND p.precio_regular BETWEEN ? AND ?";
             int filas = 0;
@@ -740,8 +770,8 @@ public class ClientesModel extends Conexion {
             return 0;
         }
     }
-    
-      public int countOferta(int idsucat,double precio1, double precio2) throws SQLException {
+
+    public int countOferta(int idsucat, double precio1, double precio2) throws SQLException {
         try {
             String sql = "SELECT COUNT(o.id_oferta) AS filas FROM ofertas o INNER JOIN producto p on o.id_producto = p.id_producto WHERE o.id_estado_oferta= 1 AND p.id_sub_categoria = ? AND o.total_descuento BETWEEN ? AND ?";
             int filas = 0;
@@ -762,7 +792,7 @@ public class ClientesModel extends Conexion {
         }
     }
 
-    public List<Producto> listaProductosSubCat(int filter, int idsubcat,double precio1, double precio2) throws SQLException {
+    public List<Producto> listaProductosSubCat(int filter, int idsubcat, double precio1, double precio2) throws SQLException {
         try {
             String sql = "SELECT DISTINCT i.id_producto, p.producto, p.precio_regular, p.cantidad, i.Url_imagen, o.id_oferta FROM producto p INNER JOIN imagen i ON i.id_producto= p.id_producto LEFT JOIN ofertas o ON p.id_producto = o.id_producto WHERE id_estado_producto=2 AND o.id_estado_oferta is null AND p.id_sub_categoria = ? AND p.precio_regular BETWEEN ? AND ? GROUP by i.id_producto ORDER by p.id_producto LIMIT ?,9";
             List<Producto> lista = new ArrayList<>();
@@ -790,14 +820,14 @@ public class ClientesModel extends Conexion {
         }
     }
 
-    public List<Oferta> listaOfertasSubCat(int filter, int idsubcat,double precio1, double precio2) throws SQLException {
+    public List<Oferta> listaOfertasSubCat(int filter, int idsubcat, double precio1, double precio2) throws SQLException {
         try {
             String sql = "SELECT o.id_oferta, o.id_producto, o.titulo, o.Url_foto, o.total_descuento FROM ofertas o INNER JOIN producto p on o.id_producto = p.id_producto WHERE o.id_estado_oferta= 1 AND p.id_sub_categoria = ? AND o.total_descuento BETWEEN ? AND ? LIMIT ?,9";
             List<Oferta> lista = new ArrayList<>();
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setInt(1, idsubcat);
-             st.setDouble(2, precio1);
+            st.setDouble(2, precio1);
             st.setDouble(3, precio2);
             st.setInt(4, filter);
             rs = st.executeQuery();
@@ -820,4 +850,115 @@ public class ClientesModel extends Conexion {
             return null;
         }
     }
+
+    public List<DetallePedido> listaCarritoPasadoOfertas(int idpedido) throws SQLException {
+        try {
+            List<DetallePedido> lista = new ArrayList<>();
+            this.conectar();
+            String sql2 = "SELECT o.*, dp.cantidad,dp.id_detalle_pedido FROM detalle_pedidos dp INNER JOIN ofertas o on dp.id_oferta = o.id_oferta INNER JOIN pedidos pd ON dp.id_pedido = pd.id_pedido WHERE dp.id_pedido=?  ORDER BY dp.id_detalle_pedido DESC";
+            st = conexion.prepareStatement(sql2);
+            st.setInt(1, idpedido);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Oferta oferta = new Oferta();
+                DetallePedido detalle = new DetallePedido();
+                Producto producto = new Producto();
+                oferta.setIdOferta(rs.getInt("id_oferta"));
+                oferta.setTitulo(rs.getString("titulo"));
+                producto.setIdProducto(rs.getInt("id_producto"));
+                oferta.setProducto(producto);
+                oferta.setDescripcion(rs.getString("descripcion"));
+                oferta.setFechaInicio(rs.getString("fecha_inicio"));
+                oferta.setFechaFin(rs.getString("fecha_fin"));
+                oferta.setDescuento(rs.getInt("descuento"));
+                oferta.setTotalDescuento(rs.getDouble("total_descuento"));
+                oferta.setUrlFoto(rs.getString("Url_foto"));
+                detalle.setOferta(oferta);
+                detalle.setCantidad(rs.getInt("cantidad"));
+                detalle.setIdDetallePedido(rs.getInt("id_detalle_pedido"));
+                lista.add(detalle);
+            }
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+    }
+
+    public List<DetallePedido> listaCarritoPasado(int idpedido) throws SQLException {
+        try {
+            List<DetallePedido> lista = new ArrayList<>();
+            this.conectar();
+            String sql2 = "SELECT DISTINCT i.id_producto, dp.cantidad,dp.id_detalle_pedido,p.id_producto, p.producto, i.Url_imagen,p.precio_regular, p.descripcion, sc.subcategoria, em.empresa,em.Urlempresa FROM detalle_pedidos dp INNER JOIN producto p ON dp.id_producto = p.id_producto INNER JOIN pedidos pd ON dp.id_pedido = pd.id_pedido INNER JOIN imagen i ON i.id_producto = p.id_producto INNER JOIN sub_categoria sc on p.id_sub_categoria = sc.id_sub_categoria INNER JOIN empresa em ON p.id_empresa = em.id_empresa WHERE pd.id_pedido=?  GROUP by i.id_producto ORDER BY dp.id_detalle_pedido DESC";
+            st = conexion.prepareStatement(sql2);
+            st.setInt(1, idpedido);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Producto producto = new Producto();
+                Empresa empresa = new Empresa();
+                DetallePedido detalle = new DetallePedido();
+                producto.setIdProducto(rs.getInt("id_producto"));
+                producto.setProducto(rs.getString("producto"));
+                producto.setUrlImagen(rs.getString("Url_imagen"));
+                producto.setCantidad(rs.getString("cantidad"));
+                producto.setPrecioRegular(rs.getString("precio_regular"));
+                producto.setDescripcion(rs.getString("descripcion"));
+                producto.setSubCategoria(new SubCategoria(rs.getString("subcategoria")));
+                empresa.setEmpresa(rs.getString("empresa"));
+                empresa.setUrlEmpresa(rs.getString("Urlempresa"));
+                producto.setEmpresa(empresa);
+                detalle.setProducto(producto);
+                detalle.setCantidad(rs.getInt("cantidad"));
+                detalle.setIdDetallePedido(rs.getInt("id_detalle_pedido"));
+                lista.add(detalle);
+            }
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+    }
+
+    public String totalPedidoPasado(int idpedido) {
+        try {
+            this.conectar();
+            String sql2 = "SELECT ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total FROM detalle_pedidos dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on dp.id_pedido = pd.id_pedido WHERE dp.id_pedido = ? ";
+            this.conectar();
+            String total = "";
+            st = conexion.prepareStatement(sql2);
+            st.setInt(1, idpedido);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                total = rs.getString("total");
+            }
+            return total;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            return "0";
+        }
+    }
+
+    public String fechaPedido(int idpedido) throws SQLException {
+        try {
+            String sql = "SELECT fecha_compra FROM pedidos WHERE id_pedido = ?";
+            this.conectar();
+            String fecha = "";
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, idpedido);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                fecha = rs.getString("fecha_compra");
+            }
+            return fecha;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return "";
+        }
+    }
+
 }

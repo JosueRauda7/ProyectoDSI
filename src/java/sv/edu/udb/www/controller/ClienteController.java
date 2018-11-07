@@ -102,8 +102,11 @@ public class ClienteController extends HttpServlet {
                     case "otraPagina":
                         otraPagina(request, response);
                         break;
-                    case "filtrarProductos":
-                        filtrarProductos(request, response);
+                    case "listaPedidos":
+                        listaPedidos(request, response);
+                        break;
+                    case "carritoPasado":
+                        carritoPasado(request, response);
                         break;
                 }
             } else {
@@ -570,7 +573,27 @@ public class ClienteController extends HttpServlet {
         }
     }
 
-    private void filtrarProductos(HttpServletRequest request, HttpServletResponse response) {
+    private void listaPedidos(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int idusuario = (int) request.getSession().getAttribute("usuario");
+            request.setAttribute("listaPedidos", clienteModel.listaPedidos(idusuario));
+            request.getRequestDispatcher("/cliente/listaPedidos.jsp").forward(request, response);
+        } catch (SQLException | ServletException | IOException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
+    private void carritoPasado(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int idpedido = Integer.parseInt(request.getParameter("idpedido"));
+            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.setAttribute("listaoferPasado", clienteModel.listaCarritoPasadoOfertas(idpedido));
+            request.setAttribute("listaproductPasado", clienteModel.listaCarritoPasado(idpedido));
+            request.setAttribute("totalpedidopasado", clienteModel.totalPedidoPasado(idpedido));
+            request.setAttribute("fechaPedido", clienteModel.fechaPedido(idpedido));
+            request.getRequestDispatcher("/cliente/CarritoPasado.jsp").forward(request, response);
+        } catch (SQLException | ServletException | IOException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

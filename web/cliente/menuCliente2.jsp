@@ -54,7 +54,7 @@
                         </c:if>
                         </ul>
                         <div class="text-right" style="display: flex; margin-left: 2%;">
-                            <a href="shop-shopping-cart.html" class="btn btn-default">Lista de compras</a>
+                            <a href="${base}/clientes.do?operacion=listaPedidos" class="btn btn-default">Lista de compras</a>
 
                             <a href="${base}/clientes.do?operacion=crearCarrito" id="crear" class="btn btn-primary" >Crear carrito</a>
                             <a href="${base}/clientes.do?operacion=verCarrito" style="width: 30%;" id="ver" class="btn btn-primary" >Ver carrito</a>
