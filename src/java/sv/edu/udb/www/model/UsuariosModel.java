@@ -381,4 +381,43 @@ public class UsuariosModel extends Conexion {
             return null;
         }
     }
+    
+    /*Correo masivo*/
+    //obtener el cantidad de clientes en la base
+    public int obtenerCantidadClientes() throws SQLException{
+        try{
+            int cantidadClientes = 0;
+            String sql = "SELECT COUNT(*) as 'cantidad' FROM `usuarios` WHERE id_tipo_usuario = 2";
+            this.conectar();
+            st=conexion.prepareStatement(sql);
+            rs=st.executeQuery();
+            while(rs.next()){
+                cantidadClientes=rs.getInt("cantidad");
+            }
+            this.desconectar();
+            return cantidadClientes;
+        }catch(Exception e){
+            this.desconectar();
+            return 0;
+        }
+    }
+    //obtener lista de correos de clientes
+    public List<String> obtenerCorreosCliente() throws SQLException{
+        try{
+            List<String> listaCorreos = null;
+            String sql="SELECT correo FROM usuarios WHERE id_tipo_usuario = 2";
+            this.conectar();
+            st=conexion.prepareStatement(sql);
+            rs=st.executeQuery();
+            while(rs.next()){
+                listaCorreos.add(rs.getString("correo"));
+            }
+            this.desconectar();
+            return listaCorreos;
+        }catch(Exception e){
+            this.desconectar();
+            return null;
+        }
+    }
+    /*Fin correo masivo*/
 }
