@@ -59,7 +59,7 @@ public class EmpresaController extends HttpServlet {
         PrintWriter out = response.getWriter();
         CategoriasModel CategoriaModel = new CategoriasModel();
         ProductosModel ProductoModel = new ProductosModel();
-        ClientesModel clienteModel = new ClientesModel();        
+        ClientesModel clienteModel = new ClientesModel();
         try {
             if (request.getSession().getAttribute("usuario") != null || request.getSession().getAttribute("tipousuario") != null || request.getSession().getAttribute("nombreUser") != null) {
                 if (request.getSession().getAttribute("usuario") == null || !request.getSession().getAttribute("tipousuario").toString().equals("5")) {
@@ -86,14 +86,14 @@ public class EmpresaController extends HttpServlet {
                             break;
 
                         case "grafica":
-                            grafica(request,response);
+                            grafica(request, response);
                             break;
-                            
-                        case "ventadiaria":
-                            try{
-                            ventadiaria(request,response);
-                            }catch(SQLException e){
-                                
+
+                        case "ventaanual":
+                            try {
+                                ventaanual(request, response);
+                            } catch (SQLException e) {
+
                             }
                             break;
                         case "subcategorias":
@@ -399,7 +399,16 @@ public class EmpresaController extends HttpServlet {
     }
 
     private void grafica(HttpServletRequest request, HttpServletResponse response) {
-        try {            
+        try {
+            int anio = 0;
+            if (request.getParameter("anio") != null) {
+                request.getSession().setAttribute("anio", request.getParameter("anio"));
+                //anio = Integer.parseInt(request.getParameter("anio"));
+            }else{
+                request.getSession().setAttribute("anio", anio);
+            }
+            
+            System.out.println(anio);
             request.setAttribute("ventas", modeloPedido.ventasDiarias().size());
             request.getRequestDispatcher("/empresa/estadisticaEmpresa.jsp").forward(request, response);
         } catch (SQLException ex) {
@@ -409,18 +418,20 @@ public class EmpresaController extends HttpServlet {
         }
     }
 
-    private void ventadiaria(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
-        
+    private void ventaanual(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+
         PrintWriter out = response.getWriter();
+        int anio = Integer.parseInt(request.getSession().getAttribute("anio").toString());
+        System.out.println(anio);
         //Necesito la cantidad de datos que devuelve la consulta
-        request.setAttribute("ventas", modeloPedido.ventasDiarias().size());
+        request.setAttribute("ventas", modeloPedido.ventaAnual(anio).size());
         //Arreglo con los datos que solicito en la consulta (AUN DEBO REVISAR BIEN LA CONSULTA)
-        List<Pedido> pedidos = modeloPedido.ventasDiarias();
-        
+        List<Pedido> pedidos = modeloPedido.ventaAnual(anio);
+
         //Como solo obtengo 2 datos, la fecha y monto, esta variable me servirá para mandar ambos como respuesta Json del Arreglo anterior
         StringBuilder sb = new StringBuilder("");
         for (int i = 0; i < pedidos.size(); i++) {
-            sb.append(pedidos.get(i).getFechaCompra()+ "," + pedidos.get(i).getMontoTotal() + ":");
+            sb.append(pedidos.get(i).getFechaCompra() + "," + pedidos.get(i).getMontoTotal() + ":");
         }
         out.write(sb.toString());
     }

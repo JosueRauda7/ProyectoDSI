@@ -49,7 +49,7 @@
                         Estadisticas
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="${base}/empresas.do?operacion=grafica">Ventas diarias</a></li>                        
+                        <li><a href="${base}/empresas.do?operacion=grafica">Ventas anuales</a></li>                        
                     </ul>
                 </li>
 
