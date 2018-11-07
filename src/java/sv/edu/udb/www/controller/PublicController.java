@@ -230,7 +230,7 @@ public class PublicController extends HttpServlet {
         try {
             int idsubcat = Integer.parseInt(request.getParameter("idsubcat"));
             String precio1 = request.getParameter("precio1");
-           
+
             String precio2 = request.getParameter("precio2");
             if (precio1 == null && precio2 == null) {
                 precio1 = "0";
@@ -238,7 +238,8 @@ public class PublicController extends HttpServlet {
             }
             int filas = clienteModel.countProducto(idsubcat, Double.parseDouble(precio1), Double.parseDouble(precio2));
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-            request.setAttribute("listaProductos", clienteModel.listaProductosSubCat(0, idsubcat,Double.parseDouble(precio1), Double.parseDouble(precio2))); request.setAttribute("listaOfertas", clienteModel.listaOfertasSubCat(0, idsubcat));
+            request.setAttribute("listaProductos", clienteModel.listaProductosSubCat(0, idsubcat, Double.parseDouble(precio1), Double.parseDouble(precio2)));
+            request.setAttribute("listaOfertas", clienteModel.listaOfertasSubCat(0, idsubcat, Double.parseDouble(precio1), Double.parseDouble(precio2)));
             request.setAttribute("pagina", 0);
             request.setAttribute("idsubcat", idsubcat);
             request.setAttribute("paginas", (int) filas / 10);
@@ -252,16 +253,23 @@ public class PublicController extends HttpServlet {
         try {
             int idsubcat = Integer.parseInt(request.getParameter("idsubcat"));
             int pagina = Integer.parseInt(request.getParameter("pagina"));
-            String precio1 = request.getParameter("precio1");            
+            String precio1 = request.getParameter("precio1");
             String precio2 = request.getParameter("precio2");
-            if(precio1 ==null && precio2 ==null){
-                precio1 ="0";
+            
+            int paginaOfer;
+            if (request.getParameter("paginaOfer") == null) {
+                paginaOfer = 0;
+            } else {
+                paginaOfer = Integer.parseInt(request.getParameter("paginaOfer"));
+            }
+            if (precio1 == null && precio2 == null) {
+                precio1 = "0";
                 precio2 = "1000";
             }
-            int filas = clienteModel.countProducto(idsubcat,Double.parseDouble(precio1), Double.parseDouble(precio2));
+            int filas = clienteModel.countProducto(idsubcat, Double.parseDouble(precio1), Double.parseDouble(precio2));
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-            request.setAttribute("listaProductos", clienteModel.listaProductosSubCat(pagina * 9, idsubcat,Double.parseDouble(precio1), Double.parseDouble(precio2)));
-            request.setAttribute("listaOfertas", clienteModel.listaOfertasSubCat(0, idsubcat));
+            request.setAttribute("listaProductos", clienteModel.listaProductosSubCat(pagina * 9, idsubcat, Double.parseDouble(precio1), Double.parseDouble(precio2)));
+            request.setAttribute("listaOfertas", clienteModel.listaOfertasSubCat(paginaOfer * 9, idsubcat, Double.parseDouble(precio1), Double.parseDouble(precio2)));
             request.setAttribute("idsubcat", idsubcat);
             request.setAttribute("pagina", pagina);
             request.setAttribute("paginas", (int) filas / 9);
