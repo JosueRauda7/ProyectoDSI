@@ -113,6 +113,9 @@ public class ClienteController extends HttpServlet {
                     case "pagoPedido":
                         pagoPedido(request, response);
                         break;
+                    case "confirmarPedido":
+                        confirmarPedido(request, response);
+                        break;
                 }
             } else {
                 request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
@@ -604,13 +607,39 @@ public class ClienteController extends HttpServlet {
 
     private void pagoPedido(HttpServletRequest request, HttpServletResponse response) {
         try {
-            int idusuario = (int) request.getSession().getAttribute("usuario");
-            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-            request.setAttribute("clienteInfo", usuario.obtenerCliente(idusuario));
-            request.getRequestDispatcher("/cliente/pagoPedido.jsp").forward(request, response);
+            int estado = (int) request.getSession().getAttribute("estado");
+
+            if (estado != 1) {
+                request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+                request.getSession().setAttribute("fracaso", "No tienes un pedido activo.");
+                request.getRequestDispatcher("/cliente/Carrito.jsp").forward(request, response);
+            } else {
+                int idusuario = (int) request.getSession().getAttribute("usuario");
+                request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+                request.setAttribute("clienteInfo", usuario.obtenerCliente(idusuario));
+                request.getRequestDispatcher("/cliente/pagoPedido.jsp").forward(request, response);
+            }
         } catch (SQLException | ServletException | IOException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    private void confirmarPedido(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int idusuario = (int) request.getSession().getAttribute("usuario");
+            if (clienteModel.confirmarPedido(idusuario) > 0) {
+                request.getSession().setAttribute("exito", "Tu pedido a sido confirmado, espera a que tus articulos lleguen a la comodidad de tu casa.");
+                request.getSession().setAttribute("estado", clienteModel.estadoPedido((int) request.getSession().getAttribute("usuario")));
+                request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
+                request.getSession().setAttribute("pedidosOfert", clienteModel.listaCarritoOfertas((int) request.getSession().getAttribute("usuario")));
+                request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
+                request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
+
+                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=publicIndex");
+            }
+        } catch (IOException | SQLException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

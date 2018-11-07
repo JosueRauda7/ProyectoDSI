@@ -935,6 +935,7 @@ public class ClientesModel extends Conexion {
             if (rs.next()) {
                 total = rs.getString("total");
             }
+            this.desconectar();
             return total;
         } catch (SQLException ex) {
             Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
@@ -953,6 +954,7 @@ public class ClientesModel extends Conexion {
             if (rs.next()) {
                 fecha = rs.getString("fecha_compra");
             }
+            this.desconectar();
             return fecha;
         } catch (SQLException ex) {
             Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
@@ -961,5 +963,29 @@ public class ClientesModel extends Conexion {
         }
     }
 
+    public int confirmarPedido(int iduser) throws SQLException {
+        try {
+            String sql = "SELECT MAX(id_pedido) AS pedido FROM pedidos WHERE id_usuario = ?";
+            int pedido = 0;
+            int filasAfectadas = 0;
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, iduser);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                pedido = rs.getInt("pedido");
+            }
+            String sql2 = "UPDATE pedidos SET id_estado_compra = 2 WHERE id_pedido = ?";
+            st = conexion.prepareStatement(sql2);
+            st.setInt(1, pedido);
+            filasAfectadas = st.executeUpdate();
+            this.desconectar();
+            return filasAfectadas;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        }
+    }
 
 }
