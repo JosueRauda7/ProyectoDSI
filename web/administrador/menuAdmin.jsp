@@ -10,8 +10,7 @@
 
 <div class="header">
     <div class="container">
-        <a class="site-logo" href="shop-index.html">BigShop</a>
-        <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
+        <a class="site-logo"  href="${base}/administrador.do?operacion=inicio">BigShop</a>        
         <!-- BEGIN CART -->
         <div class="top-cart-block">
             <div class="dropdown">
@@ -37,7 +36,7 @@
                 </li>
                 <li class="dropdown dropdown-megamenu">
                     <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
-                        Clientes
+                        Usuarios
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=agregarUsuario">Registrar Usuario</a></li>

@@ -40,66 +40,91 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
                     <!-- PRODUCT ITEM START -->
                     <div class="col-lg-4">
                         <div class="product-item">
-                            <div class="pi-img-wrapper">
-                                <img src="${base}/assets/pages/img/administrador/administradoricon.png" style="max-height: 200px;" class="col-lg-7" alt="Berry Lace Dress">
+                            <div class="text-center">
+                                <img src="${base}/assets/pages/img/administrador/clientesicon.png" style="min-height: 160px; border-radius: 150px;" class="col-lg-11" alt="Berry Lace Dress">
+                            </div><br>
+                            <h3 class="text-center"><a href="shop-item.html">Usuarios</a></h3>
+                            <div class="text-center">
+                                <a href="${base}/administrador.do?operacion=listarUsuarios" class="btn btn-default"
+                                   style="color: #a8aeb3;border: 1px #ededed solid; padding: 3px 6px;">Administrar</a>                                                            
                             </div>
-                            <h3><a href="shop-item.html">Administrador</a></h3>
-                            <a href="${base}/administrador.do?operacion=listarUsuarios" class="btn btn-default add2cart">Administrar</a>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="product-item">
-                            <div class="pi-img-wrapper">
-                                <img src="${base}/assets/pages/img/administrador/catalogoicon.png" style="min-height: 152px;"  class="col-lg-7" alt="Berry Lace Dress">
+                            <div class="text-center">
+                                <img src="${base}/assets/pages/img/administrador/catalogoicon.png" style="min-height: 160px; border-radius: 150px;" class="col-lg-11" alt="Berry Lace Dress">
                             </div>
-                            <h3><a href="shop-item.html">Categoria</a></h3>
-                            <a href="${base}/administrador.do?operacion=listarCategorias" class="btn btn-default add2cart">Administrar</a>
+                            <h3 class="text-center"><a href="shop-item.html">Categoría</a></h3>
+                            <div class="text-center">
+                                <a href="${base}/administrador.do?operacion=listarCategorias" class="btn btn-default"
+                                   style="color: #a8aeb3;border: 1px #ededed solid; padding: 3px 6px;">Administrar</a>
+                            </div>
                         </div>
                     </div>
 
                     <div class="col-lg-4">
                         <div class="product-item">
-                            <div class="pi-img-wrapper">
-                                <img src="${base}/assets/pages/img/administrador/clientesicon.png" class="col-lg-7" alt="Berry Lace Dress">
+                            <div class="text-center">
+                                <img src="${base}/assets/pages/img/administrador/estadistica.png" style="min-height: 160px; border-radius: 150px;" class="col-lg-11" alt="Berry Lace Dress">
                             </div>
-                            <h3><a href="shop-item.html">Usuarios</a></h3>
-                            <a href="${base}/administrador.do?operacion=listarUsuarios" class="btn btn-default add2cart">Administrar</a>
+                            <h3 class="text-center"><a href="shop-item.html">Estadisticas</a></h3>
+                            <div class="text-center">
+                                <a href="#" class="btn btn-default"
+                                   style="color: #a8aeb3;border: 1px #ededed solid; padding: 3px 6px;">Administrar</a>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="product-item">
-                            <div class="pi-img-wrapper">
-                                <img src="${base}/assets/pages/img/administrador/productosicon.png" style="min-height: 160px;" class="col-lg-7" alt="Berry Lace Dress">
+                            <div class="text-center">
+                                <img src="${base}/assets/pages/img/administrador/productosicon.png" style="min-height: 160px; border-radius: 150px;" class="col-lg-11" alt="Berry Lace Dress">
                             </div>
-                            <h3><a href="shop-item.html">Productos</a></h3>
-                            <a href="${base}/administrador.do?operacion=listarProductos&estado=1" class="btn btn-default add2cart">Administrar</a>
+                            <h3 class="text-center"><a href="shop-item.html">Productos</a></h3>
+                            <div class="text-center">
+                                <a href="${base}/administrador.do?operacion=listarProductos&estado=1" class="btn btn-default"
+                                   style="color: #a8aeb3;border: 1px #ededed solid; padding: 3px 6px;">Administrar</a>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="product-item">
-                            <div class="pi-img-wrapper">
-                                <img src="${base}/assets/pages/img/administrador/subcatalogoicon.png" class="col-lg-7" alt="Berry Lace Dress">
+                            <div class="text-center">
+                                <img src="${base}/assets/pages/img/administrador/empresa.png" style="min-height: 160px; border-radius: 150px;"  class="col-lg-11" alt="Berry Lace Dress">
                             </div>
-                            <h3><a href="shop-item.html">Sub-categoria</a></h3>
-                            <a href="${base}/administrador.do?operacion=listarSubCategorias" class="btn btn-default add2cart">Administrar</a>
+                            <h3 class="text-center"><a href="shop-item.html">Empresa</a></h3>
+                            <div class="text-center">                                                            
+                                <a href="${base}/administrador.do?operacion=listarEmpresas" class="btn btn-default"
+                                   style="color: #a8aeb3;border: 1px #ededed solid; padding: 3px 6px;">Administrar</a>
+                            </div>
                         </div>
-                    </div></div>
+                    </div>
+                </div>
             </div>
-            <div class="margin-bottom-40"></div>
-            <jsp:include page="footer.jsp"/>
+
+            <div class="footer text-center" style="bottom: auto;">
+                <div class="container">
+                    <div class="row">
+                        <!-- BEGIN COPYRIGHT -->
+                        <div class="col-md-12 padding-top-10">
+                            2018 © Universidad Don Bosco. Derechos reservados. 
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <jsp:include page="/scripts.jsp"/>
-<script type="text/javascript">
-    jQuery(document).ready(function () {
-        Layout.init();
-        Layout.initOWL();
-        Layout.initTwitter();
-        Layout.initImageZoom();
-        Layout.initTouchspin();
-        Layout.initUniform();
-    });
-</script>
-<!-- END PAGE LEVEL JAVASCRIPTS -->
-</body>
-<!-- END BODY -->
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                Layout.init();
+                Layout.initOWL();
+                Layout.initTwitter();
+                Layout.initImageZoom();
+                Layout.initTouchspin();
+                Layout.initUniform();
+            });
+        </script>
+        <!-- END PAGE LEVEL JAVASCRIPTS -->
+    </body>
+    <!-- END BODY -->
 </html>
