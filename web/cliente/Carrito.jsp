@@ -171,7 +171,8 @@
                                     </ul>
                                 </div>
                             </div>
-                            <a href="${base}/clientes.do?operacion=publicIndex"><button class="btn btn-default" >Continuar comprando <i class="fa fa-shopping-cart"></i></button></a>                            <button class="btn btn-primary" >Proceder a pagar <i class="fa fa-check"></i></button>
+                            <a href="${base}/clientes.do?operacion=publicIndex"><button class="btn btn-default" >Continuar comprando <i class="fa fa-shopping-cart"></i></button></a>  
+                            <a href="${base}/clientes.do?operacion=pagoPedido"><button class="btn btn-primary" >Proceder a pagar <i class="fa fa-check"></i></button></a>
                         </div>
                     </div>
                     <!-- END CONTENT -->

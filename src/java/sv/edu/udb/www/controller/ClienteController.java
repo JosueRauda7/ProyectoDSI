@@ -26,6 +26,7 @@ import sv.edu.udb.www.model.CategoriasModel;
 import sv.edu.udb.www.model.ClientesModel;
 import sv.edu.udb.www.model.ProductosModel;
 import sv.edu.udb.www.model.SubCategoriasModel;
+import sv.edu.udb.www.model.UsuariosModel;
 
 /**
  *
@@ -38,6 +39,7 @@ public class ClienteController extends HttpServlet {
     ProductosModel ProductoModel = new ProductosModel();
     ClientesModel clienteModel = new ClientesModel();
     SubCategoriasModel subcategoriaModel = new SubCategoriasModel();
+    UsuariosModel usuario = new UsuariosModel();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -107,6 +109,9 @@ public class ClienteController extends HttpServlet {
                         break;
                     case "carritoPasado":
                         carritoPasado(request, response);
+                        break;
+                    case "pagoPedido":
+                        pagoPedido(request, response);
                         break;
                 }
             } else {
@@ -336,23 +341,23 @@ public class ClienteController extends HttpServlet {
     }
 
     private void cantidadProducto(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        try (PrintWriter out = response.getWriter()) {
             int cantidad = Integer.parseInt(request.getParameter("cantidad"));
             int iddetalle = Integer.parseInt(request.getParameter("iddetalle"));
             int idproduct = Integer.parseInt(request.getParameter("idproduc"));
             if (cantidad <= 0) {
                 request.getSession().setAttribute("fracaso", "La cantidad debe ser mayor a 1");
-                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verCarrito");
+                out.println("<script>window.location = document.referrer;</script>");
             } else {
 
                 if (clienteModel.cantidadProducto(cantidad, iddetalle, idproduct) > 0) {
                     request.getSession().setAttribute("exito", "Item modificado exitosamente.");
                     request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
                     request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
-                    response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verCarrito");
+                    out.println("<script>window.location = document.referrer;</script>");
                 } else {
                     request.getSession().setAttribute("fracaso", "Existencias limitadas de este articulo");
-                    response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verCarrito");
+                    out.println("<script>window.location = document.referrer;</script>");
                 }
             }
         } catch (SQLException | IOException ex) {
@@ -549,23 +554,23 @@ public class ClienteController extends HttpServlet {
     }
 
     private void cantidadOferta(HttpServletRequest request, HttpServletResponse response) {
-        try {
+        try (PrintWriter out = response.getWriter()) {
             int cantidad = Integer.parseInt(request.getParameter("cantidad"));
             int iddetalle = Integer.parseInt(request.getParameter("iddetalle"));
             int idproduct = Integer.parseInt(request.getParameter("idproduc"));
             if (cantidad <= 0) {
                 request.getSession().setAttribute("fracaso", "La cantidad debe ser mayor a 1");
-                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verCarrito");
+                out.println("<script>window.location = document.referrer;</script>");;
             } else {
 
                 if (clienteModel.cantidadOferta(cantidad, iddetalle, idproduct) > 0) {
                     request.getSession().setAttribute("exito", "Item modificado exitosamente.");
                     request.getSession().setAttribute("pedidosOfert", clienteModel.listaCarritoOfertas((int) request.getSession().getAttribute("usuario")));
                     request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
-                    response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verCarrito");
+                    out.println("<script>window.location = document.referrer;</script>");
                 } else {
                     request.getSession().setAttribute("fracaso", "Existencias limitadas de este articulo");
-                    response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verCarrito");
+                    out.println("<script>window.location = document.referrer;</script>");
                 }
             }
         } catch (SQLException | IOException ex) {
@@ -595,5 +600,17 @@ public class ClienteController extends HttpServlet {
         } catch (SQLException | ServletException | IOException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void pagoPedido(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int idusuario = (int) request.getSession().getAttribute("usuario");
+            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.setAttribute("clienteInfo", usuario.obtenerCliente(idusuario));
+            request.getRequestDispatcher("/cliente/pagoPedido.jsp").forward(request, response);
+        } catch (SQLException | ServletException | IOException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }

@@ -184,7 +184,7 @@ public class UsuariosModel extends Conexion {
     public Usuario obtenerCliente(int idCliente) throws SQLException {
         try {
             Usuario usuario = new Usuario();
-            sql = "SELECT * FROM usuarios WHERE id_usuario = ?";
+            sql = "SELECT *  FROM usuarios WHERE id_usuario = ?";
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setInt(1, idCliente);
@@ -192,7 +192,10 @@ public class UsuariosModel extends Conexion {
             if (rs.next()) {
                 usuario.setNombre(rs.getString("nombre"));
                 usuario.setApellido(rs.getString("apellido"));
-
+                usuario.setTelefono(rs.getString("Telefono"));
+                usuario.setDireccion(rs.getString("direccion"));
+                usuario.setDui(rs.getString("DUI"));
+                usuario.setCorreo(rs.getString("correo"));
                 this.desconectar();
                 return usuario;
             }
