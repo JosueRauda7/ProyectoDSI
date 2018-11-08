@@ -988,7 +988,7 @@ public class ClientesModel extends Conexion {
         }
     }
 
-     public int cancelarPedido(int iduser) throws SQLException {
+    public int cancelarPedido(int iduser) throws SQLException {
         try {
             String sql = "SELECT MAX(id_pedido) AS pedido FROM pedidos WHERE id_usuario = ?";
             int pedido = 0;
@@ -1000,6 +1000,66 @@ public class ClientesModel extends Conexion {
             if (rs.next()) {
                 pedido = rs.getInt("pedido");
             }
+            List<Producto> lista = new ArrayList<>();
+            List<Producto> lista2 = new ArrayList<>();
+            String sql3 = "SELECT id_producto, cantidad FROM detalle_pedidos WHERE id_pedido = ?";
+            st = conexion.prepareStatement(sql3);
+            st.setInt(1, pedido);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Producto producto = new Producto();
+                producto.setIdProducto(rs.getInt("id_producto"));
+                producto.setIdEmpresa(rs.getInt("cantidad"));
+                lista.add(producto);
+            }
+
+            for (Producto p : lista) {
+                int cantidadproduct = 0;
+                int cantidaddetalle = p.getIdEmpresa();
+                int idproducto = p.getIdProducto();
+                String sql4 = "SELECT cantidad FROM producto WHERE id_producto = ?";
+                st = conexion.prepareStatement(sql4);
+                st.setInt(1, idproducto);
+                rs = st.executeQuery();
+                if (rs.next()) {
+                    cantidadproduct = rs.getInt("cantidad");
+                }
+                String sql5 = "UPDATE producto SET cantidad =? WHERE id_producto=?";
+                st = conexion.prepareStatement(sql5);
+                st.setInt(1, cantidadproduct + cantidaddetalle);
+                st.setInt(2, idproducto);
+                st.executeUpdate();
+            }
+
+            String sql6 = "SELECT o.id_producto,dp.cantidad FROM detalle_pedidos dp INNER JOIN ofertas o on dp.id_oferta = o.id_oferta WHERE id_pedido = ?";
+            st = conexion.prepareStatement(sql6);
+            st.setInt(1, pedido);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Producto producto = new Producto();
+                producto.setIdProducto(rs.getInt("id_producto"));
+                producto.setIdEmpresa(rs.getInt("cantidad"));
+                lista2.add(producto);
+            }
+
+            for (Producto p : lista2) {
+                int cantidadproduct = 0;
+                int cantidaddetalle = p.getIdEmpresa();
+                int idproducto = p.getIdProducto();
+                String sql4 = "SELECT cantidad FROM producto WHERE id_producto = ?";
+                st = conexion.prepareStatement(sql4);
+                st.setInt(1, idproducto);
+                rs = st.executeQuery();
+                if (rs.next()) {
+                    cantidadproduct = rs.getInt("cantidad");
+                }
+                String sql5 = "UPDATE producto SET cantidad =? WHERE id_producto=?";
+                st = conexion.prepareStatement(sql5);
+                st.setInt(1, cantidadproduct + cantidaddetalle);
+                st.setInt(2, idproducto);
+                st.executeUpdate();
+            }
+            
             String sql2 = "UPDATE pedidos SET id_estado_compra = 3 WHERE id_pedido = ?";
             st = conexion.prepareStatement(sql2);
             st.setInt(1, pedido);
