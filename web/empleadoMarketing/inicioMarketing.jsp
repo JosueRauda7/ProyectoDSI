@@ -5,15 +5,17 @@
     <head>
         <title>BigShop | Marketing</title>
         <jsp:include page="/head.jsp"/>        
+        <jsp:include page="/scripts.jsp"/>
     </head>
     <body class="ecommerce">
-        <jsp:include page="/menu.jsp"/>
-        <div class="main">
+        <jsp:include page="/empleadoMarketing/menuEmpleadoMarketing.jsp"/>
+        <div class="main" style="margin-top: 20px;">
             <div class="container">
                 <div class="col-md-12 col-sm-12">
-                    <h1>Nuevo Usuario</h1>
+                    
                     <div class="col-lg-3"></div>
                     <div class="content-page col-lg-6">
+                        <h1>Nuevo Correo</h1>
                         <c:if test="${not empty requestScope.listaErrores}">
                             <div class="row col-lg-12">
                                 <div class="alert alert-danger">
@@ -25,6 +27,7 @@
                                 </div>
                             </div>
                         </c:if>
+                        
                         <!-- BEGIN FORM-->
                         <form action="${pageContext.request.contextPath}/empleadoMarketing.do" method="POST" class="default-form" role="form">
                             <input type="hidden" name="operacion" value="enviarCorreos"/>
@@ -52,6 +55,6 @@
             </div>
         </div>
         <div class="margin-bottom-40"></div>
-        <jsp:include page="/footer.jsp"/>
+        <jsp:include page="/empleadoMarketing/footer.jsp"/>
     </body>
 </html>

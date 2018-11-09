@@ -23,6 +23,7 @@ public class Oferta {
     private String urlFoto;
     private Producto producto;
     private EstadoOferta estadoOferta;
+    private int estadoPublicado;
 
     public Oferta() {
         this.idOferta = 0;
@@ -35,6 +36,7 @@ public class Oferta {
         this.urlFoto = "";
         this.producto = null;
         this.estadoOferta = null;
+        this.estadoPublicado = 0;
     }
 
     public int getIdOferta() {
@@ -113,8 +115,8 @@ public class Oferta {
         return estadoOferta;
     }
 
-    public void setEstadoOferta(EstadoOferta estadoOferta) {
-        this.estadoOferta = estadoOferta;
+    public int getEstadoPublicado() {
+        return estadoPublicado;
     }
 
     public String getTitulocorto() {
@@ -123,6 +125,14 @@ public class Oferta {
 
     public void setTitulocorto(String titulocorto) {
         this.titulocorto = titulocorto;
+    }
+    
+    public void setEstadoPublicado(int estadoPublicado) {
+        this.estadoPublicado = estadoPublicado;
+    }
+
+    public void setEstadoOferta(EstadoOferta estadoOferta) {
+        this.estadoOferta = estadoOferta;
     }
     
     

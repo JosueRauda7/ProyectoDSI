@@ -334,7 +334,7 @@ public class UsuarioController extends HttpServlet {
                             break;
                         case 3:
                             //Aun no existe
-                            request.getRequestDispatcher("/marketing/inicioMarketing.jsp").forward(request, response);
+                            request.getRequestDispatcher("/empleadoMarketing/inicioMarketing.jsp").forward(request, response);
                             break;
                         case 4:
                             request.getRequestDispatcher("/empleadoProducto/inicioEmpresaProducto.jsp").forward(request, response);
