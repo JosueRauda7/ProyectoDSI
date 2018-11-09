@@ -21,7 +21,9 @@ public class Oferta {
     private int descuento;
     private double totalDescuento;
     private String urlFoto;
+    private int idProducto; 
     private Producto producto;
+    private int idEstadoOferta;
     private EstadoOferta estadoOferta;
     private int estadoPublicado;
     private String nombreProducto;
@@ -35,7 +37,9 @@ public class Oferta {
         this.descuento = 0;
         this.totalDescuento = 0;
         this.urlFoto = "";
+        this.idProducto = 0;
         this.producto = null;
+        this.idEstadoOferta=0;
         this.estadoOferta = null;
         this.estadoPublicado = 0;
     }
@@ -142,6 +146,22 @@ public class Oferta {
 
     public void setNombreProducto(String nombreProducto) {
         this.nombreProducto = nombreProducto;
+    }
+
+    public int getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
+    }
+
+    public int getIdEstadoOferta() {
+        return idEstadoOferta;
+    }
+
+    public void setIdEstadoOferta(int idEstadoOferta) {
+        this.idEstadoOferta = idEstadoOferta;
     }
     
     

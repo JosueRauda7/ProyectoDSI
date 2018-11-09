@@ -24,17 +24,7 @@
                     <div class="col-md-12">
 
                         <div class="content-page col-md-12">                            
-                            <c:if test="${not empty requestScope.listaErrores}">
-                                <div class="row col-lg-12">
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            <c:forEach items="${requestScope.listaErrores}" var="error">
-                                                <li>${error}</li>
-                                                </c:forEach> 
-                                        </ul>
-                                    </div>
-                                </div>
-                            </c:if>
+
 
                             <div class="col-md-12">
 
@@ -49,32 +39,53 @@
                                                 </a>
                                             </h2>
                                         </div>
-                                        <div id="checkout-content" class="panel-collapse collapse in">
+                                        <div id="checkout-content" class="panel-collapse collapse                                             
+                                             <c:if test="${empty requestScope.listaErroresEmpresa and empty requestScope.listaErroresUsuario}">
+                                                 in
+                                             </c:if>
+                                             <c:if test="${not empty requestScope.listaErroresEmpresa and not empty requestScope.listaErroresUsuario}">
+                                                 in
+                                             </c:if>
+                                             <c:if test="${not empty requestScope.listaErroresEmpresa and empty requestScope.listaErroresUsuario}">
+                                                 in
+                                             </c:if>
+                                             ">
+                                            <c:if test="${not empty requestScope.listaErroresEmpresa}">
+                                                <div class="row col-lg-12">
+                                                    <div class="alert alert-danger">
+                                                        <ul>
+                                                            <c:forEach items="${requestScope.listaErroresEmpresa}" var="error">
+                                                                <li>${error}</li>
+                                                                </c:forEach> 
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </c:if>
                                             <div class="panel-body row">
                                                 <div class="col-md-6 col-sm-6">                                                    
                                                     <div class="form-group">
                                                         <label for="empresa">Nombre de la empresa:</label>
                                                         <input type="text" value="${empresa.empresa}" class="form-control" name="empresa" id="empresa"
-                                                               onkeydown="validarVacio('empresa','errorEmpresa');" onclick="validarVacio('empresa','errorEmpresa');">
+                                                               >
                                                         <label id="errorEmpresa" class="hidden" style="color: red; font-weight: normal;">Debe rellenar este campo para continuar.</label>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="imagen">Logo de la empresa</label>
-                                                        <input data-language="es" type="file" name="imagen" id="imagen" class="form-control file file-loading" data-allowed-file-extensions='["jpg", "png"]'
-                                                               value="${base}/images/${empresa.urlEmpresa}/"  oncancel="validarVacio('imagen','errorImagen');"/>
+                                                        <input data-language="es" type="file" name="imagen" id="imagen" class="form-control" data-allowed-file-extensions='["jpg", "png"]'
+                                                               value="${base}/images/${empresa.urlEmpresa}/"  onchange="eliminarImagen();" />
                                                         <label id="errorImagen" class="hidden" style="color: red; font-weight: normal;">Debe ingresar una imagen de la empresa.</label>
                                                     </div>
 
                                                 </div>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <div class="text-center">
+                                                    <div class="text-center hidden" id="imgbox">
                                                         <img id="img" height="20%" width="45%" />
                                                     </div>
                                                 </div>                                                
                                                 <hr>
                                                 <div class="col-md-12">                      
 
-                                                    <button class="btn btn-primary  pull-right" type="button" data-toggle="collapse" data-parent="#checkout-page" data-target="#payment-address-content"
+                                                    <button class="btn btn-primary  pull-right " type="button" data-toggle="collapse" data-parent="#checkout-page" data-target="#payment-address-content"
                                                             id="boton1" >Continue</button>
 
                                                 </div>
@@ -92,7 +103,18 @@
                                                 </a>
                                             </h2>
                                         </div>
-                                        <div id="payment-address-content" class="panel-collapse collapse">
+                                        <div id="payment-address-content" class="panel-collapse collapse <c:if test="${not empty requestScope.listaErroresUsuario}"> in </c:if>">
+                                            <c:if test="${not empty requestScope.listaErroresUsuario}">
+                                                <div class="row col-lg-12">
+                                                    <div class="alert alert-danger">
+                                                        <ul>
+                                                            <c:forEach items="${requestScope.listaErroresUsuario}" var="error">
+                                                                <li>${error}</li>
+                                                                </c:forEach> 
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </c:if>
                                             <div class="panel-body row">
                                                 <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
@@ -177,19 +199,15 @@
                     reader.onload = function (event) {
                         var img = document.getElementById('img');
                         img.src = event.target.result;
+                        $('#imgbox').removeClass("hidden");
                     }
                     reader.readAsDataURL(file);
                 }
 
-                function validarVacio(input, label) {
-                    if ($('#'+input).val() == "") {
-                        $('#'+label).removeClass("hidden");
-                    }
-                    if ($('#'+input).val() != "") {
-                        $('#'+label).addClass("hidden");
-                    }
+                function eliminarImagen() {
+                    $('#imgbox').addClass("hidden");
                 }
-                
+
             </script>
     </body>
 </html>

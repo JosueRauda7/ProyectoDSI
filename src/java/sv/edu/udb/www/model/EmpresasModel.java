@@ -6,6 +6,7 @@
 package sv.edu.udb.www.model;
 
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -50,18 +51,33 @@ public class EmpresasModel extends Conexion {
         }
     }
     
-    public int insertarEmpresa (Empresa empresa) throws SQLException{
+    public int insertarEmpresa (Empresa empresa, Usuario usuario) throws SQLException{
         try {
             int filasAfectadas=0;
-            String sql="Insert into empresa VALUES(NULL,?,?,?,?,?)";
+            int idUsuario=0;
+            String sql="Insert into Usuarios VALUES(NULL,?,?,?,?,?,?,SHA2(?,256),?,1,5)";
             this.conectar();
-            st=conexion.prepareStatement(sql);
-            st.setString(1,empresa.getEmpresa());
-            st.setDouble(2,Double.parseDouble(empresa.getComision()));
-            st.setInt(3,empresa.getIdUsuario());
-            st.setString(4, empresa.getUrlEmpresa());
-            st.setInt(5,empresa.getIdEstadoEmpresa());            
+            st=conexion.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+            st.setString(1,usuario.getNombre());
+            st.setString(2,usuario.getApellido());
+            st.setString(3,usuario.getTelefono());
+            st.setString(4, usuario.getDireccion());
+            st.setString(5,usuario.getDui());            
+            st.setString(6,usuario.getCorreo());            
+            st.setString(7,usuario.getPassword());            
+            st.setString(8,usuario.getId_confirmacion());                                    
             filasAfectadas=st.executeUpdate();
+            if(filasAfectadas!=0){
+                rs = st.getGeneratedKeys();
+                rs.next();
+                idUsuario=rs.getInt(1);
+                sql = "Insert into empresa VALUES (NULL,?,80.00,?,?,1)";
+                st = conexion.prepareStatement(sql);
+                st.setString(1, empresa.getEmpresa());
+                st.setInt(2, idUsuario);
+                st.setString(3, empresa.getUrlEmpresa());
+                filasAfectadas = st.executeUpdate();
+            }
             this.desconectar();
             return filasAfectadas;
         } catch (SQLException ex) {
@@ -105,19 +121,72 @@ public class EmpresasModel extends Conexion {
         }
     }
     
-    public int modificarEmpresa(Empresa empresa, int codigo) throws SQLException{
+    public Usuario obtenerUsuario(int codigoEmpresa) {
+        try {
+            String sql ="Select * from usuarios u inner join empresa e on u.id_usuario=e.id_usuario where e.id_empresa=?";
+            this.conectar();
+            st=conexion.prepareStatement(sql);
+            st.setInt(1,codigoEmpresa);
+            rs=st.executeQuery();
+            if(rs.next()){
+                Usuario user = new Usuario();                
+                user.setIdUsuario(rs.getInt("id_usuario"));
+                user.setNombre(rs.getString("Nombre"));
+                user.setApellido(rs.getString("Apellido"));
+                user.setTelefono(rs.getString("Telefono"));
+                user.setDireccion(rs.getString("direccion"));
+                user.setDui(rs.getString("DUI"));
+                user.setCorreo(rs.getString("correo"));
+                user.setIdConfirmacion(rs.getInt("confirmado"));
+                user.setTipoUser(rs.getInt("id_tipo_usuario"));
+                this.desconectar();
+                return user;
+            }
+            this.desconectar();
+            return null;
+        } catch (SQLException ex) {
+            try {
+                
+                Logger.getLogger(EmpresasModel.class.getName()).log(Level.SEVERE, null, ex);
+                this.desconectar();
+                return null;
+            } catch (SQLException ex1) {
+                Logger.getLogger(EmpresasModel.class.getName()).log(Level.SEVERE, null, ex1);
+                return null;
+            }
+        }
+    }
+    
+    public int modificarEmpresa(Empresa empresa,Usuario usuario, int codigo) throws SQLException{
         try {
             int filasAfectadas=0;
-            String sql="Update empresa set empresa=?,comision=?,id_usuario=?,Urlempresa=?"
+            String sql="Update empresa set empresa=?,Urlempresa=?"
                        +" where id_empresa=?";
             this.conectar();
             st=conexion.prepareStatement(sql);
-            st.setString(1, empresa.getEmpresa());
-            st.setDouble(2, Double.parseDouble(empresa.getComision()));
-            st.setInt(3, empresa.getIdUsuario());
-            st.setString(4, empresa.getUrlEmpresa());
-            st.setInt(5, codigo);
+            st.setString(1, empresa.getEmpresa());                        
+            st.setString(2, empresa.getUrlEmpresa());
+            st.setInt(3, codigo);
             filasAfectadas=st.executeUpdate();
+            if(filasAfectadas!=0){
+                sql = "Select id_usuario from empresa where id_empresa=?";
+                st = conexion.prepareStatement(sql);
+                st.setInt(1,codigo);
+                rs = st.executeQuery();
+                rs.next();
+                int idUsuario = rs.getInt("id_usuario");
+                
+                sql = "Update usuarios set Nombre=?,Apellido=?, Telefono=?, direccion=?,DUI=?, correo=? where id_usuario=?";
+                st= conexion.prepareStatement(sql);
+                st.setString(1,usuario.getNombre());
+                st.setString(2,usuario.getApellido());
+                st.setString(3, usuario.getTelefono());
+                st.setString(4,usuario.getDireccion());
+                st.setString(5,usuario.getDui());
+                st.setString(6,usuario.getCorreo());
+                st.setInt(7,idUsuario);
+                filasAfectadas = st.executeUpdate();
+            }
             this.desconectar();
             return filasAfectadas;
         } catch (SQLException ex) {

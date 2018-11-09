@@ -52,8 +52,8 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="producto" >Nombre del producto</label>
-                                    <input type="text" id="producto" name="producto" class="form-control" onclick="validarVacio();" onchange="validarVacio();" on value="${producto.producto}">
-                                    <label id="Error" class="hidden" style="color:red; font-weight: normal;">El nombre del producto es requerido</label>
+                                    <input type="text" id="producto" name="producto" class="form-control" value="${producto.producto}">
+                                    
                                 </div>
                             </div>
                             <div class="col-md-12">

@@ -21,11 +21,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import sv.edu.udb.www.beans.Imagen;
+import sv.edu.udb.www.beans.Oferta;
 import sv.edu.udb.www.beans.Pedido;
 import sv.edu.udb.www.beans.Producto;
 import sv.edu.udb.www.beans.SubCategoria;
 import sv.edu.udb.www.model.CategoriasModel;
 import sv.edu.udb.www.model.ClientesModel;
+import sv.edu.udb.www.model.OfertasModel;
 import sv.edu.udb.www.model.PedidosModel;
 import sv.edu.udb.www.model.ProductosModel;
 import sv.edu.udb.www.model.SubCategoriasModel;
@@ -42,6 +44,7 @@ public class EmpresaController extends HttpServlet {
     SubCategoriasModel modeloSubcategoria = new SubCategoriasModel();
     CategoriasModel modeloCategoria = new CategoriasModel();
     PedidosModel modeloPedido = new PedidosModel();
+    OfertasModel modeloOferta = new OfertasModel();
     ArrayList listaErrores = new ArrayList();
 
     /**
@@ -122,6 +125,9 @@ public class EmpresaController extends HttpServlet {
                             break;
                         case "reenviar":
                             reenviarproducto(multi, request, response);
+                            break;
+                        case "insertarOferta":
+                            insertarOferta(multi, request, response);
                             break;
                     }
                 }
@@ -448,9 +454,63 @@ public class EmpresaController extends HttpServlet {
     private void agregarOfertas(HttpServletRequest request, HttpServletResponse response) {
         try {
             int idusuario = (int) request.getSession().getAttribute("usuario");
-            request.setAttribute("productos", modeloProducto.listarProducto(idusuario, 2));            
+            request.setAttribute("productos", modeloProducto.listarProducto(idusuario, 2));
             request.getRequestDispatcher("/empresa/agregarOferta.jsp").forward(request, response);
         } catch (ServletException | IOException | SQLException ex) {
+            Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void insertarOferta(MultipartRequest multi, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            listaErrores.clear();
+            Oferta oferta = new Oferta();
+            Producto producto = new Producto();
+
+            oferta.setTitulo(multi.getParameter("titulo"));
+            oferta.setFechaInicio(multi.getParameter("fechaInicio"));
+            oferta.setFechaFin(multi.getParameter("fechaFin"));
+            oferta.setDescripcion(multi.getParameter("descripcion"));
+            oferta.setDescuento(Integer.parseInt(multi.getParameter("descuento")));
+            oferta.setIdProducto(Integer.parseInt(multi.getParameter("productosSelect")));
+
+            if (Validaciones.isEmpty(multi.getParameter("titulo"))) {
+                listaErrores.add("El titulo es obligatorio");
+            }
+            if (Validaciones.isEmpty(multi.getParameter("fechaInicio"))) {
+                listaErrores.add("La fecha inicial es obligatoria");
+            }
+            if (Validaciones.isEmpty(multi.getParameter("fechaFin"))) {
+                listaErrores.add("La fecha fin es obligatoria");
+            }
+            if (Validaciones.isEmpty(multi.getParameter("descripcion"))) {
+                listaErrores.add("La descripción es obligatoria");
+            }
+
+            if (multi.getFile("imagen") == null) {
+                listaErrores.add("La imagen es obligatoria");
+            } else {
+                File ficheroTemp = multi.getFile("imagen");
+                oferta.setUrlFoto(ficheroTemp.getName());
+            }
+
+            if (listaErrores.isEmpty()) {
+                
+                if(modeloOferta.insertarOferta(oferta)== 1){
+                    request.getSession().setAttribute("exito", "Oferta ingresada existosamente.");
+                    response.sendRedirect(request.getContextPath() + "/empresas.do?operacion=listar&estado=1");
+                }else{
+                    request.getSession().setAttribute("fracaso", "Ocurrió un error, la oferta no fue insertada...");
+                    response.sendRedirect(request.getContextPath() + "/empresas.do?operacion=listar&estado=1");
+                }
+            } else {
+                int idusuario = (int) request.getSession().getAttribute("usuario");
+                request.setAttribute("listaErrores", listaErrores);
+                request.setAttribute("productos", modeloProducto.listarProducto(idusuario, 2));
+                request.getRequestDispatcher("/empresa/agregarOferta.jsp").forward(request, response);
+            }
+
+        } catch (SQLException | ServletException | IOException ex) {
             Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

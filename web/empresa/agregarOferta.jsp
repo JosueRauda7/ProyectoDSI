@@ -14,6 +14,7 @@
         <title>Empresa</title>
 
         <jsp:include page="head.jsp"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
         <style>
             .remove{
                 position:absolute;
@@ -47,26 +48,26 @@
             <form role="form" action="${base}/empresas.do" method="POST" enctype="multipart/form-data">
                 <div class=" panel panel-body col-md-12">
                     <div class=" panel-body text-center" >                                                
-                        <input type="hidden" name="operacion" value="insertar"/>
+                        <input type="hidden" name="operacion" value="insertarOferta"/>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="producto" >Titulo oferta:</label>
-                                    <input type="text" id="producto" name="producto" class="form-control" onclick="validarVacio();" onchange="validarVacio();" on value="${producto.producto}">
+                                    <label for="titulo" >Titulo oferta:</label>
+                                    <input type="text" id="titulo" name="titulo" class="form-control" value="${oferta.titulo}">
+
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="fechaInicio">Fecha inicio oferta:</label>
+                                    <input type="date" id="fechaInicio" name="fechaInicio" class="form-control" value="${oferta.fechaInicio}">
                                     <label id="Error" class="hidden" style="color:red; font-weight: normal;">El nombre del producto es requerido</label>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="cantidad">Fecha inicio oferta:</label>
-                                    <input type="date" id="cantidad" name="cantidad" class="form-control" value="${producto.cantidad}">
-                                    <label id="Error" class="hidden" style="color:red; font-weight: normal;">El nombre del producto es requerido</label>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="cantidad">Fecha fin oferta:</label>
-                                    <input type="date" id="cantidad" name="cantidad" class="form-control" value="${producto.cantidad}">
+                                    <label for="fechaFin">Fecha fin oferta:</label>
+                                    <input type="date" id="fechaFin" name="fechaFin" class="form-control" value="${oferta.fechaFin}">
                                     <label id="Error" class="hidden" style="color:red; font-weight: normal;">El nombre del producto es requerido</label>
                                 </div>
 
@@ -76,7 +77,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="descripcion">Descripción:</label>
-                                    <textarea id="descripcion" name="descripcion" value="${producto.descripcion}">${producto.descripcion}</textarea>
+                                    <textarea id="descripcion" name="descripcion" value="${oferta.descripcion}">${oferta.descripcion}</textarea>
                                 </div>
                             </div>
 
@@ -85,8 +86,8 @@
                         <div class="row">         
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="regular">Descuento:</label>
-                                    <input type="number" step="0.01" id="regular" name="regular" class="form-control" value="${producto.precioRegular}">
+                                    <label for="descuento">Descuento:</label>
+                                    <input type="number" step="1" min="1" max="60" id="descuento" name="descuento" class="form-control" value="${oferta.descuento}">
                                 </div>
                             </div>                            
                         </div>
@@ -95,9 +96,9 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="regular">Producto:</label>
-                                    <select class="form-control">
+                                    <select class="form-control productosSelect" id="productosSelect" name="productosSelect">
                                         <c:forEach var="productos" items="${requestScope.productos}"> 
-                                            <option>${productos.producto}</option>
+                                            <option value="${productos.idProducto}">${productos.producto}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -105,13 +106,16 @@
                         </div>
                         <div class="row">         
                             <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="regular">Imagen oferta:</label>
-                                    <input type="file" step="0.01" id="regular" name="regular" class="form-control" value="${producto.precioRegular}">
+                                <div class="form-group col-md-6 col-sm-6">
+                                    <label for="imagen">Imagen oferta:</label>
+                                    <input type="file" id="imagen" name="imagen" class="form-control" value="${oferta.urlFoto}"  onchange="eliminarImagen();">
+                                </div>
+                                <div class="col-sm-6 col-md-6 hidden" id="imgBox">
+                                    <img id="img" height="20%" width="45%" />
                                 </div>
                             </div>                            
                         </div>
-                                <button type="submit" class="btn btn-primary">Agregar</button>
+                        <button type="submit" class="btn btn-primary">Agregar</button>
                     </div>
                 </div>
 
@@ -137,21 +141,15 @@
                 </div>
             </div>
         </div>
-
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js">
+        </script>
         <script>
-            window.addEventListener('load', init, false);
+             window.addEventListener('load', init, false);
 
             function init() {
                 var inputFile = document.getElementById('imagen');
-                var inputFile1 = document.getElementById('imagen1');
-                var inputFile2 = document.getElementById('imagen2');
-                var inputFile3 = document.getElementById('imagen3');
-                var inputFile4 = document.getElementById('imagen4');
                 inputFile.addEventListener('change', mostrarImagen, false);
-                inputFile1.addEventListener('change', mostrarImagen1, false);
-                inputFile2.addEventListener('change', mostrarImagen2, false);
-                inputFile3.addEventListener('change', mostrarImagen3, false);
-                inputFile4.addEventListener('change', mostrarImagen4, false);
             }
 
             function mostrarImagen(event) {
@@ -160,100 +158,16 @@
                 reader.onload = function (event) {
                     var img = document.getElementById('img');
                     img.src = event.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-            function mostrarImagen1(event) {
-                var file = event.target.files[0];
-                var reader = new FileReader();
-                reader.onload = function (event) {
-                    var img = document.getElementById('imgM1');
-                    img.src = event.target.result;
-                    document.getElementById('img1').src = event.target.result;
-                    $('#imgboxM2').removeClass("hidden");
-                    $('#imgM1r').removeClass("hidden");
-                }
-                reader.readAsDataURL(file);
-
-            }
-            function mostrarImagen2(event) {
-                var file = event.target.files[0];
-                var reader = new FileReader();
-                reader.onload = function (event) {
-                    var img = document.getElementById('imgM2');
-                    img.src = event.target.result;
-                    document.getElementById('img2').src = event.target.result;
-                    $('#imgboxM3').removeClass("hidden");
-                    $('#imgM2r').removeClass("hidden");
-                }
-                reader.readAsDataURL(file);
-
-            }
-            function mostrarImagen3(event) {
-                var file = event.target.files[0];
-                var reader = new FileReader();
-                reader.onload = function (event) {
-                    var img = document.getElementById('imgM3');
-                    img.src = event.target.result;
-                    document.getElementById('img3').src = event.target.result;
-                    $('#imgboxM4').removeClass("hidden");
-                    $('#imgM3r').removeClass("hidden");
-                }
-                reader.readAsDataURL(file);
-
-            }
-            function mostrarImagen4(event) {
-                var file = event.target.files[0];
-                var reader = new FileReader();
-                reader.onload = function (event) {
-                    var img = document.getElementById('imgM4');
-                    img.src = event.target.result;
-                    document.getElementById('img4').src = event.target.result;
-                    $('#imgM4r').removeClass("hidden");
+                    $('#imgBox').removeClass("hidden");
                 }
                 reader.readAsDataURL(file);
             }
 
-            function quitarimagen(input, img, imgbox, img2, remove) {
-                var inputs = document.getElementById(input);
-                var imgs = document.getElementById(img);
-                inputs.value = '';
-                imgs.src = '${base}/images/add-image.png';
-                document.getElementById(img2).src = '';
-                $('#' + imgbox).addClass("hidden");
-                $('#' + remove).addClass("hidden");
+            function eliminarImagen() {
+                $('#imgBox').addClass("hidden");
             }
+           
 
-            function cancelar() {
-                var i;
-                for (i = 1; i <= 4; i++) {
-                    document.getElementById('imgM' + i).src = '${base}/images/add-image.png';
-                    document.getElementById('imagen' + i).values = '';
-
-                    $('#imgM' + i + 'r').addClass("hidden");
-                    if (i > 1) {
-                        $('#imgboxM' + i).addClass("hidden");
-                    }
-                }
-            }
-
-            function mostrar() {
-                var i;
-                for (i = 1; i <= 4; i++) {
-
-                    $('#imgbox' + i).removeClass("hidden");
-
-                }
-            }
-            function validarVacio() {
-
-                if ($('#producto').val() == "") {
-                    $('#Error').removeClass("hidden");
-                }
-                if ($('#producto').val() != "") {
-                    $('#Error').addClass("hidden");
-                }
-            }
             $(document).ready(function () {
                 $('select[name=categoria]').on('change', function () {
                     $.ajax({
@@ -279,6 +193,10 @@
                         }
                     });
                 })
+
+                $('#productosSelect').select2({
+                    language: "es"
+                });
             });
 
         </script>
