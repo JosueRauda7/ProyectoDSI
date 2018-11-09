@@ -142,8 +142,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <c:if test="${empty requestScope.compagiOfer}">
                                 <div class="tab-pane fade" id="Reviews">
+                                </c:if>
+                                <c:if test="${not empty requestScope.compagiOfer}">
+                                    <div class="tab-pane fade in active" id="Reviews">
+                                    </c:if>
                                     <c:forEach var="ofertas" items="${requestScope.listaOfertas}">
+                                        
                                         <div class="col-md-4 col-sm-6 col-xs-12">
                                             <div class="product-item" style="height: 375px;">
                                                 <div class="pi-img-wrapper">
@@ -161,6 +167,30 @@
                                         </div>
 
                                     </c:forEach>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-4 col-sm-4 items-info">Articulos ${requestScope.pagina+1} a ${requestScope.paginas+1} de ${requestScope.paginas+1} en total</div>
+                                        <div class="col-md-8 col-sm-8">
+                                            <ul class="pagination pull-right">
+                                                <c:if test="${requestScope.paginaOfer <=0}"> 
+                                                    <li><a href="${base}/public.do?operacion=otraPagina&pagina=${requestScope.pagina}&paginaOfer=${requestScope.paginaOfer}&idsubcat=${requestScope.idsubcat}&precio1=${requestScope.precio1}&precio2=${requestScope.precio2}&compagiOfer=1">&laquo;</a></li>
+                                                    </c:if>
+                                                    <c:if test="${requestScope.paginaOfer >0 }">
+                                                    <li><a href="${base}/public.do?operacion=otraPagina&pagina=${requestScope.pagina}&paginaOfer=${requestScope.paginaOfer-1}&idsubcat=${requestScope.idsubcat}&precio1=${requestScope.precio1}&precio2=${requestScope.precio2}&compagiOfer=1">&laquo;</a></li>
+                                                    </c:if>
+
+                                                <c:forEach var = "i" begin = "0" end = "${requestScope.paginasOfert}">
+                                                    <li><a href="${base}/public.do?operacion=otraPagina&paginaOfer=${i}&pagina=${requestScope.pagina}&idsubcat=${requestScope.idsubcat}&precio1=${requestScope.precio1}&precio2=${requestScope.precio2}&compagiOfer=1">${i+1}</a></li>
+                                                    </c:forEach>
+                                                    <c:if test="${requestScope.paginaOfer >= requestScope.paginasOfert}"> 
+                                                    <li><a href="${base}/public.do?operacion=otraPagina&pagina=${requestScope.pagina}&paginaOfer=${requestScope.paginaOfer}&idsubcat=${requestScope.idsubcat}&precio1=${requestScope.precio1}&precio2=${requestScope.precio2}&compagiOfer=1">&raquo;</a></li>
+                                                    </c:if>
+                                                    <c:if test="${requestScope.paginaOfer < requestScope.paginasOfert}">
+                                                    <li><a href="${base}/public.do?operacion=otraPagina&pagina=${requestScope.pagina}&paginaOfer=${requestScope.paginaOfer+1}&idsubcat=${requestScope.idsubcat}&precio1=${requestScope.precio1}&precio2=${requestScope.precio2}&compagiOfer=1">&raquo;</a></li>
+                                                    </c:if>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <!-- PRODUCT ITEM END -->

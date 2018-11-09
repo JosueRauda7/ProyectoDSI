@@ -4,11 +4,13 @@
  * and open the template in the editor.
  */
 package sv.edu.udb.www.utils;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
+import javax.mail.Address;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -100,6 +102,48 @@ public class Correo {
             MimeMessage correo = new MimeMessage(sesion);
             correo.setFrom(new InternetAddress(usuario));
             correo.addRecipient(Message.RecipientType.TO,new InternetAddress(destinatario));
+            correo.setSubject(asunto);
+            correo.setContent(cuerpo);
+            
+                Transport t = sesion.getTransport("smtp");
+                t.connect(usuario,clave);
+                t.sendMessage(correo,correo.getAllRecipients());
+                t.close();
+                
+                return true;
+                    
+            } catch (MessagingException ex) {
+                Logger.getLogger(Correo.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+        }
+        
+    }
+    
+    public boolean enviarCorreo(String[] clientes){
+        
+        try {
+            Properties p = new Properties();
+            p.put("mail.smtp.host","smtp.gmail.com");
+            p.setProperty("mail.smtp.starttls.enable","true");
+            p.setProperty("mail.smtp.port", "587");
+            p.setProperty("mail.smtp.user", usuario);
+            p.setProperty("mail.smtp.auth", "true");
+            
+            Session sesion=Session.getDefaultInstance(p,null);
+            MimeMultipart cuerpo = new MimeMultipart();
+            BodyPart texto = new MimeBodyPart();
+            texto.setContent(mensaje,"text/html");
+            cuerpo.addBodyPart(texto);
+ 
+            MimeMessage correo = new MimeMessage(sesion);
+            correo.setFrom(new InternetAddress(usuario));
+            
+            Address []destinos = new Address[clientes.length];//Aqui usamos el arreglo de destinatarios
+            for(int i=0;i<destinos.length;i++){
+                destinos[i]=new InternetAddress(clientes[i]);
+            }
+            
+            correo.addRecipients(Message.RecipientType.TO,destinos);
             correo.setSubject(asunto);
             correo.setContent(cuerpo);
             

@@ -160,7 +160,7 @@ public class PublicController extends HttpServlet {
         }
     }
 
-        private void buscarProductos(HttpServletRequest request, HttpServletResponse response) {
+    private void buscarProductos(HttpServletRequest request, HttpServletResponse response) {
         try {
             String nombre = request.getParameter("nombre");
             String idCategoria = request.getParameter("categoria");

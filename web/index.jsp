@@ -43,7 +43,7 @@
                     <div class="carousel-caption d-none d-md-block" style="background-color: rgba(0,0,0,.5)">
                         <h1 style="color: orangered;">Bienvenido a BigShop</h1>
                         <p>Tu sitio de compras online.</p>
-                        <a href="#ultimos"><button class="btn btn-primary">Empezar a comprar</button></a>
+                        
                     </div>
                 </div>
                 <c:forEach var="ofertas" items="${requestScope.ultimasOfertas}">

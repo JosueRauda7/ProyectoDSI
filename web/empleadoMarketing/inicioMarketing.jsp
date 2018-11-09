@@ -4,10 +4,10 @@
 <html>
     <head>
         <title>BigShop | Marketing</title>
-        <jsp:include page="head.jsp"/>        
+        <jsp:include page="/head.jsp"/>        
     </head>
     <body class="ecommerce">
-        <jsp:include page="menuAdmin.jsp"/>
+        <jsp:include page="/menu.jsp"/>
         <div class="main">
             <div class="container">
                 <div class="col-md-12 col-sm-12">
@@ -37,8 +37,8 @@
                                 <input type="text" value="${requestScope.usuario.apellido}" class="form-control" name="mensaje" id="mensaje">
                             </div>
                             <div class="form-group">
-                                <label for="correo">Producto u oferta:</label>
-                                <input type="text" value="${requestScope.usuario.correo}" class="form-control" name="correo" id="correo">
+                                <label for="producto">Producto u oferta:</label>
+                                <input type="text" value="${requestScope.usuario.correo}" class="form-control" name="producto" id="producto">
                             </div>
                             
                             <div class="padding-top-20">                  
@@ -52,6 +52,6 @@
             </div>
         </div>
         <div class="margin-bottom-40"></div>
-        <jsp:include page="footer.jsp"/>
+        <jsp:include page="/footer.jsp"/>
     </body>
 </html>

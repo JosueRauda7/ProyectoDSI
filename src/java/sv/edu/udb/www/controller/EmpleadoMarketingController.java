@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import sv.edu.udb.www.beans.Usuario;
+import sv.edu.udb.www.model.UsuariosModel;
 import sv.edu.udb.www.utils.Correo;
 import sv.edu.udb.www.utils.Validaciones;
 
@@ -20,6 +21,7 @@ import sv.edu.udb.www.utils.Validaciones;
 public class EmpleadoMarketingController extends HttpServlet {
 
     ArrayList listaErrores = new ArrayList();
+    UsuariosModel modelo = new UsuariosModel();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -103,7 +105,7 @@ public class EmpleadoMarketingController extends HttpServlet {
 
             if (!listaErrores.isEmpty()) {
                 request.setAttribute("listaErrores", listaErrores);
-                request.getRequestDispatcher("/empleadoMarketing/enviarCorreos.jps").forward(request, response);
+                request.getRequestDispatcher("/empleadoMarketing/enviarCorreos.jsp").forward(request, response);
             } else {
 
                 request.getSession().setAttribute("exito", "Los correos han sido enviados exitosamente");
@@ -111,15 +113,17 @@ public class EmpleadoMarketingController extends HttpServlet {
                 String enlace = request.getRequestURL().toString();
                 String texto = "<div class='container2' style='color: white;border: solid black 2px;border-radius: 25px;width: 30%;padding: 1%;background-color: #e84d1c;'><h1 style=\"text-align: center;\">Bienvenido a BigShop</h1><div><p>BigShop es tu nueva tienda oline, aquí te ofrecemos una gran variedad de productos a un buen precio, tambien tenemos los mejores productos de tus marcas favoritas, todo lo que decees esta aqui.</p><p>Para poder acceder a nuestro sitio debes validar tu usuario, da click al boton para empezar a comprar.</p><a target='_blank' href='" + enlace + "'><button type='button' style='background-color: white;color: black;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;border: solid 1px #67656E;  font-family:fantasy;margin-left:30%;'   onmouseover='this.style.backgroundColor=\"#A5A1B3\" ' onmouseout='this.style.backgroundColor=\"\"'>Entrar</button></a></div></div>";
                 Correo correo = new Correo();
-                correo.setAsunto("Confirmacion de registro");
+                correo.setAsunto(asunto);
                 correo.setMensaje(texto);
-                correo.enviarCorreo();
+                correo.enviarCorreo(modelo.obtenerCorreosCliente());
                 request.getSession().setAttribute("exito", "Tu usuario se creo exitosamente.");
                 response.sendRedirect(request.getContextPath() + "/empleadoMarketing.do?operacion=nuevoCorreos");
 
             }
         } catch (IOException | ServletException ex) {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(EmpleadoMarketingController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

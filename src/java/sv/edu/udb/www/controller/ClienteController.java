@@ -104,6 +104,9 @@ public class ClienteController extends HttpServlet {
                     case "otraPagina":
                         otraPagina(request, response);
                         break;
+                    case "otraPagina1":
+                        otraPagina1(request, response);
+                        break;
                     case "listaPedidos":
                         listaPedidos(request, response);
                         break;
@@ -246,28 +249,80 @@ public class ClienteController extends HttpServlet {
     private void buscarProductos(HttpServletRequest request, HttpServletResponse response) {
         try {
             String nombre = request.getParameter("nombre");
-
             String idCategoria = request.getParameter("categoria");
             List<Producto> producto = new ArrayList<>();
-            List<Producto> productoOferta = new ArrayList<>();
+            List<Producto> producto1 = new ArrayList<>();
+            List<Oferta> productoOferta = new ArrayList<>();
             producto = ProductoModel.busquedaProductos(nombre, idCategoria);
+            producto1 = ProductoModel.busquedaProductos1(0,nombre, idCategoria);
 
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-            request.setAttribute("listarProductos", producto);
+            request.setAttribute("listarProductos", producto1);
             request.setAttribute("datoBusqueda", nombre);
+            request.setAttribute("categoria", idCategoria);
+            request.setAttribute("pagina", 0);
+            request.setAttribute("paginas", (int) producto.size() / 9);
 
             for (Producto p : producto) {
                 if (clienteModel.ofertaProducto(p.getIdProducto()) != null) {
-                    productoOferta.add(p);
+                    productoOferta.add(clienteModel.ofertaProducto(p.getIdProducto()));
                 }
             }
 
             request.setAttribute("listarProductosOfertados", productoOferta);
+            request.setAttribute("cantidadOfertas", productoOferta.size());
+
             try {
                 request.getRequestDispatcher("/cliente/resultadosBusqueda.jsp").forward(request, response);
             } catch (ServletException | IOException ex) {
                 Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void otraPagina1(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String nombre = request.getParameter("nombre");
+            String idCategoria = request.getParameter("categoria");
+            int pagina = Integer.parseInt(request.getParameter("pagina"));
+
+            List<Producto> producto = new ArrayList<>();
+            List<Producto> producto1 = new ArrayList<>();
+            List<Oferta> productoOferta = new ArrayList<>();
+            
+            producto = ProductoModel.busquedaProductos(nombre, idCategoria);
+            producto1 = ProductoModel.busquedaProductos1(pagina*9,nombre, idCategoria);
+
+            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.setAttribute("listarProductos", producto1);
+            
+            int filas = producto.size();
+            
+            request.setAttribute("datoBusqueda", nombre);
+            request.setAttribute("categoria", idCategoria);
+            
+            request.setAttribute("pagina", pagina);
+            
+           
+            request.setAttribute("paginas", (int) filas / 9);
+            
+            for (Producto p : producto) {
+                if (clienteModel.ofertaProducto(p.getIdProducto()) != null) {
+                    productoOferta.add(clienteModel.ofertaProducto(p.getIdProducto()));
+                }
+            }
+
+            request.setAttribute("listarProductosOfertados", productoOferta);
+            
+            
+            try {
+                request.getRequestDispatcher("/cliente/resultadosBusqueda.jsp").forward(request, response);
+            } catch (ServletException | IOException ex) {
+                Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
