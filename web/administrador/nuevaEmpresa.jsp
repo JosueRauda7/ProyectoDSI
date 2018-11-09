@@ -55,6 +55,7 @@
                                                     <div class="form-group">
                                                         <label for="empresa">Nombre de la empresa:</label>
                                                         <input type="text" value="${empresa.empresa}" class="form-control" name="empresa" id="empresa">
+                                                        
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="imagen">Logo de la empresa</label>
