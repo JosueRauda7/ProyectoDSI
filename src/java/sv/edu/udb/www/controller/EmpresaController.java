@@ -275,8 +275,10 @@ public class EmpresaController extends HttpServlet {
             } else {
                 request.setAttribute("listaErrores", listaErrores);
                 request.setAttribute("listaSubcategoria", modeloSubcategoria.listarSubCategorias());
+                request.setAttribute("listaCategoria", modeloCategoria.listarCategorias());
                 request.setAttribute("producto", producto);
                 request.getRequestDispatcher("/empresa/nuevoProducto.jsp").forward(request, response);
+                
             }
         } catch (Exception ex) {
             Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
@@ -410,6 +412,7 @@ public class EmpresaController extends HttpServlet {
             
             System.out.println(anio);
             request.setAttribute("ventas", modeloPedido.ventasDiarias().size());
+            request.setAttribute("ventasHoy", modeloPedido.ventaHoy(Integer.parseInt(request.getSession().getAttribute("usuario").toString())));
             request.getRequestDispatcher("/empresa/estadisticaEmpresa.jsp").forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
@@ -421,12 +424,14 @@ public class EmpresaController extends HttpServlet {
     private void ventaanual(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
 
         PrintWriter out = response.getWriter();
-        int anio = Integer.parseInt(request.getSession().getAttribute("anio").toString());
+        int anio = Integer.parseInt(request.getSession().getAttribute("anio").toString());     
+        int usuario = Integer.parseInt(request.getSession().getAttribute("usuario").toString());
         System.out.println(anio);
         //Necesito la cantidad de datos que devuelve la consulta
         request.setAttribute("ventas", modeloPedido.ventaAnual(anio).size());
+        request.setAttribute("ventasHoy", modeloPedido.ventaHoy(Integer.parseInt(request.getSession().getAttribute("usuario").toString())));
         //Arreglo con los datos que solicito en la consulta (AUN DEBO REVISAR BIEN LA CONSULTA)
-        List<Pedido> pedidos = modeloPedido.ventaAnual(anio);
+        List<Pedido> pedidos = modeloPedido.ventaAnual(anio,usuario);
 
         //Como solo obtengo 2 datos, la fecha y monto, esta variable me servirá para mandar ambos como respuesta Json del Arreglo anterior
         StringBuilder sb = new StringBuilder("");

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,11 +24,13 @@ import javax.servlet.http.HttpServletResponse;
 import sv.edu.udb.www.beans.Categoria;
 import sv.edu.udb.www.beans.Empresa;
 import sv.edu.udb.www.beans.EstadoCategoria;
+import sv.edu.udb.www.beans.Pedido;
 import sv.edu.udb.www.beans.SubCategoria;
 import sv.edu.udb.www.beans.Usuario;
 import sv.edu.udb.www.model.CategoriasModel;
 import sv.edu.udb.www.model.ClientesModel;
 import sv.edu.udb.www.model.EmpresasModel;
+import sv.edu.udb.www.model.PedidosModel;
 import sv.edu.udb.www.model.ProductosModel;
 import sv.edu.udb.www.model.SubCategoriasModel;
 import sv.edu.udb.www.model.UsuariosModel;
@@ -44,6 +47,7 @@ public class AdministradorController extends HttpServlet {
     EmpresasModel modeloEmpresa = new EmpresasModel();
     UsuariosModel modeloUsuario = new UsuariosModel();
     CategoriasModel modeloCategoria = new CategoriasModel();
+    PedidosModel modeloPedido = new PedidosModel();
     SubCategoriasModel modeloSubCategoria = new SubCategoriasModel();
     ProductosModel modeloProducto = new ProductosModel();
     ArrayList listaErrores = new ArrayList();
@@ -144,6 +148,18 @@ public class AdministradorController extends HttpServlet {
                             break;
                         case "obtenerEmpresa":
                             obtenerEmpresa(request, response);
+                            break;
+
+                        case "grafica":
+                            grafica(request, response);
+                            break;
+
+                        case "ventaanual":
+                            try {
+                                ventaanual(request, response);
+                            } catch (SQLException e) {
+
+                            }
                             break;
                         case "inicio":
                             request.getRequestDispatcher("/administrador/inicioAdmin.jsp").forward(request, response);
@@ -941,6 +957,8 @@ public class AdministradorController extends HttpServlet {
         try {
             int estado = Integer.parseInt(request.getParameter("estado"));
             request.setAttribute("listarProducto", modeloProducto.listarProducto(estado));
+            request.setAttribute("listarImagenes", modeloProducto.listarImagenesProducto());
+            request.setAttribute("tab", estado);
             try {
                 request.getRequestDispatcher("/administrador/listaProductos.jsp").forward(request, response);
             } catch (ServletException | IOException ex) {
@@ -970,6 +988,46 @@ public class AdministradorController extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void grafica(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int anio = 0;
+            if (request.getParameter("anio") != null) {
+                request.getSession().setAttribute("anio", request.getParameter("anio"));
+                //anio = Integer.parseInt(request.getParameter("anio"));
+            } else {
+                request.getSession().setAttribute("anio", anio);
+            }
+
+            System.out.println(anio);
+            request.setAttribute("ventas", modeloPedido.ventasDiarias().size());
+            request.setAttribute("ventasHoy", modeloPedido.ventaHoy());
+            request.getRequestDispatcher("/administrador/estadisticaAdmin.jsp").forward(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void ventaanual(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        PrintWriter out = response.getWriter();
+        int anio = Integer.parseInt(request.getSession().getAttribute("anio").toString());     
+        int usuario = Integer.parseInt(request.getSession().getAttribute("usuario").toString());
+        System.out.println(anio);
+        //Necesito la cantidad de datos que devuelve la consulta
+        request.setAttribute("ventas", modeloPedido.ventaAnual(anio).size());
+        request.setAttribute("ventasHoy", modeloPedido.ventaHoy());
+        //Arreglo con los datos que solicito en la consulta (AUN DEBO REVISAR BIEN LA CONSULTA)
+        List<Pedido> pedidos = modeloPedido.ventaAnual(anio);
+
+        //Como solo obtengo 2 datos, la fecha y monto, esta variable me servirá para mandar ambos como respuesta Json del Arreglo anterior
+        StringBuilder sb = new StringBuilder("");
+        for (int i = 0; i < pedidos.size(); i++) {
+            sb.append(pedidos.get(i).getFechaCompra() + "," + pedidos.get(i).getMontoTotal() + ":");
+        }
+        out.write(sb.toString());
     }
 
 }

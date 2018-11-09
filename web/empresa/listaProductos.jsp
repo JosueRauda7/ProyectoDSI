@@ -140,7 +140,16 @@
 
 
 
-        <jsp:include page="footer.jsp"/>
+        <div class="footer text-center" style="position: absolute; bottom: auto; width: 100%;">
+            <div class="container">
+                <div class="row">
+                    <!-- BEGIN COPYRIGHT -->
+                    <div class="col-md-12 padding-top-10">
+                        2018 © Universidad Don Bosco. Derechos reservados. 
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
     <script type="text/javascript">
         <c:if test="${not empty exito}">

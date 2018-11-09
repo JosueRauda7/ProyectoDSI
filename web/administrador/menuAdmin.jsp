@@ -71,6 +71,14 @@
                         <li><a href="${pageContext.request.contextPath}/administrador.do?operacion=listarEmpresas">Ver empresas</a></li>
                     </ul>
                 </li>
+                <li class="dropdown dropdown-megamenu">
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+                        Estadisticas
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="${base}/administrador.do?operacion=grafica">Ventas anuales</a></li>                        
+                    </ul>
+                </li>
                 <!-- END TOP SEARCH -->
             </ul>
         </div>

@@ -36,8 +36,12 @@
                 <c:forEach var="producto" items="${requestScope.listarProducto}">
                     <div class="col-md-4" style="margin-top: 2%;">
                         <div class="product-item">
-                            <div class="pi-img-wrapper">
-                                <img src="${base}/images/${producto.urlImagen}" class="img-responsive" alt="Imagen">                            
+                            <div class="pi-img-wrapper text-center">
+                                <c:forEach items="${requestScope.listarImagenes}" var="imagenes">
+                                    <c:if test="${producto.idProducto eq imagenes.idProducto}">
+                                        <img height="100px" src="${base}/images/${imagenes.urlimagen}"/>
+                                    </c:if>
+                                </c:forEach>
                             </div>
                             <div class="text-center">
                                 <h3>Producto</h3>

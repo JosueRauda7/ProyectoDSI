@@ -1,9 +1,8 @@
 <%-- 
-    Document   : estadisticaEmpresa
-    Created on : Nov 4, 2018, 2:20:13 PM
+    Document   : estadisticaAdmin
+    Created on : Nov 8, 2018, 10:36:54 PM
     Author     : ivanm
 --%>
-
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="base" value="${pageContext.request.contextPath}"/>
 <c:set var="gananciasT" value="0" scope="page" />
@@ -13,19 +12,20 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Estadisticas empresa</title>
+        <title>JSP Page</title>
         <jsp:include page="head.jsp"/>   
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     </head>
-    <body class="ecommerce">
-        <jsp:include page="menuEmpresa.jsp"/>
+    <body>
+        <body class="ecommerce">
+        <jsp:include page="menuAdmin.jsp"/>
         <div class="container">
             <input type="hidden" id="ventas" value="${ventas}" />
             <div id="grafica" style="width: 100%; height: 500px;">
 
             </div>
             <div style="margin-top: 3%;">
-                <form method="POST" action="${base}/empresas.do" role="form">
+                <form method="POST" action="${base}/administrador.do" role="form">
                     <input type="hidden" name="operacion" value="grafica" />
                     <div class="col-md-2 text-center">
                         Selecciona un año
@@ -102,7 +102,7 @@
                 $.ajax({
                     type: "GET",
                     //En el controller EmpresaController esta este metodo
-                    url: 'empresas.do?operacion=ventaanual',
+                    url: 'administrador.do?operacion=ventaanual',
                     statusCode: {
                         404: function () {
                             alert('Pagina no encontrada');

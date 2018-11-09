@@ -15,11 +15,11 @@
             <div class="header-navigation">
                 <ul>
                     <li class="btn dropdown dropdown-megamenu" >
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" data-target="#" aria-haspopup="true" aria-expanded="false">
-                            Mi cuenta
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" data-target="#" aria-haspopup="true" aria-expanded="false">
+                            ${sessionScope.nombreUser}
                         </button>
                         <ul class="dropdown-menu">                                                        
-                            <li><a style="padding: 10px" href="shop-product-list.html">Cambiar contraseña</a></li>
+                            <li><a style="padding: 10px" href="#">Cambiar contraseña</a></li>
                             <li><a style="padding: 10px" href="${base}/usuarios.do?operacion=cerrarSesion">Salir</a></li>
                         </ul>
                     </li>
@@ -30,7 +30,7 @@
         <div class="header-navigation">
             <ul>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="${base}/empresas.do?operacion=inicio">
+                    <a  href="${base}/empresas.do?operacion=inicio">
                         Inicio 
                     </a>
                     <!-- BEGIN DROPDOWN MENU -->

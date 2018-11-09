@@ -51,6 +51,18 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-4">
+                        <div class="product-item">
+                            <div class="text-center">
+                                <img src="${base}/assets/pages/img/administrador/estadistica.png" style="min-height: 160px; border-radius: 150px;" class="col-lg-11" alt="Berry Lace Dress">
+                            </div>
+                            <h3 class="text-center"><a href="${base}/empresas.do?operacion=grafica">Estadisticas</a></h3>
+                            <div class="text-center">
+                                <a href="${base}/empresas.do?operacion=grafica" class="btn btn-default"
+                                   style="color: #a8aeb3;border: 1px #ededed solid; padding: 3px 6px;">Administrar</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="margin-bottom-40"></div>
