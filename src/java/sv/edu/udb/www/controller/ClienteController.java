@@ -315,7 +315,7 @@ public class ClienteController extends HttpServlet {
             }
 
             request.setAttribute("listarProductosOfertados", productoOferta);
-            
+            request.setAttribute("cantidadOfertas", productoOferta.size());
             
             try {
                 request.getRequestDispatcher("/cliente/resultadosBusqueda.jsp").forward(request, response);
