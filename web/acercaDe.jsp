@@ -9,46 +9,17 @@
 <html>
     <head>
         <title>BigShop</title>
-        <jsp:include page="head.jsp" />
+        <jsp:include page="/head.jsp"/>   
+        
+        <jsp:include page="/scripts.jsp"/>
     </head>
     <body>
         <div class="header">
             <div class="container">
-                <a class="site-logo" href="shop-index.html">BigShop</a>
-
-                <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
-
-                <!-- BEGIN CART -->
-                <div class="top-cart-block">
-                    <div class="top-cart-info">
-                        <a href="javascript:void(0);" class="top-cart-info-count">1 artículos</a>
-                        <a href="javascript:void(0);" class="top-cart-info-value">$1230</a>
-                    </div>
-                    <i class="fa fa-shopping-cart"></i>
-
-                    <div class="top-cart-content-wrapper">
-                        <div class="top-cart-content">
-                            <ul class="scroller" style="height: 250px;">
-                                <li>
-                                    <!-- Objetos de carrito -->
-                                    <a href="shop-item.html"><img src="assets/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
-                                    <span class="cart-content-count">x 1</span>
-                                    <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
-                                    <em>$1230</em>
-                                    <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
-                                </li>                
-                            </ul>
-                            <div class="text-right">
-                                <a href="shop-shopping-cart.html" class="btn btn-default">Ver Carrito</a>
-                                <a href="shop-checkout.html" class="btn btn-primary">Revisar</a>
-                            </div>
-                        </div>
-                    </div>            
-                </div>
-                <!--END CART -->
-
                 <!-- BEGIN NAVIGATION -->
                 <jsp:include page="/menu.jsp"/>
+
+                <jsp:include page="/modal.jsp"/>
                 <!-- END NAVIGATION -->
             </div>
         </div>
@@ -130,6 +101,39 @@
                 </div>
             </div>
         </div>
+                 <script type="text/javascript">
+            jQuery(document).ready(function () {
+                Layout.init();
+                Layout.initOWL();
+                Layout.initTwitter();
+                Layout.initImageZoom();
+                Layout.initTouchspin();
+                Layout.initUniform();
+            });
+
+            <c:if test="${not empty exito}">
+            swal({
+                title: "Felicidades!",
+                text: "${exito}",
+                icon: "success",
+            });
+                <c:set var="exito" value="" scope="session"/>
+            </c:if>
+
+            <c:if test="${not empty fracaso}">
+            swal({
+                title: "Ups!",
+                text: "${fracaso}",
+                icon: "error",
+            });
+                <c:set var="fracaso" value="" scope="session"/>
+            </c:if>
+        </script>
+
+
+
+
+        <script src="assets/pages/scripts/ModalLog.js" type="text/javascript"></script>
         <jsp:include page="footer.jsp" />
         <!-- BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE) -->
         <script src="../assets/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script><!-- pop up -->
