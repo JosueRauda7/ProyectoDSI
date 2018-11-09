@@ -13,16 +13,12 @@
         
         <jsp:include page="/scripts.jsp"/>
     </head>
-    <body>
-        <div class="header">
-            <div class="container">
-                <!-- BEGIN NAVIGATION -->
+    <!-- BEGIN NAVIGATION -->
                 <jsp:include page="/menu.jsp"/>
 
                 <jsp:include page="/modal.jsp"/>
-                <!-- END NAVIGATION -->
-            </div>
-        </div>
+    <body>
+
         <div class="main">
             <div class="container">
                 <div class="col-md-12 col-sm-12">
