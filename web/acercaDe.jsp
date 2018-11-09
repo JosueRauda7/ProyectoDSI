@@ -23,6 +23,7 @@
             <div class="container">
                 <div class="col-md-12 col-sm-12">
                     <div class="col-md-12 col-sm-12">
+                        <div class="margin-bottom-20"><div class="row"></div></div>
                         <h1>Acerca de Nosotros</h1>
                         <div class="col-lg-12">
                             <center><img class="img-responsive" src="assets/logoBigShop.png" /></center>

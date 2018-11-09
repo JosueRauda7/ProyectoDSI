@@ -5,7 +5,7 @@
 <c:set var="base" value="${pageContext.request.contextPath}"/>
 <div class="header" style="margin-bottom: 0;">
     <div class="container">
-        <a class="site-logo" href="public.do?operacion=publicIndex"><img height="70" src="assets/logoBigShop.png" /></a>
+        <a class="site-logo" href="public.do?operacion=publicIndex"><img src="assets/logoMenuBigShop.png" /></a>
 
         <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
 

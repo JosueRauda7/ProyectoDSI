@@ -6,7 +6,7 @@
 
 <div class="header" >
     <div class="container">
-        <a class="site-logo" href="${base}/clientes.do?operacion=publicIndex">BigShop</a>
+        <a class="site-logo" href="${base}/clientes.do?operacion=publicIndex"><img src="${base}/assets/logoMenuBigShop.png" /></a>
 
         <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
 

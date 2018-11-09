@@ -9,7 +9,7 @@
 <c:set var="base" value="${pageContext.request.contextPath}"/> 
 <div class="header">
     <div class="container">
-        <a class="site-logo" href="${base}/empresas.do?operacion=inicio">BigShop</a>       
+        <a class="site-logo" href="${base}/empresas.do?operacion=inicio"><img src="${base}/assets/logoMenuBigShop.png" /></a>       
         <!-- BEGIN CART -->
         <div class="top-cart-block">
             <div class="header-navigation">
