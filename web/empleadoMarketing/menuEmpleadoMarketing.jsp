@@ -10,7 +10,7 @@
 
 <div class="header">
     <div class="container">
-        <a class="site-logo"  href="${base}/empleadoMarketing.do?operacion=nuevoCorreos"><img src="${base}/assets/logoMenuBigShop.png" /></a>        
+        <a class="site-logo"  href="${base}/empleadoMarketing.do?operacion=inicio"><img src="${base}/assets/logoMenuBigShop.png" /></a>        
         <!-- BEGIN CART -->
         <div class="top-cart-block">
                 <ul>
@@ -28,8 +28,20 @@
         <div class="header-navigation">
             <ul>
                 <li class="dropdown">
-                    <a href="${pageContext.request.contextPath}/empleadoMarketing.do?operacion=nuevoCorreos">
+                    <a href="${pageContext.request.contextPath}/empleadoMarketing.do?operacion=inicio">
                         Inicio 
+                    </a>
+                    <!-- BEGIN DROPDOWN MENU -->
+                </li>
+                <li class="dropdown">
+                    <a href="${pageContext.request.contextPath}/empleadoMarketing.do?operacion=nuevoCorreos">
+                        Nuevo Correo 
+                    </a>
+                    <!-- BEGIN DROPDOWN MENU -->
+                </li>
+                <li class="dropdown">
+                    <a href="${pageContext.request.contextPath}/empleadoMarketing.do?operacion=verListaOfertas">
+                        Ofertas 
                     </a>
                     <!-- BEGIN DROPDOWN MENU -->
                 </li>

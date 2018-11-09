@@ -237,7 +237,7 @@ public class ProductosModel extends Conexion {
                 producto.setProducto(rs.getString("producto"));
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecioRegular(rs.getString("precio_regular"));
-                producto.setCantidad(rs.getString("cantidad"));                
+                producto.setCantidad(rs.getString("cantidad"));
                 producto.setEmpresa(new Empresa(rs.getString("empresa")));
                 producto.setSubCategoria(new SubCategoria(rs.getString("subcategoria")));
                 producto.setEstadoProducto(new EstadoProducto(rs.getString("estado")));
@@ -293,7 +293,7 @@ public class ProductosModel extends Conexion {
         }
     }
 
-    public List<Imagen> otrasImagenesProducto(int idproducto, String urlimg) throws SQLException{
+    public List<Imagen> otrasImagenesProducto(int idproducto, String urlimg) throws SQLException {
         try {
             String sql = "SELECT * FROM imagen WHERE id_producto = ? AND Url_imagen <> ? ORDER BY id_imagen_producto";
             List<Imagen> lista = new ArrayList<>();
@@ -302,7 +302,7 @@ public class ProductosModel extends Conexion {
             st.setInt(1, idproducto);
             st.setString(2, urlimg);
             rs = st.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Imagen imagen = new Imagen();
                 imagen.setIdImagenProducto(rs.getInt("id_imagen_producto"));
                 imagen.setUrlimagen(rs.getString("Url_imagen"));
@@ -362,7 +362,7 @@ public class ProductosModel extends Conexion {
             return null;
         }
     }
-    
+
     public List<Producto> busquedaProductos1(int filter, String nombre, String idCategoria) throws SQLException {
         try {
 
@@ -409,16 +409,16 @@ public class ProductosModel extends Conexion {
             return null;
         }
     }
-    
+
     //PARTE RAUDA: LISTAR OFERTAS SIN PUBLICAR
-    public List<Oferta> listarOfertasSinPublicar() throws SQLException{
+    public List<Oferta> listarOfertasSinPublicar() throws SQLException {
         try {
             List<Oferta> listaOfertas = new ArrayList<>();
             String sql = "SELECT o.id_oferta, o.titulo, o.descripcion, o.url_foto, p.producto FROM ofertas o inner join producto p on o.id_producto=p.id_producto WHERE id_estado_oferta=1 AND estado_publicado = 0";
             this.conectar();
-            st=conexion.prepareStatement(sql);
-            rs=st.executeQuery();
-            while(rs.next()){
+            st = conexion.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
                 Oferta oferta = new Oferta();
                 oferta.setIdOferta(rs.getInt("id_oferta"));
                 oferta.setTitulo(rs.getString("titulo"));
@@ -434,5 +434,53 @@ public class ProductosModel extends Conexion {
             return null;
         }
     }
+
+    public Oferta obtenerOfertaSinPublicar(int id) throws SQLException {
+        try {
+            String sql = "SELECT o.id_oferta, o.titulo, o.descripcion, o.url_foto, p.producto, p.id_producto FROM ofertas o inner join producto p on o.id_producto=p.id_producto WHERE id_estado_oferta=1 AND estado_publicado = 0 AND o.id_oferta = ?";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, id);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                Oferta oferta = new Oferta();
+                Producto producto = new Producto();
+                oferta.setIdOferta(rs.getInt("id_oferta"));
+                oferta.setTitulo(rs.getString("titulo"));
+                oferta.setDescripcion(rs.getString("descripcion"));
+                oferta.setUrlFoto(rs.getString("url_foto"));
+                
+                producto.setIdProducto(rs.getInt("id_producto"));
+                producto.setProducto(rs.getString("producto"));
+                
+                oferta.setProducto(producto);
+
+                this.desconectar();
+                return oferta;
+            }
+            this.desconectar();
+            return null;
+        } catch (SQLException ex) {
+            this.desconectar();
+            return null;
+        }
+    }
+    
+    public int publicarOferta(int id) throws SQLException {
+        try {
+            String sql = "UPDATE ofertas SET estado_publicado = 1 WHERE id_oferta = ?";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+            
+            this.desconectar();
+            return 1;
+        } catch (SQLException ex) {
+            this.desconectar();
+            return 0;
+        }
+    }
+    
     //FIN PARTE RAUDA
 }

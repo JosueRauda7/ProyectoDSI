@@ -9,7 +9,8 @@
 <html>
     <head>
         <title>BigShop | Marketing</title>
-        <jsp:include page="/head.jsp"/>        
+        <jsp:include page="/empleadoMarketing/head.jsp"/>        
+        <jsp:include page="/scripts.jsp"/>
     </head>
     <body class="ecommerce">
         <jsp:include page="/empleadoMarketing/menuEmpleadoMarketing.jsp"/>
@@ -66,7 +67,8 @@
                 <!-- END CONTENT -->
             </div>
         </div>
-        <jsp:include page="/empleadoMarketing/footer.jsp"/>
+        <div class="margin-bottom-40" style="margin-top: 150px;"></div>
+        <jsp:include page="/empleadoMarketing/footer.jsp" />
     </body>
     
     <script>
@@ -100,7 +102,7 @@
             })
                     .then((willDelete) => {
                         if (willDelete) {
-                            location.href = "empleadoMarketing.do?operacion=publicar&id=" + id
+                            location.href = "empleadoMarketing.do?operacion=enviarOfertas&id=" + id
                         }
                     })
 

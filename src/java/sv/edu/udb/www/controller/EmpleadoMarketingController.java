@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import sv.edu.udb.www.beans.Oferta;
 import sv.edu.udb.www.beans.Usuario;
 import sv.edu.udb.www.model.ProductosModel;
 import sv.edu.udb.www.model.UsuariosModel;
@@ -30,6 +31,11 @@ public class EmpleadoMarketingController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
 
+            if (request.getParameter("operacion").equals("mostrarOferta")) {
+                mostrarOferta(request, response);
+                return;
+            }
+
             if (request.getSession().getAttribute("usuario") != null || request.getSession().getAttribute("tipousuario") != null || request.getSession().getAttribute("nombreUser") != null) {
                 if (request.getSession().getAttribute("usuario") == null || !request.getSession().getAttribute("tipousuario").toString().equals("3")) {
                     response.sendRedirect(request.getContextPath() + "/public.do?operacion=publicIndex");
@@ -39,6 +45,9 @@ public class EmpleadoMarketingController extends HttpServlet {
                     String operacion = request.getParameter("operacion");
 
                     switch (operacion) {
+                        case "inicio":
+                            request.getRequestDispatcher("/empleadoMarketing/inicioMarketing.jsp").forward(request, response);
+                            break;
                         case "nuevoCorreos":
                             nuevoCorreos(request, response);
                             break;
@@ -46,7 +55,10 @@ public class EmpleadoMarketingController extends HttpServlet {
                             enviarCorreos(request, response);
                             break;
                         case "verListaOfertas":
-                            verListaOfertas(request,response);
+                            verListaOfertas(request, response);
+                            break;
+                        case "enviarOfertas":
+                            enviarOfertas(request, response);
                             break;
                     }
                 } else {
@@ -99,7 +111,7 @@ public class EmpleadoMarketingController extends HttpServlet {
 
     private void nuevoCorreos(HttpServletRequest request, HttpServletResponse response) {
         try {
-            request.getRequestDispatcher("/empleadoMarketing/inicioMarketing.jsp").forward(request, response);
+            request.getRequestDispatcher("/empleadoMarketing/nuevoCorreo.jsp").forward(request, response);
         } catch (ServletException | IOException ex) {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -120,13 +132,13 @@ public class EmpleadoMarketingController extends HttpServlet {
 
             if (!listaErrores.isEmpty()) {
                 request.setAttribute("listaErrores", listaErrores);
-                request.getRequestDispatcher("/empleadoMarketing/enviarCorreos.jsp").forward(request, response);
+                request.getRequestDispatcher("/empleadoMarketing/nuevoCorreo.jsp").forward(request, response);
             } else {
 
                 request.getSession().setAttribute("exito", "Los correos han sido enviados exitosamente");
 
                 String enlace = request.getRequestURL().toString();
-                String texto = "<div class='container2' style='color: white;border: solid black 2px;border-radius: 25px;width: 30%;padding: 1%;background-color: #e84d1c;'><h1 style=\"text-align: center;\">Bienvenido a BigShop</h1><div><p>BigShop es tu nueva tienda oline, aquí te ofrecemos una gran variedad de productos a un buen precio, tambien tenemos los mejores productos de tus marcas favoritas, todo lo que decees esta aqui.</p><p>Para poder acceder a nuestro sitio debes validar tu usuario, da click al boton para empezar a comprar.</p><a target='_blank' href='" + enlace + "'><button type='button' style='background-color: white;color: black;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;border: solid 1px #67656E;  font-family:fantasy;margin-left:30%;'   onmouseover='this.style.backgroundColor=\"#A5A1B3\" ' onmouseout='this.style.backgroundColor=\"\"'>Entrar</button></a></div></div>";
+                String texto = "<div class='container2' style='color: white;border: solid black 2px;border-radius: 25px;width: 30%;padding: 1%;background-color: #e84d1c;'><h1 style=\"text-align: center;\">"+asunto+"</h1><div><p>"+mensaje+"</p></div></div>";
                 Correo correo = new Correo();
                 correo.setAsunto("<b>" + asunto + "</b>");
                 correo.setMensaje(texto);
@@ -143,6 +155,37 @@ public class EmpleadoMarketingController extends HttpServlet {
         }
     }
 
+    private void enviarOfertas(HttpServletRequest request, HttpServletResponse response) {
+        try (PrintWriter out = response.getWriter()) {
+            listaErrores.clear();
+
+            int id = Integer.parseInt(request.getParameter("id"));
+
+            Oferta oferta = modeloProductos.obtenerOfertaSinPublicar(id);
+
+            request.getSession().setAttribute("exito", "Los correos han sido enviados exitosamente");
+
+            String enlace = request.getRequestURL().toString() + "?operacion=mostrarOferta&id=" + oferta.getProducto().getIdProducto();
+            String[] proyecto = request.getRequestURL().toString().split("/empleadoMarketing");
+            String imagen = proyecto[0]+ "/images/" + oferta.getUrlFoto();
+            String texto = "<div class='container2' style='color: white;border: solid black 2px;border-radius: 25px;width: 30%;padding: 1%;background-color: #e84d1c;'><h1 style=\"text-align: center;\">" + oferta.getTitulo() + "</h1><div><img src=\"cid:image\" style='height:250px;width:100%;'/><p>" + oferta.getDescripcion() + "</p><a target='_blank' href='" + enlace + "'><button type='button' style='background-color: white;color: black;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;border: solid 1px #67656E;  font-family:fantasy;margin-left:30%;'   onmouseover='this.style.backgroundColor=\"#A5A1B3\" ' onmouseout='this.style.backgroundColor=\"\"'>Entrar</button></a></div></div>";
+            Correo correo = new Correo();
+            correo.setAsunto("Nueva Oferta");
+            correo.setMensaje(texto);
+
+            if(correo.enviarOfertas(modelo.obtenerCorreosCliente(),imagen)){
+                request.getSession().setAttribute("exito", "Oferta publicada exitosamente");
+                modeloProductos.publicarOferta(oferta.getIdOferta());
+            }
+            response.sendRedirect(request.getContextPath() + "/empleadoMarketing.do?operacion=verListaOfertas");
+
+        } catch (IOException ex) {
+            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(EmpleadoMarketingController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private void verListaOfertas(HttpServletRequest request, HttpServletResponse response) {
         try {
             request.setAttribute("listaOfertas", modeloProductos.listarOfertasSinPublicar());
@@ -152,5 +195,23 @@ public class EmpleadoMarketingController extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(EmpleadoMarketingController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void mostrarOferta(HttpServletRequest request, HttpServletResponse response) {
+
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            if (request.getSession().getAttribute("usuario") != null) {
+                if (request.getSession().getAttribute("tipousuario").toString().equals("2")) {
+                    
+                    response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct="+id);
+                }
+            }else{
+                response.sendRedirect(request.getContextPath() + "/public.do?operacion=verProducto&idproduct="+id);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(EmpleadoMarketingController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }

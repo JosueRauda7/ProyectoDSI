@@ -18,6 +18,7 @@
 
         <!-- BEGIN NAVIGATION -->
         <jsp:include page="menu.jsp"/>
+        <jsp:include page="/modal.jsp"/>
         <!-- END NAVIGATION -->
         <div class="container" style="margin-top:20px;">
 
@@ -179,7 +180,7 @@
         </div>
 
 
-        <jsp:include page="/scripts.jsp"/>
+        
         <script type="text/javascript">
             jQuery(document).ready(function () {
                 Layout.init();
@@ -243,6 +244,6 @@
         ;
     </script>
     <jsp:include page="footer.jsp" />
-
+    <script src="assets/pages/scripts/ModalLog.js" type="text/javascript"></script>
     <!-- END BODY -->
 </html>
