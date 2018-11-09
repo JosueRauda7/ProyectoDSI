@@ -13,17 +13,16 @@
         <a class="site-logo"  href="${base}/administrador.do?operacion=inicio"><img src="${base}/assets/logoMenuBigShop.png" /></a>        
         <!-- BEGIN CART -->
         <div class="top-cart-block">
-            <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" data-target="#" aria-haspopup="true" aria-expanded="false">
-                    <span class="glyphicon glyphicon-user"></span> ${sessionScope.nombreUser}
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a style="padding: 10px" href="shop-product-list.html">Modo Cliente</a></li>
-                    <li><a style="padding: 10px" href="shop-product-list.html">Mis Compras</a></li>
-                    <li><a style="padding: 10px" href="shop-product-list.html">Configurar</a></li>
-                    <li><a style="padding: 10px" href="${base}/usuarios.do?operacion=cerrarSesion">Salir</a></li>
+                <ul>
+                    <li class="btn dropdown dropdown-megamenu" >
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" data-target="#" aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-user"></span> ${sessionScope.nombreUser}
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a style="padding: 10px" href="${base}/usuarios.do?operacion=cerrarSesion">Salir</a></li>
+                        </ul>
+                    </li>
                 </ul>
-            </div>
         </div>
         <!-- BEGIN NAVIGATION -->
         <div class="header-navigation">
