@@ -68,9 +68,9 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
                             <div class="text-center">
                                 <img src="${base}/assets/pages/img/administrador/oferta.png" style="min-height: 160px; border-radius: 150px;" class="col-lg-11" alt="Berry Lace Dress">
                             </div>
-                            <h3 class="text-center"><a href="${base}/empresas.do?operacion=agregarOfertas">Ofertas</a></h3>
+                            <h3 class="text-center"><a href="${base}/empresas.do?operacion=listaOfertas">Ofertas</a></h3>
                             <div class="text-center">
-                                <a href="${base}/empresas.do?operacion=agregarOfertas" class="btn btn-default"
+                                <a href="${base}/empresas.do?operacion=listaOfertas" class="btn btn-default"
                                    style="color: #a8aeb3;border: 1px #ededed solid; padding: 3px 6px;">Administrar</a>
                             </div>
                         </div>

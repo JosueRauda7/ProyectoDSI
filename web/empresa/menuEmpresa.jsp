@@ -58,7 +58,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="${base}/empresas.do?operacion=agregarOfertas">Agregar ofertas</a></li>
-                        <li><a href="${base}/empresas.do?operacion=grafica">Ver ofertas</a></li>                         
+                        <li><a href="${base}/empresas.do?operacion=listaOfertas">Ver ofertas</a></li>                         
                     </ul>
                 </li>
 

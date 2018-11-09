@@ -11,7 +11,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -91,7 +96,10 @@ public class EmpresaController extends HttpServlet {
                         case "grafica":
                             grafica(request, response);
                             break;
-
+                         
+                        case "listaOfertas":
+                            listaOfertas(request,response);
+                            break;
                         case "agregarOfertas":
                             agregarOfertas(request, response);
                             break;
@@ -317,9 +325,12 @@ public class EmpresaController extends HttpServlet {
     private void reenviarproducto(MultipartRequest multi, HttpServletRequest request, HttpServletResponse response) throws IOException {
         listaErrores.clear();
         try {
-            Producto producto = new Producto();
+            listaErrores.clear();
             int usuario = Integer.parseInt(request.getSession().getAttribute("usuario").toString());
-            int codigo = Integer.parseInt(multi.getParameter("id"));
+            Producto producto = new Producto();
+            Imagen imagen = new Imagen();
+            List<String> imagenes = new ArrayList();
+
             producto.setProducto(multi.getParameter("producto"));
             producto.setDescripcion(multi.getParameter("descripcion"));
             producto.setPrecioRegular(multi.getParameter("regular"));
@@ -350,26 +361,48 @@ public class EmpresaController extends HttpServlet {
                 listaErrores.add("La cantidad debe ser un número positivo");
             }
 
-            if (multi.getFile("archivo") == null) {
+            if (multi.getFile("imagen") == null) {
                 listaErrores.add("La imagen es obligatoria");
             } else {
-                File ficheroTemp = multi.getFile("archivo");
-                producto.setUrlImagen(ficheroTemp.getName());
+                File ficheroTemp = multi.getFile("imagen");
+                imagen.setUrlimagen(ficheroTemp.getName());
+            }
+
+            if (multi.getFile("imagen1") != null) {
+                File ficheroTemp = multi.getFile("imagen1");
+                imagenes.add(ficheroTemp.getName());
+            }
+
+            if (multi.getFile("imagen2") != null) {
+                File ficheroTemp = multi.getFile("imagen2");
+                imagenes.add(ficheroTemp.getName());
+            }
+
+            if (multi.getFile("imagen3") != null) {
+                File ficheroTemp = multi.getFile("imagen3");
+                imagenes.add(ficheroTemp.getName());
+            }
+
+            if (multi.getFile("imagen4") != null) {
+                File ficheroTemp = multi.getFile("imagen4");
+                imagenes.add(ficheroTemp.getName());
             }
 
             if (listaErrores.isEmpty()) {
-                if (modeloProducto.modificarProducto(producto, codigo) == 1) {
-                    request.getSession().setAttribute("exito", "Producto reenviado existosamente.");
+                if (modeloProducto.modificarProducto(producto, usuario)== 1) {
+                    request.getSession().setAttribute("exito", "Producto registrado existosamente.");
                 } else {
-                    request.getSession().setAttribute("fracaso", "Ocurrio un error, no se pudo reenviar el producto...");
+                    request.getSession().setAttribute("fracaso", "Ocurrio un error, no se pudo registrar el producto...");
                 }
 
                 response.sendRedirect(request.getContextPath() + "/empresas.do?operacion=listar&estado=1");
             } else {
                 request.setAttribute("listaErrores", listaErrores);
                 request.setAttribute("listaSubcategoria", modeloSubcategoria.listarSubCategorias());
+                request.setAttribute("listaCategoria", modeloCategoria.listarCategorias());
                 request.setAttribute("producto", producto);
-                request.getRequestDispatcher("/empresa/modificarProducto.jsp").forward(request, response);
+                request.getRequestDispatcher("/empresa/nuevoProducto.jsp").forward(request, response);
+
             }
         } catch (Exception ex) {
             Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
@@ -473,7 +506,30 @@ public class EmpresaController extends HttpServlet {
             oferta.setDescripcion(multi.getParameter("descripcion"));
             oferta.setDescuento(Integer.parseInt(multi.getParameter("descuento")));
             oferta.setIdProducto(Integer.parseInt(multi.getParameter("productosSelect")));
+            
+            int anio = Integer.parseInt(oferta.getFechaInicio().split("-")[0]);
+            int mes = Integer.parseInt(oferta.getFechaInicio().split("-")[1]);
+            int dia = Integer.parseInt(oferta.getFechaInicio().split("-")[2]);
+            int anio2 = Integer.parseInt(oferta.getFechaFin().split("-")[0]);
+            int mes2 = Integer.parseInt(oferta.getFechaFin().split("-")[1]);
+            int dia2 = Integer.parseInt(oferta.getFechaFin().split("-")[2]);
 
+            final long MILLSECS_PER_DAY = 24 * 60 * 60 * 1000; //Milisegundos al día 
+            java.util.Date hoy = new Date(); //Fecha de hoy 
+            Calendar calendar = new GregorianCalendar(anio, mes - 1, dia);
+            java.sql.Date fecha = new java.sql.Date(calendar.getTimeInMillis());
+            Calendar calendar2 = new GregorianCalendar(anio2, mes2 - 1, dia2);
+            java.sql.Date fecha2 = new java.sql.Date(calendar2.getTimeInMillis());
+            long diferencia = (hoy.getTime() - fecha.getTime());
+            long diferencia2 = (hoy.getTime() - fecha2.getTime());
+            if (diferencia > 0) {
+                listaErrores.add("La fecha inicio debe ser mayor a hoy");
+            }
+
+             if (diferencia2 > 0) {
+                listaErrores.add("La fecha fin debe ser mayor a hoy");
+            }
+            
             if (Validaciones.isEmpty(multi.getParameter("titulo"))) {
                 listaErrores.add("El titulo es obligatorio");
             }
@@ -493,6 +549,7 @@ public class EmpresaController extends HttpServlet {
                 File ficheroTemp = multi.getFile("imagen");
                 oferta.setUrlFoto(ficheroTemp.getName());
             }
+                       
 
             if (listaErrores.isEmpty()) {
                 
@@ -511,6 +568,16 @@ public class EmpresaController extends HttpServlet {
             }
 
         } catch (SQLException | ServletException | IOException ex) {
+            Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void listaOfertas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try{
+            int idusuario = (int) request.getSession().getAttribute("usuario");            
+            request.setAttribute("listarOfertas", modeloOferta.listaOfertasEmpresa(idusuario));
+            request.getRequestDispatcher("/empresa/listaOfertas.jsp").forward(request, response);
+        }catch(SQLException ex){
             Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

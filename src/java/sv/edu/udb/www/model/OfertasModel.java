@@ -71,7 +71,7 @@ public class OfertasModel extends Conexion {
         try {
             int filasAfectadas = 0;
             int idEmpresa = 0;
-            // precio re - (precio re * descuento)
+            
             List<Oferta> lista = new ArrayList<>();
             String sql = "Select id_empresa from empresa where id_usuario=?";
             this.conectar();
@@ -81,12 +81,13 @@ public class OfertasModel extends Conexion {
 
             if (rs.next()) {
                 idEmpresa = rs.getInt("id_empresa");
-                Oferta oferta = new Oferta();
+                
                 sql = "Select o.* from ofertas o Inner join producto p on o.id_producto=p.id_producto INNER JOIN empresa e on e.id_empresa=p.id_empresa Where p.id_empresa = ?";
                 st = conexion.prepareStatement(sql);
                 st.setInt(1, idEmpresa);
                 rs = st.executeQuery();
                 while (rs.next()) {
+                    Oferta oferta = new Oferta();
                     oferta.setIdOferta(rs.getInt("id_oferta"));
                     oferta.setTitulo(rs.getString("titulo"));
                     oferta.setDescripcion(rs.getString("descripcion"));
@@ -94,6 +95,7 @@ public class OfertasModel extends Conexion {
                     oferta.setFechaFin(rs.getString("fecha_fin"));
                     oferta.setDescuento(rs.getInt("descuento"));
                     oferta.setTotalDescuento(rs.getDouble("total_descuento"));
+                    oferta.setUrlFoto(rs.getString("Url_foto"));
                     oferta.setIdProducto(rs.getInt("id_producto"));
                     oferta.setIdEstadoOferta(rs.getInt("id_estado_oferta"));
                     oferta.setEstadoPublicado(rs.getInt("estado_publicado"));
