@@ -115,6 +115,8 @@ public class EmpleadoMarketingController extends HttpServlet {
                 Correo correo = new Correo();
                 correo.setAsunto(asunto);
                 correo.setMensaje(texto);
+                String[] hola = modelo.obtenerCorreosCliente();
+                System.out.println(hola[0]);
                 correo.enviarCorreo(modelo.obtenerCorreosCliente());
                 request.getSession().setAttribute("exito", "Tu usuario se creo exitosamente.");
                 response.sendRedirect(request.getContextPath() + "/empleadoMarketing.do?operacion=nuevoCorreos");
