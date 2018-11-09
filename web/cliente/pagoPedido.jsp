@@ -334,7 +334,7 @@
                                             </div>
                                             <div class="clearfix"></div>
                                             <a class="btn btn-primary pull-right" href="${base}/clientes.do?operacion=confirmarPedido" id="button-confirm" style="color:white;">Confirmar pedido</a>
-                                            <a class="btn btn-default pull-right margin-right-20" href="${base}/clientes.do?operacion=cancelarPedido" style="color:black;">Cancelar pedido</a>
+                                            <a class="btn btn-default pull-right margin-right-20" onclick="javascript:eliminar()" style="color:black;">Cancelar pedido</a>
                                         </div>
                                     </div>
                                 </div>
@@ -393,6 +393,26 @@
                 document.getElementById("tarjeta").style.display = "block";
                 document.getElementById("entrega").style.display = "none";
             });
+            
+                  function eliminar(id) {
+
+                var URLactual = window.location;
+                var url = URLactual.toString().substring(34);
+                swal({
+                    title: '¿Seguro que quieres eliminar este articulo del carrito?',
+                    text: "Una vez eliminado, no habra vuelta atras.",
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+
+                        location.href = '${base}/clientes.do?operacion=cancelarPedido';
+                    }
+                });
+            }
+            ;
+            
         </script>
 
     </body>
