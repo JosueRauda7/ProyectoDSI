@@ -402,17 +402,17 @@ public class UsuariosModel extends Conexion {
         }
     }
     //obtener lista de correos de clientes
-    public String[] obtenerCorreosCliente() throws SQLException{
+    public List<String> obtenerCorreosCliente() throws SQLException{
         try{
-            String[] listaCorreos = null;
+            List<String> listaCorreos = new ArrayList<>();
             int i = 0;
             String sql="SELECT correo FROM usuarios WHERE id_tipo_usuario = 2";
             this.conectar();
             st=conexion.prepareStatement(sql);
             rs=st.executeQuery();
+            
             while(rs.next()){
-                listaCorreos[i] = rs.getString("correo");
-                i++;
+                listaCorreos.add(rs.getString("correo"));
             }
             this.desconectar();
             return listaCorreos;

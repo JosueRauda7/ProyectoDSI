@@ -119,7 +119,7 @@ public class Correo {
         
     }
     
-    public boolean enviarCorreo(String[] clientes){
+    public boolean enviarCorreo(List<String> clientes){
         
         try {
             Properties p = new Properties();
@@ -138,9 +138,9 @@ public class Correo {
             MimeMessage correo = new MimeMessage(sesion);
             correo.setFrom(new InternetAddress(usuario));
             
-            Address []destinos = new Address[clientes.length];//Aqui usamos el arreglo de destinatarios
+            Address []destinos = new Address[clientes.size()];//Aqui usamos el arreglo de destinatarios
             for(int i=0;i<destinos.length;i++){
-                destinos[i]=new InternetAddress(clientes[i]);
+                destinos[i]=new InternetAddress(clientes.get(i));
             }
             
             correo.addRecipients(Message.RecipientType.TO,destinos);
