@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -140,7 +141,13 @@ public class PublicController extends HttpServlet {
 
     private void publicIndex(HttpServletRequest request, HttpServletResponse response) {
         try {
-
+            Calendar c = Calendar.getInstance();
+            String dia, mes, annio, fecha;
+            dia = Integer.toString(c.get(Calendar.DATE));
+            mes = Integer.toString(c.get(Calendar.MONTH) + 1);
+            annio = Integer.toString(c.get(Calendar.YEAR));
+            fecha = annio + "-" + mes + "-" + dia;
+            CategoriaModel.updateOfertas(fecha);
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
             request.setAttribute("ultimosProductos", ProductoModel.listaUltimosProductos());
             request.setAttribute("ultimasOfertas", clienteModel.ultimasOfertas());

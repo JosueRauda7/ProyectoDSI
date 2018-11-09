@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.udb.www.beans.Categoria;
 import sv.edu.udb.www.beans.EstadoCategoria;
+import sv.edu.udb.www.beans.Oferta;
 
 /**
  *
@@ -203,4 +204,28 @@ public class CategoriasModel extends Conexion {
         }
     }
 
+    public void updateOfertas(String fechaactual) throws SQLException {
+        try {
+            String sql = "SELECT * FROM ofertas WHERE id_estado_oferta = 1";
+            List<Oferta> lista = new ArrayList<>();
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Oferta oferta = new Oferta();
+                oferta.setIdOferta(rs.getInt("id_oferta"));
+                lista.add(oferta);
+            }
+            for (Oferta o : lista) {
+                String sql2 = "UPDATE ofertas SET id_estado_oferta = 2 WHERE fecha_fin < ?";
+                st = conexion.prepareStatement(sql2);
+                st.setString(1, fechaactual);
+                st.executeUpdate();
+            }
+            this.desconectar();
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoriasModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+        }
+    }
 }
