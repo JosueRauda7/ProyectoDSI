@@ -414,8 +414,7 @@ public class ProductosModel extends Conexion {
     public List<Oferta> listarOfertasSinPublicar() throws SQLException{
         try {
             List<Oferta> listaOfertas = new ArrayList<>();
-            listaOfertas=null;
-            String sql = "SELECT o.id_oferta, o.titulo, o.descripcion, o.Url_foto, p.producto FROM ofertas o inner join producto p on o.id_producto=p.id_producto WHERE id_estado_oferta=1 AND estado_publicado = 0";
+            String sql = "SELECT o.id_oferta, o.titulo, o.descripcion, o.url_foto, p.producto FROM ofertas o inner join producto p on o.id_producto=p.id_producto WHERE id_estado_oferta=1 AND estado_publicado = 0";
             this.conectar();
             st=conexion.prepareStatement(sql);
             rs=st.executeQuery();
@@ -424,7 +423,7 @@ public class ProductosModel extends Conexion {
                 oferta.setIdOferta(rs.getInt("id_oferta"));
                 oferta.setTitulo(rs.getString("titulo"));
                 oferta.setDescripcion(rs.getString("descripcion"));
-                oferta.setUrlFoto(rs.getString("Url_foto"));
+                oferta.setUrlFoto(rs.getString("url_foto"));
                 oferta.setNombreProducto(rs.getString("producto"));
                 listaOfertas.add(oferta);
             }

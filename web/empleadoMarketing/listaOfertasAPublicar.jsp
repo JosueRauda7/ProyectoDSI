@@ -9,10 +9,10 @@
 <html>
     <head>
         <title>BigShop | Marketing</title>
-        <jsp:include page="head.jsp"/>        
+        <jsp:include page="/head.jsp"/>        
     </head>
     <body class="ecommerce">
-        <jsp:include page="menuAdmin.jsp"/>
+        <jsp:include page="/empleadoMarketing/menuEmpleadoMarketing.jsp"/>
         <div class="main">
             <div class="container">
                 
@@ -66,7 +66,7 @@
                 <!-- END CONTENT -->
             </div>
         </div>
-        <jsp:include page="footer.jsp"/>
+        <jsp:include page="/empleadoMarketing/footer.jsp"/>
     </body>
     
     <script>
