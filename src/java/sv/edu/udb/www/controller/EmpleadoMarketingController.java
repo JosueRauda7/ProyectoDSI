@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import sv.edu.udb.www.beans.Usuario;
+import sv.edu.udb.www.model.ProductosModel;
 import sv.edu.udb.www.model.UsuariosModel;
 import sv.edu.udb.www.utils.Correo;
 import sv.edu.udb.www.utils.Validaciones;
@@ -22,6 +23,7 @@ public class EmpleadoMarketingController extends HttpServlet {
 
     ArrayList listaErrores = new ArrayList();
     UsuariosModel modelo = new UsuariosModel();
+    ProductosModel modeloProductos = new ProductosModel();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -42,6 +44,9 @@ public class EmpleadoMarketingController extends HttpServlet {
                             break;
                         case "enviarCorreos":
                             enviarCorreos(request, response);
+                            break;
+                        case "verListaOfertas":
+                            verListaOfertas(request,response);
                             break;
                     }
                 } else {
@@ -132,6 +137,17 @@ public class EmpleadoMarketingController extends HttpServlet {
 
             }
         } catch (IOException | ServletException ex) {
+            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(EmpleadoMarketingController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void verListaOfertas(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.setAttribute("listaOfertas", modeloProductos.listarOfertasSinPublicar());
+            request.getRequestDispatcher("/empleadoMarketing/listaOfertasAPublicar.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(EmpleadoMarketingController.class.getName()).log(Level.SEVERE, null, ex);

@@ -67,7 +67,7 @@
         <div class="header-navigation">
             <ul>
                 <li class="">
-                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+                    <a class="dropdown-toggle" href="${base}/clientes.do?operacion=acercaDe">
                         Acerca de  
 
                     </a>

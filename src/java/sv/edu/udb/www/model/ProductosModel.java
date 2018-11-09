@@ -409,4 +409,31 @@ public class ProductosModel extends Conexion {
             return null;
         }
     }
+    
+    //PARTE RAUDA: LISTAR OFERTAS SIN PUBLICAR
+    public List<Oferta> listarOfertasSinPublicar() throws SQLException{
+        try {
+            List<Oferta> listaOfertas = new ArrayList<>();
+            listaOfertas=null;
+            String sql = "SELECT o.id_oferta, o.titulo, o.descripcion, o.Url_foto, p.producto FROM ofertas o inner join producto p on o.id_producto=p.id_producto WHERE id_estado_oferta=1 AND estado_publicado = 0";
+            this.conectar();
+            st=conexion.prepareStatement(sql);
+            rs=st.executeQuery();
+            while(rs.next()){
+                Oferta oferta = new Oferta();
+                oferta.setIdOferta(rs.getInt("id_oferta"));
+                oferta.setTitulo(rs.getString("titulo"));
+                oferta.setDescripcion(rs.getString("descripcion"));
+                oferta.setUrlFoto(rs.getString("Url_foto"));
+                oferta.setNombreProducto(rs.getString("producto"));
+                listaOfertas.add(oferta);
+            }
+            this.desconectar();
+            return listaOfertas;
+        } catch (SQLException ex) {
+            this.desconectar();
+            return null;
+        }
+    }
+    //FIN PARTE RAUDA
 }

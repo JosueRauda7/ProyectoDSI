@@ -24,6 +24,7 @@ public class Oferta {
     private Producto producto;
     private EstadoOferta estadoOferta;
     private int estadoPublicado;
+    private String nombreProducto;
 
     public Oferta() {
         this.idOferta = 0;
@@ -133,6 +134,14 @@ public class Oferta {
 
     public void setEstadoOferta(EstadoOferta estadoOferta) {
         this.estadoOferta = estadoOferta;
+    }
+
+    public String getNombreProducto() {
+        return nombreProducto;
+    }
+
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
     }
     
     

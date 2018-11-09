@@ -122,6 +122,9 @@ public class ClienteController extends HttpServlet {
                     case "cancelarPedido":
                         cancelarPedido(request, response);
                         break;
+                    case "acercaDe":
+                        acercaDe(request, response);
+                        break;
                 }
             } else {
                 request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
@@ -254,7 +257,7 @@ public class ClienteController extends HttpServlet {
             List<Producto> producto1 = new ArrayList<>();
             List<Oferta> productoOferta = new ArrayList<>();
             producto = ProductoModel.busquedaProductos(nombre, idCategoria);
-            producto1 = ProductoModel.busquedaProductos1(0,nombre, idCategoria);
+            producto1 = ProductoModel.busquedaProductos1(0, nombre, idCategoria);
 
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
             request.setAttribute("listarProductos", producto1);
@@ -281,7 +284,7 @@ public class ClienteController extends HttpServlet {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void otraPagina1(HttpServletRequest request, HttpServletResponse response) {
         try {
             String nombre = request.getParameter("nombre");
@@ -291,23 +294,22 @@ public class ClienteController extends HttpServlet {
             List<Producto> producto = new ArrayList<>();
             List<Producto> producto1 = new ArrayList<>();
             List<Oferta> productoOferta = new ArrayList<>();
-            
+
             producto = ProductoModel.busquedaProductos(nombre, idCategoria);
-            producto1 = ProductoModel.busquedaProductos1(pagina*9,nombre, idCategoria);
+            producto1 = ProductoModel.busquedaProductos1(pagina * 9, nombre, idCategoria);
 
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
             request.setAttribute("listarProductos", producto1);
-            
+
             int filas = producto.size();
-            
+
             request.setAttribute("datoBusqueda", nombre);
             request.setAttribute("categoria", idCategoria);
-            
+
             request.setAttribute("pagina", pagina);
-            
-           
+
             request.setAttribute("paginas", (int) filas / 9);
-            
+
             for (Producto p : producto) {
                 if (clienteModel.ofertaProducto(p.getIdProducto()) != null) {
                     productoOferta.add(clienteModel.ofertaProducto(p.getIdProducto()));
@@ -316,13 +318,13 @@ public class ClienteController extends HttpServlet {
 
             request.setAttribute("listarProductosOfertados", productoOferta);
             request.setAttribute("cantidadOfertas", productoOferta.size());
-            
+
             try {
                 request.getRequestDispatcher("/cliente/resultadosBusqueda.jsp").forward(request, response);
             } catch (ServletException | IOException ex) {
                 Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -727,6 +729,15 @@ public class ClienteController extends HttpServlet {
             }
         } catch (IOException | SQLException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void acercaDe(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.getRequestDispatcher("acercaDe.jsp").forward(request, response);
+        } catch (ServletException | IOException | SQLException ex) {
+            Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

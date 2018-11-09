@@ -64,7 +64,9 @@ public class PublicController extends HttpServlet {
                     case "otraPagina1":
                         otraPagina1(request, response);
                         break;
-                    
+                    case "acercaDe":
+                        acercaDe(request,response);
+                        break;
                 }
             } else {
                 switch (Integer.parseInt(request.getSession().getAttribute("tipousuario").toString())) {
@@ -344,6 +346,15 @@ public class PublicController extends HttpServlet {
             request.getRequestDispatcher("/listaProductos.jsp").forward(request, response);
         } catch (ServletException | IOException | SQLException ex) {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void acercaDe(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.getRequestDispatcher("acercaDe.jsp").forward(request, response);
+        } catch (ServletException | IOException | SQLException ex) {
+            Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
