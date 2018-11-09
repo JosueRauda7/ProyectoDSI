@@ -54,25 +54,28 @@
                                                 <div class="col-md-6 col-sm-6">                                                    
                                                     <div class="form-group">
                                                         <label for="empresa">Nombre de la empresa:</label>
-                                                        <input type="text" value="${empresa.empresa}" class="form-control" name="empresa" id="empresa">
-                                                        
+                                                        <input type="text" value="${empresa.empresa}" class="form-control" name="empresa" id="empresa"
+                                                               onkeydown="validarVacio('empresa','errorEmpresa');" onclick="validarVacio('empresa','errorEmpresa');">
+                                                        <label id="errorEmpresa" class="hidden" style="color: red; font-weight: normal;">Debe rellenar este campo para continuar.</label>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="imagen">Logo de la empresa</label>
-                                                        <input data-language="es" type="file" name="archivo" id="imagen" class="form-control file file-loading" data-allowed-file-extensions='["jpg", "png"]'
-                                                               value="${base}/images/${empresa.urlEmpresa}/"/>
+                                                        <input data-language="es" type="file" name="imagen" id="imagen" class="form-control file file-loading" data-allowed-file-extensions='["jpg", "png"]'
+                                                               value="${base}/images/${empresa.urlEmpresa}/"  oncancel="validarVacio('imagen','errorImagen');"/>
+                                                        <label id="errorImagen" class="hidden" style="color: red; font-weight: normal;">Debe ingresar una imagen de la empresa.</label>
                                                     </div>
 
                                                 </div>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <div>
-
+                                                    <div class="text-center">
+                                                        <img id="img" height="20%" width="45%" />
                                                     </div>
                                                 </div>                                                
                                                 <hr>
                                                 <div class="col-md-12">                      
 
-                                                    <button class="btn btn-primary  pull-right" type="button" data-toggle="collapse" data-parent="#checkout-page" data-target="#payment-address-content" id="button-payment-address">Continue</button>
+                                                    <button class="btn btn-primary  pull-right" type="button" data-toggle="collapse" data-parent="#checkout-page" data-target="#payment-address-content"
+                                                            id="boton1" >Continue</button>
 
                                                 </div>
                                             </div>
@@ -95,28 +98,34 @@
                                                     <div class="form-group">
                                                         <label for="nombre">Nombres:</label>
                                                         <input type="text" value="${requestScope.usuario.nombre}" class="form-control" name="nombre" id="nombre">
+                                                        <label id="errorNombre" class="hidden" style="color: red; font-weight: normal;">El nombre es requerido.</label>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="apellido">Apellidos:</label>
                                                         <input type="text" value="${requestScope.usuario.apellido}" class="form-control" name="apellido" id="apellido">
+                                                        <label id="errorApellido" class="hidden" style="color: red; font-weight: normal;">El apellido es requerido.</label>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="correo">Correo:</label>
                                                         <input type="text" value="${requestScope.usuario.correo}" class="form-control" name="correo" id="correo">
+                                                        <label id="errorCorreo" class="hidden" style="color: red; font-weight: normal;">El correo es requerido.</label>
                                                     </div>                                                    
                                                 </div>
                                                 <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
                                                         <label for="telefono">Teléfono:</label>
                                                         <input type="text" value="${requestScope.usuario.telefono}" class="form-control" name="telefono" id="telefono">
+                                                        <label id="errorTelefono" class="hidden" style="color: red; font-weight: normal;">El número de teléfono es requerido.</label>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="dui">DUI:</label>
                                                         <input type="text" value="${requestScope.usuario.dui}" class="form-control" name="dui" id="dui">
+                                                        <label id="errorDui" class="hidden" style="color: red; font-weight: normal;">El DUI es requerido.</label>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="direccion">Dirección:</label>
                                                         <textarea class="form-control" style="max-width: 100%;" name="direccion" id="direccion">${requestScope.usuario.direccion}</textarea>
+                                                        <label id="errorDireccion" class="hidden" style="color: red; font-weight: normal;">La dirección es requerida.</label>
                                                     </div>
                                                 </div>
                                                 <hr>
@@ -154,5 +163,33 @@
                     </div>
                 </div>
             </div>
+            <script>
+                window.addEventListener('load', init, false);
+
+                function init() {
+                    var inputFile = document.getElementById('imagen');
+                    inputFile.addEventListener('change', mostrarImagen, false);
+                }
+
+                function mostrarImagen(event) {
+                    var file = event.target.files[0];
+                    var reader = new FileReader();
+                    reader.onload = function (event) {
+                        var img = document.getElementById('img');
+                        img.src = event.target.result;
+                    }
+                    reader.readAsDataURL(file);
+                }
+
+                function validarVacio(input, label) {
+                    if ($('#'+input).val() == "") {
+                        $('#'+label).removeClass("hidden");
+                    }
+                    if ($('#'+input).val() != "") {
+                        $('#'+label).addClass("hidden");
+                    }
+                }
+                
+            </script>
     </body>
 </html>

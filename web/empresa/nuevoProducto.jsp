@@ -60,7 +60,7 @@
                                 <div class="form-group">
                                     <label for="cantidad">Existencias</label>
                                     <input type="number" id="cantidad" name="cantidad" class="form-control" value="${producto.cantidad}">
-                                    <label id="Error" class="hidden" style="color:red; font-weight: normal;">El nombre del producto es requerido</label>
+                                    
                                 </div>
                             </div>
                         </div>
