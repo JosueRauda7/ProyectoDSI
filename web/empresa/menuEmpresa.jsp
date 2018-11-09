@@ -52,7 +52,15 @@
                         <li><a href="${base}/empresas.do?operacion=grafica">Ventas anuales</a></li>                        
                     </ul>
                 </li>
-
+                <li class="dropdown dropdown-megamenu">
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+                        Ofertas
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="${base}/empresas.do?operacion=agregarOfertas">Agregar ofertas</a></li>
+                        <li><a href="${base}/empresas.do?operacion=grafica">Ver ofertas</a></li>                         
+                    </ul>
+                </li>
 
                 <!-- END TOP SEARCH -->
             </ul>
