@@ -5,6 +5,7 @@
 --%>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <c:set var="base" value="${pageContext.request.contextPath}"/> 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -27,38 +28,111 @@
 
         <div class="container">
 
-            <br/>
-            <h1>Resultados de la busqueda: ${requestScope.datoBusqueda}</h1>
+            <br/><br/>
+            <center><h1>Resultados de la busqueda: ${requestScope.datoBusqueda}</h1></center>
+            <hr/>
             <br/>
 
-            <c:if test="${empty requestScope.listarProductos}">
-                <h2>No se ha encontrado ningún producto</h2><br/>
-            </c:if>
+            <div class="row margin-bottom-40">
 
-            <c:if test="${not empty requestScope.listarProductos}">
-                <c:forEach var="ultpro" items="${requestScope.listarProductos}">
-                    <div class="col-md-4 col-sm-6 col-xs-12" >
-                        <div class="product-item" style="height: 450px;">
-                            <div class="pi-img-wrapper">
-                                <img src="images/${ultpro.urlImagen}"  style="height: 350px;" class="img-responsive" alt="Berry Lace Dress">
-                                <div>
-                                    <a href="images/${ultpro.urlImagen}" class="btn btn-default fancybox-button">Ver imagen</a>                               
-                                </div>
+                <div class="sidebar col-md-3 col-sm-5">
+                    <ul class="list-group margin-bottom-25 sidebar-menu">
+                        <c:forEach var="categorias" items="${requestScope.listaCategorias}">
+                            <li class="list-group-item clearfix dropdown">
+                                <a href="javascript:void(0);" class="collapsed"><i class="fa fa-angle-right"></i>${categorias.categoria}</a>
+                                    <sql:query var="ql" dataSource="jdbc/mysql">
+                                    SELECT * FROM sub_categoria WHERE id_categoria=${categorias.idCategoria}
+                                </sql:query>
+                                <c:forEach var="subcat" items="${ql.rows}">
+                                    <ul class="dropdown-menu" >
+                                        <li class="list-group-item dropdown clearfix">
+                                            <a href="${base}/clientes.do?operacion=listaProductos&idsubcat=${subcat.id_sub_categoria}" class="collapsed"><i class="fa fa-minus"></i> ${subcat.subcategoria}</a>
+                                        </li>                      
+                                    </ul>
+                                </c:forEach>
+                            </li>
+                        </c:forEach>
+
+                    </ul>
+
+                    
+
+                </div>
+
+                <div class="col-md-9 col-sm-7">
+
+                    <c:if test="${empty requestScope.listarProductos}">
+                        <h2>No se ha encontrado ningún producto</h2><br/>
+                    </c:if>
+
+                    <div class="row product-list">
+
+                        <c:if test="${not empty requestScope.listarProductos}">                
+                            <div class="row">
+                                <c:forEach var="ultpro" items="${requestScope.listarProductos}">
+
+                                    <div class="col-md-4 col-sm-6 col-xs-12" >
+                                        <div class="product-item" style="height: 375px;">
+                                            
+                                            <c:forEach var="productoOferta" items="${requestScope.listarProductosOfertados}">
+                                                
+                                                    <c:if test="${productoOferta.producto.idProducto eq ultpro.idProducto}">
+
+                                                        <div style="display: none;">${ultpro.precioRegular = productoOferta.totalDescuento}</div>
+
+                                                    </c:if>
+                                                    
+                                            </c:forEach>
+                                            
+                                            <div class="pi-img-wrapper">
+                                                <img src="images/${ultpro.urlImagen}"  style="height: 250px;" class="img-responsive" alt="Berry Lace Dress">
+                                                <div>
+                                                    <a href="images/${ultpro.urlImagen}" class="btn btn-default fancybox-button">Ver imagen</a>                               
+                                                </div>
+                                            </div>
+                                            <h3 class="text-center"><a href="${base}/public.do?operacion=verProducto&idproduct=${ultpro.idProducto}">${ultpro.producto}</a></h3>
+                                            
+                                            <div class="pi-price text-center" style="float:none;">Precio: $${ultpro.precioRegular}</div>                                                   
+                                                        
+                                        </div>
+                                        <c:forEach var="productoOferta" items="${requestScope.listarProductosOfertados}">
+                                            <c:if test="${productoOferta.producto.idProducto eq ultpro.idProducto}">
+                                                <div class="sticker sticker-sale" style="margin-left: 4%;"></div>
+                                            </c:if>
+                                        </c:forEach>
+                                    </div>
+
+                                </c:forEach>
                             </div>
-                            <h3 class="text-center"><a href="${base}/public.do?operacion=verProducto&idproduct=${ultpro.idProducto}">${ultpro.producto}</a></h3>
-                            <div class="pi-price text-center" style="float:none;">Precio: $${ultpro.precioRegular}</div>
+                        </c:if>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 items-info">Articulos ${requestScope.pagina+1} a ${requestScope.paginas+1} de ${requestScope.paginas+1} en total</div>
+                            <div class="col-md-8 col-sm-8">
+                                <ul class="pagination pull-right">
+                                    <c:if test="${requestScope.pagina <=0}"> 
+                                        <li><a href="${base}/public.do?operacion=otraPagina1&pagina=${requestScope.pagina}&categoria=${requestScope.categoria}&nombre=${requestScope.datoBusqueda}">&laquo;</a></li>
+                                        </c:if>
+                                        <c:if test="${requestScope.pagina >0 }">
+                                        <li><a href="${base}/public.do?operacion=otraPagina1&pagina=${requestScope.pagina-1}&categoria=${requestScope.categoria}&nombre=${requestScope.datoBusqueda}">&laquo;</a></li>
+                                        </c:if>
 
+                                    <c:forEach var = "i" begin = "0" end = "${requestScope.paginas}">
+                                        <li><a href="${base}/public.do?operacion=otraPagina1&pagina=${i}&categoria=${requestScope.categoria}&nombre=${requestScope.datoBusqueda}">${i+1}</a></li>
+                                        </c:forEach>
+                                        <c:if test="${requestScope.pagina >= requestScope.paginas}"> 
+                                        <li><a href="${base}/public.do?operacion=otraPagina1&pagina=${requestScope.pagina}&categoria=${requestScope.categoria}&nombre=${requestScope.datoBusqueda}">&raquo;</a></li>
+                                        </c:if>
+                                        <c:if test="${requestScope.pagina < requestScope.paginas}">
+                                        <li><a href="${base}/public.do?operacion=otraPagina1&pagina=${requestScope.pagina+1}&categoria=${requestScope.categoria}&nombre=${requestScope.datoBusqueda}">&raquo;</a></li>
+                                        </c:if>
+                                </ul>
+                            </div>
                         </div>
-                            <c:forEach var="productoOferta" items="${requestScope.listarProductosOfertados}">
-                                <c:if test="${productoOferta.idProducto eq ultpro.idProducto}">
-                                    <div class="sticker sticker-sale" style="margin-left: 4%;"></div>
-                                </c:if>
-                            </c:forEach>
                     </div>
-                </c:forEach>
-            </c:if>
+                </div>
+            </div>
         </div>
-
 
         <br/><br/><br/>
 
@@ -70,6 +144,7 @@
                 Layout.initImageZoom();
                 Layout.initTouchspin();
                 Layout.initUniform();
+                Layout.initSliderRange();
             });
         </script>
 

@@ -186,6 +186,7 @@
 
 
         <script src="assets/pages/scripts/ModalLog.js" type="text/javascript"></script>
+        
         <!-- END PAGE LEVEL JAVASCRIPTS -->
     </body>
     

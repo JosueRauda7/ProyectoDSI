@@ -362,4 +362,51 @@ public class ProductosModel extends Conexion {
             return null;
         }
     }
+    
+    public List<Producto> busquedaProductos1(int filter, String nombre, String idCategoria) throws SQLException {
+        try {
+
+            List<Producto> lista = new ArrayList<>();
+            if (idCategoria.equals("0")) {
+                String sql = "Select DISTINCT * from producto p inner join estado_producto es on p.id_estado_producto= es.id_estado_producto "
+                        + "inner join sub_categoria sc on p.id_sub_categoria=sc.id_sub_categoria inner join categoria c ON c.id_categoria = sc.id_categoria "
+                        + "inner JOIN empresa e on p.id_empresa=e.id_empresa INNER JOIN imagen i ON i.id_producto= p.id_producto "
+                        + " where es.id_estado_producto=2 and (p.producto LIKE '" + nombre + "%' OR sc.subcategoria LIKE '" + nombre + "%' OR c.categoria LIKE '" + nombre + "%') GROUP BY p.id_producto LIMIT ?,9";
+                this.conectar();
+                st = conexion.prepareStatement(sql);
+                st.setInt(1, filter);
+
+            } else {
+                String sql = "Select DISTINCT * from producto p inner join estado_producto es on p.id_estado_producto= es.id_estado_producto "
+                        + "inner join sub_categoria sc on p.id_sub_categoria=sc.id_sub_categoria inner join categoria c ON c.id_categoria = sc.id_categoria "
+                        + "inner JOIN empresa e on p.id_empresa=e.id_empresa INNER JOIN imagen i ON i.id_producto= p.id_producto"
+                        + " where es.id_estado_producto=2 and (p.producto LIKE '" + nombre + "%' OR sc.subcategoria LIKE '" + nombre + "%' OR c.categoria LIKE '" + nombre + "%') and c.id_categoria = ? GROUP BY p.id_producto LIMIT ?,9";
+                this.conectar();
+                st = conexion.prepareStatement(sql);
+                st.setString(1, idCategoria);
+                st.setInt(2, filter);
+            }
+
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Producto producto = new Producto();
+                producto.setIdProducto(rs.getInt("id_producto"));
+                producto.setProducto(rs.getString("producto"));
+                producto.setDescripcion(rs.getString("descripcion"));
+                producto.setPrecioRegular(rs.getString("precio_regular"));
+                producto.setCantidad(rs.getString("cantidad"));
+                producto.setUrlImagen(rs.getString("Url_imagen"));
+                producto.setEmpresa(new Empresa(rs.getString("empresa")));
+                producto.setSubCategoria(new SubCategoria(rs.getString("subcategoria")));
+                producto.setEstadoProducto(new EstadoProducto(rs.getString("estado")));
+                lista.add(producto);
+            }
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(EmpresasModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+    }
 }

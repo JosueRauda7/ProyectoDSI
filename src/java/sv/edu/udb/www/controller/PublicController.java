@@ -58,10 +58,13 @@ public class PublicController extends HttpServlet {
                     case "listaProductos":
                         listaProductos(request, response);
                         break;
-
                     case "otraPagina":
                         otraPagina(request, response);
                         break;
+                    case "otraPagina1":
+                        otraPagina1(request, response);
+                        break;
+                    
                 }
             } else {
                 switch (Integer.parseInt(request.getSession().getAttribute("tipousuario").toString())) {
@@ -157,21 +160,26 @@ public class PublicController extends HttpServlet {
         }
     }
 
-    private void buscarProductos(HttpServletRequest request, HttpServletResponse response) {
+        private void buscarProductos(HttpServletRequest request, HttpServletResponse response) {
         try {
             String nombre = request.getParameter("nombre");
             String idCategoria = request.getParameter("categoria");
             List<Producto> producto = new ArrayList<>();
-            List<Producto> productoOferta = new ArrayList<>();
+            List<Producto> producto1 = new ArrayList<>();
+            List<Oferta> productoOferta = new ArrayList<>();
             producto = ProductoModel.busquedaProductos(nombre, idCategoria);
+            producto1 = ProductoModel.busquedaProductos1(0,nombre, idCategoria);
 
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-            request.setAttribute("listarProductos", producto);
+            request.setAttribute("listarProductos", producto1);
             request.setAttribute("datoBusqueda", nombre);
+            request.setAttribute("categoria", idCategoria);
+            request.setAttribute("pagina", 0);
+            request.setAttribute("paginas", (int) producto.size() / 9);
 
             for (Producto p : producto) {
                 if (clienteModel.ofertaProducto(p.getIdProducto()) != null) {
-                    productoOferta.add(p);
+                    productoOferta.add(clienteModel.ofertaProducto(p.getIdProducto()));
                 }
             }
 
@@ -186,6 +194,53 @@ public class PublicController extends HttpServlet {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    private void otraPagina1(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String nombre = request.getParameter("nombre");
+            String idCategoria = request.getParameter("categoria");
+            int pagina = Integer.parseInt(request.getParameter("pagina"));
+
+            List<Producto> producto = new ArrayList<>();
+            List<Producto> producto1 = new ArrayList<>();
+            List<Oferta> productoOferta = new ArrayList<>();
+            
+            producto = ProductoModel.busquedaProductos(nombre, idCategoria);
+            producto1 = ProductoModel.busquedaProductos1(pagina*9,nombre, idCategoria);
+
+            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.setAttribute("listarProductos", producto1);
+            
+            int filas = producto.size();
+            
+            request.setAttribute("datoBusqueda", nombre);
+            request.setAttribute("categoria", idCategoria);
+            
+            request.setAttribute("pagina", pagina);
+            
+           
+            request.setAttribute("paginas", (int) filas / 9);
+            
+            for (Producto p : producto) {
+                if (clienteModel.ofertaProducto(p.getIdProducto()) != null) {
+                    productoOferta.add(clienteModel.ofertaProducto(p.getIdProducto()));
+                }
+            }
+
+            request.setAttribute("listarProductosOfertados", productoOferta);
+            
+            
+            try {
+                request.getRequestDispatcher("/resultadosBusqueda.jsp").forward(request, response);
+            } catch (ServletException | IOException ex) {
+                Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 
     private void verProducto(HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -230,22 +285,28 @@ public class PublicController extends HttpServlet {
         try {
             int idsubcat = Integer.parseInt(request.getParameter("idsubcat"));
             String precio1 = request.getParameter("precio1");
-
             String precio2 = request.getParameter("precio2");
+
             if (precio1 == null && precio2 == null) {
                 precio1 = "0";
                 precio2 = "1000";
             }
             int filas = clienteModel.countProducto(idsubcat, Double.parseDouble(precio1), Double.parseDouble(precio2));
+            int filasOfer = clienteModel.countOferta(idsubcat, Double.parseDouble(precio1), Double.parseDouble(precio2));
+
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
             request.setAttribute("listaProductos", clienteModel.listaProductosSubCat(0, idsubcat, Double.parseDouble(precio1), Double.parseDouble(precio2)));
             request.setAttribute("listaOfertas", clienteModel.listaOfertasSubCat(0, idsubcat, Double.parseDouble(precio1), Double.parseDouble(precio2)));
+            request.setAttribute("precio1", precio1);
+            request.setAttribute("precio2", precio2);
             request.setAttribute("pagina", 0);
+            request.setAttribute("paginaOfer", 0);
             request.setAttribute("idsubcat", idsubcat);
-            request.setAttribute("paginas", (int) filas / 10);
+            request.setAttribute("paginas", (int) filas / 9);
+            request.setAttribute("paginasOfert", (int) filasOfer / 9);
             request.getRequestDispatcher("/listaProductos.jsp").forward(request, response);
         } catch (ServletException | IOException | SQLException ex) {
-            Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -253,29 +314,36 @@ public class PublicController extends HttpServlet {
         try {
             int idsubcat = Integer.parseInt(request.getParameter("idsubcat"));
             int pagina = Integer.parseInt(request.getParameter("pagina"));
-            String precio1 = request.getParameter("precio1");
-            String precio2 = request.getParameter("precio2");
-            
+            String compagiofer = request.getParameter("compagiOfer");
+
             int paginaOfer;
             if (request.getParameter("paginaOfer") == null) {
                 paginaOfer = 0;
             } else {
                 paginaOfer = Integer.parseInt(request.getParameter("paginaOfer"));
             }
+            String precio1 = request.getParameter("precio1");
+            String precio2 = request.getParameter("precio2");
             if (precio1 == null && precio2 == null) {
                 precio1 = "0";
                 precio2 = "1000";
             }
             int filas = clienteModel.countProducto(idsubcat, Double.parseDouble(precio1), Double.parseDouble(precio2));
+            int filasOfer = clienteModel.countOferta(idsubcat, Double.parseDouble(precio1), Double.parseDouble(precio2));
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
             request.setAttribute("listaProductos", clienteModel.listaProductosSubCat(pagina * 9, idsubcat, Double.parseDouble(precio1), Double.parseDouble(precio2)));
             request.setAttribute("listaOfertas", clienteModel.listaOfertasSubCat(paginaOfer * 9, idsubcat, Double.parseDouble(precio1), Double.parseDouble(precio2)));
             request.setAttribute("idsubcat", idsubcat);
             request.setAttribute("pagina", pagina);
+            request.setAttribute("paginaOfer", paginaOfer);
+            request.setAttribute("precio1", precio1);
+            request.setAttribute("precio2", precio2);
+            request.setAttribute("compagiOfer", compagiofer);
             request.setAttribute("paginas", (int) filas / 9);
+            request.setAttribute("paginasOfert", (int) filasOfer / 9);
             request.getRequestDispatcher("/listaProductos.jsp").forward(request, response);
         } catch (ServletException | IOException | SQLException ex) {
-            Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
