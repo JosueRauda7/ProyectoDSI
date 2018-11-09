@@ -963,7 +963,7 @@ public class ClientesModel extends Conexion {
         }
     }
 
-    public int confirmarPedido(int iduser) throws SQLException {
+    public int confirmarPedido(int iduser, String fecha, String hora) throws SQLException {
         try {
             String sql = "SELECT MAX(id_pedido) AS pedido FROM pedidos WHERE id_usuario = ?";
             int pedido = 0;
@@ -975,9 +975,11 @@ public class ClientesModel extends Conexion {
             if (rs.next()) {
                 pedido = rs.getInt("pedido");
             }
-            String sql2 = "UPDATE pedidos SET id_estado_compra = 2 WHERE id_pedido = ?";
+            String sql2 = "UPDATE pedidos SET id_estado_compra = 2, fecha_compra = ? , hora_compra = ? WHERE id_pedido = ?";
             st = conexion.prepareStatement(sql2);
-            st.setInt(1, pedido);
+            st.setString(1, fecha);
+            st.setString(2, hora);
+            st.setInt(3, pedido);
             filasAfectadas = st.executeUpdate();
             this.desconectar();
             return filasAfectadas;
@@ -1059,7 +1061,7 @@ public class ClientesModel extends Conexion {
                 st.setInt(2, idproducto);
                 st.executeUpdate();
             }
-            
+
             String sql2 = "UPDATE pedidos SET id_estado_compra = 3 WHERE id_pedido = ?";
             st = conexion.prepareStatement(sql2);
             st.setInt(1, pedido);

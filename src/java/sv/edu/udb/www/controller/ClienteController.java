@@ -631,7 +631,18 @@ public class ClienteController extends HttpServlet {
     private void confirmarPedido(HttpServletRequest request, HttpServletResponse response) {
         try {
             int idusuario = (int) request.getSession().getAttribute("usuario");
-            if (clienteModel.confirmarPedido(idusuario) > 0) {
+            Calendar c = Calendar.getInstance();
+            String dia, mes, annio, fecha;
+            dia = Integer.toString(c.get(Calendar.DATE));
+            mes = Integer.toString(c.get(Calendar.MONTH) + 1);
+            annio = Integer.toString(c.get(Calendar.YEAR));
+            fecha = annio + "-" + mes + "-" + dia;
+            String horas, minutos, segundos, hora;
+            horas = Integer.toString(c.get(Calendar.HOUR_OF_DAY));
+            minutos = Integer.toString(c.get(Calendar.MINUTE));
+            segundos = Integer.toString(c.get(Calendar.SECOND));
+            hora = horas + ":" + minutos + ":" + segundos;
+            if (clienteModel.confirmarPedido(idusuario, fecha, hora) > 0) {
                 request.getSession().setAttribute("exito", "Tu pedido a sido confirmado, espera a que tus articulos lleguen a la comodidad de tu casa.");
                 request.getSession().setAttribute("estado", clienteModel.estadoPedido((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("pedidosProduc", clienteModel.listaCarrito((int) request.getSession().getAttribute("usuario")));
