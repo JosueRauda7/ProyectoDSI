@@ -112,7 +112,7 @@
                                                 <p>${requestScope.clienteInfo.telefono}</p>
                                             </div>
                                             <div class="form-group">
-                                                <label for="telephone">Dirección <span class="require">*</span></label>
+                                                <label for="telephone">Dirección de entrega <span class="require">*</span></label>
                                                 <p>${requestScope.clienteInfo.direccion}</p>
                                             </div>
                                         </div>
@@ -154,44 +154,60 @@
                                             <div class="radio-list">
                                                 <form>
 
-                                                    <input type="radio" id="metodo1" name="val" value="1" ><label for="metodo1">Contra reembolso</label>
+                                                    <input type="radio" id="metodo1" checked="cheched" name="val" value="1" ><label for="metodo1">Contra entrega</label>
                                                     <input type="radio" id="metodo2" name="val" value="2" ><label for="metodo2">Tarjeta de credito o debito</label>
-                                                    <section id="entrega" style="display:none;">El pago sera efectuado con nuestro equipo de reparto.</section>
-                                                    <section id="tarjeta"  style="display: none">
-                                                        <div class="col-md-6 col-sm-6">
-
-                                                            <div class="form-group">
-                                                                <label for="firstname">Nombre segun la tarjeta <span class="require">*</span></label>
-                                                                <input type="text" id="company" class="form-control">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="lastname">Dui <span class="require">*</span></label>
-                                                                <input type="text" id="company" value="${requestScope.clienteInfo.dui}" class="form-control"> 
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="telephone">Tipo tarjeta <span class="require">*</span></label>
-                                                                <select class="form-control input-sm" style="color:black;">
-                                                                    <option value="#?limit=24" selected="selected">Visa</option>
-                                                                    <option value="#?limit=25">Master Card</option>
-                                                                    <option value="#?limit=50">American Express</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="telephone">Numero tarjeta <span class="require">*</span></label>
-                                                                <input type="text" id="company"  class="form-control"> 
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6 col-sm-6">
-
-                                                            <div class="form-group">
-                                                                <label for="company">Codigo verificacion</label>
-                                                                <input type="text" id="company"  class="form-control">
-                                                            </div>
-
-                                                        </div>
-                                                    </section>
+                                                    <input type="radio" id="metodo3" name="val" value="3" ><label for="metodo3">Tu cuenta paypal</label>
                                                 </form>
+                                                <section id="entrega">El pago sera efectuado con nuestro equipo de reparto.</section>
+                                                <section id="tarjeta"  style="display: none">
+                                                    <div class="col-md-6 col-sm-6">
+
+                                                        <div class="form-group">
+                                                            <label for="firstname">Nombre segun la tarjeta <span class="require">*</span></label>
+                                                            <input type="text" id="company" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="lastname">Dui <span class="require">*</span></label>
+                                                            <input type="text" id="company" value="${requestScope.clienteInfo.dui}" class="form-control"> 
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="telephone">Tipo tarjeta <span class="require">*</span></label>
+                                                            <select class="form-control input-sm" style="color:black;">
+                                                                <option value="#?limit=24" selected="selected">Visa</option>
+                                                                <option value="#?limit=25">Master Card</option>
+                                                                <option value="#?limit=50">American Express</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="telephone">Numero tarjeta <span class="require">*</span></label>
+                                                            <input type="text" id="company"  class="form-control"> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6">
+
+                                                        <div class="form-group">
+                                                            <label for="company">Codigo verificacion</label>
+                                                            <input type="text" id="company"  class="form-control">
+                                                        </div>
+
+                                                    </div>
+                                                </section>
+                                                <section id="paypal" style="display:none;">
+
+                                                    <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                                                        <input type="hidden" name="cmd" value="_xclick">
+                                                        <input type="hidden" name="business" value="openalfa-facilitator@openalfa.com">
+                                                        <input type="hidden" name="item_name" value="Premium Subscription">
+                                                        <input type="hidden" name="currency_code" value="USD">
+                                                        <input type="hidden" name="amount" value="20.00">
+                                                        <input type="image" src="http://www.paypal.com/es_XC/i/btn/x-click-but01.gif"
+                                                               name="submit"
+                                                               alt="Make payments with PayPal - it's fast, free and secure!">
+
+                                                    </form>
+                                                </section>
+
                                             </div>
 
                                             <button class="btn btn-primary  pull-right" type="submit" id="button-payment-method" data-toggle="collapse" data-parent="#checkout-page" data-target="#confirm-content">Continue</button>
@@ -318,7 +334,7 @@
                                                 </table>
                                             </div>
 
-                                               
+
                                             <div id="testdiv" style="display: none;" >
                                                 <div>
                                                     <h1>Pedido:</h1>
@@ -374,7 +390,7 @@
                                                                 <td>${ofertas.cantidad}</td>
                                                                 <td>$${ofertas.oferta.totalDescuento}</td>
                                                                 <td>$${ofertas.oferta.totalDescuento * ofertas.cantidad}</td>
-                                                                
+
                                                             </tr>
                                                         </c:forEach> 
                                                     </tbody>
@@ -398,7 +414,7 @@
                                                 </table>
 
                                             </div>
-                                                       
+
                                             <div class="shopping-total">
                                                 <ul>
                                                     <li>
@@ -416,7 +432,6 @@
                                                 </ul>
                                             </div>
                                             <div class="clearfix"></div>
-                                            <a href="javascript:genPDF()">Download PDF</a>
                                             <a class="btn btn-primary pull-right" onclick="javascript:confirmar()" id="button-confirm" style="color:white;">Confirmar pedido</a>
                                             <a class="btn btn-default pull-right margin-right-20" onclick="javascript:eliminar()" style="color:black;">Cancelar pedido</a>
                                         </div>
@@ -472,11 +487,21 @@
             document.getElementById("metodo1").addEventListener("change", function () {
                 document.getElementById("tarjeta").style.display = "none";
                 document.getElementById("entrega").style.display = "block";
+
+                document.getElementById("paypal").style.display = "none";
             });
             document.getElementById("metodo2").addEventListener("change", function () {
                 document.getElementById("tarjeta").style.display = "block";
                 document.getElementById("entrega").style.display = "none";
+
+                document.getElementById("paypal").style.display = "none";
             });
+            document.getElementById("metodo3").addEventListener("change", function () {
+                document.getElementById("tarjeta").style.display = "none";
+                document.getElementById("entrega").style.display = "none";
+                document.getElementById("paypal").style.display = "block";
+            });
+
 
             function eliminar(id) {
 
@@ -507,18 +532,20 @@
                     dangerMode: true,
                 }).then((willDelete) => {
                     if (willDelete) {
+                        
+                        document.getElementById("testdiv").style.visibility = "hidden";
                         document.getElementById("testdiv").style.display = "block";
-                        var doc = new jsPDF('l', 'mm', [297, 210]);
+                        var doc = new jsPDF();
                         var logo = new Image();
                         logo.src = '${base}/assets/logoMenuBigShop.png';
-                        doc.addImage(logo, 'PNG', 15, 40, 148, 210);
+                        doc.addImage(logo, 'PNG', 130, 30, 45, 15);
                         var specialElementHandlers = {
                             '#hidediv': function (element, render) {
                                 return true;
                             }
                         };
 
-                        doc.fromHTML($('#testdiv').get(0), 20, 12, {
+                        doc.fromHTML($('#testdiv').get(0), 25, 20, {
                             'width': 500,
                             'elementHandlers': specialElementHandlers
                         });
@@ -530,28 +557,6 @@
                 });
             }
             ;
-
-            function genPDF() {
-                document.getElementById("testdiv").style.display = "block";
-                var doc = new jsPDF();
-                var logo = new Image();
-                logo.src = '${base}/assets/logoMenuBigShop.png';
-                doc.addImage(logo, 'PNG', 130, 30, 45, 15);
-                var specialElementHandlers = {
-                    '#hidediv': function (element, render) {
-                        return true;
-                    }
-                };
-
-                doc.fromHTML($('#testdiv').get(0), 25, 20, {
-                    'width': 500,
-                    'elementHandlers': specialElementHandlers
-                });
-
-               
-                doc.save('Factura.pdf');
-            }
-
         </script>
 
     </body>
