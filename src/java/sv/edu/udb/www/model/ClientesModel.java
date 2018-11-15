@@ -990,6 +990,26 @@ public class ClientesModel extends Conexion {
         }
     }
 
+    public int obtenerIdPedido(int iduser) throws SQLException {
+        try {
+            String sql = "SELECT MAX(id_pedido) AS pedido FROM pedidos WHERE id_usuario = ?";
+            int pedido = 0;
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, iduser);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                pedido = rs.getInt("pedido");
+            }
+            this.desconectar();
+            return pedido;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return 0;
+        }
+    }
+
     public int cancelarPedido(int iduser) throws SQLException {
         try {
             String sql = "SELECT MAX(id_pedido) AS pedido FROM pedidos WHERE id_usuario = ?";

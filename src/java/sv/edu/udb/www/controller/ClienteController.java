@@ -676,6 +676,7 @@ public class ClienteController extends HttpServlet {
             } else {
                 int idusuario = (int) request.getSession().getAttribute("usuario");
                 request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+                request.setAttribute("idPedido", clienteModel.obtenerIdPedido(idusuario));
                 request.setAttribute("clienteInfo", usuario.obtenerCliente(idusuario));
                 request.getRequestDispatcher("/cliente/pagoPedido.jsp").forward(request, response);
             }

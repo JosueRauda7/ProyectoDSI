@@ -15,6 +15,7 @@
         <title>Carrito de compra</title>
         <jsp:include page="/head.jsp"/>        
         <jsp:include page="/scripts.jsp"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js" integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
     </head>
     <!-- Head END -->
 
@@ -187,12 +188,12 @@
                                                                 <label for="company">Codigo verificacion</label>
                                                                 <input type="text" id="company"  class="form-control">
                                                             </div>
-                                                            
+
                                                         </div>
                                                     </section>
                                                 </form>
                                             </div>
-                                            
+
                                             <button class="btn btn-primary  pull-right" type="submit" id="button-payment-method" data-toggle="collapse" data-parent="#checkout-page" data-target="#confirm-content">Continue</button>
                                             <div class="checkbox pull-right">
                                                 <label>
@@ -217,7 +218,7 @@
                                 <div id="confirm-content" class="panel-collapse collapse">
                                     <div class="panel-body row">
                                         <div class="col-md-12 clearfix">
-                                            <div class="table-wrapper-responsive" style="height: 400px; overflow-y: scroll;">
+                                            <div class="table-wrapper-responsive" style="height: 400px; overflow-y: scroll;" >
                                                 <table summary="Shopping cart">
                                                     <tr>
                                                         <td colspan="7"><h4 class="text-center">Productos</h4></td>
@@ -229,7 +230,7 @@
                                                         <th class="goods-page-quantity">Cantidad</th>
                                                         <th class="goods-page-price">Precio unitario</th>
                                                         <th class="goods-page-total">Total</th>
-                                                       
+
                                                     </tr>
                                                     <c:if test="${not empty sessionScope.pedidosProduc}">
                                                         <c:forEach var="productos" varStatus="loop"  items="${sessionScope.pedidosProduc}" >
@@ -250,7 +251,7 @@
                                                                 <td class="goods-page-quantity">
                                                                     <div class="product-quantity">
                                                                         <p>${productos.cantidad}</p>
-                                                                        
+
                                                                     </div>
                                                                 </td>
                                                                 <td class="goods-page-price">
@@ -259,7 +260,7 @@
                                                                 <td class="goods-page-total">
                                                                     <strong><span>$</span>${productos.producto.precioRegular * productos.cantidad}</strong>
                                                                 </td>
-                                                               
+
                                                             </tr>
                                                         </c:forEach> 
                                                     </c:if>
@@ -296,7 +297,7 @@
                                                                 <td class="goods-page-quantity">
                                                                     <div class="product-quantity">
                                                                         <p>${ofertas.cantidad}</p>
-                             
+
                                                                     </div>
                                                                 </td>
                                                                 <td class="goods-page-price">
@@ -305,7 +306,7 @@
                                                                 <td class="goods-page-total">
                                                                     <strong><span>$</span>${ofertas.oferta.totalDescuento * ofertas.cantidad}</strong>
                                                                 </td>
-                                                               
+
                                                             </tr>
                                                         </c:forEach> 
                                                     </c:if>
@@ -315,6 +316,76 @@
                                                         </tr>
                                                     </c:if>
                                                 </table>
+                                            </div>
+                                            <div id="testdiv" style="display: none;" >
+                                                <div style="display: flex;">
+                                                    <h1>Pedido:</h1>
+                                                    <p>PE${requestScope.idPedido}</p>
+                                                </div>
+                                                <h1>Productos</h1>
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>producto</th>
+                                                            <th>Empresa</th>
+                                                            <th>Cantidad</th>
+                                                            <th>Precio unitario</th>
+                                                            <th>Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <c:forEach var="productos" varStatus="loop"  items="${sessionScope.pedidosProduc}" >
+                                                            <tr>
+                                                                <td>${productos.producto.producto}</td>
+                                                                <td>${productos.producto.empresa.empresa}</td>
+                                                                <td>${productos.cantidad}</td>
+                                                                <td>${productos.producto.precioRegular} </td>
+                                                                <td>${productos.producto.precioRegular * productos.cantidad}</td>
+                                                            </tr>
+                                                        </c:forEach> 
+                                                    </tbody>
+                                                </table>
+                                                <h1>Ofertas</h1>
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Oferta</th>
+                                                            <th>Descuento</th>
+                                                            <th>Cantidad</th>
+                                                            <th>Precio unitario</th>
+                                                            <th>Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <c:forEach var="ofertas" varStatus="loop" items="${sessionScope.pedidosOfert}">
+                                                            <tr>
+                                                                <td>${ofertas.oferta.titulo}</td>
+                                                                <td>%${ofertas.oferta.descuento}</td>
+                                                                <td>${ofertas.cantidad}</td>
+                                                                <td>$${ofertas.oferta.totalDescuento}</td>
+                                                                <td>$${ofertas.oferta.totalDescuento * ofertas.cantidad}</td>
+                                                            </tr>
+                                                        </c:forEach> 
+                                                    </tbody>
+                                                </table>
+
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sub total</th>
+                                                            <th>Costo de envio</th>
+                                                            <th>Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>$${sessionScope.totalPedido}</td>
+                                                            <td>$<fmt:formatNumber type="number" maxFractionDigits="2" minFractionDigits="2" value="${sessionScope.totalPedido*0.05}"/></td>
+                                                            <td>$<fmt:formatNumber type="number" maxFractionDigits="2" minFractionDigits="2" value="${(sessionScope.totalPedido*0.05) +sessionScope.totalPedido}"/></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
                                             </div>
                                             <div class="shopping-total">
                                                 <ul>
@@ -333,7 +404,8 @@
                                                 </ul>
                                             </div>
                                             <div class="clearfix"></div>
-                                            <a class="btn btn-primary pull-right" href="${base}/clientes.do?operacion=confirmarPedido" id="button-confirm" style="color:white;">Confirmar pedido</a>
+                                            <a href="javascript:genPDF()">Download PDF</a>
+                                            <a class="btn btn-primary pull-right" onclick="javascript:confirmar()" id="button-confirm" style="color:white;">Confirmar pedido</a>
                                             <a class="btn btn-default pull-right margin-right-20" onclick="javascript:eliminar()" style="color:black;">Cancelar pedido</a>
                                         </div>
                                     </div>
@@ -393,8 +465,8 @@
                 document.getElementById("tarjeta").style.display = "block";
                 document.getElementById("entrega").style.display = "none";
             });
-            
-                  function eliminar(id) {
+
+            function eliminar(id) {
 
                 var URLactual = window.location;
                 var url = URLactual.toString().substring(34);
@@ -412,7 +484,60 @@
                 });
             }
             ;
-            
+
+            function confirmar() {
+
+                swal({
+                    title: '¿Estas seguro de confirmar este pedido?',
+                    text: "Una vez confirmado, no habra vuelta atras.",
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        document.getElementById("testdiv").style.display = "block";
+                        var doc = new jsPDF('l', 'mm', [297, 210]);
+                        var logo = new Image();
+                        logo.src = '${base}/assets/logoMenuBigShop.png';
+                        doc.addImage(logo, 'PNG', 15, 40, 148, 210);
+                        var specialElementHandlers = {
+                            '#hidediv': function (element, render) {
+                                return true;
+                            }
+                        };
+
+                        doc.fromHTML($('#testdiv').get(0), 20, 20, {
+                            'width': 500,
+                            'elementHandlers': specialElementHandlers
+                        });
+
+                        doc.save('Factura.pdf');
+                        location.href = '${base}/clientes.do?operacion=confirmarPedido';
+                    }
+                });
+            }
+            ;
+
+            function genPDF() {
+                document.getElementById("testdiv").style.display = "block";
+                var doc = new jsPDF('l', 'mm', [297, 210]);
+                var logo = new Image();
+                logo.src = '${base}/assets/logoMenuBigShop.png';
+                doc.addImage(logo, 'PNG', 20, 20, 40, 10);
+                var specialElementHandlers = {
+                    '#hidediv': function (element, render) {
+                        return true;
+                    }
+                };
+
+                doc.fromHTML($('#testdiv').get(0), 20, 40, {
+                    'width': 500,
+                    'elementHandlers': specialElementHandlers
+                });
+
+                doc.save('Factura.pdf');
+            }
+
         </script>
 
     </body>
