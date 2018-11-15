@@ -317,13 +317,23 @@
                                                     </c:if>
                                                 </table>
                                             </div>
+
+                                               
                                             <div id="testdiv" style="display: none;" >
-                                                <div style="display: flex;">
+                                                <div>
                                                     <h1>Pedido:</h1>
-                                                    <p>PE${requestScope.idPedido}</p>
+                                                    <p>PED${requestScope.idPedido}</p>
+                                                    <h1>Dirección:</h1>
+                                                    <p>Avenida Albert Einstein 233, Antiguo Cuscatlán</p>
+                                                    <h1>Cliente:</h1>
+                                                    <p>${sessionScope.nombreUser}</p>
+                                                    <h1>Telefono:</h1>
+                                                    <p>2233-4455</p>
+                                                    <h1>Fecha pedido</h1>
+                                                    <p>${requestScope.fechaPedido}</p>
                                                 </div>
                                                 <h1>Productos</h1>
-                                                <table>
+                                                <table style="font-size: 11px;">
                                                     <thead>
                                                         <tr>
                                                             <th>producto</th>
@@ -346,7 +356,7 @@
                                                     </tbody>
                                                 </table>
                                                 <h1>Ofertas</h1>
-                                                <table>
+                                                <table style="font-size: 11px;">
                                                     <thead>
                                                         <tr>
                                                             <th>Oferta</th>
@@ -364,6 +374,7 @@
                                                                 <td>${ofertas.cantidad}</td>
                                                                 <td>$${ofertas.oferta.totalDescuento}</td>
                                                                 <td>$${ofertas.oferta.totalDescuento * ofertas.cantidad}</td>
+                                                                
                                                             </tr>
                                                         </c:forEach> 
                                                     </tbody>
@@ -387,6 +398,7 @@
                                                 </table>
 
                                             </div>
+                                                       
                                             <div class="shopping-total">
                                                 <ul>
                                                     <li>
@@ -506,10 +518,11 @@
                             }
                         };
 
-                        doc.fromHTML($('#testdiv').get(0), 20, 20, {
+                        doc.fromHTML($('#testdiv').get(0), 20, 12, {
                             'width': 500,
                             'elementHandlers': specialElementHandlers
                         });
+
 
                         doc.save('Factura.pdf');
                         location.href = '${base}/clientes.do?operacion=confirmarPedido';
@@ -520,21 +533,22 @@
 
             function genPDF() {
                 document.getElementById("testdiv").style.display = "block";
-                var doc = new jsPDF('l', 'mm', [297, 210]);
+                var doc = new jsPDF();
                 var logo = new Image();
                 logo.src = '${base}/assets/logoMenuBigShop.png';
-                doc.addImage(logo, 'PNG', 20, 20, 40, 10);
+                doc.addImage(logo, 'PNG', 130, 30, 45, 15);
                 var specialElementHandlers = {
                     '#hidediv': function (element, render) {
                         return true;
                     }
                 };
 
-                doc.fromHTML($('#testdiv').get(0), 20, 40, {
+                doc.fromHTML($('#testdiv').get(0), 25, 20, {
                     'width': 500,
                     'elementHandlers': specialElementHandlers
                 });
 
+               
                 doc.save('Factura.pdf');
             }
 

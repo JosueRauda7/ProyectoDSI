@@ -668,7 +668,12 @@ public class ClienteController extends HttpServlet {
     private void pagoPedido(HttpServletRequest request, HttpServletResponse response) {
         try {
             int estado = (int) request.getSession().getAttribute("estado");
-
+            Calendar c = Calendar.getInstance();
+            String dia, mes, annio, fecha;
+            dia = Integer.toString(c.get(Calendar.DATE));
+            mes = Integer.toString(c.get(Calendar.MONTH) + 1);
+            annio = Integer.toString(c.get(Calendar.YEAR));
+            fecha = annio + "-" + mes + "-" + dia;
             if (estado != 1) {
                 request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
                 request.getSession().setAttribute("fracaso", "No tienes un pedido activo.");
@@ -678,6 +683,8 @@ public class ClienteController extends HttpServlet {
                 request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
                 request.setAttribute("idPedido", clienteModel.obtenerIdPedido(idusuario));
                 request.setAttribute("clienteInfo", usuario.obtenerCliente(idusuario));
+                request.setAttribute("fechaPedido", fecha);
+                
                 request.getRequestDispatcher("/cliente/pagoPedido.jsp").forward(request, response);
             }
         } catch (SQLException | ServletException | IOException ex) {
