@@ -254,7 +254,8 @@
         }
         ;
     </script>
+    
     <jsp:include page="footer.jsp" />
-
+    
     <!-- END BODY -->
 </html>

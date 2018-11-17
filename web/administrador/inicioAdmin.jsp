@@ -113,7 +113,7 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
                 </div>
             </div>
         </div>
-        <jsp:include page="/scripts.jsp"/>
+        
         <script type="text/javascript">
             jQuery(document).ready(function () {
                 Layout.init();

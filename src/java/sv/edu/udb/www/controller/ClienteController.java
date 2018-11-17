@@ -22,10 +22,13 @@ import sv.edu.udb.www.beans.Comentario;
 import sv.edu.udb.www.beans.Oferta;
 import sv.edu.udb.www.beans.Pedido;
 import sv.edu.udb.www.beans.Producto;
+import sv.edu.udb.www.beans.Sugerencia;
+import sv.edu.udb.www.beans.Usuario;
 import sv.edu.udb.www.model.CategoriasModel;
 import sv.edu.udb.www.model.ClientesModel;
 import sv.edu.udb.www.model.ProductosModel;
 import sv.edu.udb.www.model.SubCategoriasModel;
+import sv.edu.udb.www.model.SugerenciasModel;
 import sv.edu.udb.www.model.UsuariosModel;
 
 /**
@@ -40,6 +43,7 @@ public class ClienteController extends HttpServlet {
     ClientesModel clienteModel = new ClientesModel();
     SubCategoriasModel subcategoriaModel = new SubCategoriasModel();
     UsuariosModel usuario = new UsuariosModel();
+    SugerenciasModel sugerenciasModel = new SugerenciasModel();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -124,6 +128,12 @@ public class ClienteController extends HttpServlet {
                         break;
                     case "acercaDe":
                         acercaDe(request, response);
+                        break;
+                    case "sugerencias":
+                        sugerencias(request, response);
+                        break;
+                    case "agregarSugerencia":
+                        agregarSugerencia(request, response);
                         break;
                 }
             } else {
@@ -684,7 +694,7 @@ public class ClienteController extends HttpServlet {
                 request.setAttribute("idPedido", clienteModel.obtenerIdPedido(idusuario));
                 request.setAttribute("clienteInfo", usuario.obtenerCliente(idusuario));
                 request.setAttribute("fechaPedido", fecha);
-                
+
                 request.getRequestDispatcher("/cliente/pagoPedido.jsp").forward(request, response);
             }
         } catch (SQLException | ServletException | IOException ex) {
@@ -747,5 +757,40 @@ public class ClienteController extends HttpServlet {
         } catch (ServletException | IOException | SQLException ex) {
             Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void sugerencias(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.getRequestDispatcher("/cliente/Sugerencias.jsp").forward(request, response);
+        } catch (ServletException | IOException | SQLException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void agregarSugerencia(HttpServletRequest request, HttpServletResponse response) {
+
+        Sugerencia sugerencia = new Sugerencia();
+        Usuario usuario = new Usuario();
+        int idusuario = (int) request.getSession().getAttribute("usuario");
+        usuario.setIdUsuario(idusuario);
+
+        sugerencia.setAsunto(request.getParameter("asunto"));
+        sugerencia.setDetalle(request.getParameter("descripcion"));
+        sugerencia.setUsuario(usuario);
+
+        try {
+
+            if (sugerenciasModel.insertarSugerencia(sugerencia) > 0) {
+                request.getSession().setAttribute("exito", "Sugerencia enviada exitosamente");
+                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=sugerencias");
+            } else {
+                request.getSession().setAttribute("fracaso", "Sugerencia no registrada");
+                response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=sugerencias");
+            }
+        } catch (SQLException | IOException ex) {
+            Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }

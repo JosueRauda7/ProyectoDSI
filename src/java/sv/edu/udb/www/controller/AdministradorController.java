@@ -33,6 +33,7 @@ import sv.edu.udb.www.model.EmpresasModel;
 import sv.edu.udb.www.model.PedidosModel;
 import sv.edu.udb.www.model.ProductosModel;
 import sv.edu.udb.www.model.SubCategoriasModel;
+import sv.edu.udb.www.model.SugerenciasModel;
 import sv.edu.udb.www.model.UsuariosModel;
 import sv.edu.udb.www.utils.Correo;
 import sv.edu.udb.www.utils.Validaciones;
@@ -50,6 +51,7 @@ public class AdministradorController extends HttpServlet {
     PedidosModel modeloPedido = new PedidosModel();
     SubCategoriasModel modeloSubCategoria = new SubCategoriasModel();
     ProductosModel modeloProducto = new ProductosModel();
+    SugerenciasModel modeloSugerencia = new SugerenciasModel();
     ArrayList listaErrores = new ArrayList();
     ArrayList listaErroresEmpresa = new ArrayList();
     ArrayList listaErroresUsuario = new ArrayList();
@@ -141,6 +143,17 @@ public class AdministradorController extends HttpServlet {
                         case "aceptarRechazar":
                             aceptarRechazar(request, response);
                             break;
+                        //--------------------------------------------------
+                        //--------------SUGERENCIAS-------------------------
+
+                        case "listarSugerencias":
+                            listarSugerencias(request, response);
+                            break;
+                            
+                        case "verificarSugerencia":
+                            verificarSugerencia(request, response);
+                            break;
+
                         //--------------------------------------------------
                         case "listarEmpresas":
                             listarEmpresas(request, response);
@@ -268,32 +281,31 @@ public class AdministradorController extends HttpServlet {
         try {
             listaErroresEmpresa.clear();
             listaErroresUsuario.clear();
-            
-                    
+
             Empresa empresa = new Empresa();
             empresa.setEmpresa(multi.getParameter("empresa"));
-            empresa.setComision("0.8");            
+            empresa.setComision("0.8");
             empresa.setIdEstadoEmpresa(1);
 
             if (Validaciones.isEmpty(multi.getParameter("empresa"))) {
                 listaErroresEmpresa.add("El nombre de la empresa es obligatorio");
             }
-            
+
             if (multi.getFile("imagen") == null) {
                 listaErroresEmpresa.add("La imagen es obligatoria");
             } else {
                 File ficheroTemp = multi.getFile("imagen");
                 empresa.setUrlEmpresa(ficheroTemp.getName());
             }
-            
+
             Usuario usuario = new Usuario();
-            
+
             String contraAleatoria = "";
             String key = "abcdefghijklmnopqrstuvwxyz0123456789";
             for (int i = 0; i < 6; i++) {
                 contraAleatoria += (key.charAt((int) (Math.random() * key.length())));
             }
-            
+
             usuario.setNombre(multi.getParameter("nombre"));
             usuario.setApellido(multi.getParameter("apellido"));
             usuario.setCorreo(multi.getParameter("correo"));
@@ -301,36 +313,36 @@ public class AdministradorController extends HttpServlet {
             usuario.setPassword(contraAleatoria);
             usuario.setDui(multi.getParameter("dui"));
             usuario.setDireccion(multi.getParameter("direccion"));
-            
-            if(Validaciones.isEmpty(multi.getParameter("nombre"))){
+
+            if (Validaciones.isEmpty(multi.getParameter("nombre"))) {
                 listaErroresUsuario.add("El nombre del contacto es obligatorio");
             }
-            if(Validaciones.isEmpty(multi.getParameter("apellido"))){
+            if (Validaciones.isEmpty(multi.getParameter("apellido"))) {
                 listaErroresUsuario.add("El apellido del contacto es obligatorio");
             }
-            if(Validaciones.isEmpty(multi.getParameter("correo"))){
+            if (Validaciones.isEmpty(multi.getParameter("correo"))) {
                 listaErroresUsuario.add("El correo es obligatorio");
-            }else if(!Validaciones.esCorreo(multi.getParameter("correo"))){
+            } else if (!Validaciones.esCorreo(multi.getParameter("correo"))) {
                 listaErroresUsuario.add("El correo tiene un formato incorrecto");
             }
-            if(Validaciones.isEmpty(multi.getParameter("telefono"))){
+            if (Validaciones.isEmpty(multi.getParameter("telefono"))) {
                 listaErroresUsuario.add("El telefono es obligatorio");
-            }else if(!Validaciones.esTelefono(multi.getParameter("telefono"))){
+            } else if (!Validaciones.esTelefono(multi.getParameter("telefono"))) {
                 listaErroresUsuario.add("El tenefono debe tener el siguiente formato 0000-0000");
             }
-            if(Validaciones.isEmpty(multi.getParameter("dui"))){
+            if (Validaciones.isEmpty(multi.getParameter("dui"))) {
                 listaErroresUsuario.add("El DUI es obligatorio");
-            }else if(!Validaciones.esDui(multi.getParameter("dui"))){
+            } else if (!Validaciones.esDui(multi.getParameter("dui"))) {
                 listaErroresUsuario.add("El formato del DUI debe ser el siguiente 00000000-0");
             }
-            if(Validaciones.isEmpty(multi.getParameter("direccion"))){
+            if (Validaciones.isEmpty(multi.getParameter("direccion"))) {
                 listaErroresUsuario.add("La dirección del contacto es obligatoria");
             }
-                
+
             if (listaErroresUsuario.isEmpty() && listaErroresEmpresa.isEmpty()) {
                 if (modeloEmpresa.insertarEmpresa(empresa, usuario) == 1) {
                     request.getSession().setAttribute("exito", "Empresa registrada existosamente.");
-                    
+
                     String cadenaAleatoria = UUID.randomUUID().toString();
                     String enlace = request.getRequestURL().toString()
                             + "?operacion=verificar&id=" + cadenaAleatoria;
@@ -339,7 +351,7 @@ public class AdministradorController extends HttpServlet {
                             + "<p>Has sido registrado como administrador tu contraseña es: " + usuario.getPassword() + ".</p>"
                             + "<p>Para poder acceder a nuestro sitio debes validar tu usuario, da click al boton para empezar a comprar.</p>"
                             + "<a target='_blank' href='" + enlace + "'><button type='button' style='background-color: white;color: black;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;border: solid 1px #67656E;  font-family:fantasy;margin-left:30%;'   onmouseover='this.style.backgroundColor=\"#A5A1B3\" ' onmouseout='this.style.backgroundColor=\"\"'>Entrar</button></a></div></div>";
-                    
+
                     Correo correo = new Correo();
                     correo.setAsunto("Confirmacion de registro");
                     correo.setMensaje(texto);
@@ -387,68 +399,68 @@ public class AdministradorController extends HttpServlet {
         try {
             listaErroresEmpresa.clear();
             listaErroresUsuario.clear();
-            
+
             int codigo = Integer.parseInt(multi.getParameter("id"));
-            
+
             Empresa empresa = new Empresa();
             empresa.setEmpresa(multi.getParameter("empresa"));
-            empresa.setComision("80.00");            
+            empresa.setComision("80.00");
             empresa.setIdEstadoEmpresa(1);
 
             if (Validaciones.isEmpty(multi.getParameter("empresa"))) {
                 listaErroresEmpresa.add("El nombre de la empresa es obligatorio");
             }
-            
+
             if (multi.getFile("imagen") == null) {
                 listaErroresEmpresa.add("La imagen es obligatoria");
             } else {
                 File ficheroTemp = multi.getFile("imagen");
                 empresa.setUrlEmpresa(ficheroTemp.getName());
             }
-            
-            Usuario usuario = new Usuario();                        
-            
+
+            Usuario usuario = new Usuario();
+
             usuario.setNombre(multi.getParameter("nombre"));
             usuario.setApellido(multi.getParameter("apellido"));
             usuario.setCorreo(multi.getParameter("correo"));
-            usuario.setTelefono(multi.getParameter("telefono"));            
+            usuario.setTelefono(multi.getParameter("telefono"));
             usuario.setDui(multi.getParameter("dui"));
             usuario.setDireccion(multi.getParameter("direccion"));
-            
-            if(Validaciones.isEmpty(multi.getParameter("nombre"))){
+
+            if (Validaciones.isEmpty(multi.getParameter("nombre"))) {
                 listaErroresUsuario.add("El nombre del contacto es obligatorio");
             }
-            if(Validaciones.isEmpty(multi.getParameter("apellido"))){
+            if (Validaciones.isEmpty(multi.getParameter("apellido"))) {
                 listaErroresUsuario.add("El apellido del contacto es obligatorio");
             }
-            if(Validaciones.isEmpty(multi.getParameter("correo"))){
+            if (Validaciones.isEmpty(multi.getParameter("correo"))) {
                 listaErroresUsuario.add("El correo es obligatorio");
-            }else if(!Validaciones.esCorreo(multi.getParameter("correo"))){
+            } else if (!Validaciones.esCorreo(multi.getParameter("correo"))) {
                 listaErroresUsuario.add("El correo tiene un formato incorrecto");
             }
-            if(Validaciones.isEmpty(multi.getParameter("telefono"))){
+            if (Validaciones.isEmpty(multi.getParameter("telefono"))) {
                 listaErroresUsuario.add("El telefono es obligatorio");
-            }else if(!Validaciones.esTelefono(multi.getParameter("telefono"))){
+            } else if (!Validaciones.esTelefono(multi.getParameter("telefono"))) {
                 listaErroresUsuario.add("El tenefono debe tener el siguiente formato 0000-0000");
             }
-            if(Validaciones.isEmpty(multi.getParameter("dui"))){
+            if (Validaciones.isEmpty(multi.getParameter("dui"))) {
                 listaErroresUsuario.add("El DUI es obligatorio");
-            }else if(!Validaciones.esDui(multi.getParameter("dui"))){
+            } else if (!Validaciones.esDui(multi.getParameter("dui"))) {
                 listaErroresUsuario.add("El formato del DUI debe ser el siguiente 00000000-0");
             }
-            if(Validaciones.isEmpty(multi.getParameter("direccion"))){
+            if (Validaciones.isEmpty(multi.getParameter("direccion"))) {
                 listaErroresUsuario.add("La dirección del contacto es obligatoria");
             }
 
             if (listaErroresUsuario.isEmpty() && listaErroresEmpresa.isEmpty()) {
-                if (modeloEmpresa.modificarEmpresa(empresa,usuario, codigo) == 1) {
+                if (modeloEmpresa.modificarEmpresa(empresa, usuario, codigo) == 1) {
                     request.getSession().setAttribute("exito", "Empresa modificada existosamente.");
                 } else {
                     request.getSession().setAttribute("fracaso", "Ocurrio un error, no se pudo modificar la empresa...");
                 }
                 response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarEmpresas");
             } else {
-                 request.setAttribute("listaErroresEmpresa", listaErroresEmpresa);
+                request.setAttribute("listaErroresEmpresa", listaErroresEmpresa);
                 request.setAttribute("listaErroresUsuario", listaErroresUsuario);
                 request.setAttribute("listaContactoDisponible", modeloUsuario.listaContactoDisponible());
                 request.setAttribute("empresa", empresa);
@@ -1087,7 +1099,7 @@ public class AdministradorController extends HttpServlet {
 
     private void ventaanual(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         PrintWriter out = response.getWriter();
-        int anio = Integer.parseInt(request.getSession().getAttribute("anio").toString());     
+        int anio = Integer.parseInt(request.getSession().getAttribute("anio").toString());
         int usuario = Integer.parseInt(request.getSession().getAttribute("usuario").toString());
         System.out.println(anio);
         //Necesito la cantidad de datos que devuelve la consulta
@@ -1102,6 +1114,35 @@ public class AdministradorController extends HttpServlet {
             sb.append(pedidos.get(i).getFechaCompra() + "," + pedidos.get(i).getMontoTotal() + ":");
         }
         out.write(sb.toString());
+    }
+
+    private void listarSugerencias(HttpServletRequest request, HttpServletResponse response) {
+        try {
+
+            request.setAttribute("listaSugerencias", modeloSugerencia.listarSugerencias());
+
+            request.getRequestDispatcher("/administrador/VerSugerencias.jsp").forward(request, response);
+
+        } catch (ServletException | IOException | SQLException ex) {
+
+            Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+    }
+    
+    private void verificarSugerencia(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            if (modeloSugerencia.eliminarSugerencia(id) > 0) {
+                request.getSession().setAttribute("exito", "Sugerencia verificada");
+                response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarSugerencias");
+            } else {
+                request.getSession().setAttribute("fracaso", "No se ha podido verificar esta sugerencia");
+                response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarSugerencias");
+            }
+        } catch (SQLException | IOException ex) {
+            Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

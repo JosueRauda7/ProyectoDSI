@@ -103,6 +103,16 @@
                         </li>
                     </ul>
                 </li>
+                
+                <li class="">
+                    <a class="dropdown-toggle" href="${base}/clientes.do?operacion=sugerencias">
+                        Sugerencias
+
+                    </a>
+
+                    <!-- END DROPDOWN MENU -->
+                </li>
+                
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;"><span class="glyphicon glyphicon-user"></span> ${sessionScope.nombreUser}</a>
 
@@ -112,7 +122,7 @@
                     </ul>
                 </li>
 
-
+                
 
                 <!-- BEGIN TOP SEARCH -->
                 <li class="menu-search">

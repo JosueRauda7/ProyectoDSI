@@ -16,7 +16,7 @@
                     <center><h1>Bienvenido </h1></center>
                     <hr/><br/>
                     <!-- PRODUCT ITEM START -->
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="product-item">
                             <div class="text-center">
                                 <img src="${base}/images/correo.png" style="min-height: 160px; border-radius: 150px;" class="col-lg-11" alt="Berry Lace Dress">
@@ -28,7 +28,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="product-item">
                             <div class="text-center">
                                 <img src="${base}/images/ofertaicono.png" style="min-height: 160px; border-radius: 150px;" class="col-lg-11" alt="Berry Lace Dress">
