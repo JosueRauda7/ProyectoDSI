@@ -12,7 +12,7 @@
         <div class="main" style="margin-top: 30px;">
             <div class="container">
                 <div class="col-md-12 col-sm-12">
-                    
+
                     <div class="col-lg-3"></div>
                     <div class="content-page col-lg-6">
                         <h1>Nuevo Correo</h1>
@@ -27,7 +27,7 @@
                                 </div>
                             </div>
                         </c:if>
-                        
+
                         <!-- BEGIN FORM-->
                         <form action="${pageContext.request.contextPath}/empleadoMarketing.do" method="POST" class="default-form" role="form">
                             <input type="hidden" name="operacion" value="enviarCorreos"/>
@@ -39,8 +39,8 @@
                                 <label for="mensaje">Mensaje:</label>
                                 <textarea type="text" value="${requestScope.usuario.apellido}" class="form-control" name="mensaje" id="mensaje" style="height: 150px;" required="true"></textarea>
                             </div>
-                            
-                            
+
+
                             <div class="padding-top-20">                  
                                 <button type="submit" class="btn btn-primary">Enviar</button>
                                 <button type="submit" style="background-color: #F3565D;" class="btn btn-primary">Cancelar</button>
@@ -53,5 +53,26 @@
         </div>
         <div class="margin-bottom-40" style="margin-top: 200px;"></div>
         <jsp:include page="/empleadoMarketing/footer.jsp"/>
-    </body>
-</html>
+
+        <script>
+            <c:if test="${not empty exito}">
+            swal({
+                title: "Bien!",
+                text: "${exito}",
+                icon: "success",
+            });
+                <c:set var="exito" value="" scope="session"/>
+            </c:if>
+
+            <c:if test="${not empty fracaso}">
+            swal({
+                title: "Ups!",
+                text: "${fracaso}",
+                icon: "error",
+            });
+                <c:set var="fracaso" value="" scope="session"/>
+            </script>
+
+        </body>
+
+    </html>

@@ -140,7 +140,7 @@ public class EmpleadoMarketingController extends HttpServlet {
                 String enlace = request.getRequestURL().toString();
                 String texto = "<div class='container2' style='color: white;border: solid black 2px;border-radius: 25px;width: 30%;padding: 1%;background-color: #e84d1c;'><h1 style=\"text-align: center;\">"+asunto+"</h1><div><p>"+mensaje+"</p></div></div>";
                 Correo correo = new Correo();
-                correo.setAsunto("<b>" + asunto + "</b>");
+                correo.setAsunto(asunto);
                 correo.setMensaje(texto);
 
                 correo.enviarCorreo(modelo.obtenerCorreosCliente());
