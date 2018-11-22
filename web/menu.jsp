@@ -9,12 +9,7 @@
 
         <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
 
-        <!-- BEGIN CART -->
-        <div class="top-cart-block">
-            <a href="#">Términos y condiciones</a>
-
-        </div>
-        <!--END CART -->
+        
 
         <!-- BEGIN NAVIGATION -->
         <div class="header-navigation">

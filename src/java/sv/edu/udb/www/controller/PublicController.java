@@ -68,6 +68,10 @@ public class PublicController extends HttpServlet {
                     case "acercaDe":
                         acercaDe(request,response);
                         break;
+                        
+                    case "terminosLegales":
+                        terminos(request,response);
+                        break;
                 }
             } else {
                 switch (Integer.parseInt(request.getSession().getAttribute("tipousuario").toString())) {
@@ -360,6 +364,16 @@ public class PublicController extends HttpServlet {
         try {
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
             request.getRequestDispatcher("acercaDe.jsp").forward(request, response);
+        } catch (ServletException | IOException | SQLException ex) {
+            Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void terminos(HttpServletRequest request, HttpServletResponse response) {
+        
+        try {
+            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.getRequestDispatcher("terminosLegales.jsp").forward(request, response);
         } catch (ServletException | IOException | SQLException ex) {
             Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -7,6 +7,10 @@
             <div class="col-md-12 text-center">
                 2018 © Universidad Don Bosco. Derechos reservados. 
             </div>
+            <div class="col-md-8 padding-top-10">
+                <div class="col-md-8"></div>
+                <a href="${base}/ProyectoDSI/empresas.do?operacion=terminosLegales">Términos Legales</a>
+            </div>
         </div>
     </div>
 </div>
