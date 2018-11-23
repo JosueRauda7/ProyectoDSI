@@ -71,6 +71,7 @@
                 icon: "error",
             });
                 <c:set var="fracaso" value="" scope="session"/>
+                </c:if>
             </script>
 
         </body>
