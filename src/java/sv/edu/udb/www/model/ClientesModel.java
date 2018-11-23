@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.udb.www.beans.Comentario;
+import sv.edu.udb.www.beans.Detalle;
 import sv.edu.udb.www.beans.DetallePedido;
 import sv.edu.udb.www.beans.Empresa;
 import sv.edu.udb.www.beans.EstadoCompra;
@@ -1092,6 +1093,33 @@ public class ClientesModel extends Conexion {
             Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
             this.desconectar();
             return 0;
+        }
+    }
+
+    public List<Detalle> listaDetalles(int idproduct) throws SQLException {
+        try {
+            List<Detalle> lista = new ArrayList<>();
+            this.conectar();
+            String sql = "SELECT * FROM detalles WHERE idProducto = ?";
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, idproduct);
+            rs = st.executeQuery();
+            while(rs.next()){
+                Detalle detalle = new Detalle();
+                Producto producto = new Producto();
+                detalle.setIdDetalle(rs.getInt("idDetalle"));
+                detalle.setDetalle(rs.getString("detalle"));
+                detalle.setDetalleAtributo(rs.getString("detalleAtributo"));
+                producto.setIdProducto(rs.getInt("idProducto"));
+                detalle.setProducto(producto);            
+                lista.add(detalle);
+            }
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
         }
     }
 }

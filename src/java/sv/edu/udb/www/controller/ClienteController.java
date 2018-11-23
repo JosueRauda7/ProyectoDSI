@@ -243,6 +243,7 @@ public class ClienteController extends HttpServlet {
                 request.setAttribute("otrasImagenes", ProductoModel.otrasImagenesProducto(idpro, producto.getUrlImagen()));
                 request.setAttribute("producto", clienteModel.verProducto(idpro));
                 request.setAttribute("comentarios", clienteModel.listaComentarios(idpro));
+                request.setAttribute("detalles", clienteModel.listaDetalles(idpro));
                 request.getRequestDispatcher("/cliente/producto.jsp").forward(request, response);
             } else {
                 Producto producto = new Producto();
