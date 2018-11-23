@@ -1113,6 +1113,7 @@ public class AdministradorController extends HttpServlet {
             System.out.println(anio);
             request.setAttribute("ventas", modeloPedido.ventasDiarias().size());
             request.setAttribute("ventasHoy", modeloPedido.ventaHoy());
+            request.setAttribute("ventaMes", modeloPedido.ventasDelmes());
             request.getRequestDispatcher("/administrador/estadisticaAdmin.jsp").forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);

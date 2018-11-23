@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.udb.www.beans.Pedido;
 import sv.edu.udb.www.beans.VentaHoy;
+import sv.edu.udb.www.beans.VentaMes;
 
 /**
  *
@@ -233,6 +234,29 @@ public class PedidosModel extends Conexion {
                 lista.add(ventas);            
             }
             
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(PedidosModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+    }
+    
+    public List<VentaMes> ventasDelmes() throws SQLException{        
+        try {
+            String sql = "SELECT e.empresa, ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total, ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2)*0.010 as totalComision FROM detalle_pedidos dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on dp.id_pedido = pd.id_pedido INNER JOIN empresa e on e.id_empresa=p.id_empresa WHERE MONTH(pd.fecha_compra)= MONTH(NOW()) GROUP by e.empresa";
+            List<VentaMes> lista = new ArrayList<>();
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            rs = st.executeQuery();
+            while(rs.next()){
+                VentaMes ventames = new VentaMes();
+                ventames.setNombreEmpresa(rs.getString("empresa"));
+                ventames.setTotal(rs.getString("total"));
+                ventames.setGanancia(rs.getString("totalComision"));
+                lista.add(ventames);
+            }
             this.desconectar();
             return lista;
         } catch (SQLException ex) {

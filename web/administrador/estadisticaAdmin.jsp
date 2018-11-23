@@ -17,7 +17,7 @@
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     </head>
     <body>
-        <body class="ecommerce">
+    <body class="ecommerce">
         <jsp:include page="menuAdmin.jsp"/>
         <div class="container">
             <input type="hidden" id="ventas" value="${ventas}" />
@@ -47,35 +47,64 @@
             <div class="table-wrapper-responsive col-md-12" style="margin-top: 5%; margin-bottom: 2%;">
                 <p class="text-center" style="font-size: 15px; font-weight: bold;">Ventas de hoy</p>
                 <div class="tab-pane fade in active" id="activos">
-                <table class="table table-hover" >
-                    <thead style="border-top-color: #e6400c; border: 2px;">
-                        <tr>
-                            <th class="goods-page-ref-no text-center">Producto</th>
-                            <th class="goods-page-quantity text-center">Cantidad vendida</th>
-                            <th class="goods-page-description text-center">Total vendido</th>                                            
-                            <th class="goods-page-ref-no text-center">Ganancias obtenidas</th>                                                                                                                   
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <c:forEach items="${requestScope.ventasHoy}" var="venta">
+                    <table class="table table-hover" >
+                        <thead style="border-top-color: #e6400c; border: 2px;">
                             <tr>
-                                <td class="text-center">${venta.producto}</td>                                      
-                                <td class="text-center">${venta.cantidad}</td>
-                                <td class="text-center">$${venta.totalVendido}</td>
-                                <td class="text-center">$${venta.totalGanancias}</td>
-                                <c:set var="gananciasT" value="${gananciasT + venta.totalGanancias}" scope="page"/>
-                                <c:set var="gananciasV" value="${gananciasV + venta.totalVendido}" scope="page"/>
+                                <th class="goods-page-ref-no text-center">Producto</th>
+                                <th class="goods-page-quantity text-center">Cantidad vendida</th>
+                                <th class="goods-page-description text-center">Total vendido</th>                                            
+                                <th class="goods-page-ref-no text-center">Ganancias obtenidas</th>                                                                                                                   
                             </tr>
-                        </c:forEach>
+                        </thead>
+
+                        <tbody>
+                            <c:forEach items="${requestScope.ventasHoy}" var="venta">
+                                <tr>
+                                    <td class="text-center">${venta.producto}</td>                                      
+                                    <td class="text-center">${venta.cantidad}</td>
+                                    <td class="text-center">$${venta.totalVendido}</td>
+                                    <td class="text-center">$${venta.totalGanancias}</td>
+                                    <c:set var="gananciasT" value="${gananciasT + venta.totalGanancias}" scope="page"/>
+                                    <c:set var="gananciasV" value="${gananciasV + venta.totalVendido}" scope="page"/>
+                                </tr>
+                            </c:forEach>
                             <tr>
                                 <td></td>
                                 <td></td>
                                 <td class="text-center">Ventas del día: $<c:out value="${gananciasV}" /></td>
                                 <td class="text-center">Ganancia diaria: $<c:out value="${gananciasT}" /></td>
                             </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="table-wrapper-responsive col-md-12" style="margin-top: 5%; margin-bottom: 2%;">
+                <p class="text-center" style="font-size: 15px; font-weight: bold;">Ventas del mes</p>
+                <div class="tab-pane fade in active" id="activos2">
+                    <table class="table table-hover" >
+                        <thead style="border-top-color: #e6400c; border: 2px;">
+                            <tr>
+                                <th class="goods-page-ref-no text-center">#</th>
+                                <th class="goods-page-quantity text-center">Empresa</th>
+                                <th class="goods-page-description text-center">Total vendido</th>                                            
+                                <th class="goods-page-ref-no text-center">Ganancias obtenidas</th>                                                                                                                   
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <c:forEach items="${requestScope.ventaMes}" varStatus="loop" var="ventames">
+                                <tr>
+                                    <td class="text-center">${loop.index +1}</td>                                      
+                                    <td class="text-center">${ventames.nombreEmpresa}</td>
+                                    <td class="text-center">$${ventames.total}</td>
+                                    <td class="text-center">$${ventames.ganancia}</td>
+                                  
+                                </tr>
+                            </c:forEach>
+                        
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
