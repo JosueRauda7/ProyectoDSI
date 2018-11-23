@@ -60,7 +60,7 @@
                 </c:forEach>
             </div>
 
-
+        </div>
             <br/><br/><br/>
 
             <jsp:include page="footer.jsp"/>

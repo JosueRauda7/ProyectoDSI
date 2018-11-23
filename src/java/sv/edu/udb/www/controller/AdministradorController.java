@@ -25,6 +25,7 @@ import sv.edu.udb.www.beans.Categoria;
 import sv.edu.udb.www.beans.Empresa;
 import sv.edu.udb.www.beans.EstadoCategoria;
 import sv.edu.udb.www.beans.Pedido;
+import sv.edu.udb.www.beans.Producto;
 import sv.edu.udb.www.beans.SubCategoria;
 import sv.edu.udb.www.beans.Usuario;
 import sv.edu.udb.www.model.CategoriasModel;
@@ -926,7 +927,7 @@ public class AdministradorController extends HttpServlet {
                     String enlace = request.getRequestURL().toString()
                             + "?operacion=verificar&id=" + cadenaAleatoria;
                     String texto = "<div class='container2' style='color: white;border: solid black 2px;border-radius: 25px;width: 30%;padding: 1%;background-color: #e84d1c;'><h1 style=\"text-align: center;\">Bienvenido a BigShop</h1><div>"
-                            + "<p>BigShop es tu nueva tienda oline, aquí te ofrecemos una gran variedad de productos a un buen precio, tambien tenemos los mejores productos de tus marcas favoritas, todo lo que decees esta aqui.</p>"
+                            + "<p>BigShop es tu nueva tienda oline, aquí te ofrecemos una gran variedad de productos a un buen precio, también tenemos los mejores productos de tus marcas favoritas, todo lo que deseas esta aqui.</p>"
                             + "<p>Has sido registrado como administrador tu contraseña es: " + usuario.getPassword() + ".</p>"
                             + "<p>Para poder acceder a nuestro sitio debes validar tu usuario, da click al boton para empezar a comprar.</p>"
                             + "<a target='_blank' href='" + enlace + "'><button type='button' style='background-color: white;color: black;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;border: solid 1px #67656E;  font-family:fantasy;margin-left:30%;'   onmouseover='this.style.backgroundColor=\"#A5A1B3\" ' onmouseout='this.style.backgroundColor=\"\"'>Entrar</button></a></div></div>";
@@ -1065,6 +1066,26 @@ public class AdministradorController extends HttpServlet {
             if (modeloProducto.rechazarAceptarProducto(codigo, estado) == 0) {
                 request.getSession().setAttribute("fracaso", "Ocurrio un error, no se pudo aplicar la acción");
             } else {
+                if (estado == 3) {
+                    Producto producto = ProductoModel.obtenerProducto(codigo);
+                    String texto = "El producto " + producto.getProducto() + " ha sido rechazado, "
+                            + "debido a que no cumple con los requisitos de aceptación. Puede consultar los requisitos"
+                            + " de aceptación en los términos y condiciones. Los términos de aceptación de producto son"
+                            + " los siguientes: <br>"
+                            + "-No sea perecedero.<br>"
+                            + "-Cantidad Mínima de productos: 10.<br>"
+                            + "-No sea de carácter ofensivo el producto.<br>"
+                            + "-Respeta ortografía.<br>"
+                            + "-Imágenes que no contengan contenido inapropiado.<br>"
+                            + "Si desea ingresar de nuevo el producto verifique que cumpla"
+                            + " con estos requisitos. Gracias, por su atención. <br>"
+                            + "Att. Administración de BigShop.";
+                    Correo correo = new Correo();
+                    correo.setAsunto("Producto Rechazado");
+                    correo.setMensaje(texto);
+                    correo.setDestinatario(producto.getEmpresa().getUsuario().getCorreo());
+                    correo.enviarCorreo();
+                }
                 request.getSession().setAttribute("exito", "Producto calificado.");
             }
 
@@ -1152,8 +1173,8 @@ public class AdministradorController extends HttpServlet {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             if (ProductoModel.obtenerProducto(id) != null) {
-                request.getSession().setAttribute("lista", ProductoModel.obtenerDetalles(id));
-                request.getSession().setAttribute("producto", ProductoModel.obtenerProducto(id));
+                request.setAttribute("lista", ProductoModel.listarDetalles(id));
+                request.setAttribute("producto", ProductoModel.obtenerProducto(id));
                 request.getRequestDispatcher("/administrador/verificarProducto.jsp").forward(request, response);
             } else {
                 request.getSession().setAttribute("fracaso", "Producto no encontrado.");

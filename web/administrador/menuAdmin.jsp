@@ -72,7 +72,7 @@
                 </li>
                 <li class="dropdown dropdown-megamenu">
                     <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
-                        Estadisticas
+                        Estadísticas
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="${base}/administrador.do?operacion=grafica">Ventas anuales</a></li>                        
@@ -85,6 +85,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="${base}/administrador.do?operacion=listarSugerencias">Sugerencias</a></li>                        
+                        <li><a href="${base}/administrador.do?operacion=listarSugerencias">Términos y condiciones</a></li>                        
                     </ul>
                 </li>
                 <!-- END TOP SEARCH -->

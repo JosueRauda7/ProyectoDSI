@@ -18,6 +18,7 @@ import sv.edu.udb.www.beans.Imagen;
 import sv.edu.udb.www.beans.Oferta;
 import sv.edu.udb.www.beans.Producto;
 import sv.edu.udb.www.beans.SubCategoria;
+import sv.edu.udb.www.beans.Usuario;
 
 /**
  *
@@ -450,10 +451,10 @@ public class ProductosModel extends Conexion {
                 oferta.setTitulo(rs.getString("titulo"));
                 oferta.setDescripcion(rs.getString("descripcion"));
                 oferta.setUrlFoto(rs.getString("url_foto"));
-                
+
                 producto.setIdProducto(rs.getInt("id_producto"));
                 producto.setProducto(rs.getString("producto"));
-                
+
                 oferta.setProducto(producto);
 
                 this.desconectar();
@@ -466,7 +467,7 @@ public class ProductosModel extends Conexion {
             return null;
         }
     }
-    
+
     public int publicarOferta(int id) throws SQLException {
         try {
             String sql = "UPDATE ofertas SET estado_publicado = 1 WHERE id_oferta = ?";
@@ -474,7 +475,7 @@ public class ProductosModel extends Conexion {
             st = conexion.prepareStatement(sql);
             st.setInt(1, id);
             st.executeUpdate();
-            
+
             this.desconectar();
             return 1;
         } catch (SQLException ex) {
@@ -482,17 +483,20 @@ public class ProductosModel extends Conexion {
             return 0;
         }
     }
+
     public Producto obtenerProducto(int id) throws SQLException {
         try {
-            String sql = "select p.id_producto, p.producto, p.descripcion, p.cantidad, p.precio_regular, c.subcategoria, e.empresa, ep.estado, i.Url_imagen from producto p "
+            String sql = "select u.correo, p.id_producto, p.producto, p.descripcion, p.cantidad, p.precio_regular, c.subcategoria, e.empresa, ep.estado, i.Url_imagen from producto p "
                     + "inner join sub_categoria c on p.id_sub_categoria=c.id_sub_categoria "
                     + "inner join estado_producto ep on p.id_estado_producto=ep.id_estado_producto "
                     + "inner join imagen i on i.id_producto=p.id_producto "
                     + "inner JOIN empresa e on p.id_empresa=e.id_empresa "
+                    + "inner join usuarios u on e.id_usuario=u.id_usuario "
                     + "where p.id_producto=? limit 1";
             EstadoProducto estado = new EstadoProducto();
             SubCategoria subC = new SubCategoria();
             Empresa empresa = new Empresa();
+            Usuario contacto = new Usuario();
             Producto producto = new Producto();
             this.conectar();
             st = conexion.prepareStatement(sql);
@@ -500,7 +504,9 @@ public class ProductosModel extends Conexion {
             rs = st.executeQuery();
             if (rs.next()) {
                 producto.setIdProducto(Integer.parseInt(rs.getString("p.id_producto")));
+                contacto.setCorreo(rs.getString("u.correo"));
                 empresa.setEmpresa(rs.getString("e.empresa"));
+                empresa.setUsuario(contacto);
                 producto.setEmpresa(empresa);
                 producto.setProducto(rs.getString("p.producto"));
                 producto.setDescripcion(rs.getString("p.descripcion"));
@@ -524,22 +530,29 @@ public class ProductosModel extends Conexion {
             }
         }
     }
-    public List<Detalle> obtenerDetalles(int id) throws SQLException{
-        String sql="select * from detalles where idProducto=?";
-        List<Detalle> lista = new ArrayList<>();
-        this.conectar();
-        st=conexion.prepareStatement(sql);
-        st.setInt(1, id);
-        rs=st.executeQuery();
-        while(rs.next()){
-            Detalle detalle = new Detalle();
-            detalle.setIdDetalle(Integer.parseInt(rs.getString("idDetalle")));
-            detalle.setDetalle(rs.getString("detalle"));
-            detalle.setDetalleAtributo(rs.getString("detalleAtributo"));
-            lista.add(detalle);
+
+    public List<Detalle> listarDetalles(int id) throws SQLException {
+        try {
+            String sql = "select * from detalles where idProducto=?";
+            List<Detalle> lista = new ArrayList<>();
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, id);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Detalle detalle = new Detalle();
+                detalle.setIdDetalle(Integer.parseInt(rs.getString("idDetalle")));
+                detalle.setDetalle(rs.getString("detalle"));
+                detalle.setDetalleAtributo(rs.getString("detalleAtributo"));
+                lista.add(detalle);
+            }
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductosModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
         }
-        this.desconectar();
-        return lista;
     }
     //FIN PARTE RAUDA
 }
