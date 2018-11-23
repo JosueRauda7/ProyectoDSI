@@ -53,8 +53,7 @@
                             </div>
                             <div class="pi-price">Precio: $${producto.precioRegular}</div>
                             <c:if test="${producto.estadoProducto.estado eq 'En espera'}">
-                            <a href="${base}/administrador.do?operacion=aceptarRechazar&estado=2&id=${producto.idProducto}" class="btn btn-default add2cart">Aceptar</a>
-                            <a href="${base}/administrador.do?operacion=aceptarRechazar&estado=3&id=${producto.idProducto}" class="btn btn-default add2cart">Rechazar</a>
+                            <a href="${base}/administrador.do?operacion=verificarProducto&estado=2&id=${producto.idProducto}" class="btn btn-default add2cart">Verificar Producto</a>
                             </c:if>
                         </div>
                     </div>

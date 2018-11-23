@@ -25,7 +25,7 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
 
     <!-- Head BEGIN -->
     <head>
-        <title>Nombre empresa | Administrador</title>
+        <title>BigShop | Administrador</title>
         <jsp:include page="head.jsp"/>        
     </head>
     <!-- Head END -->

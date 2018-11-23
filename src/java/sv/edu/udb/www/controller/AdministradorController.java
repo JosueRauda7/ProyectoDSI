@@ -143,13 +143,16 @@ public class AdministradorController extends HttpServlet {
                         case "aceptarRechazar":
                             aceptarRechazar(request, response);
                             break;
+                        case "verificarProducto":
+                            verificarProducto(request, response);
+                            break;
                         //--------------------------------------------------
                         //--------------SUGERENCIAS-------------------------
 
                         case "listarSugerencias":
                             listarSugerencias(request, response);
                             break;
-                            
+
                         case "verificarSugerencia":
                             verificarSugerencia(request, response);
                             break;
@@ -1129,7 +1132,7 @@ public class AdministradorController extends HttpServlet {
 
         }
     }
-    
+
     private void verificarSugerencia(HttpServletRequest request, HttpServletResponse response) {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
@@ -1141,6 +1144,22 @@ public class AdministradorController extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarSugerencias");
             }
         } catch (SQLException | IOException ex) {
+            Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void verificarProducto(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            if (ProductoModel.obtenerProducto(id) != null) {
+                request.getSession().setAttribute("lista", ProductoModel.obtenerDetalles(id));
+                request.getSession().setAttribute("producto", ProductoModel.obtenerProducto(id));
+                request.getRequestDispatcher("/administrador/verificarProducto.jsp").forward(request, response);
+            } else {
+                request.getSession().setAttribute("fracaso", "Producto no encontrado.");
+                response.sendRedirect(request.getContextPath() + "/administrador.do?operacion=listarProductos&estado=1");
+            }
+        } catch (IOException | ServletException | SQLException ex) {
             Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

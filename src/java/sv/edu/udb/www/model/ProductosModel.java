@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sv.edu.udb.www.beans.Detalle;
 import sv.edu.udb.www.beans.Empresa;
 import sv.edu.udb.www.beans.EstadoProducto;
 import sv.edu.udb.www.beans.Imagen;
@@ -481,6 +482,64 @@ public class ProductosModel extends Conexion {
             return 0;
         }
     }
-    
+    public Producto obtenerProducto(int id) throws SQLException {
+        try {
+            String sql = "select p.id_producto, p.producto, p.descripcion, p.cantidad, p.precio_regular, c.subcategoria, e.empresa, ep.estado, i.Url_imagen from producto p "
+                    + "inner join sub_categoria c on p.id_sub_categoria=c.id_sub_categoria "
+                    + "inner join estado_producto ep on p.id_estado_producto=ep.id_estado_producto "
+                    + "inner join imagen i on i.id_producto=p.id_producto "
+                    + "inner JOIN empresa e on p.id_empresa=e.id_empresa "
+                    + "where p.id_producto=? limit 1";
+            EstadoProducto estado = new EstadoProducto();
+            SubCategoria subC = new SubCategoria();
+            Empresa empresa = new Empresa();
+            Producto producto = new Producto();
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, id);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                producto.setIdProducto(Integer.parseInt(rs.getString("p.id_producto")));
+                empresa.setEmpresa(rs.getString("e.empresa"));
+                producto.setEmpresa(empresa);
+                producto.setProducto(rs.getString("p.producto"));
+                producto.setDescripcion(rs.getString("p.descripcion"));
+                producto.setPrecioRegular(rs.getString("p.precio_regular"));
+                producto.setCantidad(rs.getString("p.cantidad"));
+                producto.setUrlImagen(rs.getString("i.Url_imagen"));
+                producto.setSubCategoria(new SubCategoria(rs.getString("c.subcategoria")));
+                producto.setEstadoProducto(new EstadoProducto(rs.getString("ep.estado")));
+            }
+            this.desconectar();
+            return producto;
+        } catch (SQLException ex) {
+            try {
+                Logger.getLogger(EmpresasModel.class.getName()).log(Level.SEVERE, null, ex);
+                this.desconectar();
+                return null;
+            } catch (SQLException ex1) {
+                Logger.getLogger(EmpresasModel.class.getName()).log(Level.SEVERE, null, ex1);
+                this.desconectar();
+                return null;
+            }
+        }
+    }
+    public List<Detalle> obtenerDetalles(int id) throws SQLException{
+        String sql="select * from detalles where idProducto=?";
+        List<Detalle> lista = new ArrayList<>();
+        this.conectar();
+        st=conexion.prepareStatement(sql);
+        st.setInt(1, id);
+        rs=st.executeQuery();
+        while(rs.next()){
+            Detalle detalle = new Detalle();
+            detalle.setIdDetalle(Integer.parseInt(rs.getString("idDetalle")));
+            detalle.setDetalle(rs.getString("detalle"));
+            detalle.setDetalleAtributo(rs.getString("detalleAtributo"));
+            lista.add(detalle);
+        }
+        this.desconectar();
+        return lista;
+    }
     //FIN PARTE RAUDA
 }
