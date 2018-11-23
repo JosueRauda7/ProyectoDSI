@@ -130,6 +130,9 @@ public class ClienteController extends HttpServlet {
                     case "acercaDe":
                         acercaDe(request, response);
                         break;
+                    case "terminosLegales":
+                        terminos(request,response);
+                        break;
                     case "sugerencias":
                         sugerencias(request, response);
                         break;
@@ -789,7 +792,7 @@ public class ClienteController extends HttpServlet {
     private void acercaDe(HttpServletRequest request, HttpServletResponse response) {
         try {
             request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
-            request.getRequestDispatcher("acercaDe.jsp").forward(request, response);
+            request.getRequestDispatcher("/cliente/acercaDe.jsp").forward(request, response);
         } catch (ServletException | IOException | SQLException ex) {
             Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -828,5 +831,14 @@ public class ClienteController extends HttpServlet {
             Logger.getLogger(ClienteController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    private void terminos(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.setAttribute("listaCategorias", CategoriaModel.listarCategorias());
+            request.getRequestDispatcher("/cliente/terminosLegales.jsp").forward(request, response);
+        } catch (ServletException | IOException | SQLException ex) {
+            Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

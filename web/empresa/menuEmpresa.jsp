@@ -61,7 +61,7 @@
                         <li><a href="${base}/empresas.do?operacion=listaOfertas">Ver ofertas</a></li>                         
                     </ul>
                 </li>
-
+                <li><a href="${base}/empresas.do?operacion=terminosLegales">Términos y condiciones</a></li>  
                 <!-- END TOP SEARCH -->
             </ul>
         </div>

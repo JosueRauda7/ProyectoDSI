@@ -14,11 +14,9 @@
         <jsp:include page="/scripts.jsp"/>
     </head>
     <!-- BEGIN NAVIGATION -->
-    <jsp:include page="/menu.jsp"/>
-
-    <jsp:include page="/modal.jsp"/>
+    
     <body>
-
+        <jsp:include page="menuAdmin.jsp"/>
         <div class="main">
             <div class="container">
                 <div class="col-md-12 col-sm-12">
@@ -108,17 +106,17 @@
             Layout.initTouchspin();
             Layout.initUniform();
             });
-        <c:if test="${not empty exito}">
-        swal({
+            <c:if test="${not empty exito}">
+            swal({
                     title: "Felicidades!",
                     text: "${exito}",
                     icon: "success",
-    });
-        <c:set var="exito" value="" scope="session"/>
+});
+<c:set var="exito" value="" scope="session"/>
             </c:if>
 
-                <c:if test="${not empty fracaso}">
-                    swal({
+                  <c:if test="${not empty fracaso}">
+                swal({
                     title: "Ups!",
                     text: "${fracaso}",
                     icon: "error",

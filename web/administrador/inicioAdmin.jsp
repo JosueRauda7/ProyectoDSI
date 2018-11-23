@@ -108,12 +108,13 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
                         <!-- BEGIN COPYRIGHT -->
                         <div class="col-md-12 padding-top-10">
                             2018 © Universidad Don Bosco. Derechos reservados. 
+                            <a href="${base}/ProyectoDSI/administrador.do?operacion=terminosLegales">Términos Legales</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <script type="text/javascript">
             jQuery(document).ready(function () {
                 Layout.init();

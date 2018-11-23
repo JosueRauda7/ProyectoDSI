@@ -129,18 +129,8 @@
 
         <ckeditor:replace replace="descripcion" basePath="${base}/ckeditor/" />
 
-        <div class="footer"  style="width: 100%;-webkit-box-sizing:border-box;
-             -moz-box-sizing:border-box;
-             box-sizing:border-box; position: absolute; bottom: auto;" >
-            <div class="container">
-                <div class="row">
-                    <!-- BEGIN COPYRIGHT -->
-                    <div class="col-md-12 text-center">
-                        2018 © Universidad Don Bosco. Derechos reservados. 
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="margin-bottom-40"></div>
+            <jsp:include page="footer.jsp"/>
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js">
         </script>

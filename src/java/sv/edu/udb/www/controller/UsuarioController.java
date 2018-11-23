@@ -211,13 +211,13 @@ public class UsuarioController extends HttpServlet {
 
                     String enlace = request.getRequestURL().toString()
                             + "?operacion=verificar&id=" + cadenaAleatoria+"&correo="+ usuario.getCorreo()+"&password="+ usuario.getPassword();
-                    String texto = "<div class='container2' style='color: white;border: solid black 2px;border-radius: 25px;width: 30%;padding: 1%;background-color: #e84d1c;'><h1 style=\"text-align: center;\">Bienvenido a BigShop</h1><div><p>BigShop es tu nueva tienda oline, aquí te ofrecemos una gran variedad de productos a un buen precio, tambien tenemos los mejores productos de tus marcas favoritas, todo lo que decees esta aqui.</p><p>Para poder acceder a nuestro sitio debes validar tu usuario, da click al boton para empezar a comprar.</p><a target='_blank' href='" + enlace + "'><button type='button' style='background-color: white;color: black;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;border: solid 1px #67656E;  font-family:fantasy;margin-left:30%;'   onmouseover='this.style.backgroundColor=\"#A5A1B3\" ' onmouseout='this.style.backgroundColor=\"\"'>Entrar</button></a></div></div>";
+                    String texto = "<div class='container2' style='color: white;border: solid black 2px;border-radius: 25px;width: 500px;padding: 1%;background-color: #e84d1c;'><h1 style=\"text-align: center;\">Bienvenido a BigShop</h1><div><p>BigShop es tu nueva tienda online, aquí te ofrecemos una gran variedad de productos a un buen precio, también tenemos los mejores productos de tus marcas favoritas, todo lo que deseas esta aquí.</p><p>Para poder acceder a nuestro sitio debes validar tu usuario, da click al botón para empezar a comprar.</p><a target='_blank' href='" + enlace + "'><button type='button' style='background-color: white;color: black;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;border: solid 1px #67656E;  font-family:fantasy;margin-left:30%;'   onmouseover='this.style.backgroundColor=\"#A5A1B3\" ' onmouseout='this.style.backgroundColor=\"\"'>Entrar</button></a></div></div>";
                     Correo correo = new Correo();
-                    correo.setAsunto("Confirmacion de registro");
+                    correo.setAsunto("Confirmación de registro");
                     correo.setMensaje(texto);
                     correo.setDestinatario(usuario.getCorreo());
                     correo.enviarCorreo();
-                    request.getSession().setAttribute("exito", "Tu usuario se creo exitosamente.");
+                    request.getSession().setAttribute("exito", "Tu usuario se creo exitosamente. Se ha enviado un correo de confirmación de cuenta.");
                     response.sendRedirect(request.getContextPath() + "/" + urlmodel);
                 } else {
                     listaErrores.add("Este usuario ya existe");

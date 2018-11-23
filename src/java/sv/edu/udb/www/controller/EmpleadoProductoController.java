@@ -50,7 +50,7 @@ public class EmpleadoProductoController extends HttpServlet {
             String operacion = request.getParameter("operacion");
             if (request.getSession().getAttribute("usuario") != null || request.getSession().getAttribute("tipousuario") != null || request.getSession().getAttribute("nombreUser") != null) {
                 if (request.getSession().getAttribute("usuario") == null || !request.getSession().getAttribute("tipousuario").toString().equals("4")) {
-                    response.sendRedirect(request.getContextPath()+"/public.do?operacion=publicIndex");
+                    response.sendRedirect(request.getContextPath() + "/public.do?operacion=publicIndex");
                     return;
                 }
                 switch (operacion) {
@@ -63,7 +63,9 @@ public class EmpleadoProductoController extends HttpServlet {
                     case "aceptarRechazar":
                         aceptarRechazar(request, response);
                         break;
-
+                    case "terminosLegales":
+                        terminos(request, response);
+                        break;
                     default:
                         request.getRequestDispatcher("/error404.jsp").forward(request, response);
                         break;
@@ -71,7 +73,7 @@ public class EmpleadoProductoController extends HttpServlet {
             } else {
                 request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
             }
-        }  finally {
+        } finally {
             out.close();
         }
     }
@@ -149,6 +151,14 @@ public class EmpleadoProductoController extends HttpServlet {
             }
         } catch (SQLException ex) {
             Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void terminos(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.getRequestDispatcher("/empleadoProducto/terminosLegales.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

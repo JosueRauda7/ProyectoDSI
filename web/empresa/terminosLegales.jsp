@@ -14,11 +14,9 @@
         <jsp:include page="/scripts.jsp"/>
     </head>
     <!-- BEGIN NAVIGATION -->
-    <jsp:include page="/menu.jsp"/>
 
-    <jsp:include page="/modal.jsp"/>
     <body>
-
+        <jsp:include page="menuEmpresa.jsp"/>
         <div class="main">
             <div class="container">
                 <div class="col-md-12 col-sm-12">
@@ -98,6 +96,22 @@
                     </div>
                 </div>
             </div>
+            <div class="footer"  style="width: 100%; -webkit-box-sizing:border-box;
+                 -moz-box-sizing:border-box;
+                 box-sizing:border-box; bottom: 0;" >
+                <div class="container">
+                    <div class="row">
+                        <!-- BEGIN COPYRIGHT -->
+                        <div class="col-md-12 text-center">
+                            2018 © Universidad Don Bosco. Derechos reservados. 
+                        </div>
+                        <div class="col-md-8 padding-top-10">
+                            <div class="col-md-8"></div>
+                            <a href="${base}/ProyectoDSI/empresas.do?operacion=terminosLegales">Términos Legales</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <script type="text/javascript">
             jQuery(document).ready(function () {
@@ -108,30 +122,29 @@
             Layout.initTouchspin();
             Layout.initUniform();
             });
-        <c:if test="${not empty exito}">
+              <c:if test="${not empty exito}">
         swal({
                     title: "Felicidades!",
                     text: "${exito}",
                     icon: "success",
-    });
-        <c:set var="exito" value="" scope="session"/>
-            </c:if>
+        });
+            <c:set var="exito" value="" scope="session"/>
+                </c:if>
 
-                <c:if test="${not empty fracaso}">
+                    <c:if test="${not empty fracaso}">
                     swal({
                     title: "Ups!",
                     text: "${fracaso}",
                     icon: "error",
                         });
                         <c:set var="fracaso" value="" scope="session"/>
-                        </c:if>
+                            </c:if>
             </script>
 
 
 
 
                 <script src="assets/pages/scripts/ModalLog.js" type="text/javascript"></script>
-                <jsp:include page="footer.jsp" />
                 <!-- BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE) -->
                 <script src="../assets/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script><!-- pop up -->
                 <script src="../assets/plugins/owl.carousel/owl.carousel.min.js" type="text/javascript"></script><!-- slider for products -->

@@ -60,6 +60,9 @@ public class EmpleadoMarketingController extends HttpServlet {
                         case "enviarOfertas":
                             enviarOfertas(request, response);
                             break;
+                        case "terminosLegales":
+                            terminos(request, response);
+                            break;
                     }
                 } else {
                     request.getRequestDispatcher("/public.do?operacion=publicIndex").forward(request, response);
@@ -138,7 +141,7 @@ public class EmpleadoMarketingController extends HttpServlet {
                 request.getSession().setAttribute("exito", "Los correos han sido enviados exitosamente");
 
                 String enlace = request.getRequestURL().toString();
-                String texto = "<div class='container2' style='color: white;border: solid black 2px;border-radius: 25px;width: 30%;padding: 1%;background-color: #e84d1c;'><h1 style=\"text-align: center;\">"+asunto+"</h1><div><p>"+mensaje+"</p></div></div>";
+                String texto = "<div class='container2' style='color: white;border: solid black 2px;border-radius: 25px;width: 30%;padding: 1%;background-color: #e84d1c;'><h1 style=\"text-align: center;\">" + asunto + "</h1><div><p>" + mensaje + "</p></div></div>";
                 Correo correo = new Correo();
                 correo.setAsunto(asunto);
                 correo.setMensaje(texto);
@@ -167,13 +170,13 @@ public class EmpleadoMarketingController extends HttpServlet {
 
             String enlace = request.getRequestURL().toString() + "?operacion=mostrarOferta&id=" + oferta.getProducto().getIdProducto();
             String[] proyecto = request.getRequestURL().toString().split("/empleadoMarketing");
-            String imagen = proyecto[0]+ "/images/" + oferta.getUrlFoto();
+            String imagen = proyecto[0] + "/images/" + oferta.getUrlFoto();
             String texto = "<div class='container2' style='color: white;border: solid black 2px;border-radius: 25px;width: 30%;padding: 1%;background-color: #e84d1c;'><h1 style=\"text-align: center;\">" + oferta.getTitulo() + "</h1><div><img src=\"cid:image\" style='height:250px;width:100%;'/><p>" + oferta.getDescripcion() + "</p><a target='_blank' href='" + enlace + "'><button type='button' style='background-color: white;color: black;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer;border: solid 1px #67656E;  font-family:fantasy;margin-left:30%;'   onmouseover='this.style.backgroundColor=\"#A5A1B3\" ' onmouseout='this.style.backgroundColor=\"\"'>Entrar</button></a></div></div>";
             Correo correo = new Correo();
             correo.setAsunto("Nueva Oferta");
             correo.setMensaje(texto);
 
-            if(correo.enviarOfertas(modelo.obtenerCorreosCliente(),imagen)){
+            if (correo.enviarOfertas(modelo.obtenerCorreosCliente(), imagen)) {
                 request.getSession().setAttribute("exito", "Oferta publicada exitosamente");
                 modeloProductos.publicarOferta(oferta.getIdOferta());
             }
@@ -203,15 +206,23 @@ public class EmpleadoMarketingController extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             if (request.getSession().getAttribute("usuario") != null) {
                 if (request.getSession().getAttribute("tipousuario").toString().equals("2")) {
-                    
-                    response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct="+id);
+
+                    response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=verProducto&idproduct=" + id);
                 }
-            }else{
-                response.sendRedirect(request.getContextPath() + "/public.do?operacion=verProducto&idproduct="+id);
+            } else {
+                response.sendRedirect(request.getContextPath() + "/public.do?operacion=verProducto&idproduct=" + id);
             }
         } catch (IOException ex) {
             Logger.getLogger(EmpleadoMarketingController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    private void terminos(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.getRequestDispatcher("/empleadoMarketing/terminosLegales.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

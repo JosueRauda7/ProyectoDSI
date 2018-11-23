@@ -85,7 +85,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="${base}/administrador.do?operacion=listarSugerencias">Sugerencias</a></li>                        
-                        <li><a href="${base}/administrador.do?operacion=listarSugerencias">Términos y condiciones</a></li>                        
+                        <li><a href="${base}/administrador.do?operacion=terminosLegales">Términos y condiciones</a></li>                        
                     </ul>
                 </li>
                 <!-- END TOP SEARCH -->

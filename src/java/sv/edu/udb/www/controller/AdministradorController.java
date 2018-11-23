@@ -157,7 +157,9 @@ public class AdministradorController extends HttpServlet {
                         case "verificarSugerencia":
                             verificarSugerencia(request, response);
                             break;
-
+                        case "terminosLegales":
+                            terminos(request, response);
+                            break;
                         //--------------------------------------------------
                         case "listarEmpresas":
                             listarEmpresas(request, response);
@@ -1182,6 +1184,14 @@ public class AdministradorController extends HttpServlet {
             }
         } catch (IOException | ServletException | SQLException ex) {
             Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void terminos(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.getRequestDispatcher("/administrador/terminosLegales.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

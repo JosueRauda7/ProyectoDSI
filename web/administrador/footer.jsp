@@ -4,7 +4,7 @@
             <!-- BEGIN COPYRIGHT -->
             <div class="col-md-12 padding-top-10">
                 2018 © Universidad Don Bosco. Derechos reservados. 
-                <a href="${base}/ProyectoDSI/public.do?operacion=terminosLegales">Términos Legales</a>
+                <a href="${base}/ProyectoDSI/administrador.do?operacion=terminosLegales">Términos Legales</a>
             </div>
         </div>
     </div>

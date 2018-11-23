@@ -77,6 +77,9 @@ public class EmpresaController extends HttpServlet {
                 if (request.getParameter("operacion") != null) {
                     String operacion = request.getParameter("operacion");
                     switch (operacion) {
+                        case "terminosLegales":
+                            terminos(request, response);
+                            break;
                         case "listar":
                             listar(request, response);
                             break;
@@ -96,14 +99,13 @@ public class EmpresaController extends HttpServlet {
                         case "grafica":
                             grafica(request, response);
                             break;
-                         
+
                         case "listaOfertas":
-                            listaOfertas(request,response);
+                            listaOfertas(request, response);
                             break;
                         case "agregarOfertas":
                             agregarOfertas(request, response);
                             break;
-
                         case "ventaanual":
                             try {
                                 ventaanual(request, response);
@@ -226,7 +228,7 @@ public class EmpresaController extends HttpServlet {
             List<String> imagenes = new ArrayList();
             List<String> conceptos = new ArrayList();
             List<String> atributos = new ArrayList();
-            
+
             producto.setProducto(multi.getParameter("producto"));
             producto.setDescripcion(multi.getParameter("descripcion"));
             producto.setPrecioRegular(multi.getParameter("regular"));
@@ -283,16 +285,16 @@ public class EmpresaController extends HttpServlet {
                 File ficheroTemp = multi.getFile("imagen4");
                 imagenes.add(ficheroTemp.getName());
             }
-            
-            for(int i=1;i<=6;i++){
-                if( (!Validaciones.isEmpty(multi.getParameter("concepto"+i)) ) && (!Validaciones.isEmpty(multi.getParameter("atributo"+i))) ) {
-                    conceptos.add(multi.getParameter("concepto"+i));
-                    atributos.add(multi.getParameter("atributo"+i));
+
+            for (int i = 1; i <= 6; i++) {
+                if ((!Validaciones.isEmpty(multi.getParameter("concepto" + i))) && (!Validaciones.isEmpty(multi.getParameter("atributo" + i)))) {
+                    conceptos.add(multi.getParameter("concepto" + i));
+                    atributos.add(multi.getParameter("atributo" + i));
                 }
             }
 
             if (listaErrores.isEmpty()) {
-                if (modeloProducto.insertarProducto(producto, usuario, imagen, imagenes,conceptos,atributos) == 1) {
+                if (modeloProducto.insertarProducto(producto, usuario, imagen, imagenes, conceptos, atributos) == 1) {
                     request.getSession().setAttribute("exito", "Producto registrado existosamente.");
                 } else {
                     request.getSession().setAttribute("fracaso", "Ocurrio un error, no se pudo registrar el producto...");
@@ -398,10 +400,9 @@ public class EmpresaController extends HttpServlet {
                 File ficheroTemp = multi.getFile("imagen4");
                 imagenes.add(ficheroTemp.getName());
             }
-            
-            
+
             if (listaErrores.isEmpty()) {
-                if (modeloProducto.modificarProducto(producto, usuario)== 1) {
+                if (modeloProducto.modificarProducto(producto, usuario) == 1) {
                     request.getSession().setAttribute("exito", "Producto registrado existosamente.");
                 } else {
                     request.getSession().setAttribute("fracaso", "Ocurrio un error, no se pudo registrar el producto...");
@@ -518,7 +519,7 @@ public class EmpresaController extends HttpServlet {
             oferta.setDescripcion(multi.getParameter("descripcion"));
             oferta.setDescuento(Integer.parseInt(multi.getParameter("descuento")));
             oferta.setIdProducto(Integer.parseInt(multi.getParameter("productosSelect")));
-            
+
             int anio = Integer.parseInt(oferta.getFechaInicio().split("-")[0]);
             int mes = Integer.parseInt(oferta.getFechaInicio().split("-")[1]);
             int dia = Integer.parseInt(oferta.getFechaInicio().split("-")[2]);
@@ -538,10 +539,10 @@ public class EmpresaController extends HttpServlet {
                 listaErrores.add("La fecha inicio debe ser mayor a hoy");
             }
 
-             if (diferencia2 > 0) {
+            if (diferencia2 > 0) {
                 listaErrores.add("La fecha fin debe ser mayor a hoy");
             }
-            
+
             if (Validaciones.isEmpty(multi.getParameter("titulo"))) {
                 listaErrores.add("El titulo es obligatorio");
             }
@@ -561,14 +562,13 @@ public class EmpresaController extends HttpServlet {
                 File ficheroTemp = multi.getFile("imagen");
                 oferta.setUrlFoto(ficheroTemp.getName());
             }
-                       
 
             if (listaErrores.isEmpty()) {
-                
-                if(modeloOferta.insertarOferta(oferta)== 1){
+
+                if (modeloOferta.insertarOferta(oferta) == 1) {
                     request.getSession().setAttribute("exito", "Oferta ingresada existosamente.");
                     response.sendRedirect(request.getContextPath() + "/empresas.do?operacion=listar&estado=1");
-                }else{
+                } else {
                     request.getSession().setAttribute("fracaso", "Ocurrió un error, la oferta no fue insertada...");
                     response.sendRedirect(request.getContextPath() + "/empresas.do?operacion=listar&estado=1");
                 }
@@ -585,12 +585,20 @@ public class EmpresaController extends HttpServlet {
     }
 
     private void listaOfertas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try{
-            int idusuario = (int) request.getSession().getAttribute("usuario");            
+        try {
+            int idusuario = (int) request.getSession().getAttribute("usuario");
             request.setAttribute("listarOfertas", modeloOferta.listaOfertasEmpresa(idusuario));
             request.getRequestDispatcher("/empresa/listaOfertas.jsp").forward(request, response);
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void terminos(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.getRequestDispatcher("/empresa/terminosLegales.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(PublicController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
