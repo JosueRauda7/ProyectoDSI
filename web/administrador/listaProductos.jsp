@@ -47,7 +47,7 @@
                                 <h3>Producto</h3>
                                 <p>${producto.producto}</p>
                                 <h3>Descripción</h3>
-                                <p>${producto.descripcion}</p>
+                                <p class="text-justify" style="height: 60px;">${producto.descripcion}</p>
                                 <h3>Existencias</h3>
                                 <p>${producto.cantidad}</p>
                             </div>
