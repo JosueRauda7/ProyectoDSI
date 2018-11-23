@@ -242,6 +242,7 @@
             });
         }
         ;
+        var mensaje= document.getElementById("mensaje").value;
     </script>
     <jsp:include page="footer.jsp" />
     <script src="assets/pages/scripts/ModalLog.js" type="text/javascript"></script>
