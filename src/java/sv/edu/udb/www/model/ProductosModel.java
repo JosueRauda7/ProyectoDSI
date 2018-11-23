@@ -85,7 +85,7 @@ public class ProductosModel extends Conexion {
         }
     }
 
-    public int insertarProducto(Producto producto, int usuario, Imagen imagen, List imagenes) throws SQLException {
+    public int insertarProducto(Producto producto, int usuario, Imagen imagen, List imagenes, List conceptos, List atributos) throws SQLException {
         try {
             int empresa = 0;
             int filasAfectadas = 0;
@@ -125,6 +125,17 @@ public class ProductosModel extends Conexion {
                     for (int i = 0; i < imagenes.size(); i++) {
                         st.setString(1, imagenes.get(i).toString());
                         st.setInt(2, idproducto);
+                        filasAfectadas = st.executeUpdate();
+                    }
+                }
+                if (conceptos.size() > 0) {
+                    int longitud = conceptos.size();
+                    for (int i = 0; i < longitud; i++) {
+                        sql = "Insert into detalles VALUES(NULL,?,?,?)";
+                        st = conexion.prepareStatement(sql);
+                        st.setString(1, conceptos.get(i).toString());
+                        st.setString(2, atributos.get(i).toString());
+                        st.setInt(3, idproducto);
                         filasAfectadas = st.executeUpdate();
                     }
                 }

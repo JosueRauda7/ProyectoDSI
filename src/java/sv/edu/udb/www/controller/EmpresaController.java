@@ -224,7 +224,9 @@ public class EmpresaController extends HttpServlet {
             Producto producto = new Producto();
             Imagen imagen = new Imagen();
             List<String> imagenes = new ArrayList();
-
+            List<String> conceptos = new ArrayList();
+            List<String> atributos = new ArrayList();
+            
             producto.setProducto(multi.getParameter("producto"));
             producto.setDescripcion(multi.getParameter("descripcion"));
             producto.setPrecioRegular(multi.getParameter("regular"));
@@ -281,9 +283,16 @@ public class EmpresaController extends HttpServlet {
                 File ficheroTemp = multi.getFile("imagen4");
                 imagenes.add(ficheroTemp.getName());
             }
+            
+            for(int i=1;i<=6;i++){
+                if( (!Validaciones.isEmpty(multi.getParameter("concepto"+i)) ) && (!Validaciones.isEmpty(multi.getParameter("atributo"+i))) ) {
+                    conceptos.add(multi.getParameter("concepto"+i));
+                    atributos.add(multi.getParameter("atributo"+i));
+                }
+            }
 
             if (listaErrores.isEmpty()) {
-                if (modeloProducto.insertarProducto(producto, usuario, imagen, imagenes) == 1) {
+                if (modeloProducto.insertarProducto(producto, usuario, imagen, imagenes,conceptos,atributos) == 1) {
                     request.getSession().setAttribute("exito", "Producto registrado existosamente.");
                 } else {
                     request.getSession().setAttribute("fracaso", "Ocurrio un error, no se pudo registrar el producto...");
@@ -330,6 +339,8 @@ public class EmpresaController extends HttpServlet {
             Producto producto = new Producto();
             Imagen imagen = new Imagen();
             List<String> imagenes = new ArrayList();
+            List<String> conceptos = new ArrayList();
+            List<String> atributos = new ArrayList();
 
             producto.setProducto(multi.getParameter("producto"));
             producto.setDescripcion(multi.getParameter("descripcion"));
@@ -387,7 +398,8 @@ public class EmpresaController extends HttpServlet {
                 File ficheroTemp = multi.getFile("imagen4");
                 imagenes.add(ficheroTemp.getName());
             }
-
+            
+            
             if (listaErrores.isEmpty()) {
                 if (modeloProducto.modificarProducto(producto, usuario)== 1) {
                     request.getSession().setAttribute("exito", "Producto registrado existosamente.");

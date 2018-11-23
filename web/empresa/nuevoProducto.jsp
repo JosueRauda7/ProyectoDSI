@@ -53,14 +53,14 @@
                                 <div class="form-group">
                                     <label for="producto" >Nombre del producto</label>
                                     <input type="text" id="producto" name="producto" class="form-control" value="${producto.producto}">
-                                    
+
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="cantidad">Existencias</label>
                                     <input type="number" id="cantidad" name="cantidad" class="form-control" value="${producto.cantidad}">
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -103,6 +103,127 @@
                         <select id="subcategoria" name="subcategoria" class="form-control">
                             <option value="0">Seleccione una sub categoría</option>
                         </select>
+                    </div>
+                </div>
+
+                <div class="panel panel-body col-md-4" style="margin-left: 5%;" >
+                    <label style="text-align: center;">Detalles</label>                    
+                    <hr>
+                    <table class="table table-hover" style="margin-bottom: 3%;">
+                        <thead>
+                        <th>Concepto</th>
+                        <th>Atributo</th>
+                        </thead>
+                        <tbody id="cuerpo">
+                            
+                        </tbody>
+                    </table>
+                    <a class="glyphicon glyphicon-plus-sign" title="Añadir detalles" data-toggle="modal" href="#detallesModal">Añadir detalles</a>
+                </div>
+
+                <div class="modal fade" id="detallesModal" >
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="cancelar();">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h5 class="modal-title" id="exampleModalLabel">Detalles extra del producto</h5>                                                                            
+                            </div>
+                            <div>
+                                <div class="row" style="padding: 20px;">
+                                    <div id="caja1">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Concepto:</label>
+                                                <input type="text" class="form-control" id="concepto1" name="concepto1" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Atributo:</label>
+                                                <input type="text" class="form-control" id="atributo1" name="atributo1" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="caja2" class="hidden">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Concepto:</label>
+                                                <input type="text" class="form-control" id="concepto2" name="concepto2" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Atributo:</label>
+                                                <input type="text" class="form-control" id="atributo2" name="atributo2" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="caja3" class="hidden">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Concepto:</label>
+                                                <input type="text" class="form-control" id="concepto3" name="concepto3" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Atributo:</label>
+                                                <input type="text" class="form-control" id="atributo3" name="atributo3" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="caja4" class="hidden">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Concepto:</label>
+                                                <input type="text" class="form-control" id="concepto4" name="concepto4" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Atributo:</label>
+                                                <input type="text" class="form-control" id="atributo4" name="atributo4" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="caja5" class="hidden">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Concepto:</label>
+                                                <input type="text" class="form-control" id="concepto5" name="concepto5" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Atributo:</label>
+                                                <input type="text" class="form-control" id="atributo5" name="atributo5" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="caja6" class="hidden">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Concepto:</label>
+                                                <input type="text" class="form-control" id="concepto6" name="concepto6" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Atributo:</label>
+                                                <input type="text" class="form-control" id="atributo6" name="atributo6" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a class="btn btn-info" onclick="masDetalle();" id="btnDetalles">Más detalles</a>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="display: inline-block">
+                                <button type="button" class="btn btn-secondary " data-dismiss="modal" onclick="cancelarDetalles();">Cancelar</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="mostrarDetalles();">Añadir</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -342,15 +463,68 @@
 
                 }
             }
-            function validarVacio(){
-                
-                if($('#producto').val()== ""){
+            function validarVacio() {
+
+                if ($('#producto').val() == "") {
                     $('#Error').removeClass("hidden");
                 }
-                if($('#producto').val()!= ""){
+                if ($('#producto').val() != "") {
                     $('#Error').addClass("hidden");
                 }
             }
+
+            function masDetalle() {
+
+                for (var i = 1; i <= 6; i++) {
+                    if ($('#caja' + i).hasClass("hidden")) {
+                        $('#caja' + i).removeClass("hidden");
+
+                        if ($('#caja6').hasClass("hidden") === false) {
+                            $('#btnDetalles').addClass("hidden");
+                        }
+                        return;
+                    }
+
+                }
+            }
+
+            function cancelarDetalles() {
+
+                for (var i = 1; i <= 6; i++) {
+                    if (i != 1) {
+                        $('#caja' + i).addClass("hidden");
+                    }
+                    document.getElementById("concepto" + i).value = "";
+                    document.getElementById("atributo" + i).value = "";
+                }
+            }
+
+            function mostrarDetalles() {
+                var cuerpo = document.getElementById("cuerpo");
+                
+                $('#cuerpo').empty();
+                for(var i = 1; i<=6;i++){
+                    var datoConcepto = document.getElementById("concepto"+i).value;
+                    var datoAtributo = document.getElementById("atributo"+i).value;
+                    if( $('#concepto'+i).val()!= "" || $('#atributo'+i).val()!= "" ){
+                        
+                        var textoCelda1 = document.createTextNode(document.getElementById("concepto"+i).value);
+                        var textoCelda2 = document.createTextNode(document.getElementById("atributo"+i).value);
+                        var fila = document.createElement("tr");
+                        var celda1 = document.createElement("td");
+                        var celda2 = document.createElement("td");
+                        
+                        celda1.appendChild(textoCelda1);
+                        celda2.appendChild(textoCelda2);
+                        
+                        fila.appendChild(celda1);
+                        fila.appendChild(celda2);
+                        
+                        cuerpo.appendChild(fila);
+                    }
+                }
+            }
+
             $(document).ready(function () {
                 $('select[name=categoria]').on('change', function () {
                     $.ajax({
