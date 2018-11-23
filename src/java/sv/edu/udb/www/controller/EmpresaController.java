@@ -499,7 +499,8 @@ public class EmpresaController extends HttpServlet {
 
             System.out.println(anio);
             request.setAttribute("ventas", modeloPedido.ventasDiarias().size());
-            request.setAttribute("ventasHoy", modeloPedido.ventaHoy(Integer.parseInt(request.getSession().getAttribute("usuario").toString())));
+            request.setAttribute("ventasHoy", modeloPedido.ventaHoy3(Integer.parseInt(request.getSession().getAttribute("usuario").toString())));
+            request.setAttribute("ventaMes", modeloPedido.ventasDelmes(Integer.parseInt(request.getSession().getAttribute("usuario").toString())));
             request.getRequestDispatcher("/empresa/estadisticaEmpresa.jsp").forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);

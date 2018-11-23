@@ -278,7 +278,7 @@ public class PedidosModel extends Conexion {
                 idEmpresa = rs.getInt("id_empresa");
             }
 
-            sql = "SELECT e.empresa, ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total, ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2)*0.10 as totalComision FROM detalle_pedidos dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on dp.id_pedido = pd.id_pedido INNER JOIN empresa e on e.id_empresa=p.id_empresa WHERE e.id_empresa=?, MONTH(pd.fecha_compra)= MONTH(NOW()) GROUP by e.empresa";
+            sql = "SELECT e.empresa, ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total, ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2)*0.10 as totalComision FROM detalle_pedidos dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on dp.id_pedido = pd.id_pedido INNER JOIN empresa e on e.id_empresa=p.id_empresa WHERE e.id_empresa=? AND MONTH(pd.fecha_compra)= MONTH(NOW()) GROUP by e.empresa";
             List<VentaMes> lista = new ArrayList<>();
             this.conectar();
             st = conexion.prepareStatement(sql);
@@ -361,7 +361,7 @@ public class PedidosModel extends Conexion {
             sql = "SELECT p.producto as producto, SUM(dp.cantidad) as cantidad, ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total, "
                     + "ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2)*0.10 as totalComision FROM detalle_pedidos dp "
                     + "LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on "
-                    + "dp.id_pedido = pd.id_pedido WHERE p.id_empresa = ? AND pd.fecha_compra = '2018-11-23' AND p.id_estado_producto = 2 GROUP by p.producto";
+                    + "dp.id_pedido = pd.id_pedido WHERE p.id_empresa = ? AND pd.fecha_compra = CURRENT_DATE() AND p.id_estado_producto = 2 GROUP by p.producto";
             this.conectar();
             st = conexion.prepareStatement(sql);
             st.setInt(1, idEmpresa);
