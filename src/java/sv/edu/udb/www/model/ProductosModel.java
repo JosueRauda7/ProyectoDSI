@@ -223,7 +223,7 @@ public class ProductosModel extends Conexion {
         try {
 
             List<Producto> lista = new ArrayList<>();
-            String sql = "Select * from producto p inner join estado_producto es on p.id_estado_producto= es.id_estado_producto "
+            String sql = "Select *,CONCAT(LEFT(p.producto,100), '...') as product from producto p inner join estado_producto es on p.id_estado_producto= es.id_estado_producto "
                     + "inner join sub_categoria c on p.id_sub_categoria=c.id_sub_categoria "
                     + "inner JOIN empresa e on p.id_empresa=e.id_empresa "
                     + " where es.id_estado_producto=?";
@@ -234,7 +234,7 @@ public class ProductosModel extends Conexion {
             while (rs.next()) {
                 Producto producto = new Producto();
                 producto.setIdProducto(rs.getInt("id_producto"));
-                producto.setProducto(rs.getString("producto"));
+                producto.setProducto(rs.getString("product"));
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setPrecioRegular(rs.getString("precio_regular"));
                 producto.setCantidad(rs.getString("cantidad"));
