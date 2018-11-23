@@ -30,6 +30,7 @@ import sv.edu.udb.www.model.ProductosModel;
 import sv.edu.udb.www.model.SubCategoriasModel;
 import sv.edu.udb.www.model.SugerenciasModel;
 import sv.edu.udb.www.model.UsuariosModel;
+import sv.edu.udb.www.utils.Correo;
 
 /**
  *
@@ -725,6 +726,40 @@ public class ClienteController extends HttpServlet {
                 request.getSession().setAttribute("pedidosOfert", clienteModel.listaCarritoOfertas((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
+
+                List<Producto> productosComprados = clienteModel.obtenerProductosPedido((int) request.getSession().getAttribute("usuario"));
+
+                List<String> correos = new ArrayList<>();
+
+                for (Producto producto : productosComprados) {
+                    if (Integer.parseInt(producto.getCantidad()) <= 5) {
+
+                        if (correos.size() > 0) {
+
+                            for (int i = 0; i < correos.size(); i++) {
+
+                                if (!correos.get(i).equals(clienteModel.correoEmpresa(producto.getIdProducto()))) {
+
+                                    correos.add(clienteModel.correoEmpresa(producto.getIdProducto()));
+
+                                }
+
+                            }
+                        } else {
+                            correos.add(clienteModel.correoEmpresa(producto.getIdProducto()));
+                        }
+
+                    }
+                }
+
+                if (correos.size() > 0) {
+                    String enlace = request.getRequestURL().toString();
+                    String texto = "<div class='container2' style='color: white;border: solid black 2px;border-radius: 25px;width: 30%;padding: 1%;background-color: #e84d1c;'><h1 style=\"text-align: center;\">Tus productos se están agotando</h1><div><p>Algunos de tus productos se están agotando, Debes ingresar más existencias</p></div></div>";
+                    Correo correo = new Correo();
+                    correo.setAsunto("Tus productos se están agotando");
+                    correo.setMensaje(texto);
+                    correo.enviarCorreo(correos);
+                }
 
                 response.sendRedirect(request.getContextPath() + "/clientes.do?operacion=publicIndex");
             }
