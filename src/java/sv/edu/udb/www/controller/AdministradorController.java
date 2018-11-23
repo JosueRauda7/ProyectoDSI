@@ -1111,10 +1111,18 @@ public class AdministradorController extends HttpServlet {
             } else {
                 request.getSession().setAttribute("anio", anio);
             }
-
+            
+            if(request.getParameter("empresa")!=null){
+                request.getSession().setAttribute("empresa",request.getParameter("empresa"));                
+            }else{
+                request.getSession().setAttribute("empresa",1);                
+            }
+                        
+            request.setAttribute("ventasHoy", modeloPedido.ventaHoy2(Integer.parseInt(request.getSession().getAttribute("empresa").toString())));
             System.out.println(anio);
-            request.setAttribute("ventas", modeloPedido.ventasDiarias().size());
-            request.setAttribute("ventasHoy", modeloPedido.ventaHoy());
+            request.setAttribute("empresas", modeloEmpresa.listarEmpresas());
+            request.setAttribute("ventas", modeloPedido.ventasDiarias().size());            
+            request.setAttribute("ventaMes", modeloPedido.ventasDelmes());
             request.getRequestDispatcher("/administrador/estadisticaAdmin.jsp").forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(AdministradorController.class.getName()).log(Level.SEVERE, null, ex);

@@ -36,6 +36,7 @@ import sv.edu.udb.www.model.OfertasModel;
 import sv.edu.udb.www.model.PedidosModel;
 import sv.edu.udb.www.model.ProductosModel;
 import sv.edu.udb.www.model.SubCategoriasModel;
+import sv.edu.udb.www.utils.Correo;
 import sv.edu.udb.www.utils.Validaciones;
 
 /**
@@ -51,6 +52,7 @@ public class EmpresaController extends HttpServlet {
     PedidosModel modeloPedido = new PedidosModel();
     OfertasModel modeloOferta = new OfertasModel();
     ArrayList listaErrores = new ArrayList();
+    ClientesModel clienteModel = new ClientesModel();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -87,7 +89,8 @@ public class EmpresaController extends HttpServlet {
                             nuevo(request, response);
                             break;
                         case "inicio":
-                            request.getRequestDispatcher("/empresa/inicioEmpresa.jsp").forward(request, response);
+                            inicio(request, response);
+
                             break;
                         case "obtener":
                             obtener(request, response);
@@ -188,6 +191,36 @@ public class EmpresaController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void inicio(HttpServletRequest request, HttpServletResponse response) {
+        try {
+
+            List<Producto> productosComprados = new ArrayList<>();
+            productosComprados = clienteModel.obtenerProductosEmpresa((int) request.getSession().getAttribute("usuario"));
+
+            List<String> correos = new ArrayList<>();
+
+            for (Producto producto : productosComprados) {
+                if (Integer.parseInt(producto.getCantidad()) <= 5) {
+
+                    correos.add(clienteModel.correoEmpresa(producto.getIdProducto()));
+
+                }
+            }
+
+            if (correos.size() > 0) {
+
+                request.setAttribute("existencias", "Algunos de tus productos se están quedando sin existencias");
+
+            }else{
+                request.setAttribute("existencias", null);
+            }
+
+            request.getRequestDispatcher("/empresa/inicioEmpresa.jsp").forward(request, response);
+        } catch (ServletException | IOException | SQLException ex) {
+            Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     private void listar(HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -468,7 +501,8 @@ public class EmpresaController extends HttpServlet {
 
             System.out.println(anio);
             request.setAttribute("ventas", modeloPedido.ventasDiarias().size());
-            request.setAttribute("ventasHoy", modeloPedido.ventaHoy(Integer.parseInt(request.getSession().getAttribute("usuario").toString())));
+            request.setAttribute("ventasHoy", modeloPedido.ventaHoy3(Integer.parseInt(request.getSession().getAttribute("usuario").toString())));
+            request.setAttribute("ventaMes", modeloPedido.ventasDelmes(Integer.parseInt(request.getSession().getAttribute("usuario").toString())));
             request.getRequestDispatcher("/empresa/estadisticaEmpresa.jsp").forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(EmpresaController.class.getName()).log(Level.SEVERE, null, ex);

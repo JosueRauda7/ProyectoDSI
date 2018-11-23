@@ -37,6 +37,15 @@ Purchase Premium Metronic Admin Theme: http://themeforest.net/item/metronic-resp
         <div class="main">
             <div class="container">
                 <div class="row product-list col-lg-12">
+
+                    <c:if test="${not empty existencias}">
+                        
+                        <div class="alert alert-warning">
+                            ${existencias}
+                        </div>
+                        
+                    </c:if>
+
                     <center><h1>Bienvenido </h1></center>
                     <!-- PRODUCT ITEM START -->
                     <div class="col-lg-4">

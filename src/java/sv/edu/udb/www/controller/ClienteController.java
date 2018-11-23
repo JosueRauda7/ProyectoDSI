@@ -257,6 +257,7 @@ public class ClienteController extends HttpServlet {
                 request.setAttribute("otrasImagenes", ProductoModel.otrasImagenesProducto(idpro, producto.getUrlImagen()));
                 request.setAttribute("oferta", clienteModel.ofertaProducto(idpro));
                 request.setAttribute("comentarios", clienteModel.listaComentarios(idpro));
+                request.setAttribute("detalles", clienteModel.listaDetalles(idpro));
                 request.getRequestDispatcher("/cliente/oferta.jsp").forward(request, response);
             }
         } catch (ServletException | IOException | SQLException ex) {
@@ -730,10 +731,13 @@ public class ClienteController extends HttpServlet {
                 request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
 
-                List<Producto> productosComprados = clienteModel.obtenerProductosPedido((int) request.getSession().getAttribute("usuario"));
+                List<Producto> productosComprados = new ArrayList<>();
+                productosComprados = clienteModel.obtenerProductosPedido((int) request.getSession().getAttribute("usuario"));
 
                 List<String> correos = new ArrayList<>();
 
+                
+                
                 for (Producto producto : productosComprados) {
                     if (Integer.parseInt(producto.getCantidad()) <= 5) {
 

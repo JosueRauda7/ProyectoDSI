@@ -67,7 +67,30 @@
                             </div>
                             <div class="review" style="display: flex;">
                                 <p>Subcategoria: </p><a href=""> ${requestScope.oferta.producto.subCategoria.subCategoria}</a> 
-
+ <button class="dropdown-toggle btn btn-info" data-toggle="modal" style="cursor: pointer; margin-left: 20%;" data-target="#exampleModal">Ver detalles</button>
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Detalles del producto</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <ul class="list-group">
+                                                    <c:forEach var="detalles" varStatus="loop"  items="${requestScope.detalles}">
+                                                        <li class="list-group-item"><h4>${loop.index +1}.  ${detalles.detalle}:</h4> ${detalles.detalleAtributo}</li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <ul class="social-icons">

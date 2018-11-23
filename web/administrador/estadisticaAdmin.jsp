@@ -28,18 +28,26 @@
                 <form method="POST" action="${base}/administrador.do" role="form">
                     <input type="hidden" name="operacion" value="grafica" />
                     <div class="col-md-2 text-center">
-                        Selecciona un año
+                        Selecciona una empresa:
                     </div>
-                    <div class="col-md-3">                                    
-                        <select class="form-control" id="anio" name="anio">
-                            <option value="2018">2018</option>
-                            <option value="2017">2017</option>
-                            <option value="2017">2016</option>
-                            <option value="2017">2015</option>
-                            <option value="2017">2014</option>
+                    <div class="col-md-4">                                    
+                        <select class="form-control" id="empresa" name="empresa" >
+                            <c:forEach var="empresa" items="${requestScope.empresas}">
+                                <option value="${empresa.idEmpresa}">${empresa.empresa}</option>
+                            </c:forEach>
                         </select>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2 text-center">
+                        Selecciona una año:
+                    </div>
+                    <div class="col-md-4">                                    
+                        <select class="form-control" id="anio" name="anio" >
+                            <option value="2018">2018</option>
+                            <option value="2017">2017</option>
+                            <option value="2016">2016</option>                            
+                        </select>
+                    </div>
+                    <div class="col-md-12">
                         <input type="submit" value="Actualizar gráfica" class="btn btn-primary"/>
                     </div>
                 </form>
@@ -74,6 +82,35 @@
                                 <td class="text-center">Ventas del día: $<c:out value="${gananciasV}" /></td>
                                 <td class="text-center">Ganancia diaria: $<c:out value="${gananciasT}" /></td>
                             </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="table-wrapper-responsive col-md-12" style="margin-top: 5%; margin-bottom: 2%;">
+                <p class="text-center" style="font-size: 15px; font-weight: bold;">Ventas del mes</p>
+                <div class="tab-pane fade in active" id="activos2">
+                    <table class="table table-hover" >
+                        <thead style="border-top-color: #e6400c; border: 2px;">
+                            <tr>
+                                <th class="goods-page-ref-no text-center">#</th>
+                                <th class="goods-page-quantity text-center">Empresa</th>
+                                <th class="goods-page-description text-center">Total vendido</th>                                            
+                                <th class="goods-page-ref-no text-center">Ganancias obtenidas</th>                                                                                                                   
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <c:forEach items="${requestScope.ventaMes}" varStatus="loop" var="ventames">
+                                <tr>
+                                    <td class="text-center">${loop.index +1}</td>                                      
+                                    <td class="text-center">${ventames.nombreEmpresa}</td>
+                                    <td class="text-center">$${ventames.total}</td>
+                                    <td class="text-center">$${ventames.ganancia}</td>
+
+                                </tr>
+                            </c:forEach>
+
                         </tbody>
                     </table>
                 </div>
