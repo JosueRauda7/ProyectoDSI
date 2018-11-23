@@ -1122,4 +1122,63 @@ public class ClientesModel extends Conexion {
             return null;
         }
     }
+    
+    
+    public List<Producto> obtenerProductosPedido(int iduser) throws SQLException {
+        try {
+            String sql = "SELECT MAX(id_pedido) AS pedido FROM pedidos WHERE id_usuario = ?";
+            int pedido = 0;
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, iduser);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                pedido = rs.getInt("pedido");
+            }
+            String sql2 = "SELECT t3.*, t2.cantidad as comprados FROM pedidos t1 INNER JOIN detalle_pedidos t2 ON t1.id_pedido = t2.id_pedido INNER JOIN producto t3 ON t3.id_producto = t2.id_producto WHERE t1.id_pedido = ? AND t2.id_oferta is NULL";
+            st = conexion.prepareStatement(sql2);
+            st.setInt(1, pedido);
+            
+            List<Producto> lista = new ArrayList<>();
+            
+            while (rs.next()) {
+                Producto producto = new Producto();
+                producto.setIdProducto(rs.getInt("id_producto"));
+                producto.setProducto(rs.getString("producto"));
+                producto.setCantidad(rs.getString("cantidad"));
+                producto.setDescripcion(rs.getString("descripcion"));
+                producto.setUrlImagen(rs.getString("Url_imagen"));
+                lista.add(producto);
+            }
+                       
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+    }
+    
+    public String correoEmpresa(int idProducto) throws SQLException{
+        try {
+            String sql = "SELECT t3.correo FROM producto t1 INNER JOIN empresa t2 ON t1.id_empresa = t2.id_empresa INNER JOIN usuarios t3 ON t3.id_usuario = t2.id_usuario WHERE t1.id_producto = ?";
+            String correo = "";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, idProducto);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                correo = rs.getString("correo");
+            }
+            
+            return correo;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+    }
+    
+    
 }

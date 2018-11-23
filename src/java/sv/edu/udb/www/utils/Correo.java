@@ -211,7 +211,7 @@ public class Correo {
                 destinos[i] = new InternetAddress(clientes.get(i));
             }
 
-            correo.addRecipients(Message.RecipientType.TO, destinos);
+            correo.addRecipients(Message.RecipientType.BCC, destinos);
             correo.setSubject(asunto);
             correo.setContent(multipart);
 
