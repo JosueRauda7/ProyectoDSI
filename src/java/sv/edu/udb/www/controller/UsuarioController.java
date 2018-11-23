@@ -340,7 +340,7 @@ public class UsuarioController extends HttpServlet {
                             request.getRequestDispatcher("/empleadoProducto/inicioEmpresaProducto.jsp").forward(request, response);
                             break;
                         case 5:
-                            request.getRequestDispatcher("/empresa/inicioEmpresa.jsp").forward(request, response);
+                            response.sendRedirect(request.getContextPath() + "/empresas.do?operacion=inicio");
                             break;
                         default:
                             listaErrores.add("Usuario no encontrado");

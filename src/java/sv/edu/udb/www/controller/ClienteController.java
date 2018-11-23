@@ -727,10 +727,13 @@ public class ClienteController extends HttpServlet {
                 request.getSession().setAttribute("cantidadpedidos", clienteModel.cantidadProduct((int) request.getSession().getAttribute("usuario")));
                 request.getSession().setAttribute("totalPedido", clienteModel.totalPedido((int) request.getSession().getAttribute("usuario")));
 
-                List<Producto> productosComprados = clienteModel.obtenerProductosPedido((int) request.getSession().getAttribute("usuario"));
+                List<Producto> productosComprados = new ArrayList<>();
+                productosComprados = clienteModel.obtenerProductosPedido((int) request.getSession().getAttribute("usuario"));
 
                 List<String> correos = new ArrayList<>();
 
+                
+                
                 for (Producto producto : productosComprados) {
                     if (Integer.parseInt(producto.getCantidad()) <= 5) {
 

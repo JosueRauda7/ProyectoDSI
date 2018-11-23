@@ -1138,16 +1138,18 @@ public class ClientesModel extends Conexion {
             String sql2 = "SELECT t3.*, t2.cantidad as comprados FROM pedidos t1 INNER JOIN detalle_pedidos t2 ON t1.id_pedido = t2.id_pedido INNER JOIN producto t3 ON t3.id_producto = t2.id_producto WHERE t1.id_pedido = ? AND t2.id_oferta is NULL";
             st = conexion.prepareStatement(sql2);
             st.setInt(1, pedido);
-            
+            rs = st.executeQuery();
             List<Producto> lista = new ArrayList<>();
             
             while (rs.next()) {
                 Producto producto = new Producto();
+                Empresa empresa = new Empresa();
                 producto.setIdProducto(rs.getInt("id_producto"));
                 producto.setProducto(rs.getString("producto"));
                 producto.setCantidad(rs.getString("cantidad"));
                 producto.setDescripcion(rs.getString("descripcion"));
-                producto.setUrlImagen(rs.getString("Url_imagen"));
+                
+                
                 lista.add(producto);
             }
                        
@@ -1173,6 +1175,47 @@ public class ClientesModel extends Conexion {
             }
             
             return correo;
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+    }
+    
+    
+    
+    
+    public List<Producto> obtenerProductosEmpresa(int idUsuario) throws SQLException {
+        try {
+            String sql = "SELECT * FROM empresa WHERE id_usuario = ?";
+            int idEmpresa = 0;
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, idUsuario);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                idEmpresa = rs.getInt("id_empresa");
+            }
+            String sql2 = "SELECT t1.* FROM producto t1 INNER JOIN empresa t2 ON t1.id_empresa = t2.id_empresa WHERE t1.id_empresa = ? AND id_estado_producto = 2";
+            st = conexion.prepareStatement(sql2);
+            st.setInt(1, idEmpresa);
+            rs = st.executeQuery();
+            List<Producto> lista = new ArrayList<>();
+            
+            while (rs.next()) {
+                Producto producto = new Producto();
+                
+                producto.setIdProducto(rs.getInt("id_producto"));
+                producto.setProducto(rs.getString("producto"));
+                producto.setCantidad(rs.getString("cantidad"));
+                producto.setDescripcion(rs.getString("descripcion"));
+                
+                
+                lista.add(producto);
+            }
+                       
+            this.desconectar();
+            return lista;
         } catch (SQLException ex) {
             Logger.getLogger(ClientesModel.class.getName()).log(Level.SEVERE, null, ex);
             this.desconectar();
