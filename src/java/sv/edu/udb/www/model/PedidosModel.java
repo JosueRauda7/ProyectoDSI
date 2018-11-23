@@ -306,13 +306,23 @@ public class PedidosModel extends Conexion {
             int empresa = 0;
             String sql = "";
 
+            sql="SELECT CURRENT_DATE() as fecha";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            rs = st.executeQuery();
+            
+            String fecha="";
+            rs.next();
+            fecha=rs.getString("fecha");
+            
             sql = "SELECT p.producto as producto, SUM(dp.cantidad) as cantidad, ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total, "
                     + "ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2)*0.10 as totalComision FROM detalle_pedidos dp "
                     + "LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on "
-                    + "dp.id_pedido = pd.id_pedido WHERE p.id_empresa = ? AND pd.fecha_compra = NOW() AND p.id_estado_producto = 2 GROUP by p.producto";
-            this.conectar();
+                    + "dp.id_pedido = pd.id_pedido WHERE p.id_empresa = ? AND pd.fecha_compra = ? AND p.id_estado_producto = 2 GROUP by p.producto";
+            
             st = conexion.prepareStatement(sql);
             st.setInt(1, idEmpresa);
+            st.setString(2,fecha);
             rs = st.executeQuery();
             while (rs.next()) {
                 VentaHoy ventas = new VentaHoy();
