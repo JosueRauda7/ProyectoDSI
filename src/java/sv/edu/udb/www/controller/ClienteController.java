@@ -254,6 +254,7 @@ public class ClienteController extends HttpServlet {
                 request.setAttribute("otrasImagenes", ProductoModel.otrasImagenesProducto(idpro, producto.getUrlImagen()));
                 request.setAttribute("oferta", clienteModel.ofertaProducto(idpro));
                 request.setAttribute("comentarios", clienteModel.listaComentarios(idpro));
+                request.setAttribute("detalles", clienteModel.listaDetalles(idpro));
                 request.getRequestDispatcher("/cliente/oferta.jsp").forward(request, response);
             }
         } catch (ServletException | IOException | SQLException ex) {
