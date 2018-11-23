@@ -28,18 +28,26 @@
                 <form method="POST" action="${base}/administrador.do" role="form">
                     <input type="hidden" name="operacion" value="grafica" />
                     <div class="col-md-2 text-center">
-                        Selecciona un año
+                        Selecciona una empresa:
                     </div>
-                    <div class="col-md-3">                                    
-                        <select class="form-control" id="anio" name="anio">
-                            <option value="2018">2018</option>
-                            <option value="2017">2017</option>
-                            <option value="2017">2016</option>
-                            <option value="2017">2015</option>
-                            <option value="2017">2014</option>
+                    <div class="col-md-4">                                    
+                        <select class="form-control" id="empresa" name="empresa" >
+                            <c:forEach var="empresa" items="${requestScope.empresas}">
+                                <option value="${empresa.idEmpresa}">${empresa.empresa}</option>
+                            </c:forEach>
                         </select>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2 text-center">
+                        Selecciona una año:
+                    </div>
+                    <div class="col-md-4">                                    
+                        <select class="form-control" id="anio" name="anio" >
+                            <option value="2018">2018</option>
+                            <option value="2017">2017</option>
+                            <option value="2016">2016</option>                            
+                        </select>
+                    </div>
+                    <div class="col-md-12">
                         <input type="submit" value="Actualizar gráfica" class="btn btn-primary"/>
                     </div>
                 </form>
@@ -99,10 +107,10 @@
                                     <td class="text-center">${ventames.nombreEmpresa}</td>
                                     <td class="text-center">$${ventames.total}</td>
                                     <td class="text-center">$${ventames.ganancia}</td>
-                                  
+
                                 </tr>
                             </c:forEach>
-                        
+
                         </tbody>
                     </table>
                 </div>

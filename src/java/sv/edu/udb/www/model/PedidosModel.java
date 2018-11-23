@@ -53,12 +53,12 @@ public class PedidosModel extends Conexion {
 
                 if (anio != 0) {
                     sql = "SELECT pd.fecha_compra ,ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total FROM detalle_pedidos "
-                        + "dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on "
-                        + "dp.id_pedido = pd.id_pedido WHERE Month(pd.fecha_compra) = ? and Year(pd.fecha_compra) = ? AND p.id_estado_producto = 2 GROUP by pd.fecha_compra";
+                            + "dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on "
+                            + "dp.id_pedido = pd.id_pedido WHERE Month(pd.fecha_compra) = ? and Year(pd.fecha_compra) = ? AND p.id_estado_producto = 2 GROUP by pd.fecha_compra";
                 } else {
                     sql = "SELECT pd.fecha_compra ,ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total FROM detalle_pedidos "
-                        + "dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on "
-                        + "dp.id_pedido = pd.id_pedido WHERE Month(pd.fecha_compra) = ? and Year(pd.fecha_compra) = Year(Now()) AND p.id_estado_producto = 2 GROUP by pd.fecha_compra";
+                            + "dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on "
+                            + "dp.id_pedido = pd.id_pedido WHERE Month(pd.fecha_compra) = ? and Year(pd.fecha_compra) = Year(Now()) AND p.id_estado_producto = 2 GROUP by pd.fecha_compra";
                 }
 
                 this.conectar();
@@ -81,7 +81,7 @@ public class PedidosModel extends Conexion {
                         rs = st.executeQuery();
                         rs.next();
                         pedido.setFechaCompra("" + i + "-" + rs.getString("anio"));
-                    }else{
+                    } else {
                         pedido.setFechaCompra("" + i + "-" + anio);
                     }
 
@@ -90,7 +90,7 @@ public class PedidosModel extends Conexion {
 
                 lista.add(pedido);
             }
-            
+
             this.desconectar();
             return lista;
         } catch (SQLException ex) {
@@ -99,15 +99,13 @@ public class PedidosModel extends Conexion {
             return null;
         }
     }
-    
-    
-    
+
     public List<Pedido> ventaAnual(int anio, int usuario) throws SQLException {
         try {
             List<Pedido> lista = new ArrayList<>();
             int empresa = 0;
             String sql = "";
-            
+
             sql = "Select id_empresa from empresa where id_usuario=?";
             this.conectar();
             st = conexion.prepareStatement(sql);
@@ -120,17 +118,17 @@ public class PedidosModel extends Conexion {
 
                 if (anio != 0) {
                     sql = "SELECT pd.fecha_compra ,ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total FROM detalle_pedidos "
-                        + "dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on "
-                        + "dp.id_pedido = pd.id_pedido WHERE p.id_empresa = ? and Month(pd.fecha_compra) = ? and Year(pd.fecha_compra) = ? AND p.id_estado_producto = 2 GROUP by pd.fecha_compra";
+                            + "dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on "
+                            + "dp.id_pedido = pd.id_pedido WHERE p.id_empresa = ? and Month(pd.fecha_compra) = ? and Year(pd.fecha_compra) = ? AND p.id_estado_producto = 2 GROUP by pd.fecha_compra";
                 } else {
                     sql = "SELECT pd.fecha_compra ,ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total FROM detalle_pedidos "
-                        + "dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on "
-                        + "dp.id_pedido = pd.id_pedido WHERE p.id_empresa = ? and Month(pd.fecha_compra) = ? and Year(pd.fecha_compra) = Year(Now()) AND p.id_estado_producto = 2 GROUP by pd.fecha_compra";
+                            + "dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on "
+                            + "dp.id_pedido = pd.id_pedido WHERE p.id_empresa = ? and Month(pd.fecha_compra) = ? and Year(pd.fecha_compra) = Year(Now()) AND p.id_estado_producto = 2 GROUP by pd.fecha_compra";
                 }
 
                 this.conectar();
                 st = conexion.prepareStatement(sql);
-                st.setInt(1,empresa);
+                st.setInt(1, empresa);
                 st.setInt(2, i);
                 if (anio != 0) {
                     st.setInt(3, anio);
@@ -149,7 +147,7 @@ public class PedidosModel extends Conexion {
                         rs = st.executeQuery();
                         rs.next();
                         pedido.setFechaCompra("" + i + "-" + rs.getString("anio"));
-                    }else{
+                    } else {
                         pedido.setFechaCompra("" + i + "-" + anio);
                     }
 
@@ -158,7 +156,7 @@ public class PedidosModel extends Conexion {
 
                 lista.add(pedido);
             }
-            
+
             this.desconectar();
             return lista;
         } catch (SQLException ex) {
@@ -167,13 +165,13 @@ public class PedidosModel extends Conexion {
             return null;
         }
     }
-    
+
     public List<VentaHoy> ventaHoy(int usuario) throws SQLException {
         try {
             List<VentaHoy> lista = new ArrayList<>();
             int empresa = 0;
             String sql = "";
-            
+
             sql = "Select id_empresa from empresa where id_usuario=?";
             this.conectar();
             st = conexion.prepareStatement(sql);
@@ -182,12 +180,12 @@ public class PedidosModel extends Conexion {
             while (rs.next()) {
                 empresa = rs.getInt("id_empresa");
             }
-            
+
             sql = "SELECT p.producto, SUM(dp.cantidad) as cantidad, ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total, "
-                + "ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2)*0.8 as totalComision FROM detalle_pedidos dp "
-                + "LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on "
-                + "dp.id_pedido = pd.id_pedido WHERE p.id_empresa = ? AND fecha_compra = NOW() AND p.id_estado_producto = 2 GROUP by p.producto";
-            
+                    + "ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2)*0.8 as totalComision FROM detalle_pedidos dp "
+                    + "LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on "
+                    + "dp.id_pedido = pd.id_pedido WHERE p.id_empresa = ? AND fecha_compra = NOW() AND p.id_estado_producto = 2 GROUP by p.producto";
+
             st = conexion.prepareStatement(sql);
             st.setInt(1, empresa);
             rs = st.executeQuery();
@@ -196,11 +194,11 @@ public class PedidosModel extends Conexion {
                 ventas.setProducto(rs.getString("producto"));
                 ventas.setCantidad(rs.getString("cantidad"));
                 ventas.setTotalVendido(rs.getString("total"));
-                ventas.setTotalGanancias(rs.getString("totalComision"));    
-                
-                lista.add(ventas);            
+                ventas.setTotalGanancias(rs.getString("totalComision"));
+
+                lista.add(ventas);
             }
-            
+
             this.desconectar();
             return lista;
         } catch (SQLException ex) {
@@ -209,17 +207,17 @@ public class PedidosModel extends Conexion {
             return null;
         }
     }
-    
+
     public List<VentaHoy> ventaHoy() throws SQLException {
         try {
             List<VentaHoy> lista = new ArrayList<>();
             int empresa = 0;
-            String sql = "";                        
-            
+            String sql = "";
+
             sql = "SELECT e.empresa, SUM(dp.cantidad) as cantidad, ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total, "
-                + "ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2)*0.8 as totalComision FROM detalle_pedidos dp "
-                + "LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on "
-                + "dp.id_pedido = pd.id_pedido INNER JOIN empresa e on e.id_empresa = p.id_empresa WHERE fecha_compra = NOW() AND p.id_estado_producto = 2 GROUP by e.empresa";
+                    + "ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2)*0.8 as totalComision FROM detalle_pedidos dp "
+                    + "LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on "
+                    + "dp.id_pedido = pd.id_pedido INNER JOIN empresa e on e.id_empresa = p.id_empresa WHERE fecha_compra = NOW() AND p.id_estado_producto = 2 GROUP by e.empresa";
             this.conectar();
             st = conexion.prepareStatement(sql);
             //st.setInt(1, empresa);
@@ -229,11 +227,11 @@ public class PedidosModel extends Conexion {
                 ventas.setProducto(rs.getString("empresa"));
                 ventas.setCantidad(rs.getString("cantidad"));
                 ventas.setTotalVendido(rs.getString("total"));
-                ventas.setTotalGanancias(rs.getString("totalComision"));    
-                
-                lista.add(ventas);            
+                ventas.setTotalGanancias(rs.getString("totalComision"));
+
+                lista.add(ventas);
             }
-            
+
             this.desconectar();
             return lista;
         } catch (SQLException ex) {
@@ -242,15 +240,15 @@ public class PedidosModel extends Conexion {
             return null;
         }
     }
-    
-    public List<VentaMes> ventasDelmes() throws SQLException{        
+
+    public List<VentaMes> ventasDelmes() throws SQLException {
         try {
-            String sql = "SELECT e.empresa, ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total, ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2)*0.010 as totalComision FROM detalle_pedidos dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on dp.id_pedido = pd.id_pedido INNER JOIN empresa e on e.id_empresa=p.id_empresa WHERE MONTH(pd.fecha_compra)= MONTH(NOW()) GROUP by e.empresa";
+            String sql = "SELECT e.empresa, ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total, ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2)*0.10 as totalComision FROM detalle_pedidos dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on dp.id_pedido = pd.id_pedido INNER JOIN empresa e on e.id_empresa=p.id_empresa WHERE MONTH(pd.fecha_compra)= MONTH(NOW()) GROUP by e.empresa";
             List<VentaMes> lista = new ArrayList<>();
             this.conectar();
             st = conexion.prepareStatement(sql);
             rs = st.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 VentaMes ventames = new VentaMes();
                 ventames.setNombreEmpresa(rs.getString("empresa"));
                 ventames.setTotal(rs.getString("total"));
@@ -265,6 +263,116 @@ public class PedidosModel extends Conexion {
             return null;
         }
     }
-    
-        
+
+    public List<VentaMes> ventasDelmes(int usuario) throws SQLException {
+        try {
+            int idEmpresa = 0;
+            String sql = "";
+
+            sql = "Select id_empresa from empresa where id_usuario=?";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, usuario);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                idEmpresa = rs.getInt("id_empresa");
+            }
+
+            sql = "SELECT e.empresa, ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total, ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2)*0.10 as totalComision FROM detalle_pedidos dp LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on dp.id_pedido = pd.id_pedido INNER JOIN empresa e on e.id_empresa=p.id_empresa WHERE e.id_empresa=?, MONTH(pd.fecha_compra)= MONTH(NOW()) GROUP by e.empresa";
+            List<VentaMes> lista = new ArrayList<>();
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, idEmpresa);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                VentaMes ventames = new VentaMes();
+                ventames.setNombreEmpresa(rs.getString("empresa"));
+                ventames.setTotal(rs.getString("total"));
+                ventames.setGanancia(rs.getString("totalComision"));
+                lista.add(ventames);
+            }
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(PedidosModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+    }
+
+    public List<VentaHoy> ventaHoy2(int idEmpresa) throws SQLException {
+        try {
+            List<VentaHoy> lista = new ArrayList<>();
+            int empresa = 0;
+            String sql = "";
+
+            sql = "SELECT p.producto as producto, SUM(dp.cantidad) as cantidad, ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total, "
+                    + "ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2)*0.10 as totalComision FROM detalle_pedidos dp "
+                    + "LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on "
+                    + "dp.id_pedido = pd.id_pedido WHERE p.id_empresa = ? AND pd.fecha_compra = NOW() AND p.id_estado_producto = 2 GROUP by p.producto";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, idEmpresa);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                VentaHoy ventas = new VentaHoy();
+                ventas.setProducto(rs.getString("producto"));
+                ventas.setCantidad(rs.getString("cantidad"));
+                ventas.setTotalVendido(rs.getString("total"));
+                ventas.setTotalGanancias(rs.getString("totalComision"));
+
+                lista.add(ventas);
+            }
+
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(PedidosModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+    }
+
+    public List<VentaHoy> ventaHoy3(int usuario) throws SQLException {
+        try {
+            List<VentaHoy> lista = new ArrayList<>();
+            int idEmpresa = 0;
+            String sql = "";
+
+            sql = "Select id_empresa from empresa where id_usuario=?";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, usuario);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                idEmpresa = rs.getInt("id_empresa");
+            }
+
+            sql = "SELECT p.producto as producto, SUM(dp.cantidad) as cantidad, ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2) as total, "
+                    + "ROUND(SUM(CONCAT_WS('', (p.precio_regular* dp.cantidad),(o.total_descuento*dp.cantidad))),2)*0.10 as totalComision FROM detalle_pedidos dp "
+                    + "LEFT JOIN producto p on dp.id_producto = p.id_producto LEFT JOIN ofertas o ON dp.id_oferta = o.id_oferta INNER JOIN pedidos pd on "
+                    + "dp.id_pedido = pd.id_pedido WHERE p.id_empresa = ? AND pd.fecha_compra = '2018-11-23' AND p.id_estado_producto = 2 GROUP by p.producto";
+            this.conectar();
+            st = conexion.prepareStatement(sql);
+            st.setInt(1, idEmpresa);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                VentaHoy ventas = new VentaHoy();
+                ventas.setProducto(rs.getString("producto"));
+                ventas.setCantidad(rs.getString("cantidad"));
+                ventas.setTotalVendido(rs.getString("total"));
+                ventas.setTotalGanancias(rs.getString("totalComision"));
+
+                lista.add(ventas);
+            }
+
+            this.desconectar();
+            return lista;
+        } catch (SQLException ex) {
+            Logger.getLogger(PedidosModel.class.getName()).log(Level.SEVERE, null, ex);
+            this.desconectar();
+            return null;
+        }
+    }
+
 }
