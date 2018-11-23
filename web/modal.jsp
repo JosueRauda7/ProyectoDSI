@@ -77,7 +77,7 @@
                         <div class="form-group">
                             <label for="nombre" class="text-center">Nombres:</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" required="" value="${usuario.nombre}" name="nombre" id="nombre"  placeholder="Ingresa tus nombres" >
+                                <input type="text" class="form-control" required="" value="${usuario.nombre}" name="nombre" id="nombre1"  placeholder="Ingresa tus nombres" >
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
                             </div>
                         </div>
@@ -98,14 +98,14 @@
                         <div class="form-group">
                             <label for="nombre" class="text-center">Numero telefonico:</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" ${usuario.telefono} name="telefono" id="telefono"  required="" placeholder="Ingresa tu numero de telefono" >
+                                <input type="text" class="form-control" ${usuario.telefono} name="telefono" id="telefono" onkeypress="validarTelefono();" required="" maxlength="9" placeholder="Ingresa tu numero de telefono" >
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="nombre" class="text-center">Dui:</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" value="${usuario.dui}" name="dui" id="dui" pattern="[0-9]{8}-[0-9]{1}" required=""  class="perm"  placeholder="Ingresa tu dui" >
+                                <input type="text" class="form-control" value="${usuario.dui}" name="dui" id="dui" onkeypress="validarDui();" pattern="[0-9]{8}-[0-9]{1}" required="" maxlength="10" class="perm"  placeholder="Ingresa tu dui" >
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-info-sign"></span></span>
                             </div>
                         </div>
@@ -154,5 +154,27 @@
     });
     </c:if>
     
+    
+        function validarDui(){
+            
+            var cant =  document.getElementById("dui").value.length;
+            
+            if(cant=="8"){
+                document.getElementById("dui").value += "-";
+            }
+        
+        }
+        
+        function validarTelefono(){
+            
+            var cant =  document.getElementById("telefono").value.length;
+            
+            if(cant=="4"){
+                document.getElementById("telefono").value += "-";
+            }
+        
+        }
+        
+        
     
 </script>
